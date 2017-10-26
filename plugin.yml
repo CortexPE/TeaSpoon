@@ -1,0 +1,9 @@
+name: TeaSpoon
+main: CortexPE\Main
+version: 1.0.0
+api: [3.0.0-ALPHA7, 3.0.0-ALPHA8, 3.0.0-ALPHA9, 3.0.0-ALPHA10, 3.0.0-ALPHA11, 3.0.0-ALPHA12, 3.0.0-ALPHA13, 3.0.0-ALPHA14, 3.0.0-ALPHA15, 3.0.0-ALPHA16, 3.0.0-ALPHA17, 3.0.0-ALPHA18, 3.0.0-ALPHA19, 3.0.0-ALPHA20, 3.0.0-ALPHA21, 3.0.0-ALPHA22, 3.0.0-ALPHA23, 3.0.0-ALPHA24, 3.0.0-ALPHA25, 3.0.0-ALPHA26, 3.0.0-ALPHA27, 3.0.0-ALPHA28, 3.0.0-ALPHA29, 3.0.0-ALPHA30, 3.0.0, FUCK-PMMP]
+load: STARTUP
+author: CortexPE
+description: Extends PMMP by 1000x. srsly. 
+website: http://cortexpe.xyz
+
