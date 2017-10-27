@@ -6,9 +6,13 @@ namespace CortexPE;
 
 use CortexPE\block\BlockManager;
 use CortexPE\commands\CommandManager;
+use CortexPE\entity\EntityManager;
+use CortexPE\item\enchantment\Enchantment;
+use CortexPE\item\ItemManager;
 use CortexPE\plugin\AllAPILoaderManager;
 use CortexPE\task\CheckPlayersTask;
 use CortexPE\tile\Tile;
+use pocketmine\Player as PMPlayer;
 use pocketmine\level\Level;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
@@ -36,14 +40,15 @@ class Main extends PluginBase {
 	/** @var bool */
 	public $loadAllAPIs = false;
 
-	/** @var string[] */
-	public $dimens = [];
+	/** @var PMPlayer[] */
+	public $lastUses = [];
 
 	private $splashes = [
 		'Low-Calorie blend',
 		"Don't panic! Have a cup of tea",
 		"In England, Everything stops for tea",
 		"ENGLAND IS MY CITY (not really)",
+		"POWERED By Dubstep",
 		// Add more splashes fur fun. xD
 	];
 
@@ -79,13 +84,18 @@ CortexPE\'s'. TextFormat::DARK_GREEN . '
                                            .JMML.  ' . TextFormat::UNDERLINE . TextFormat::YELLOW . $rm . TextFormat::RESET . '
              ';
 		$this->getServer()->getLogger()->info($stms);
+
 		CommandManager::init();
+		Enchantment::init();
 		BlockManager::init();
+		ItemManager::init();
+		EntityManager::init();
 		// LevelManager::init(); EXECUTED VIA EventListener
 		if($this->loadAllAPIs){
 			AllAPILoaderManager::init();
 		}
 		Tile::init();
+
 
 		if(self::$checkingMode == "task"){
 			$this->getServer()->getScheduler()->scheduleRepeatingTask(new CheckPlayersTask($this), 10);

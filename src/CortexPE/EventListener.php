@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace CortexPE;
 
+use pocketmine\entity\Animal;
 use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\player\PlayerQuitEvent;
+use pocketmine\event\server\DataPacketReceiveEvent;
+use pocketmine\network\mcpe\protocol\AnimatePacket;
+use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\Server as PMServer;
 use pocketmine\event\level\LevelLoadEvent;
 use pocketmine\event\Listener;
@@ -110,4 +114,13 @@ class EventListener implements Listener {
 			}
 		}
 	}
+
+	/*public function onPlayerAction(DataPacketReceiveEvent $ev){
+		$packet = $ev->getPacket();
+		if($packet instanceof AnimatePacket){
+			if($packet->action == 1){ // Item Throw
+				var_dump($packet);
+			}
+		}
+	}*/
 }

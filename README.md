@@ -8,6 +8,7 @@ Contributions are very welcome :smile:<br />You may contribute by opening a Pull
  - [X] Nether Dimension
  - [X] EnderChests
  - [X] All vanilla enchants are Registered (not functional yet)
+ - [X] EnderPearls & More realistic Projectiles
  - [ ] Implement all vanilla Entities
  - [ ] Weather system
  - [ ] Implement all vanilla Items
