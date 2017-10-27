@@ -5,25 +5,17 @@ namespace CortexPE\item;
 use pocketmine\item\Item;
 use pocketmine\item\ProjectileItem;
 
-class EnderPearl extends ProjectileItem {
+class EnchantingBottle extends ProjectileItem {
 
 	public function __construct($meta = 0, $count = 1){
-		parent::__construct(Item::ENDER_PEARL, $meta, $count, "Ender Pearl");
+		parent::__construct(Item::BOTTLE_O_ENCHANTING, $meta, $count, "Bottle o' Enchanting");
 	}
 
 	public function getProjectileEntityType() : string{
-		return "EnderPearl";
+		return "EnchantingBottle";
 	}
 
 	public function getThrowForce(): float{
 		return 1.1;
 	}
-
-	/**
-	 * @return int
-	 */
-	public function getMaxStackSize(): int{
-		return 16;
-	}
-
 }

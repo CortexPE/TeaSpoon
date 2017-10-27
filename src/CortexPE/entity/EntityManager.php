@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace CortexPE\entity;
 
 use CortexPE\entity\projectile\Egg;
+use CortexPE\entity\projectile\EnchantingBottle;
 use CortexPE\entity\projectile\EnderPearl;
 use CortexPE\entity\projectile\Snowball;
-use CortexPE\item\ItemManager;
+use CortexPE\entity\projectile\SplashPotion;
 use pocketmine\entity\Entity;
 
 class EntityManager extends Entity{
@@ -21,8 +22,8 @@ class EntityManager extends Entity{
 		self::registerEntity(Donkey::class, false, ['Donkey', 'minecraft:donkey']);
 		self::registerEntity(ElderGuardian::class, false, ['ElderGuardian', 'minecraft:elderguardian']);
 		self::registerEntity(EnderDragon::class, false, ['EnderDragon', 'minecraft:enderdragon']);
-		self::registerEntity(Enderman::class, false, ['enderman', 'minecraft:enderman']);
-		self::registerEntity(EnderPearl::class, false, ['EnderPearl', 'minecraft:enderpearl']);
+		self::registerEntity(Enderman::class, false, ['Enderman', 'minecraft:enderman']);
+		self::registerEntity(Endermite::class, false, ['Endermite', 'minecraft:endermite']);
 		self::registerEntity(Evoker::class, false, ['Evoker', 'minecraft:evoker']);
 		self::registerEntity(Ghast::class, false, ['Ghast', 'minecraft:ghast']);
 		self::registerEntity(Guardian::class, false, ['Guardian', 'minecraft:guardian']);
@@ -57,8 +58,11 @@ class EntityManager extends Entity{
 		self::registerEntity(ZombieHorse::class, false, ['ZombieHorse', 'minecraft:zombiehorse']);
 		self::registerEntity(ZombieVillager::class, false, ['ZombieVillager', 'minecraft:zombievillager']);
 
-		// Overwrite
-		self::registerEntity(Snowball::class, true, ['Snowball', 'minecraft:snowball']);
+		// Projectiles ////
 		self::registerEntity(Egg::class, true, ['Egg', 'minecraft:egg']);
+		self::registerEntity(EnchantingBottle::class, false, ['EnchantingBottle', 'minecraft:enchantingbottle']);
+		self::registerEntity(EnderPearl::class, false, ['EnderPearl', 'minecraft:enderpearl']);
+		self::registerEntity(Snowball::class, true, ['Snowball', 'minecraft:snowball']);
+		self::registerEntity(SplashPotion::class, false, ['SplashPotion', 'minecraft:splashpotion']);
 	}
 }
