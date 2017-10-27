@@ -8,3 +8,5 @@ checkingMode: "task"
 # !!!   ONLY ENABLE THIS IF YOU ARE SURE THAT ALL YOUR    !!!
 # !!! PLUGINS ARE COMPATIBLE WITH YOUR CURRENT PMMP BUILD !!!
 loadAllAPIs: false
+
+lightningFire: false

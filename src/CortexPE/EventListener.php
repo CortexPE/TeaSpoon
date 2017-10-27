@@ -41,7 +41,7 @@ class EventListener implements Listener {
 	 */
 	public function onPlayerMove(PlayerMoveEvent $ev){
 		$p = $ev->getPlayer();
-		if(Main::$checkingMode == "event"){
+		if(Main::$checkingMode == "event" && !in_array($p->getName(), Main::$teleporting)){
 			$epo = Utils::isInsideOfEndPortal($p);
 			$po = Utils::isInsideOfPortal($p);
 			if($epo || $po){
@@ -52,12 +52,14 @@ class EventListener implements Listener {
 						$pk->position = Main::$netherLevel->getSafeSpawn();
 						$p->teleport(Main::$netherLevel->getSafeSpawn());
 						//$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
+						Main::$teleporting[] = $p->getName();
 					} else if($epo){
 						$pk = new ChangeDimensionPacket();
 						$pk->dimension = DimensionIds::THE_END;
 						$pk->position = Main::$endLevel->getSafeSpawn();
 						$p->teleport(Main::$endLevel->getSafeSpawn());
 						//$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
+						Main::$teleporting[] = $p->getName();
 					}
 				} else {
 					$pk = new ChangeDimensionPacket();
@@ -65,6 +67,7 @@ class EventListener implements Listener {
 					$pk->position = Server::getInstance()->getDefaultLevel()->getSafeSpawn();
 					$p->teleport(Server::getInstance()->getDefaultLevel()->getSafeSpawn());
 					//$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
+					Main::$teleporting[] = $p->getName();
 				}
 			}
 		}
@@ -118,7 +121,7 @@ class EventListener implements Listener {
 	 */
 	public function onTeleport(EntityTeleportEvent $ev){
 		$p = $ev->getEntity();
-		if($p instanceof Player){
+		if($p instanceof Player && !in_array($p->getName(), Main::$teleporting)){
 			switch($ev->getTo()->getLevel()->getName()){
 				case Main::$netherLevel->getName():
 					$pk = new ChangeDimensionPacket();
@@ -139,6 +142,8 @@ class EventListener implements Listener {
 					$p->dataPacket($pk);
 					break;
 			}
+		} else if(in_array($p->getName(), Main::$teleporting)){
+			unset(Main::$teleporting[array_search($p->getName(), Main::$teleporting)]);
 		}
 		return true;
 	}

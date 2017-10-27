@@ -52,6 +52,12 @@ class Main extends PluginBase {
 		// Add more splashes fur fun. xD
 	];
 
+	/** @var bool */
+	public static $lightningFire = false;
+
+	/** @var string[] */
+	public static $teleporting = [];
+
 	public function onLoad(){
 		if(Utils::checkSpoon()){
 			$this->getLogger()->error("This plugin is for PMMP only. It is meant to extend PMMP's functionality.");
@@ -66,6 +72,7 @@ class Main extends PluginBase {
 		self::$endName = self::$config->get("endName", "ender");
 		self::$checkingMode = self::$config->get("dimensionDetectionType", "task");
 		$this->loadAllAPIs = self::$config->get("loadAllAPIs", false);
+		self::$lightningFire = self::$config->get("lightningFire", false);
 	}
 
 	public function onEnable(){

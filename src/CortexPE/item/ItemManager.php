@@ -14,4 +14,8 @@ class ItemManager {
 		Item::addCreativeItem(Item::get(Item::ENDER_PEARL));
 		Item::addCreativeItem(Item::get(Item::ENDER_CHEST));
 	}
+
+	public static function registerEgg(int $EntityNetworkID) {
+		Item::addCreativeItem(Item::get(Item::SPAWN_EGG, $EntityNetworkID, 1));
+	}
 }
