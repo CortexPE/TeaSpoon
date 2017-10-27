@@ -1,5 +1,7 @@
 <?php
 
+// FYI: Event Priorities work this way: LOWEST -> LOW -> NORMAL -> HIGH -> HIGHEST -> MONITOR
+
 declare(strict_types=1);
 
 namespace CortexPE;
@@ -31,6 +33,12 @@ class EventListener implements Listener {
 		return true;
 	}
 
+	/**
+	 * @param PlayerMoveEvent $ev
+	 * @return bool
+	 *
+	 * @priority HIGHEST
+	 */
 	public function onPlayerMove(PlayerMoveEvent $ev){
 		$p = $ev->getPlayer();
 		if(Main::$checkingMode == "event"){
@@ -60,8 +68,15 @@ class EventListener implements Listener {
 				}
 			}
 		}
+		return false;
 	}
 
+	/**
+	 * @param PlayerJoinEvent $ev
+	 * @return bool
+	 *
+	 * @priority HIGHEST
+	 */
 	public function onJoin(PlayerJoinEvent $ev){
 		$p = $ev->getPlayer();
 		if($p === Main::$netherLevel){
@@ -76,15 +91,31 @@ class EventListener implements Listener {
 			$pk->position = $ev->getPlayer()->getPosition();
 			$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
 		}
+		return true;
 	}
 
+
+	/**
+	 * @param PlayerDeathEvent $ev
+	 * @return bool
+	 *
+	 * @priority HIGHEST
+	 */
 	public function onDeath(PlayerDeathEvent $ev){
 		if($ev->getPlayer()->getLevel()->getName() === Main::$netherLevel->getName() || $ev->getPlayer()->getLevel()->getName() === Main::$endLevel->getName()){
 			$ev->getPlayer()->setSpawn(PMServer::getInstance()->getDefaultLevel()->getSafeSpawn()); // So that dying isn't a loop on other dimensions
 			$ev->getPlayer()->teleport(PMServer::getInstance()->getDefaultLevel()->getSafeSpawn());
 		}
+		return true;
 	}
 
+
+	/**
+	 * @param EntityTeleportEvent $ev
+	 * @return bool
+	 *
+	 * @priority HIGHEST
+	 */
 	public function onTeleport(EntityTeleportEvent $ev){
 		$p = $ev->getEntity();
 		if($p instanceof Player){
@@ -109,9 +140,17 @@ class EventListener implements Listener {
 					break;
 			}
 		}
+		return true;
 	}
 
+	/**
+	 * @param EntityDamageEvent $ev
+	 * @return bool
+	 *
+	 * @priority LOWEST
+	 */
 	public function onDamage(EntityDamageEvent $ev){
 		// TODO: Add working Enchants here...
+		return true;
 	}
 }
