@@ -2,10 +2,13 @@
 
 // FYI: Event Priorities work this way: LOWEST -> LOW -> NORMAL -> HIGH -> HIGHEST -> MONITOR
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace CortexPE;
 
+use CortexPE\item\enchantment\Enchantment;
+use pocketmine\entity\Living;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\Server as PMServer;
@@ -25,11 +28,13 @@ class EventListener implements Listener {
 	 *
 	 * @priority LOWEST
 	 */
-	public function onPostLevelLoad(/** @noinspection PhpUnusedParameterInspection */LevelLoadEvent $ev){
+	public function onPostLevelLoad(/** @noinspection PhpUnusedParameterInspection */
+		LevelLoadEvent $ev){
 		if(!Server::$loaded){
 			Server::$loaded = true;
 			LevelManager::init();
 		}
+
 		return true;
 	}
 
@@ -44,33 +49,37 @@ class EventListener implements Listener {
 		if(Main::$checkingMode == "event"/* && !in_array($p->getName(), Main::$teleporting)*/){
 			$epo = Utils::isInsideOfEndPortal($p);
 			$po = Utils::isInsideOfPortal($p);
-			if($epo || $po){
+			if($epo || $po/* && !in_array($p->getName(), Main::$teleporting)*/){
 				if($p->getLevel()->getName() !== Main::$netherLevel->getName() && $p->getLevel()->getName() !== Main::$endLevel->getName()){
 					if($po){
 						$pk = new ChangeDimensionPacket();
 						$pk->dimension = DimensionIds::NETHER;
 						$pk->position = Main::$netherLevel->getSafeSpawn();
+						$p->dataPacket($pk);
+						$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
 						$p->teleport(Main::$netherLevel->getSafeSpawn());
-						//$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
 						//Main::$teleporting[] = $p->getName();
-					} else if($epo){
+					}elseif($epo){
 						$pk = new ChangeDimensionPacket();
 						$pk->dimension = DimensionIds::THE_END;
 						$pk->position = Main::$endLevel->getSafeSpawn();
+						$p->dataPacket($pk);
+						$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
 						$p->teleport(Main::$endLevel->getSafeSpawn());
-						//$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
 						//Main::$teleporting[] = $p->getName();
 					}
-				} else {
+				}else{
 					$pk = new ChangeDimensionPacket();
 					$pk->dimension = DimensionIds::OVERWORLD;
 					$pk->position = Server::getInstance()->getDefaultLevel()->getSafeSpawn();
+					$p->dataPacket($pk);
+					$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
 					$p->teleport(Server::getInstance()->getDefaultLevel()->getSafeSpawn());
-					//$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
 					//Main::$teleporting[] = $p->getName();
 				}
 			}
 		}
+
 		return false;
 	}
 
@@ -80,22 +89,28 @@ class EventListener implements Listener {
 	 *
 	 * @priority HIGHEST
 	 */
-	public function onJoin(PlayerJoinEvent $ev){
+	/*public function onJoin(PlayerJoinEvent $ev){ TODO: Fix this.
 		$p = $ev->getPlayer();
-		if($p === Main::$netherLevel){
+		if($p->getLevel()->getName() === Main::$netherLevel->getName()){
 			$pk = new ChangeDimensionPacket();
 			$pk->dimension = DimensionIds::NETHER;
-			$pk->position = $ev->getPlayer()->getPosition();
+			$pk->position = new Position($p->getX(), $p->getY(), $p->getZ(), $p->getLevel());
+			$p->dataPacket($pk);
 			$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
+			//$p->teleport($ev->getPlayer()->getPosition());
+			//$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
 		}
-		if($p === Main::$endLevel){
+		if($p->getLevel()->getName() === Main::$endLevel->getName()){
 			$pk = new ChangeDimensionPacket();
 			$pk->dimension = DimensionIds::THE_END;
-			$pk->position = $ev->getPlayer()->getPosition();
+			$pk->position = new Position($p->getX(), $p->getY(), $p->getZ(), $p->getLevel());
+			$p->dataPacket($pk);
 			$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
+			//$p->teleport($ev->getPlayer()->getPosition());
+			//$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
 		}
 		return true;
-	}
+	}*/
 
 
 	/**
@@ -106,9 +121,16 @@ class EventListener implements Listener {
 	 */
 	public function onDeath(PlayerDeathEvent $ev){
 		if($ev->getPlayer()->getLevel()->getName() === Main::$netherLevel->getName() || $ev->getPlayer()->getLevel()->getName() === Main::$endLevel->getName()){
-			$ev->getPlayer()->setSpawn(PMServer::getInstance()->getDefaultLevel()->getSafeSpawn()); // So that dying isn't a loop on other dimensions
+			//$ev->getPlayer()->setSpawn(PMServer::getInstance()->getDefaultLevel()->getSafeSpawn()); // So that dying isn't a loop on other dimensions
+			$pk = new ChangeDimensionPacket();
+			$pk->dimension = DimensionIds::OVERWORLD;
+			$pk->position = PMServer::getInstance()->getDefaultLevel()->getSafeSpawn();
+			$pk->respawn = true;
+			$ev->getPlayer()->dataPacket($pk);
+			//$ev->getPlayer()->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
 			$ev->getPlayer()->teleport(PMServer::getInstance()->getDefaultLevel()->getSafeSpawn());
 		}
+
 		return true;
 	}
 
@@ -145,6 +167,7 @@ class EventListener implements Listener {
 		}/* else if(in_array($p->getName(), Main::$teleporting)){
 			unset(Main::$teleporting[array_search($p->getName(), Main::$teleporting)]);
 		}*/
+
 		return true;
 	}
 
@@ -154,8 +177,41 @@ class EventListener implements Listener {
 	 *
 	 * @priority LOWEST
 	 */
-	public function onDamage(EntityDamageEvent $ev){
-		// TODO: Add working Enchants here...
+	public function onDamage(EntityDamageEvent $ev){ // TODO: ADD MORE ENCHANTS
+		if($ev instanceof EntityDamageByEntityEvent){
+			$e = $ev->getEntity();
+			$d = $ev->getDamager();
+
+			if($d instanceof Player && $e instanceof Living){
+				$i = $d->getInventory()->getItemInHand();
+				if($i->hasEnchantments()){
+					foreach($i->getEnchantments() as $ench){
+						switch($ench->getId()){
+							case Enchantment::FIRE_ASPECT:
+								$e->setOnFire(($ench->getLevel() * 4) * 20); // #BlamePMMP // Fire doesnt last for less than half a second. wtf.
+								break;
+							case Enchantment::KNOCKBACK:
+								$ev->setKnockBack($ev->getKnockBack() + ($ench->getLevel() * 1.5));
+								break;
+						}
+					}
+				}
+				if($e instanceof Player){
+					foreach($e->getInventory()->getArmorContents() as $armorContent){
+						if($armorContent->hasEnchantments()){
+							foreach($armorContent->getEnchantments() as $enchantment){
+								switch($enchantment->getId()){
+									case Enchantment::THORNS:
+										$d->attack(new EntityDamageEvent($e, EntityDamageEvent::CAUSE_ENTITY_ATTACK, mt_rand($enchantment->getLevel(),3 + $enchantment->getLevel())));
+										break;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
 		return true;
 	}
 }

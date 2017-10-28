@@ -23,23 +23,26 @@ class CheckPlayersTask extends PluginTask {
 						$pk = new ChangeDimensionPacket();
 						$pk->dimension = DimensionIds::NETHER;
 						$pk->position = Main::$netherLevel->getSafeSpawn();
+						$p->dataPacket($pk);
+						$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
 						$p->teleport(Main::$netherLevel->getSafeSpawn());
-						//$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
 						//Main::$teleporting[] = $p->getName();
 					} else if($epo){
 						$pk = new ChangeDimensionPacket();
 						$pk->dimension = DimensionIds::THE_END;
 						$pk->position = Main::$endLevel->getSafeSpawn();
+						$p->dataPacket($pk);
+						$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
 						$p->teleport(Main::$endLevel->getSafeSpawn());
-						//$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
 						//Main::$teleporting[] = $p->getName();
 					}
 				} else {
 					$pk = new ChangeDimensionPacket();
 					$pk->dimension = DimensionIds::OVERWORLD;
 					$pk->position = Server::getInstance()->getDefaultLevel()->getSafeSpawn();
+					$p->dataPacket($pk);
+					$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
 					$p->teleport(Server::getInstance()->getDefaultLevel()->getSafeSpawn());
-					//$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
 					//Main::$teleporting[] = $p->getName();
 				}
 			}
