@@ -1,5 +1,17 @@
 <?php
 
+$class_exists = function (string $class) : bool {
+	// CREDITS TO FaigerSYS
+	try {
+		$exists = class_exists($class);
+		return ($exists ?: interface_exists($class));
+	} catch (\Throwable $e) {
+		return false;
+	}
+};
+
+if($class_exists("\FolderPluginLoader\FolderPluginLoader")){
+	eval('	
 namespace CortexPE\plugin\AllAPI;
 
 use FolderPluginLoader\FolderPluginLoader as DTFolderPluginLoader;
@@ -34,4 +46,6 @@ class FolderPluginLoader extends DTFolderPluginLoader {
 		return null;
 	}
 
+}
+');
 }

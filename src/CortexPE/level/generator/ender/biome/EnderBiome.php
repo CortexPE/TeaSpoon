@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace CortexPE\level\generator\ender;
+namespace CortexPE\level\generator\ender\biome;
 
 use pocketmine\level\generator\biome\Biome;
 

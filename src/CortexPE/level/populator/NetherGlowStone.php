@@ -19,18 +19,19 @@
  *
  */
 
-namespace pocketmine\level\generator\populator;
+namespace CortexPE\level\generator\populator;
 
-use pocketmine\block\Glowstone;
+//use pocketmine\block\Glowstone;
 use pocketmine\level\ChunkManager;
-use pocketmine\level\generator\object\NetherOreTop as ObjectOre;
-use pocketmine\level\generator\object\OreType;
+use pocketmine\level\generator\object\Ore as ObjectOre;
+use pocketmine\level\generator\populator\Populator;
 use pocketmine\utils\Random;
 
 class NetherGlowStone extends Populator {
 
 	/** @var ChunkManager */
-	private $level;
+	//private $level;
+	private $oreTypes = [];
 
 	/**
 	 * @param ChunkManager $level
@@ -41,14 +42,16 @@ class NetherGlowStone extends Populator {
 	 * @return mixed|void
 	 */
 	public function populate(ChunkManager $level, $chunkX, $chunkZ, Random $random){
-		$this->level = $level;
-		$type = new OreType(new Glowstone(), 1, 20, 128, 10);
-		$ore = new ObjectOre($random, $type);
-		for($i = 0; $i < $ore->type->clusterCount; ++$i){
-			$x = $random->nextRange($chunkX << 4, ($chunkX << 4) + 15);
-			$z = $random->nextRange($chunkZ << 4, ($chunkZ << 4) + 15);
-			$y = $this->getHighestWorkableBlock($x, $z);
-			$ore->placeObject($level, $x, $y, $z);
+		foreach($this->oreTypes as $type){
+			$ore = new ObjectOre($random, $type);
+			for($i = 0; $i < $ore->type->clusterCount; ++$i){
+				$x = $random->nextRange($chunkX << 4, ($chunkX << 4) + 15);
+				$y = $random->nextRange($ore->type->minHeight, $ore->type->maxHeight);
+				$z = $random->nextRange($chunkZ << 4, ($chunkZ << 4) + 15);
+				if($ore->canPlaceObject($level, $x, $y, $z)){
+					$ore->placeObject($level, $x, $y, $z);
+				}
+			}
 		}
 	}
 
@@ -57,7 +60,7 @@ class NetherGlowStone extends Populator {
 	 * @param $z
 	 *
 	 * @return int
-	 */
+
 	private function getHighestWorkableBlock($x, $z){
 		for($y = 127; $y >= 0; --$y){
 			$b = $this->level->getBlockIdAt($x, $y, $z);
@@ -67,6 +70,6 @@ class NetherGlowStone extends Populator {
 		}
 
 		return $y === 0 ? -1 : ++$y;
-	}
+	}*/
 
 }
