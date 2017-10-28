@@ -12,11 +12,13 @@ class BlockManager {
 		self::register(Block::END_PORTAL, new EnderChest());
 	}
 
-	public static function register(int $id, Block $block, bool $overwrite = false) : bool {
+	public static function register(int $id, Block $block, bool $overwrite = false): bool{
 		if(!BlockFactory::isRegistered($id)){
 			BlockFactory::registerBlock($block, $overwrite);
+
 			return true;
 		}
+
 		return false;
 	}
 }

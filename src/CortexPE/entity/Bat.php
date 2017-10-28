@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace CortexPE\entity;
 
@@ -16,15 +16,6 @@ class Bat extends Animal {
 	public $length = 0.6;
 	public $height = 0.6;
 
-	public function getName() : string{
-		return "Bat";
-	}
-
-	public function initEntity(){
-		$this->setMaxHealth(6);
-		parent::initEntity();
-	}
-
 	public function __construct(Level $level, CompoundTag $nbt){
 		if(!isset($nbt->isResting)){
 			$nbt->isResting = new ByteTag("isResting", 0);
@@ -36,6 +27,15 @@ class Bat extends Animal {
 
 	public function isResting(): bool{
 		return boolval($this->namedtag["isResting"]);
+	}
+
+	public function getName(): string{
+		return "Bat";
+	}
+
+	public function initEntity(){
+		$this->setMaxHealth(6);
+		parent::initEntity();
 	}
 
 	public function setResting(bool $resting){
@@ -50,6 +50,7 @@ class Bat extends Animal {
 			// ~ Mr. Meeseeks
 			$this->kill();
 		}
+
 		return parent::onUpdate($currentTick);
 	}
 }

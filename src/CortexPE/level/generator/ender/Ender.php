@@ -1,22 +1,24 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace CortexPE\level\generator\ender;
 
-use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\Level;
 use CortexPE\level\generator\biome\Biome;
 use CortexPE\level\generator\ender\populator\EnderPilar;
+use pocketmine\block\Block;
+use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\Generator;
 use pocketmine\level\generator\noise\Simplex;
 use pocketmine\level\generator\populator\Populator;
+use pocketmine\level\Level;
 use pocketmine\math\Vector3 as Vector3;
 use pocketmine\utils\Random;
 
 class Ender extends Generator {
 
+	private static $GAUSSIAN_KERNEL = null;
+	private static $SMOOTH_SIZE = 2;
 	/** @var Populator[] */
 	private $populators = [];
 	/** @var ChunkManager */
@@ -27,14 +29,10 @@ class Ender extends Generator {
 	private $emptyHeight = 32;
 	private $emptyAmplitude = 1;
 	private $density = 0.6;
-
 	/** @var Populator[] */
 	private $generationPopulators = [];
 	/** @var Simplex */
 	private $noiseBase;
-
-	private static $GAUSSIAN_KERNEL = null;
-	private static $SMOOTH_SIZE = 2;
 
 	public function __construct(array $options = []){
 		if(self::$GAUSSIAN_KERNEL === null){
@@ -67,7 +65,7 @@ class Ender extends Generator {
 		return $this->waterHeight;
 	}
 
-	public function getSettings() : array {
+	public function getSettings(): array{
 		return [];
 	}
 
@@ -138,28 +136,29 @@ class Ender extends Generator {
 		$biome->populateChunk($this->level, $chunkX, $chunkZ, $this->random);
 	}
 
-	public function getSpawn() : Vector3{
+	public function getSpawn(): Vector3{
 		return $this->findSafeArea();
 	}
-	
-	private function findSafeArea() : Vector3 {
+
+	private function findSafeArea(): Vector3{
 		$radius = 500;
 		$minRadius = 50;
 		$pos = null;
 		$found = false;
 		$offset = 0;
-		do {
+		do{
 			$x = mt_rand($minRadius, $radius) + $offset;
 			$z = mt_rand($minRadius, $radius) + $offset;
-			for($y = 0; $y < Level::Y_MAX; $y++) {
-				if($this->level->getBlockIdAt($x, $y-1, $z) != 0 && $this->level->getBlockIdAt($x, $y, $z) == 0 && $this->level->getBlockIdAt($x, $y+1, $z) == 0) {
-				$pos = new Vector3($x, $y, $z); 
-				$found = true;
+			for($y = 0; $y < Level::Y_MAX; $y++){
+				if($this->level->getBlockIdAt($x, $y - 1, $z) != 0 && $this->level->getBlockIdAt($x, $y, $z) == 0 && $this->level->getBlockIdAt($x, $y + 1, $z) == 0){
+					$pos = new Vector3($x, $y, $z);
+					$found = true;
 				}
 			}
 
 			$offset++;
-		} while (!$found);
+		}while(!$found);
+
 		return $pos;
 	}
 

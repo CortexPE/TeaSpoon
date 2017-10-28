@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace CortexPE;
 
@@ -11,21 +11,23 @@ use pocketmine\entity\Entity;
 use pocketmine\item\ItemFactory;
 
 class Utils {
-	public static function isInsideOfPortal(Entity $entity) : bool {
+	public static function isInsideOfPortal(Entity $entity): bool{
 		foreach($entity->getBlocksAround() as $block){
 			if($block instanceof Portal){
 				return true;
 			}
 		}
+
 		return false;
 	}
 
-	public static function isInsideOfEndPortal(Entity $entity) : bool {
+	public static function isInsideOfEndPortal(Entity $entity): bool{
 		foreach($entity->getBlocksAround() as $block){
 			if($block instanceof EndPortal){
 				return true;
 			}
 		}
+
 		return false;
 	}
 

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace CortexPE\entity;
 
@@ -13,7 +13,7 @@ class Ghast extends Animal {
 	public $length = 6;
 	public $height = 6;
 
-	public function getName() : string{
+	public function getName(): string{
 		return "Ghast";
 	}
 

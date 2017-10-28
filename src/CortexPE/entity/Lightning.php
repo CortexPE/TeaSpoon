@@ -11,17 +11,17 @@ use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 
 class Lightning extends Animal {
-    const NETWORK_ID = self::LIGHTNING_BOLT;
+	const NETWORK_ID = self::LIGHTNING_BOLT;
 
 	public $width = 0.3;
 	public $length = 0.9;
 	public $height = 1.8;
 
-    public function getName(): string {
-        return "Lightning";
-    }
+	public function getName(): string{
+		return "Lightning";
+	}
 
-    public function initEntity(){
+	public function initEntity(){
 		$this->setMaxHealth(2);
 		$this->setHealth(2);
 		parent::initEntity();
@@ -61,5 +61,14 @@ class Lightning extends Animal {
 				}*/
 			}
 		}
+	}
+
+	public function onUpdate(int $currentTick): bool{
+		if($this->age > 10 * 20){
+			$this->kill();
+			$this->close();
+		}
+
+		return parent::onUpdate($currentTick);
 	}
 }

@@ -13,15 +13,9 @@ use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
 
 class Rabbit extends Animal {
-    const NETWORK_ID = self::RABBIT;
-
-	public $width = 0.5;
-	public $length = 0.5;
-	public $height = 0.5;
-
+	const NETWORK_ID = self::RABBIT;
 	const DATA_RABBIT_TYPE = 18;
 	const DATA_JUMP_TYPE = 19;
-
 	const TYPE_BROWN = 0;
 	const TYPE_WHITE = 1;
 	const TYPE_BLACK = 2;
@@ -29,15 +23,9 @@ class Rabbit extends Animal {
 	const TYPE_GOLD = 4;
 	const TYPE_SALT_PEPPER = 5;
 	const TYPE_KILLER_BUNNY = 99;
-
-    public function getName(): string {
-        return "Rabbit";
-    }
-
-	public function initEntity(){
-		$this->setMaxHealth(3);
-		parent::initEntity();
-	}
+	public $width = 0.5;
+	public $length = 0.5;
+	public $height = 0.5;
 
 	public function __construct(Level $level, CompoundTag $nbt){
 		if(!isset($nbt->RabbitType)){
@@ -54,15 +42,24 @@ class Rabbit extends Animal {
 		return $arr[mt_rand(0, count($arr) - 1)];
 	}
 
-	public function setRabbitType(int $type){
-		$this->namedtag->RabbitType = new ByteTag("RabbitType", $type);
-	}
-
 	public function getRabbitType(): int{
 		return (int)$this->namedtag["RabbitType"];
 	}
 
-    public function getDrops() : array {
+	public function getName(): string{
+		return "Rabbit";
+	}
+
+	public function initEntity(){
+		$this->setMaxHealth(3);
+		parent::initEntity();
+	}
+
+	public function setRabbitType(int $type){
+		$this->namedtag->RabbitType = new ByteTag("RabbitType", $type);
+	}
+
+	public function getDrops(): array{
 		$lootingL = 0;
 		$cause = $this->lastDamageCause;
 		if($cause instanceof EntityDamageByEntityEvent){
@@ -82,5 +79,5 @@ class Rabbit extends Animal {
 		}
 
 		return $drops;
-    }
+	}
 }

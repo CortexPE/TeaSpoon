@@ -19,7 +19,7 @@
  *
 */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace CortexPE\entity\projectile;
 
@@ -41,6 +41,7 @@ class EnderPearl extends Throwable {
 				$this->kill();
 			}
 		}
+
 		return parent::onUpdate($currentTick);
 	}
 }

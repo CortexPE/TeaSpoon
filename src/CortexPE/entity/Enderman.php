@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace CortexPE\entity;
 
@@ -13,7 +13,7 @@ class Enderman extends Monster {
 	public $length = 0.9;
 	public $height = 1.8;
 
-	public function getName() : string{
+	public function getName(): string{
 		return "Enderman";
 	}
 }

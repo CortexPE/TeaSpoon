@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace CortexPE\entity\projectile;
 
@@ -14,6 +14,7 @@ class EnchantingBottle extends Throwable {
 			// TODO: spawn XPOrbs on Collission.... #BlamePMMP
 			$this->kill();
 		}
+
 		return parent::onUpdate($currentTick);
 	}
 }

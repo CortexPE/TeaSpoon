@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace CortexPE\entity;
 
@@ -13,7 +13,7 @@ class Evoker extends Monster {
 	public $length = 0.6;
 	public $height = 0;
 
-	public function getName() : string{
+	public function getName(): string{
 		return "Evoker";
 	}
 

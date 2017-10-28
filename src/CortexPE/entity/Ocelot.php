@@ -6,7 +6,7 @@ use pocketmine\entity\Animal;
 use pocketmine\item\Item;
 
 class Ocelot extends Animal {
-    const NETWORK_ID = self::OCELOT;
+	const NETWORK_ID = self::OCELOT;
 
 	const TYPE_WILD = 0;
 	const TYPE_TUXEDO = 1;
@@ -17,9 +17,9 @@ class Ocelot extends Animal {
 	public $length = 2.188;
 	public $height = 0.75;
 
-    public function getName(): string {
-        return "Mule";
-    }
+	public function getName(): string{
+		return "Mule";
+	}
 
 	public function getDrops(): array{
 		return [

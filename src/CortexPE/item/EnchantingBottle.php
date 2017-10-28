@@ -11,7 +11,7 @@ class EnchantingBottle extends ProjectileItem {
 		parent::__construct(Item::BOTTLE_O_ENCHANTING, $meta, $count, "Bottle o' Enchanting");
 	}
 
-	public function getProjectileEntityType() : string{
+	public function getProjectileEntityType(): string{
 		return "EnchantingBottle";
 	}
 

@@ -71,19 +71,6 @@ class GroundFire extends Populator {
 
 	/**
 	 * @param $x
-	 * @param $y
-	 * @param $z
-	 *
-	 * @return bool
-	 */
-	private function canGroundFireStay($x, $y, $z){
-		$b = $this->level->getBlockIdAt($x, $y, $z);
-
-		return ($b === Block::AIR or $b === Block::SNOW_LAYER) and $this->level->getBlockIdAt($x, $y - 1, $z) === 87;
-	}
-
-	/**
-	 * @param $x
 	 * @param $z
 	 *
 	 * @return int
@@ -97,5 +84,18 @@ class GroundFire extends Populator {
 		}
 
 		return $y === 0 ? -1 : $y;
+	}
+
+	/**
+	 * @param $x
+	 * @param $y
+	 * @param $z
+	 *
+	 * @return bool
+	 */
+	private function canGroundFireStay($x, $y, $z){
+		$b = $this->level->getBlockIdAt($x, $y, $z);
+
+		return ($b === Block::AIR or $b === Block::SNOW_LAYER) and $this->level->getBlockIdAt($x, $y - 1, $z) === 87;
 	}
 }

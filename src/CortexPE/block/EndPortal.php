@@ -40,7 +40,7 @@ class EndPortal extends Solid {
 		}
 	}
 
-	public function getLightLevel():int {
+	public function getLightLevel(): int{
 		return 1;
 	}
 
@@ -48,23 +48,23 @@ class EndPortal extends Solid {
 		return "End Portal";
 	}
 
-	public function getHardness():float {
+	public function getHardness(): float{
 		return -1;
 	}
 
-	public function getResistance():float {
+	public function getResistance(): float{
 		return 18000000;
 	}
 
-	public function isBreakable(Item $item):bool{
+	public function isBreakable(Item $item): bool{
 		return false;
 	}
 
-	public function canPassThrough():bool{
+	public function canPassThrough(): bool{
 		return true;
 	}
 
-	public function hasEntityCollision():bool{
+	public function hasEntityCollision(): bool{
 		return true;
 	}
 }

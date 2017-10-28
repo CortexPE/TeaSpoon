@@ -41,6 +41,8 @@ use pocketmine\utils\Random;
 
 class Nether extends \pocketmine\level\generator\hell\Nether {
 
+	private static $GAUSSIAN_KERNEL = null;
+	private static $SMOOTH_SIZE = 2;
 	/** @var Populator[] */
 	private $populators = [];
 	/** @var ChunkManager */
@@ -51,14 +53,10 @@ class Nether extends \pocketmine\level\generator\hell\Nether {
 	private $emptyHeight = 64;
 	private $emptyAmplitude = 1;
 	private $density = 0.5;
-
 	/** @var Populator[] */
 	private $generationPopulators = [];
 	/** @var Simplex */
 	private $noiseBase;
-
-	private static $GAUSSIAN_KERNEL = null;
-	private static $SMOOTH_SIZE = 2;
 
 	/**
 	 * Nether constructor.
@@ -105,7 +103,7 @@ class Nether extends \pocketmine\level\generator\hell\Nether {
 	/**
 	 * @return array
 	 */
-	public function getSettings() : array {
+	public function getSettings(): array{
 		return [];
 	}
 
@@ -203,7 +201,7 @@ class Nether extends \pocketmine\level\generator\hell\Nether {
 	/**
 	 * @return Vector3
 	 */
-	public function getSpawn() : Vector3 {
+	public function getSpawn(): Vector3{
 		return new Vector3(127.5, 128, 127.5);
 	}
 

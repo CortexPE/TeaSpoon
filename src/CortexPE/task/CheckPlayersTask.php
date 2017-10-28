@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace CortexPE\task;
 
@@ -9,8 +9,8 @@ use CortexPE\Utils;
 use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
 use pocketmine\network\mcpe\protocol\PlayStatusPacket;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
-use pocketmine\Server;
 use pocketmine\scheduler\PluginTask;
+use pocketmine\Server;
 
 class CheckPlayersTask extends PluginTask {
 	public function onRun(int $currentTick){
@@ -27,7 +27,7 @@ class CheckPlayersTask extends PluginTask {
 						$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
 						$p->teleport(Main::$netherLevel->getSafeSpawn());
 						//Main::$teleporting[] = $p->getName();
-					} else if($epo){
+					}elseif($epo){
 						$pk = new ChangeDimensionPacket();
 						$pk->dimension = DimensionIds::THE_END;
 						$pk->position = Main::$endLevel->getSafeSpawn();
@@ -36,7 +36,7 @@ class CheckPlayersTask extends PluginTask {
 						$p->teleport(Main::$endLevel->getSafeSpawn());
 						//Main::$teleporting[] = $p->getName();
 					}
-				} else {
+				}else{
 					$pk = new ChangeDimensionPacket();
 					$pk->dimension = DimensionIds::OVERWORLD;
 					$pk->position = Server::getInstance()->getDefaultLevel()->getSafeSpawn();

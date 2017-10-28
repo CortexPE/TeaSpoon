@@ -41,7 +41,7 @@ class EnderChest extends Spawnable implements InventoryHolder, Nameable {
 		return "Ender Chest";
 	}
 
-	public function addAdditionalSpawnData(CompoundTag $nbt):void{
+	public function addAdditionalSpawnData(CompoundTag $nbt): void{
 		if($this->hasName()){
 			$nbt->CustomName = $this->namedtag->CustomName;
 		}
@@ -50,7 +50,7 @@ class EnderChest extends Spawnable implements InventoryHolder, Nameable {
 	/**
 	 * @return bool
 	 */
-	public function hasName():bool {
+	public function hasName(): bool{
 		return isset($this->namedtag->CustomName);
 	}
 
@@ -67,7 +67,7 @@ class EnderChest extends Spawnable implements InventoryHolder, Nameable {
 		$this->namedtag->CustomName = new StringTag("CustomName", $str);
 	}
 
-	public function getInventory() : EnderChestInventory{
+	public function getInventory(): EnderChestInventory{
 		// tnx https://github.com/RealDevs/TableSpoon
 		return new EnderChestInventory($this);
 	}

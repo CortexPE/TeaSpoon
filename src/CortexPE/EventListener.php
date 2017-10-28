@@ -11,7 +11,6 @@ use pocketmine\entity\Living;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityTeleportEvent;
-use pocketmine\Server as PMServer;
 use pocketmine\event\level\LevelLoadEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDeathEvent;
@@ -20,6 +19,7 @@ use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
 use pocketmine\network\mcpe\protocol\PlayStatusPacket;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
+use pocketmine\Server as PMServer;
 
 class EventListener implements Listener {
 	/**
@@ -202,7 +202,7 @@ class EventListener implements Listener {
 							foreach($armorContent->getEnchantments() as $enchantment){
 								switch($enchantment->getId()){
 									case Enchantment::THORNS:
-										$d->attack(new EntityDamageEvent($e, EntityDamageEvent::CAUSE_ENTITY_ATTACK, mt_rand($enchantment->getLevel(),3 + $enchantment->getLevel())));
+										$d->attack(new EntityDamageEvent($e, EntityDamageEvent::CAUSE_ENTITY_ATTACK, mt_rand($enchantment->getLevel(), 3 + $enchantment->getLevel())));
 										break;
 								}
 							}

@@ -47,27 +47,27 @@ class Portal extends Transparent {
 		return "Portal";
 	}
 
-	public function getHardness() : float{
+	public function getHardness(): float{
 		return -1;
 	}
 
-	public function getResistance():float{
+	public function getResistance(): float{
 		return 0;
 	}
 
-	public function getToolType():int{
+	public function getToolType(): int{
 		return Tool::TYPE_PICKAXE;
 	}
 
-	public function canPassThrough():bool{
+	public function canPassThrough(): bool{
 		return true;
 	}
 
-	public function hasEntityCollision():bool{
+	public function hasEntityCollision(): bool{
 		return true;
 	}
 
-	public function onBreak(Item $item, Player $player = null):bool{
+	public function onBreak(Item $item, Player $player = null): bool{
 		$block = $this;
 		if($this->getLevel()->getBlock($this->temporalVector->setComponents($block->x - 1, $block->y, $block->z))->getId() == Block::PORTAL or
 			$this->getLevel()->getBlock($this->temporalVector->setComponents($block->x + 1, $block->y, $block->z))->getId() == Block::PORTAL
@@ -106,10 +106,11 @@ class Portal extends Transparent {
 				}
 			}
 		}
+
 		return true;
 	}
 
-	public function place(Item $item, Block $block, Block $target, int $face, Vector3 $facePos, Player $player = null):bool{
+	public function place(Item $item, Block $block, Block $target, int $face, Vector3 $facePos, Player $player = null): bool{
 		if($player instanceof Player){
 			$this->meta = $player->getDirection() & 0x01;
 		}

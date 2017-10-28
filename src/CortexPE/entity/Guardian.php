@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace CortexPE\entity;
 
@@ -14,7 +14,7 @@ class Guardian extends Animal {
 	public $length = 0.95;
 	public $height = 0;
 
-	public function getName() : string{
+	public function getName(): string{
 		return "Guardian";
 	}
 
@@ -23,10 +23,10 @@ class Guardian extends Animal {
 		parent::initEntity();
 	}
 
-	public function getDrops() : array {
+	public function getDrops(): array{
 		return [
 			Item::get(Item::RAW_FISH, 0, mt_rand(1, 2)),
-			Item::get(Item::PRISMARINE_SHARD, 0, mt_rand(0, 1))
+			Item::get(Item::PRISMARINE_SHARD, 0, mt_rand(0, 1)),
 		];
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace CortexPE\entity;
 
@@ -11,7 +11,7 @@ use pocketmine\network\mcpe\protocol\MobArmorEquipmentPacket;
 class Horse extends Living {
 	const NETWORK_ID = self::HORSE;
 
-	public function getName() : string{
+	public function getName(): string{
 		return "Horse";
 	}
 

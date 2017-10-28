@@ -12,7 +12,7 @@ class AllAPILoaderManager {
 	public static function init(){
 		PMServer::getInstance()->getPluginManager()->registerInterface(PharPluginLoader::class);
 		PMServer::getInstance()->getPluginManager()->registerInterface(ScriptPluginLoader::class);
-		if (self::hasFolderPluginLoader()){
+		if(self::hasFolderPluginLoader()){
 			PMServer::getInstance()->getPluginManager()->registerInterface(FolderPluginLoader::class);
 		}
 

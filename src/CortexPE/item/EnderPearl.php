@@ -11,7 +11,7 @@ class EnderPearl extends ProjectileItem {
 		parent::__construct(Item::ENDER_PEARL, $meta, $count, "Ender Pearl");
 	}
 
-	public function getProjectileEntityType() : string{
+	public function getProjectileEntityType(): string{
 		return "EnderPearl";
 	}
 

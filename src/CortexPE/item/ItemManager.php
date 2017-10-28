@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace CortexPE\item;
 
@@ -11,7 +11,7 @@ class ItemManager {
 	public static function init(){
 		ItemFactory::registerItem(new EnchantingBottle());
 		ItemFactory::registerItem(new EnderPearl());
-		ItemFactory::registerItem(new Potion(),true);
+		ItemFactory::registerItem(new Potion(), true);
 		ItemFactory::registerItem(new SplashPotion());
 
 		Item::addCreativeItem(Item::get(Item::ENDER_PEARL));

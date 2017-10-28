@@ -19,7 +19,7 @@
  *
 */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace CortexPE\entity\projectile;
 
@@ -35,6 +35,7 @@ class Snowball extends Throwable {
 			$this->getLevel()->addParticle(new DestroyBlockParticle($this, Block::get(Block::SNOW))); // Realistic aye?
 			$this->kill();
 		}
+
 		return parent::onUpdate($currentTick);
 	}
 }

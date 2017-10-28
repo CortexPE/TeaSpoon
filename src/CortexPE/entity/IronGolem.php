@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace CortexPE\entity;
 
@@ -19,14 +19,14 @@ class IronGolem extends Animal {
 		parent::initEntity();
 	}
 
-	public function getName() : string{
+	public function getName(): string{
 		return "Iron Golem";
 	}
 
 	public function getDrops(): array{
 		return [
-			Item::get(Item::IRON_INGOT,0, mt_rand(3, 5)),
-			Item::get(Item::POPPY,0, mt_rand(0, 2)),
+			Item::get(Item::IRON_INGOT, 0, mt_rand(3, 5)),
+			Item::get(Item::POPPY, 0, mt_rand(0, 2)),
 		];
 	}
 }

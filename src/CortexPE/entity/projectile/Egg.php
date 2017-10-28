@@ -19,7 +19,7 @@
  *
 */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace CortexPE\entity\projectile;
 
@@ -33,6 +33,7 @@ class Egg extends Throwable {
 			// TODO: spawn chickens on collision
 			$this->kill();
 		}
+
 		return parent::onUpdate($currentTick);
 	}
 }

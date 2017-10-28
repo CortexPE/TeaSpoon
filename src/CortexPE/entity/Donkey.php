@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace CortexPE\entity;
 
@@ -17,11 +17,11 @@ class Donkey extends Animal {
 	public $length = 0.9;
 	public $height = 0;
 
-	public function getName() : string{
+	public function getName(): string{
 		return "Donkey";
 	}
 
-	public function getDrops() : array {
+	public function getDrops(): array{
 		$cause = $this->lastDamageCause;
 		if($cause instanceof EntityDamageByEntityEvent){
 			$damager = $cause->getDamager();
@@ -29,7 +29,7 @@ class Donkey extends Animal {
 				$lootingL = $damager->getInventory()->getItemInHand()->getEnchantment(Enchantment::LOOTING)->getLevel();
 				$drops = [
 					Item::get(Item::RAW_BEEF, 0, mt_rand(1, 3 + $lootingL)),
-					Item::get(Item::LEATHER, 0, mt_rand(0, 2 + $lootingL))
+					Item::get(Item::LEATHER, 0, mt_rand(0, 2 + $lootingL)),
 				];
 
 				return $drops;

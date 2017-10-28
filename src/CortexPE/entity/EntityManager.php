@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace CortexPE\entity;
 
@@ -11,8 +11,8 @@ use CortexPE\entity\projectile\Snowball;
 use CortexPE\entity\projectile\SplashPotion;
 use pocketmine\entity\Entity;
 
-class EntityManager extends Entity{
-	public static function init() : void{
+class EntityManager extends Entity {
+	public static function init(): void{
 		self::registerEntity(Bat::class, false, ['Bat', 'minecraft:bat']);
 		self::registerEntity(Blaze::class, false, ['Blaze', 'minecraft:blaze']);
 		self::registerEntity(CaveSpider::class, false, ['CaveSpider', 'minecraft:cavespider']);
@@ -46,7 +46,7 @@ class EntityManager extends Entity{
 		self::registerEntity(Skeleton::class, false, ['Skeleton', 'minecraft:skeleton']);
 		self::registerEntity(Skeleton::class, false, ['Skeleton', 'minecraft:skeleton']);
 		self::registerEntity(Slime::class, false, ['Slime', 'minecraft:slime']);
-		self::registerEntity(SnowGolem::class, false, ['SnowGolem','minecraft:snowgolem']);
+		self::registerEntity(SnowGolem::class, false, ['SnowGolem', 'minecraft:snowgolem']);
 		self::registerEntity(Spider::class, false, ['Spider', 'minecraft:spider']);
 		self::registerEntity(Stray::class, false, ['Stray', 'minecraft:stray']);
 		self::registerEntity(Vex::class, false, ['Vex', 'minecraft:vex']);

@@ -5,9 +5,10 @@
 namespace CortexPE\entity;
 
 use pocketmine\entity\Entity;
+use pocketmine\Player;
+
 //use pocketmine\event\player\PlayerPickupExpOrbEvent;
 //use pocketmine\level\sound\ExpPickupSound;
-use pocketmine\Player;
 
 class XPOrb extends Entity {
 	const NETWORK_ID = self::XP_ORB;
@@ -30,7 +31,7 @@ class XPOrb extends Entity {
 		}else $this->close();
 	}
 
-	public function onUpdate($currentTick) : bool{
+	public function onUpdate($currentTick): bool{
 		if($this->closed){
 			return false;
 		}
@@ -83,18 +84,18 @@ class XPOrb extends Entity {
 			/** @noinspection PhpUndefinedVariableInspection */ // $dist can't be undefined. cuz of line 69.
 			if($dist <= 1.3){
 				//if($target->canPickupXp()){
-					//$target->getServer()->getPluginManager()->callEvent($ev = new PlayerPickupExpOrbEvent($target, $this->getExperience()));
-					//if(!$ev->isCancelled()){
-						$this->kill();
-						$this->close();
-						//if($this->getExperience() > 0){
-						//	$target->getLevel()->addSound(new ExpPickupSound($target, mt_rand(0, 1000)));
-						//	$target->addXp($this->getExperience());
-						//	$target->resetXpCooldown();
-						//}
+				//$target->getServer()->getPluginManager()->callEvent($ev = new PlayerPickupExpOrbEvent($target, $this->getExperience()));
+				//if(!$ev->isCancelled()){
+				$this->kill();
+				$this->close();
+				//if($this->getExperience() > 0){
+				//	$target->getLevel()->addSound(new ExpPickupSound($target, mt_rand(0, 1000)));
+				//	$target->addXp($this->getExperience());
+				//	$target->resetXpCooldown();
+				//}
 
-						return true;
-					//}
+				return true;
+				//}
 				//}
 			}
 		}
@@ -108,15 +109,15 @@ class XPOrb extends Entity {
 		return $hasUpdate or !$this->onGround or abs($this->motionX) > 0.00001 or abs($this->motionY) > 0.00001 or abs($this->motionZ) > 0.00001;
 	}
 
-	public function canCollideWith(Entity $entity) : bool {
+	public function canCollideWith(Entity $entity): bool{
 		return false;
-	}
-
-	public function setExperience($exp){
-		$this->experience = $exp;
 	}
 
 	public function getExperience(){
 		return $this->experience;
+	}
+
+	public function setExperience($exp){
+		$this->experience = $exp;
 	}
 }

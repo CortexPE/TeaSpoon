@@ -63,7 +63,7 @@ class NetherLava extends Populator {
 				$y = $this->getHighestWorkableBlock($x, $z);
 				if($y !== -1 and $this->canNetherLavaStay($x, $y, $z)){
 					$this->level->setBlockIdAt($x, $y, $z, Block::LAVA);
-					$this->level->updateBlockLight($x, $y, $z);
+					//$this->level->updateBlockLight($x, $y, $z);
 					$this->lavaSpread($x, $y, $z);
 				}
 			}
@@ -71,21 +71,33 @@ class NetherLava extends Populator {
 	}
 
 	/**
-	 * @param $x1
-	 * @param $y1
-	 * @param $z1
-	 * @param $x2
-	 * @param $y2
-	 * @param $z2
+	 * @param $x
+	 * @param $z
 	 *
 	 * @return int
 	 */
-	private function getFlowDecay($x1, $y1, $z1, $x2, $y2, $z2){
-		if($this->level->getBlockIdAt($x1, $y1, $z1) !== $this->level->getBlockIdAt($x2, $y2, $z2)){
-			return -1;
-		}else{
-			return $this->level->getBlockDataAt($x2, $y2, $z2);
+	private function getHighestWorkableBlock($x, $z){
+		for($y = 127; $y >= 0; --$y){
+			$b = $this->level->getBlockIdAt($x, $y, $z);
+			if($b == Block::AIR){
+				break;
+			}
 		}
+
+		return $y === 0 ? -1 : $y;
+	}
+
+	/**
+	 * @param $x
+	 * @param $y
+	 * @param $z
+	 *
+	 * @return bool
+	 */
+	private function canNetherLavaStay($x, $y, $z){
+		$b = $this->level->getBlockIdAt($x, $y, $z);
+
+		return $b === Block::AIR;
 	}
 
 	/**
@@ -132,7 +144,7 @@ class NetherLava extends Populator {
 				}else{
 					$this->level->setBlockIdAt($x, $y, $z, Block::LAVA);
 					$this->level->setBlockDataAt($x, $y, $z, $decay);
-					$this->level->updateBlockLight($x, $y, $z);
+					//$this->level->updateBlockLight($x, $y, $z);
 					$this->lavaSpread($x, $y, $z);
 
 					return;
@@ -178,18 +190,46 @@ class NetherLava extends Populator {
 	}
 
 	/**
-	 * @param $x
-	 * @param $y
-	 * @param $z
-	 * @param $newFlowDecay
+	 * @param $x1
+	 * @param $y1
+	 * @param $z1
+	 * @param $x2
+	 * @param $y2
+	 * @param $z2
+	 *
+	 * @return int
 	 */
-	private function flowIntoBlock($x, $y, $z, $newFlowDecay){
-		if($this->level->getBlockIdAt($x, $y, $z) === Block::AIR){
-			$this->level->setBlockIdAt($x, $y, $z, Block::LAVA);
-			$this->level->setBlockDataAt($x, $y, $z, $newFlowDecay);
-			$this->level->updateBlockLight($x, $y, $z);
-			$this->lavaSpread($x, $y, $z);
+	private function getFlowDecay($x1, $y1, $z1, $x2, $y2, $z2){
+		if($this->level->getBlockIdAt($x1, $y1, $z1) !== $this->level->getBlockIdAt($x2, $y2, $z2)){
+			return -1;
+		}else{
+			return $this->level->getBlockDataAt($x2, $y2, $z2);
 		}
+	}
+
+	/**
+	 * @param $x1
+	 * @param $y1
+	 * @param $z1
+	 * @param $x2
+	 * @param $y2
+	 * @param $z2
+	 * @param $decay
+	 *
+	 * @return int
+	 */
+	private function getSmallestFlowDecay($x1, $y1, $z1, $x2, $y2, $z2, $decay){
+		$blockDecay = $this->getFlowDecay($x1, $y1, $z1, $x2, $y2, $z2);
+
+		if($blockDecay < 0){
+			return $decay;
+		}elseif($blockDecay === 0){
+			//Nothing to do!
+		}elseif($blockDecay >= 8){
+			$blockDecay = 0;
+		}
+
+		return ($decay >= 0 && $blockDecay >= $decay) ? $decay : $blockDecay;
 	}
 
 	/**
@@ -209,59 +249,18 @@ class NetherLava extends Populator {
 	}
 
 	/**
-	 * @param $xx
-	 * @param $yy
-	 * @param $zz
-	 * @param $accumulatedCost
-	 * @param $previousDirection
-	 *
-	 * @return int
+	 * @param $x
+	 * @param $y
+	 * @param $z
+	 * @param $newFlowDecay
 	 */
-	private function calculateFlowCost($xx, $yy, $zz, $accumulatedCost, $previousDirection){
-		$cost = 1000;
-
-		for($j = 0; $j < 4; ++$j){
-			if(
-				($j === 0 and $previousDirection === 1) or
-				($j === 1 and $previousDirection === 0) or
-				($j === 2 and $previousDirection === 3) or
-				($j === 3 and $previousDirection === 2)
-			){
-				$x = $xx;
-				$y = $yy;
-				$z = $zz;
-
-				if($j === 0){
-					--$x;
-				}elseif($j === 1){
-					++$x;
-				}elseif($j === 2){
-					--$z;
-				}elseif($j === 3){
-					++$z;
-				}
-
-				if(!$this->canFlowInto($x, $y, $z)){
-					continue;
-				}elseif($this->canFlowInto($x, $y, $z) and $this->level->getBlockDataAt($x, $y, $z) === 0){
-					continue;
-				}elseif($this->canFlowInto($x, $y - 1, $z)){
-					return $accumulatedCost;
-				}
-
-				if($accumulatedCost >= 4){
-					continue;
-				}
-
-				$realCost = $this->calculateFlowCost($x, $y, $z, $accumulatedCost + 1, $j);
-
-				if($realCost < $cost){
-					$cost = $realCost;
-				}
-			}
+	private function flowIntoBlock($x, $y, $z, $newFlowDecay){
+		if($this->level->getBlockIdAt($x, $y, $z) === Block::AIR){
+			$this->level->setBlockIdAt($x, $y, $z, Block::LAVA);
+			$this->level->setBlockDataAt($x, $y, $z, $newFlowDecay);
+			//$this->level->updateBlockLight($x, $y, $z);
+			$this->lavaSpread($x, $y, $z);
 		}
-
-		return $cost;
 	}
 
 	/**
@@ -318,58 +317,58 @@ class NetherLava extends Populator {
 	}
 
 	/**
-	 * @param $x1
-	 * @param $y1
-	 * @param $z1
-	 * @param $x2
-	 * @param $y2
-	 * @param $z2
-	 * @param $decay
+	 * @param $xx
+	 * @param $yy
+	 * @param $zz
+	 * @param $accumulatedCost
+	 * @param $previousDirection
 	 *
 	 * @return int
 	 */
-	private function getSmallestFlowDecay($x1, $y1, $z1, $x2, $y2, $z2, $decay){
-		$blockDecay = $this->getFlowDecay($x1, $y1, $z1, $x2, $y2, $z2);
+	private function calculateFlowCost($xx, $yy, $zz, $accumulatedCost, $previousDirection){
+		$cost = 1000;
 
-		if($blockDecay < 0){
-			return $decay;
-		}elseif($blockDecay === 0){
-			//Nothing to do!
-		}elseif($blockDecay >= 8){
-			$blockDecay = 0;
-		}
+		for($j = 0; $j < 4; ++$j){
+			if(
+				($j === 0 and $previousDirection === 1) or
+				($j === 1 and $previousDirection === 0) or
+				($j === 2 and $previousDirection === 3) or
+				($j === 3 and $previousDirection === 2)
+			){
+				$x = $xx;
+				$y = $yy;
+				$z = $zz;
 
-		return ($decay >= 0 && $blockDecay >= $decay) ? $decay : $blockDecay;
-	}
+				if($j === 0){
+					--$x;
+				}elseif($j === 1){
+					++$x;
+				}elseif($j === 2){
+					--$z;
+				}elseif($j === 3){
+					++$z;
+				}
 
+				if(!$this->canFlowInto($x, $y, $z)){
+					continue;
+				}elseif($this->canFlowInto($x, $y, $z) and $this->level->getBlockDataAt($x, $y, $z) === 0){
+					continue;
+				}elseif($this->canFlowInto($x, $y - 1, $z)){
+					return $accumulatedCost;
+				}
 
-	/**
-	 * @param $x
-	 * @param $y
-	 * @param $z
-	 *
-	 * @return bool
-	 */
-	private function canNetherLavaStay($x, $y, $z){
-		$b = $this->level->getBlockIdAt($x, $y, $z);
+				if($accumulatedCost >= 4){
+					continue;
+				}
 
-		return $b === Block::AIR;
-	}
+				$realCost = $this->calculateFlowCost($x, $y, $z, $accumulatedCost + 1, $j);
 
-	/**
-	 * @param $x
-	 * @param $z
-	 *
-	 * @return int
-	 */
-	private function getHighestWorkableBlock($x, $z){
-		for($y = 127; $y >= 0; --$y){
-			$b = $this->level->getBlockIdAt($x, $y, $z);
-			if($b == Block::AIR){
-				break;
+				if($realCost < $cost){
+					$cost = $realCost;
+				}
 			}
 		}
 
-		return $y === 0 ? -1 : $y;
+		return $cost;
 	}
 }

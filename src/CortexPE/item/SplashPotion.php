@@ -2,8 +2,6 @@
 
 namespace CortexPE\item;
 
-use pocketmine\nbt\tag\ShortTag;
-use pocketmine\Player;
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\entity\ProjectileLaunchEvent;
@@ -11,6 +9,8 @@ use pocketmine\item\Item;
 use pocketmine\item\ProjectileItem;
 use pocketmine\level\sound\LaunchSound;
 use pocketmine\math\Vector3;
+use pocketmine\nbt\tag\ShortTag;
+use pocketmine\Player;
 
 class SplashPotion extends ProjectileItem {
 
@@ -22,19 +22,11 @@ class SplashPotion extends ProjectileItem {
 		return "Splash " . Potion::getNameByMeta($meta);
 	}
 
-	public function getProjectileEntityType() : string{
-		return "SplashPotion";
-	}
-
-	public function getThrowForce(): float{
-		return 1.1;
-	}
-
 	public function getMaxStackSize(): int{
 		return 16;
 	}
 
-	public function onClickAir(Player $player, Vector3 $directionVector) : bool{
+	public function onClickAir(Player $player, Vector3 $directionVector): bool{
 		$nbt = Entity::createBaseNBT($player->add(0, $player->getEyeHeight(), 0), $directionVector, $player->yaw, $player->pitch);
 		$nbt["PotionId"] = new ShortTag("PotionId", $this->meta);
 
@@ -58,6 +50,14 @@ class SplashPotion extends ProjectileItem {
 		}
 
 		return true;
+	}
+
+	public function getProjectileEntityType(): string{
+		return "SplashPotion";
+	}
+
+	public function getThrowForce(): float{
+		return 1.1;
 	}
 
 }

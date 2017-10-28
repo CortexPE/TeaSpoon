@@ -24,6 +24,8 @@
 
 namespace CortexPE\block;
 
+use CortexPE\tile\EnderChest as TileEnderChest;
+use CortexPE\tile\Tile;
 use pocketmine\block\Block;
 use pocketmine\block\Transparent;
 use pocketmine\item\enchantment\Enchantment;
@@ -35,8 +37,6 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\Player;
-use CortexPE\tile\EnderChest as TileEnderChest;
-use CortexPE\tile\Tile;
 
 class EnderChest extends Transparent {
 
@@ -50,15 +50,15 @@ class EnderChest extends Transparent {
 		return true;
 	}
 
-	public function getHardness():float{
+	public function getHardness(): float{
 		return 22.5;
 	}
 
-	public function getResistance():float{
+	public function getResistance(): float{
 		return 3000;
 	}
 
-	public function getLightLevel():int{
+	public function getLightLevel(): int{
 		return 7;
 	}
 
@@ -66,27 +66,16 @@ class EnderChest extends Transparent {
 		return "Ender Chest";
 	}
 
-	public function getToolType():int{
+	public function getToolType(): int{
 		return Tool::TYPE_PICKAXE;
 	}
 
-	protected function recalculateBoundingBox():AxisAlignedBB{
-		return new AxisAlignedBB(
-			$this->x + 0.0625,
-			$this->y,
-			$this->z + 0.0625,
-			$this->x + 0.9375,
-			$this->y + 0.9475,
-			$this->z + 0.9375
-		);
-	}
-
-	public function place(Item $item, Block $block, Block $target, $face, Vector3 $facePos, Player $player = null):bool{
+	public function place(Item $item, Block $block, Block $target, $face, Vector3 $facePos, Player $player = null): bool{
 		$faces = [
 			0 => 4,
 			1 => 2,
 			2 => 5,
-			3 => 3
+			3 => 3,
 		];
 
 		$this->meta = $faces[$player instanceof Player ? $player->getDirection() : 0];
@@ -109,7 +98,7 @@ class EnderChest extends Transparent {
 		return true;
 	}
 
-	public function onActivate(Item $item, Player $player = null):bool{
+	public function onActivate(Item $item, Player $player = null): bool{
 		if($player instanceof Player){
 			$top = $this->getSide(Vector3::SIDE_UP);
 			if($top->isTransparent() !== true){
@@ -147,6 +136,17 @@ class EnderChest extends Transparent {
 		return [
 			[Item::OBSIDIAN, 0, 8],
 		];
+	}
+
+	protected function recalculateBoundingBox(): AxisAlignedBB{
+		return new AxisAlignedBB(
+			$this->x + 0.0625,
+			$this->y,
+			$this->z + 0.0625,
+			$this->x + 0.9375,
+			$this->y + 0.9475,
+			$this->z + 0.9375
+		);
 	}
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace CortexPE\entity\projectile;
 
@@ -17,7 +17,7 @@ class SplashPotion extends Throwable {
 			$color = Potion::getColor($this->getPotionId());
 			$this->getLevel()->addParticle(new SpellParticle($this, $color[0], $color[1], $color[2]));
 			$radius = 6;
-			foreach ($this->getLevel()->getNearbyEntities($this->getBoundingBox()->grow($radius, $radius, $radius)) as $p) {
+			foreach($this->getLevel()->getNearbyEntities($this->getBoundingBox()->grow($radius, $radius, $radius)) as $p){
 				foreach(Potion::getEffectsById($this->getPotionId()) as $effect){
 					if($p instanceof Living){
 						$p->addEffect($effect);
@@ -26,6 +26,7 @@ class SplashPotion extends Throwable {
 			}
 			$this->kill();
 		}
+
 		return parent::onUpdate($currentTick);
 	}
 

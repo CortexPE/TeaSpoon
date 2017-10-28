@@ -5,9 +5,9 @@ namespace CortexPE\entity;
 use pocketmine\entity\Monster;
 
 class Endermite extends Monster {
-    const NETWORK_ID = self::ENDERMITE;
+	const NETWORK_ID = self::ENDERMITE;
 
-    public function getName(): string {
-        return "Endermite";
-    }
+	public function getName(): string{
+		return "Endermite";
+	}
 }

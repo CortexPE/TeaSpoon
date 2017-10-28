@@ -31,7 +31,6 @@ use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\EntityEventPacket;
 use pocketmine\Player;
 use pocketmine\Server;
-//use pocketmine\utils\TextFormat;
 
 class Potion extends Item {
 
@@ -295,13 +294,68 @@ class Potion extends Item {
 		parent::__construct(self::POTION, $meta, self::getNameByMeta($meta));
 	}
 
+	public static function getNameByMeta(int $meta): string{
+		return self::$POTION_NAMES[$meta] ?? "Potion";
+	}
+
 	public static function getColor(int $meta){
 		$effect = Effect::getEffect(self::getEffectId($meta));
 
 		if($effect === null){
 			return [46, 82, 153]; // Default to Blue
 		}
+
 		return $effect->getColor() ?? [0, 0, 0];
+	}
+
+	public static function getEffectId(int $meta): int{
+		return self::$POTION_EFFECT_ID[$meta] ?? 0;
+	}
+
+	/**
+	 * Registers a Custom Potion
+	 *
+	 * @param int $id
+	 * @param string $name
+	 * @param array $effects
+	 * @param Int $color
+	 * @param Server $server
+	 *
+	 * @return bool
+	 */
+	public static function registerPotion(int $id, string $name, array $effects, Int $color, Server $server){
+		if(isset(self::$POTION_NAMES[$id])){ // So it wouldn't mess with other potions
+			$server->getLogger()->warning("Unable to register Potion ID: " . $id);
+
+			return false;
+		}else{
+			self::$POTION_NAMES[$id] = $name;
+			self::$POTION_EFFECTS[$id] = $effects;
+			self::$POTION_EFFECT_ID[$id] = $color;
+
+			$server->getLogger()->info("Successfully Registered Potion ID: " . $id);
+
+			return true;
+		}
+	}
+
+	/**
+	 * @param int $id
+	 * @return Effect[]
+	 */
+	public static function getEffectsById(int $id): array{
+		if(self::$POTION_EFFECTS[$id] === false){
+			return [];
+		}
+		foreach(self::$POTION_EFFECTS[$id] as $effs){ // $effs is an array.
+			if(count($effs ?? []) === 3){ // Count
+				if($effs[2] < 2147483646){ // So they can't make potions higher than the limit
+					$effects[] = Effect::getEffect($effs[0])->setDuration($effs[1])->setAmplifier($effs[2]);
+				}
+			}
+		}
+
+		return $effects ?? [];
 	}
 
 	public function getMaxStackSize(): int{
@@ -314,6 +368,33 @@ class Potion extends Item {
 
 	public function canBeConsumedBy(Entity $entity): bool{
 		return $entity instanceof Human;
+	}
+
+	public function onConsume(Entity $human){
+		$pk = new EntityEventPacket();
+		$pk->entityRuntimeId = $human->getId();
+		$pk->event = EntityEventPacket::USE_ITEM;
+		if($human instanceof Player){
+			$human->dataPacket($pk);
+		}
+		$server = $human->getLevel()->getServer();
+
+		$server->broadcastPacket($human->getViewers(), $pk);
+
+		//($ev = new EntityDrinkPotionEvent($human, $this))->call();
+
+		//if(!$ev->isCancelled()){
+		foreach($this->getEffects() as $effect){
+			$human->addEffect($effect);
+		}
+		//Don't set the held item to glass bottle if we're in creative
+		if($human instanceof Player){
+			if($human->getGamemode() === 1){
+				return;
+			}
+		}
+		$human->getInventory()->setItemInHand(Item::get(self::GLASS_BOTTLE));
+		//}
 	}
 
 	public function getEffects(): array{
@@ -334,86 +415,6 @@ class Potion extends Item {
 		 * ]
 		 */
 		foreach(self::$POTION_EFFECTS[$this->meta] as $effs){ // $effs is an array.
-			if(count($effs ?? []) === 3){ // Count
-				if($effs[2] < 2147483646){ // So they can't make potions higher than the limit
-					$effects[] = Effect::getEffect($effs[0])->setDuration($effs[1])->setAmplifier($effs[2]);
-				}
-			}
-		}
-
-		return $effects ?? [];
-	}
-
-	public static function getEffectId(int $meta): int{
-		return self::$POTION_EFFECT_ID[$meta] ?? 0;
-	}
-
-	public static function getNameByMeta(int $meta): string{
-		return self::$POTION_NAMES[$meta] ?? "Potion";
-	}
-
-	public function onConsume(Entity $human){
-		$pk = new EntityEventPacket();
-		$pk->entityRuntimeId = $human->getId();
-		$pk->event = EntityEventPacket::USE_ITEM;
-		if($human instanceof Player){
-			$human->dataPacket($pk);
-		}
-		$server = $human->getLevel()->getServer();
-
-		$server->broadcastPacket($human->getViewers(), $pk);
-
-		//($ev = new EntityDrinkPotionEvent($human, $this))->call();
-
-		//if(!$ev->isCancelled()){
-			foreach($this->getEffects() as $effect){
-				$human->addEffect($effect);
-			}
-			//Don't set the held item to glass bottle if we're in creative
-			if($human instanceof Player){
-				if($human->getGamemode() === 1){
-					return;
-				}
-			}
-			$human->getInventory()->setItemInHand(Item::get(self::GLASS_BOTTLE));
-		//}
-	}
-
-	/**
-	 * Registers a Custom Potion
-	 *
-	 * @param int $id
-	 * @param string $name
-	 * @param array $effects
-	 * @param Int $color
-	 * @param Server $server
-	 *
-	 * @return bool
-	 */
-	public static function registerPotion(int $id, string $name, array $effects, Int $color, Server $server){
-		if(isset(self::$POTION_NAMES[$id])){ // So it wouldn't mess with other potions
-			//$server->getLogger()->customsend("Unable to register Potion ID: " . $id, "POTION-ERROR", TextFormat::DARK_RED);
-
-			return false;
-		}else{
-			self::$POTION_NAMES[$id] = $name;
-			self::$POTION_EFFECTS[$id] = $effects;
-			self::$POTION_EFFECT_ID[$id] = $color;
-			//$server->getLogger()->customsend("Successfully Registered Potion ID: " . $id, "POTION", TextFormat::AQUA);
-
-			return true;
-		}
-	}
-
-	/**
-	 * @param int $id
-	 * @return Effect[]
-	 */
-	public static function getEffectsById(int $id): array{
-		if(self::$POTION_EFFECTS[$id] === false){
-			return [];
-		}
-		foreach(self::$POTION_EFFECTS[$id] as $effs){ // $effs is an array.
 			if(count($effs ?? []) === 3){ // Count
 				if($effs[2] < 2147483646){ // So they can't make potions higher than the limit
 					$effects[] = Effect::getEffect($effs[0])->setDuration($effs[1])->setAmplifier($effs[2]);
