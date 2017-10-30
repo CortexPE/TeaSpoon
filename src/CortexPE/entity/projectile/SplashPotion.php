@@ -24,7 +24,7 @@ class SplashPotion extends Throwable {
 					}
 				}
 			}
-			$this->kill();
+			$this->close();
 		}
 
 		return parent::onUpdate($currentTick);

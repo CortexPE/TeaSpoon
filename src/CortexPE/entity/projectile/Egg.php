@@ -1,37 +1,44 @@
 <?php
 
-/*
- *
- *  ____            _        _   __  __ _                  __  __ ____
- * |  _ \ ___   ___| | _____| |_|  \/  (_)_ __   ___      |  \/  |  _ \
- * | |_) / _ \ / __| |/ / _ \ __| |\/| | | '_ \ / _ \_____| |\/| | |_) |
- * |  __/ (_) | (__|   <  __/ |_| |  | | | | | |  __/_____| |  | |  __/
- * |_|   \___/ \___|_|\_\___|\__|_|  |_|_|_| |_|\___|     |_|  |_|_|
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * @author PocketMine Team
- * @link http://www.pocketmine.net/
- *
- *
-*/
-
 declare(strict_types = 1);
 
 namespace CortexPE\entity\projectile;
 
+use pocketmine\block\Block;
+use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Throwable;
+use pocketmine\level\particle\DestroyBlockParticle;
 
 class Egg extends Throwable {
 	const NETWORK_ID = self::EGG;
 
+	const RAND_POS_X = [-0.5, 0, 0.5];
+	const RAND_POS_Y = [0, 1];
+	const RAND_POS_Z = [-0.5, 0, 0.5];
+	const RAND_SCALE = [0.75, 1];
+
 	public function onUpdate(int $currentTick): bool{
 		if($this->isCollided || $this->age > 1200){
-			// TODO: spawn chickens on collision
-			$this->kill();
+			if(mt_rand(1, 8) == 4){
+				$nbt = Entity::createBaseNBT($this);
+				$chick = Entity::createEntity("Chicken", $this->getLevel(), $nbt);
+				$chick->setScale(self::RAND_SCALE[array_rand(self::RAND_SCALE)]);
+				$chick->spawnToAll();
+			} elseif(mt_rand(1,32) == 16){
+				for($c = 1; $c <= 4; $c++){
+					$randomX = self::RAND_POS_X[array_rand(self::RAND_POS_X)];
+					$randomY = self::RAND_POS_Y[array_rand(self::RAND_POS_Y)];
+					$randomZ = self::RAND_POS_Z[array_rand(self::RAND_POS_Z)];
+
+					$nbt = Entity::createBaseNBT($this->add($randomX, $randomY, $randomZ));
+					$chick = Entity::createEntity("Chicken", $this->getLevel(), $nbt);
+					$chick->setScale(0.75); // A bit hacky. but just wait till PMMP adds proper Mob Aging.
+					$chick->spawnToAll();
+				}
+			}
+			$this->getLevel()->addParticle(new DestroyBlockParticle($this, Block::get(Block::BROWN_MUSHROOM_BLOCK)));
+
+			$this->close();
 		}
 
 		return parent::onUpdate($currentTick);

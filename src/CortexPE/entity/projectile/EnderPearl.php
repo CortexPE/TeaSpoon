@@ -38,7 +38,7 @@ class EnderPearl extends Throwable {
 				$this->getLevel()->addSound(new EndermanTeleportSound($this->getPosition()), [$p]);
 				$p->teleport($this->getPosition());
 				$p->attack(new EntityDamageEvent($p, EntityDamageEvent::CAUSE_FALL, 5));
-				$this->kill();
+				$this->close();
 			}
 		}
 

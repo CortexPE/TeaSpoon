@@ -2,6 +2,7 @@
 
 namespace CortexPE\commands;
 
+use pocketmine\command\Command;
 use pocketmine\Server as PMServer;
 
 class CommandManager {
@@ -9,5 +10,17 @@ class CommandManager {
 		PMServer::getInstance()->getCommandMap()->registerAll("pocketmine", [
 			new WorldCommand("world"),
 		]);
+
+		self::overwrite(new KillCommand("kill"), "kill");
+	}
+
+	public static function overwrite(Command $cmd, string $commandName){
+		// Thank you very much iksaku for leaving this method on the *good o'l* PocketMine Forums. :)
+		$cmdMap = PMServer::getInstance()->getCommandMap();
+		$cmdOverwrite = $cmdMap->getCommand($commandName);
+		$cmdOverwrite->setLabel($cmdOverwrite->getLabel() . "__disabled");
+		$cmdMap->unregister($cmdOverwrite);
+
+		$cmdMap->register("pocketmine", $cmd);
 	}
 }

@@ -33,7 +33,7 @@ class Snowball extends Throwable {
 	public function onUpdate(int $currentTick): bool{
 		if($this->isCollided || $this->age > 1200){
 			$this->getLevel()->addParticle(new DestroyBlockParticle($this, Block::get(Block::SNOW))); // Realistic aye?
-			$this->kill();
+			$this->close();
 		}
 
 		return parent::onUpdate($currentTick);

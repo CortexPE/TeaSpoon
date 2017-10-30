@@ -65,6 +65,8 @@ class EntityManager extends Entity {
 		self::registerEntity(Snowball::class, true, ['Snowball', 'minecraft:snowball']);
 		self::registerEntity(SplashPotion::class, false, ['SplashPotion', 'minecraft:splashpotion']);
 
+		self::registerEntity(XPOrb::class, false, ['XPOrb', 'minecraft:xporb']);
+
 		self::registerEntity(Human::class, true);
 	}
 }
