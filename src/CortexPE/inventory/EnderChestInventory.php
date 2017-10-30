@@ -16,13 +16,13 @@ class EnderChestInventory extends ContainerInventory {
 
 	public function onOpen(Player $player): void{
 		$this->user = $player;
-		if(isset($player->namedtag->EnderItems) && $player->namedtag->EnderItems instanceof ListTag){
-			foreach($player->namedtag->EnderItems as $slot => $itemNBT){
+		if(isset($player->namedtag->EnderChestInventory) && $player->namedtag->EnderChestInventory instanceof ListTag){
+			foreach($player->namedtag->EnderChestInventory as $slot => $itemNBT){
 				$this->slots[$slot] = Item::nbtDeserialize($itemNBT);
 			}
 		}else{
-			$player->namedtag->EnderItems = new ListTag("EnderItems", array_fill(0, 27, Item::get(Item::AIR, 0, 0)->nbtSerialize()));
-			$player->namedtag->EnderItems->setTagType(NBT::TAG_Compound);
+			$player->namedtag->EnderChestInventory = new ListTag("EnderChestInventory", array_fill(0, 27, Item::get(Item::AIR, 0, 0)->nbtSerialize()));
+			$player->namedtag->EnderChestInventory->setTagType(NBT::TAG_Compound);
 		}
 		parent::onOpen($player);
 	}
@@ -30,7 +30,7 @@ class EnderChestInventory extends ContainerInventory {
 	public function setItem(int $index, Item $item, bool $send = true): bool{
 		if(parent::setItem($index, $item, $send)){
 			if($this->user !== null){
-				$this->user->namedtag->EnderItems->{$index} = $item->nbtSerialize($index);
+				$this->user->namedtag->EnderChestInventory->{$index} = $item->nbtSerialize($index);
 			}
 
 			//TODO: Send debug message

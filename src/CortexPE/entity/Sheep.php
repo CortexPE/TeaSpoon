@@ -24,7 +24,12 @@ class Sheep extends Animal {
 		if($cause instanceof EntityDamageByEntityEvent){
 			$damager = $cause->getDamager();
 			if($damager instanceof Player){
-				$lootingL = $damager->getInventory()->getItemInHand()->getEnchantment(Enchantment::LOOTING)->getLevel();
+				$looting = $damager->getInventory()->getItemInHand()->getEnchantment(Enchantment::LOOTING);
+				if($looting !== null){
+					$lootingL = $looting->getLevel();
+				} else {
+					$lootingL = 0;
+				}
 				$drops = [Item::get(Item::WOOL, mt_rand(0, 15), 1)]; // TODO: Implement this properly.
 				$drops[] = Item::get(Item::RAW_MUTTON, 0, mt_rand(1, 2 + $lootingL));
 

@@ -24,7 +24,12 @@ class Pig extends Animal {
 		if($cause instanceof EntityDamageByEntityEvent){
 			$damager = $cause->getDamager();
 			if($damager instanceof Player){
-				$lootingL = $damager->getInventory()->getItemInHand()->getEnchantment(Enchantment::LOOTING)->getLevel();
+				$looting = $damager->getInventory()->getItemInHand()->getEnchantment(Enchantment::LOOTING);
+				if($looting !== null){
+					$lootingL = $looting->getLevel();
+				} else {
+					$lootingL = 0;
+				}
 
 				return [
 					Item::get(Item::RAW_PORKCHOP, 0, mt_rand(1, 3 + $lootingL)),

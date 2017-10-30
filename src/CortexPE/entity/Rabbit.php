@@ -65,7 +65,12 @@ class Rabbit extends Animal {
 		if($cause instanceof EntityDamageByEntityEvent){
 			$damager = $cause->getDamager();
 			if($damager instanceof Player){
-				$lootingL = $damager->getInventory()->getItemInHand()->getEnchantment(Enchantment::LOOTING)->getLevel();
+				$looting = $damager->getInventory()->getItemInHand()->getEnchantment(Enchantment::LOOTING);
+				if($looting !== null){
+					$lootingL = $looting->getLevel();
+				} else {
+					$lootingL = 0;
+				}
 			}
 		}
 		$drops = [Item::get(Item::RABBIT_HIDE, 0, mt_rand(0, 1))];

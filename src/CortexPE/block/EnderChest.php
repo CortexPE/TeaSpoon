@@ -119,8 +119,10 @@ class EnderChest extends Transparent {
 				return true;
 			}
 
-			// tnx https://github.com/RealDevs/TableSpoon
-			$player->addWindow($tile->getInventory());
+			if($tile instanceof TileEnderChest){
+				// tnx https://github.com/RealDevs/TableSpoon
+				$player->addWindow($tile->getInventory());
+			}
 		}
 
 		return true;
