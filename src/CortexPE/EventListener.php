@@ -16,6 +16,7 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerMoveEvent;
+use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
 use pocketmine\network\mcpe\protocol\PlayStatusPacket;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
@@ -213,5 +214,14 @@ class EventListener implements Listener {
 		}
 
 		return true;
+	}
+
+	/**
+	 * @param PlayerRespawnEvent $ev
+	 *
+	 * @priority HIGHEST
+	 */
+	public function onRespawn(PlayerRespawnEvent $ev){ // Other plugins might cancel it. so...
+		if($ev->getPlayer()->isOnFire())$ev->getPlayer()->setOnFire(0);
 	}
 }
