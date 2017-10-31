@@ -3,6 +3,7 @@ endName: "ender"
 
 # Modes: task (RECOMMENDED) - Checks for every player's position every 10 ticks (Half a Second)
 #        event - Checks a player whenever they move
+# Enter "false" to disable it.
 checkingMode: "task"
 
 # !!!   ONLY ENABLE THIS IF YOU ARE SURE THAT ALL YOUR    !!!
