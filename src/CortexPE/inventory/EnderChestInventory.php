@@ -1,5 +1,12 @@
 <?php
 
+/*
+ Credits to RealDevs Organization for this file
+ Original File URL: https://github.com/RealDevs/TableSpoon/blob/master/src/tablespoon/inventory/EnderChestInventory.php
+*/
+
+declare(strict_types=1);
+
 namespace CortexPE\inventory;
 
 use pocketmine\inventory\ContainerInventory;
