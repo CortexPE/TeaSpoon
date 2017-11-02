@@ -22,6 +22,7 @@ Contributions are very welcome :smile:<br />You may contribute by opening a Pull
    - [X] All Enchants Registered (Not all are functional)
    - [X] Splash Potions
    - [X] FireCharge
+   - [X] Totem of Undying
  - Entities & Mobs
    - [X] Projectiles
      - [X] EnderPearls
