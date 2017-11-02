@@ -33,18 +33,39 @@
 
 declare(strict_types = 1);
 
-namespace CortexPE\entity;
+namespace CortexPE\task;
 
-use pocketmine\entity\Monster;
+use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
+use pocketmine\network\mcpe\protocol\PlayStatusPacket;
+use pocketmine\network\mcpe\protocol\types\DimensionIds;
+use pocketmine\Player;
+use pocketmine\plugin\Plugin;
+use pocketmine\scheduler\PluginTask;
+use pocketmine\Server as PMServer;
 
-class Enderman extends Monster {
-	const NETWORK_ID = self::ENDERMAN;
+class DelayedTeleportTask extends PluginTask {
 
-	public $width = 0.3;
-	public $length = 0.9;
-	public $height = 1.8;
+	/** @var Plugin */
+	protected $owner;
 
-	public function getName(): string{
-		return "Enderman";
+	/** @var Player */
+	protected $player;
+
+	public function __construct(Plugin $owner, Player $player){
+		$this->owner = $owner;
+		$this->player = $player;
+	}
+
+	public function onRun(int $currentTick){
+		$pk = new ChangeDimensionPacket();
+		$pk->dimension = DimensionIds::OVERWORLD;
+		$pk->position = PMServer::getInstance()->getDefaultLevel()->getSafeSpawn();
+		$pk->respawn = true;
+		$this->player->dataPacket($pk);
+		$this->player->teleport(PMServer::getInstance()->getDefaultLevel()->getSafeSpawn());
+		$this->player->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
+		if($this->player->isOnFire()){
+			$this->player->setOnFire(0);
+		}
 	}
 }

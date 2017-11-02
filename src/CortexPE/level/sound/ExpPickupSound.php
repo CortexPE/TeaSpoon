@@ -19,6 +19,8 @@
  *
  */
 
+declare(strict_types = 1);
+
 namespace CortexPE\level\sound;
 
 use pocketmine\level\sound\GenericSound;

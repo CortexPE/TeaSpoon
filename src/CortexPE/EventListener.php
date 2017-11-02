@@ -1,13 +1,45 @@
 <?php
 
-// FYI: Event Priorities work this way: LOWEST -> LOW -> NORMAL -> HIGH -> HIGHEST -> MONITOR
+/**
+ *
+ * MMP""MM""YMM               .M"""bgd
+ * P'   MM   `7              ,MI    "Y
+ *      MM  .gP"Ya   ,6"Yb.  `MMb.   `7MMpdMAo.  ,pW"Wq.   ,pW"Wq.`7MMpMMMb.
+ *      MM ,M'   Yb 8)   MM    `YMMNq. MM   `Wb 6W'   `Wb 6W'   `Wb MM    MM
+ *      MM 8M""""""  ,pm9MM  .     `MM MM    M8 8M     M8 8M     M8 MM    MM
+ *      MM YM.    , 8M   MM  Mb     dM MM   ,AP YA.   ,A9 YA.   ,A9 MM    MM
+ *    .JMML.`Mbmmd' `Moo9^Yo.P"Ybmmd"  MMbmmd'   `Ybmd9'   `Ybmd9'.JMML  JMML.
+ *                                     MM
+ *                                   .JMML.
+ * This file is part of TeaSpoon.
+ *
+ * TeaSpoon is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * TeaSpoon is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with TeaSpoon.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author CortexPE
+ * @link http://CortexPE.xyz
+ *
+ */
 
 declare(strict_types = 1);
+
+// FYI: Event Priorities work this way: LOWEST -> LOW -> NORMAL -> HIGH -> HIGHEST -> MONITOR
 
 namespace CortexPE;
 
 use CortexPE\entity\projectile\EnderPearl;
 use CortexPE\item\enchantment\Enchantment;
+use CortexPE\task\DelayedTeleportTask;
 use pocketmine\entity\Living;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -26,10 +58,19 @@ use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\network\mcpe\protocol\PlayStatusPacket;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
+use pocketmine\plugin\Plugin;
 use pocketmine\Server as PMServer;
 use pocketmine\Player as PMPlayer;
 
 class EventListener implements Listener {
+
+	/** @var Plugin */
+	public $plugin;
+
+	public function __construct(Plugin $plugin){
+		$this->plugin = $plugin;
+	}
+
 	/**
 	 * @param LevelLoadEvent $ev
 	 * @return bool
@@ -129,14 +170,7 @@ class EventListener implements Listener {
 	 */
 	public function onDeath(PlayerDeathEvent $ev){
 		if($ev->getPlayer()->getLevel()->getName() === Main::$netherLevel->getName() || $ev->getPlayer()->getLevel()->getName() === Main::$endLevel->getName()){
-			//$ev->getPlayer()->setSpawn(PMServer::getInstance()->getDefaultLevel()->getSafeSpawn()); // So that dying isn't a loop on other dimensions
-			$pk = new ChangeDimensionPacket();
-			$pk->dimension = DimensionIds::OVERWORLD;
-			$pk->position = PMServer::getInstance()->getDefaultLevel()->getSafeSpawn();
-			$pk->respawn = true;
-			$ev->getPlayer()->dataPacket($pk);
-			//$ev->getPlayer()->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
-			$ev->getPlayer()->teleport(PMServer::getInstance()->getDefaultLevel()->getSafeSpawn());
+			PMServer::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedTeleportTask($this->plugin, $ev->getPlayer()), 20);
 		}
 
 		return true;

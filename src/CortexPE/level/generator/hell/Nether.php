@@ -19,6 +19,8 @@
  *
 */
 
+declare(strict_types = 1);
+
 namespace CortexPE\level\generator\hell;
 
 use pocketmine\block\Block;

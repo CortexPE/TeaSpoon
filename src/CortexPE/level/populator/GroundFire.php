@@ -19,6 +19,8 @@
  *
 */
 
+declare(strict_types = 1);
+
 namespace CortexPE\level\generator\populator;
 
 use pocketmine\block\Block;

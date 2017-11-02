@@ -1,5 +1,36 @@
 <?php
 
+/**
+ *
+ * MMP""MM""YMM               .M"""bgd
+ * P'   MM   `7              ,MI    "Y
+ *      MM  .gP"Ya   ,6"Yb.  `MMb.   `7MMpdMAo.  ,pW"Wq.   ,pW"Wq.`7MMpMMMb.
+ *      MM ,M'   Yb 8)   MM    `YMMNq. MM   `Wb 6W'   `Wb 6W'   `Wb MM    MM
+ *      MM 8M""""""  ,pm9MM  .     `MM MM    M8 8M     M8 8M     M8 MM    MM
+ *      MM YM.    , 8M   MM  Mb     dM MM   ,AP YA.   ,A9 YA.   ,A9 MM    MM
+ *    .JMML.`Mbmmd' `Moo9^Yo.P"Ybmmd"  MMbmmd'   `Ybmd9'   `Ybmd9'.JMML  JMML.
+ *                                     MM
+ *                                   .JMML.
+ * This file is part of TeaSpoon.
+ *
+ * TeaSpoon is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * TeaSpoon is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with TeaSpoon.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author CortexPE
+ * @link http://CortexPE.xyz
+ *
+ */
+
 declare(strict_types = 1);
 
 namespace CortexPE;
@@ -109,17 +140,16 @@ class Main extends PluginBase {
 
 	public function onEnable(){
 		$rm = $this->splashes[array_rand($this->splashes)];
-		$stms = TextFormat::AQUA . '
-CortexPE\'s' . TextFormat::DARK_GREEN . '
-         MMP""MM""YMM              ' . TextFormat::GREEN . ' .M"""bgd                                        ' . TextFormat::DARK_GREEN . '
-         P\'   MM   `7             ' . TextFormat::GREEN . ' ,MI    "Y                                        ' . TextFormat::DARK_GREEN . '
-              MM  .gP"Ya   ,6"Yb.  ' . TextFormat::GREEN . '`MMb.   `7MMpdMAo.  ,pW"Wq.   ,pW"Wq.`7MMpMMMb.  ' . TextFormat::DARK_GREEN . '
-              MM ,M\'   Yb 8)   MM' . TextFormat::GREEN . '    `YMMNq. MM   `Wb 6W\'   `Wb 6W\'   `Wb MM    MM  ' . TextFormat::DARK_GREEN . '
-              MM 8M""""""  ,pm9MM ' . TextFormat::GREEN . ' .     `MM MM    M8 8M     M8 8M     M8 MM    MM  ' . TextFormat::DARK_GREEN . '
-              MM YM.    , 8M   MM  ' . TextFormat::GREEN . 'Mb     dM MM   ,AP YA.   ,A9 YA.   ,A9 MM    MM  ' . TextFormat::DARK_GREEN . '
-            .JMML.`Mbmmd\' `Moo9^Yo.' . TextFormat::GREEN . 'P"Ybmmd"  MMbmmd\'   `Ybmd9\'   `Ybmd9\'.JMML  JMML.' . TextFormat::GREEN . '
-                                             MM                                     
-                                           .JMML.  ' . TextFormat::UNDERLINE . TextFormat::YELLOW . $rm . TextFormat::RESET;
+		$stms = TextFormat::DARK_GREEN . '
+MMP""MM""YMM              ' . TextFormat::GREEN . ' .M"""bgd                                        ' . TextFormat::DARK_GREEN . '
+P\'   MM   `7             ' . TextFormat::GREEN . ' ,MI    "Y                                        ' . TextFormat::DARK_GREEN . '
+     MM  .gP"Ya   ,6"Yb.  ' . TextFormat::GREEN . '`MMb.   `7MMpdMAo.  ,pW"Wq.   ,pW"Wq.`7MMpMMMb.  ' . TextFormat::DARK_GREEN . '
+     MM ,M\'   Yb 8)   MM' . TextFormat::GREEN . '    `YMMNq. MM   `Wb 6W\'   `Wb 6W\'   `Wb MM    MM  ' . TextFormat::DARK_GREEN . '
+     MM 8M""""""  ,pm9MM ' . TextFormat::GREEN . ' .     `MM MM    M8 8M     M8 8M     M8 MM    MM  ' . TextFormat::DARK_GREEN . '
+     MM YM.    , 8M   MM  ' . TextFormat::GREEN . 'Mb     dM MM   ,AP YA.   ,A9 YA.   ,A9 MM    MM  ' . TextFormat::DARK_GREEN . '
+   .JMML.`Mbmmd\' `Moo9^Yo.' . TextFormat::GREEN . 'P"Ybmmd"  MMbmmd\'   `Ybmd9\'   `Ybmd9\'.JMML  JMML.' . TextFormat::GREEN . '
+                                    MM                                     
+                                  .JMML.  ' . TextFormat::UNDERLINE . TextFormat::YELLOW . $rm . TextFormat::RESET;
 
 		$message = TextFormat::toANSI($stms . TextFormat::RESET);
 		$cleanMessage = TextFormat::clean($message);
@@ -159,8 +189,9 @@ CortexPE\'s' . TextFormat::DARK_GREEN . '
 			$this->getServer()->getScheduler()->scheduleRepeatingTask(new CheckPlayersTask($this), 10);
 		}
 		echo "Loading " . ($percent += $offset) . "%...   \r";
-		$this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
+		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
 		echo "Loading " . $percent . "% Completed...   \r";
-		echo "                                         \r" . PHP_EOL;
+		echo "Copyright (C) CortexPE 2017-Present      \r" . PHP_EOL . PHP_EOL;
+		$this->getLogger()->info("TeaSpoon is distributed under the AGPL License");
 	}
 }
