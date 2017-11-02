@@ -11,3 +11,5 @@ checkingMode: "task"
 loadAllAPIs: false
 
 lightningFire: false
+
+enderPearlCooldown: 2

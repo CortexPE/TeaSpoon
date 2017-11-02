@@ -15,11 +15,13 @@ class ItemManager {
 		ItemFactory::registerItem(new SplashPotion());
 		ItemFactory::registerItem(new FlintSteel(), true);
 		ItemFactory::registerItem(new FireCharge());
+		ItemFactory::registerItem(new TotemOfUndying());
 
 		Item::addCreativeItem(Item::get(Item::ENDER_PEARL));
 		Item::addCreativeItem(Item::get(Item::ENDER_CHEST));
 		Item::addCreativeItem(Item::get(Item::BOTTLE_O_ENCHANTING));
 		Item::addCreativeItem(Item::get(Item::FIRE_CHARGE));
+		Item::addCreativeItem(Item::get(Item::TOTEM));
 
 		for($i = 0; $i <= 36; $i++){
 			Item::addCreativeItem(Item::get(Item::SPLASH_POTION, $i));

@@ -6,21 +6,28 @@ declare(strict_types = 1);
 
 namespace CortexPE;
 
+use CortexPE\entity\projectile\EnderPearl;
 use CortexPE\item\enchantment\Enchantment;
 use pocketmine\entity\Living;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityTeleportEvent;
+use pocketmine\event\entity\ProjectileLaunchEvent;
 use pocketmine\event\level\LevelLoadEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
+use pocketmine\item\Item;
+use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
+use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\network\mcpe\protocol\PlayStatusPacket;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Server as PMServer;
+use pocketmine\Player as PMPlayer;
 
 class EventListener implements Listener {
 	/**
@@ -178,8 +185,34 @@ class EventListener implements Listener {
 	 *
 	 * @priority LOWEST
 	 */
-	public function onDamage(EntityDamageEvent $ev){ // TODO: ADD MORE ENCHANTS
-		if($ev instanceof EntityDamageByEntityEvent){
+	public function onDamage(EntityDamageEvent $ev){
+		if($ev->getDamage() >= $ev->getEntity()->getHealth()){
+			$p = $ev->getEntity();
+			if($p instanceof PMPlayer){
+				if($p->getInventory()->getItemInHand()->getId() === Item::TOTEM && $ev->getCause() !== EntityDamageEvent::CAUSE_VOID && $ev->getCause() !== EntityDamageEvent::CAUSE_SUICIDE){
+					$ic = clone $p->getInventory()->getItemInHand();
+					$ic->count--;
+					$p->getInventory()->setItemInHand($ic);
+					$ev->setCancelled(true);
+					$p->setHealth(2);
+
+					$pk = new LevelEventPacket();
+					$pk->evid = LevelEventPacket::EVENT_SOUND_TOTEM;
+					$pk->data = 0;
+					$pk->position = new Vector3($p->getX(), $p->getY(), $p->getZ());
+					$p->dataPacket($pk);
+
+					$pk2 = new LevelEventPacket();
+					$pk2->evid = 2005;
+					$pk2->data = 0;
+					$pk2->position = new Vector3($p->getX(), $p->getY(), $p->getZ());
+					$p->dataPacket($pk2);
+
+					// TODO: Find the LevelEventID for Totem Animation (If it exists... I'm guessing it does.)
+				}
+			}
+		}
+		if($ev instanceof EntityDamageByEntityEvent){ // TODO: ADD MORE ENCHANTS
 			$e = $ev->getEntity();
 			$d = $ev->getDamager();
 
@@ -223,5 +256,34 @@ class EventListener implements Listener {
 	 */
 	public function onRespawn(PlayerRespawnEvent $ev){ // Other plugins might cancel it. so...
 		if($ev->getPlayer()->isOnFire())$ev->getPlayer()->setOnFire(0);
+	}
+
+	/**
+	 * @param PlayerLoginEvent $ev
+	 *
+	 * @priority LOWEST
+	 */
+	public function onLogin(PlayerLoginEvent $ev){
+		Main::$lastUses[$ev->getPlayer()->getName()] = 0;
+	}
+
+	/**
+	 * @param ProjectileLaunchEvent $ev
+	 *
+	 * @priority LOWEST
+	 */
+	public function onEnderPearlUse(ProjectileLaunchEvent $ev){
+		if($ev->getEntity() instanceof EnderPearl){
+			$e = $ev->getEntity();
+			$p = $e->getOwningEntity();
+			if($p instanceof PMPlayer){
+				if(floor(microtime(true) - Main::$lastUses[$p->getName()]) < Main::$enderPearlCooldown){
+					$ev->setCancelled(true);
+					$e->close();
+				} else {
+					Main::$lastUses[$p->getName()] = time();
+				}
+			}
+		}
 	}
 }

@@ -9,6 +9,7 @@ class CommandManager {
 	public static function init(){
 		PMServer::getInstance()->getCommandMap()->registerAll("pocketmine", [
 			new WorldCommand("world"),
+			//new TestCommand("test"), // COMMENT THIS OUT. ALWAYS.
 		]);
 
 		self::overwrite(new KillCommand("kill"), "kill");

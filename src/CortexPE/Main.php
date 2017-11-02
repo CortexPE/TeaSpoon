@@ -13,7 +13,6 @@ use CortexPE\plugin\AllAPILoaderManager;
 use CortexPE\task\CheckPlayersTask;
 use CortexPE\tile\Tile;
 use pocketmine\level\Level;
-use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\utils\Terminal;
@@ -43,8 +42,10 @@ class Main extends PluginBase {
 	public static $teleporting = [];
 	/** @var bool */
 	public $loadAllAPIs = false;
-	/** @var PMPlayer[] */
-	public $lastUses = [];
+	/** @var int[] */
+	public static $lastUses = [];
+	/** @var int */
+	public static $enderPearlCooldown = 2;
 	private $splashes = [
 		'Low-Calorie blend',
 		"Don't panic! Have a cup of tea",
@@ -93,6 +94,7 @@ class Main extends PluginBase {
 			$this->getLogger()->error("The plugin will now disable itself to prevent any interference with the existing Spoon features.");
 			$this->getServer()->getPluginManager()->disablePlugin($this);
 		}
+		$this->getLogger()->info("Loading configuration...");
 		@mkdir($this->getDataFolder());
 		$this->saveDefaultConfig();
 		self::$config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
@@ -102,6 +104,7 @@ class Main extends PluginBase {
 		self::$checkingMode = self::$config->get("dimensionDetectionType", "task");
 		$this->loadAllAPIs = self::$config->get("loadAllAPIs", false);
 		self::$lightningFire = self::$config->get("lightningFire", false);
+		self::$enderPearlCooldown = self::$config->get("enderPearlCooldown", 2);
 	}
 
 	public function onEnable(){
@@ -117,7 +120,6 @@ CortexPE\'s' . TextFormat::DARK_GREEN . '
             .JMML.`Mbmmd\' `Moo9^Yo.' . TextFormat::GREEN . 'P"Ybmmd"  MMbmmd\'   `Ybmd9\'   `Ybmd9\'.JMML  JMML.' . TextFormat::GREEN . '
                                              MM                                     
                                            .JMML.  ' . TextFormat::UNDERLINE . TextFormat::YELLOW . $rm . TextFormat::RESET;
-		//$this->getServer()->getLogger()->info($stms);
 
 		$message = TextFormat::toANSI($stms . TextFormat::RESET);
 		$cleanMessage = TextFormat::clean($message);
