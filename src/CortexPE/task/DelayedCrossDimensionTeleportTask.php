@@ -39,7 +39,6 @@ use CortexPE\Main;
 use CortexPE\Utils;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
-use pocketmine\network\mcpe\protocol\MoveEntityPacket;
 use pocketmine\network\mcpe\protocol\PlayStatusPacket;
 use pocketmine\Player;
 use pocketmine\plugin\Plugin;
@@ -84,15 +83,6 @@ class DelayedCrossDimensionTeleportTask extends PluginTask {
 		$this->player->dataPacket($pk);
 		$this->player->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
 		$this->player->teleport($this->position);
-
-
-		$pk = new MoveEntityPacket();
-		$pk->entityRuntimeId = $this->player->getId();
-		$pk->position = $this->player->getOffsetPosition($this->player)->add(1,0,1); // Hacky fix
-		$pk->yaw = $this->player->getYaw();
-		$pk->pitch = $this->player->getPitch();
-		$pk->headYaw = $this->player->getYaw();
-		$this->player->getLevel()->addChunkPacket($this->player->chunk->getX(), $this->player->chunk->getZ(), $pk);
 
 		if(Main::$TEMPSkipCheck[$this->player->getName()]){
 			Main::$TEMPSkipCheck[$this->player->getName()] = false;
