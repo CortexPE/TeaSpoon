@@ -33,33 +33,46 @@
 
 declare(strict_types = 1);
 
-namespace CortexPE\item;
+namespace CortexPE;
 
-use pocketmine\item\Item;
-use pocketmine\item\ItemFactory;
+use pocketmine\event\Listener;
+use pocketmine\event\server\DataPacketReceiveEvent;
+use pocketmine\network\mcpe\protocol\PlayerActionPacket;
+use pocketmine\plugin\Plugin;
+use pocketmine\Player as PMPlayer;
 
-class ItemManager {
-	public static function init(){
-		ItemFactory::registerItem(new EnchantingBottle());
-		ItemFactory::registerItem(new EnderPearl());
-		ItemFactory::registerItem(new Potion(), true);
-		ItemFactory::registerItem(new SplashPotion());
-		ItemFactory::registerItem(new FlintSteel(), true);
-		ItemFactory::registerItem(new FireCharge());
-		ItemFactory::registerItem(new TotemOfUndying());
-		ItemFactory::registerItem(new Elytra());
-		ItemFactory::registerItem(new FireworkRocket());
+class PacketHandler implements Listener {
 
-		Item::addCreativeItem(Item::get(Item::ENDER_PEARL));
-		Item::addCreativeItem(Item::get(Item::ENDER_CHEST));
-		Item::addCreativeItem(Item::get(Item::BOTTLE_O_ENCHANTING));
-		Item::addCreativeItem(Item::get(Item::FIRE_CHARGE));
-		Item::addCreativeItem(Item::get(Item::TOTEM));
-		Item::addCreativeItem(Item::get(Item::ELYTRA));
-		Item::addCreativeItem(Item::get(Item::FIREWORKS));
+	/** @var Plugin */
+	public $plugin;
 
-		for($i = 0; $i <= 36; $i++){
-			Item::addCreativeItem(Item::get(Item::SPLASH_POTION, $i));
+	public function __construct(Plugin $plugin){
+		$this->plugin = $plugin;
+	}
+
+	/**
+	 * @param DataPacketReceiveEvent $ev
+	 *
+	 * @priority LOWEST
+	 */
+	public function onDataPacket(DataPacketReceiveEvent $ev) {
+		$pkr = $ev->getPacket();
+		if($pkr instanceof PlayerActionPacket) {
+			$p = $ev->getPlayer();
+			switch($pkr->action){
+				case PlayerActionPacket::ACTION_START_GLIDE:
+					$p->setDataFlag(PMPlayer::DATA_FLAGS, PMPlayer::DATA_FLAG_GLIDING, true, PMPlayer::DATA_TYPE_BYTE);
+					if($p->getGamemode() != PMPlayer::CREATIVE && $p->getGamemode() != PMPlayer::SPECTATOR){
+						$p->setAllowFlight(true); //hacky code. eh. the only dweebs who'd come screaming about it are PMMP Elitists. -_-
+					}
+					break;
+				case PlayerActionPacket::ACTION_STOP_GLIDE:
+					$p->setDataFlag(PMPlayer::DATA_FLAGS, PMPlayer::DATA_FLAG_GLIDING, false, PMPlayer::DATA_TYPE_BYTE);
+					if($p->getGamemode() != PMPlayer::CREATIVE && $p->getGamemode() != PMPlayer::SPECTATOR){
+						$p->setAllowFlight(false);
+					}
+					break;
+			}
 		}
 	}
 }

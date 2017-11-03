@@ -40,6 +40,7 @@ use CortexPE\block\Portal;
 use pocketmine\block\BlockFactory;
 use pocketmine\entity\Entity;
 use pocketmine\item\ItemFactory;
+use pocketmine\Player as PMPlayer;
 
 class Utils {
 	public static function isInsideOfPortal(Entity $entity): bool{
@@ -79,5 +80,28 @@ class Utils {
 		}
 
 		return $x;
+	}
+
+	public static function toggleBool(bool $boolean) : bool {
+		if($boolean){
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	public static function boolToString(bool $boolean) : string {
+		if($boolean){
+			return "true";
+		} else {
+			return "false";
+		}
+	}
+
+	public static function isDelayedTeleportCancellable(PMPlayer $player) : bool {
+		if(self::isInsideOfEndPortal($player) === false && self::isInsideOfPortal($player) === false){
+			return true;
+		}
+		return false;
 	}
 }

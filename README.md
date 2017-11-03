@@ -23,6 +23,8 @@ Contributions are very welcome :smile:<br />You may contribute by opening a Pull
    - [X] Splash Potions
    - [X] FireCharge
    - [X] Totem of Undying
+   - [X] Fully Functional Elytra Wings
+   - [X] Firework Rocket (as Elytra Booster)
  - Entities & Mobs
    - [X] Projectiles
      - [X] EnderPearls

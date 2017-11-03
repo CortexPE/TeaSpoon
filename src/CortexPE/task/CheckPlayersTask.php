@@ -37,46 +37,43 @@ namespace CortexPE\task;
 
 use CortexPE\Main;
 use CortexPE\Utils;
-use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
-use pocketmine\network\mcpe\protocol\PlayStatusPacket;
+use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
+use pocketmine\Player;
 use pocketmine\scheduler\PluginTask;
 use pocketmine\Server;
 
 class CheckPlayersTask extends PluginTask {
 	public function onRun(int $currentTick){
 		foreach(Server::getInstance()->getOnlinePlayers() as $p){
+			if(Main::$TEMPSkipCheck[$p->getName()]){
+				continue;
+			}
 			$epo = Utils::isInsideOfEndPortal($p);
 			$po = Utils::isInsideOfPortal($p);
-			if($epo || $po/* && !in_array($p->getName(), Main::$teleporting)*/){
+			if($epo || $po){
+				if($p->getLevel()->getSafeSpawn()->distance($p) <= 0.1){
+					return; // It's Probably a PMMP Teleport Bug Causing it. Short desc: $player->getBlocksAround() doesnt update on teleport... it only updates again on move.
+				}
 				if($p->getLevel()->getName() !== Main::$netherLevel->getName() && $p->getLevel()->getName() !== Main::$endLevel->getName()){
 					if($po){
-						$pk = new ChangeDimensionPacket();
-						$pk->dimension = DimensionIds::NETHER;
-						$pk->position = Main::$netherLevel->getSafeSpawn();
-						$p->dataPacket($pk);
-						$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
-						$p->teleport(Main::$netherLevel->getSafeSpawn());
-						//Main::$teleporting[] = $p->getName();
+						$this->scheduleTeleport($p, DimensionIds::NETHER, Main::$netherLevel->getSafeSpawn(), true);
 					}elseif($epo){
-						$pk = new ChangeDimensionPacket();
-						$pk->dimension = DimensionIds::THE_END;
-						$pk->position = Main::$endLevel->getSafeSpawn();
-						$p->dataPacket($pk);
-						$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
-						$p->teleport(Main::$endLevel->getSafeSpawn());
-						//Main::$teleporting[] = $p->getName();
+						$this->scheduleTeleport($p, DimensionIds::THE_END, Main::$endLevel->getSafeSpawn());
 					}
 				}else{
-					$pk = new ChangeDimensionPacket();
-					$pk->dimension = DimensionIds::OVERWORLD;
-					$pk->position = Server::getInstance()->getDefaultLevel()->getSafeSpawn();
-					$p->dataPacket($pk);
-					$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
-					$p->teleport(Server::getInstance()->getDefaultLevel()->getSafeSpawn());
-					//Main::$teleporting[] = $p->getName();
+					$this->scheduleTeleport($p, DimensionIds::OVERWORLD, Server::getInstance()->getDefaultLevel()->getSafeSpawn(), $po);
 				}
 			}
 		}
+	}
+
+	private function scheduleTeleport(Player $player, int $dimension, Vector3 $pos, bool $toAndFromNether = false){
+		if($toAndFromNether){
+			Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($this->owner, $player, $dimension, $pos), 6 * 20);
+		} else {
+			Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($this->owner, $player, $dimension, $pos), 10);
+		}
+		Main::$TEMPSkipCheck[$player->getName()] = true;
 	}
 }

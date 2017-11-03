@@ -38,8 +38,11 @@ declare(strict_types = 1);
 namespace CortexPE;
 
 use CortexPE\entity\projectile\EnderPearl;
+use CortexPE\item\Elytra;
 use CortexPE\item\enchantment\Enchantment;
+use CortexPE\item\FireworkRocket;
 use CortexPE\task\DelayedTeleportTask;
+use pocketmine\block\Air;
 use pocketmine\entity\Living;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -48,15 +51,14 @@ use pocketmine\event\entity\ProjectileLaunchEvent;
 use pocketmine\event\level\LevelLoadEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDeathEvent;
+use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerLoginEvent;
-use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
-use pocketmine\network\mcpe\protocol\PlayStatusPacket;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\plugin\Plugin;
 use pocketmine\Server as PMServer;
@@ -85,51 +87,6 @@ class EventListener implements Listener {
 		}
 
 		return true;
-	}
-
-	/**
-	 * @param PlayerMoveEvent $ev
-	 * @return bool
-	 *
-	 * @priority HIGHEST
-	 */
-	public function onPlayerMove(PlayerMoveEvent $ev){
-		$p = $ev->getPlayer();
-		if(Main::$checkingMode == "event"/* && !in_array($p->getName(), Main::$teleporting)*/){
-			$epo = Utils::isInsideOfEndPortal($p);
-			$po = Utils::isInsideOfPortal($p);
-			if($epo || $po/* && !in_array($p->getName(), Main::$teleporting)*/){
-				if($p->getLevel()->getName() !== Main::$netherLevel->getName() && $p->getLevel()->getName() !== Main::$endLevel->getName()){
-					if($po){
-						$pk = new ChangeDimensionPacket();
-						$pk->dimension = DimensionIds::NETHER;
-						$pk->position = Main::$netherLevel->getSafeSpawn();
-						$p->dataPacket($pk);
-						$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
-						$p->teleport(Main::$netherLevel->getSafeSpawn());
-						//Main::$teleporting[] = $p->getName();
-					}elseif($epo){
-						$pk = new ChangeDimensionPacket();
-						$pk->dimension = DimensionIds::THE_END;
-						$pk->position = Main::$endLevel->getSafeSpawn();
-						$p->dataPacket($pk);
-						$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
-						$p->teleport(Main::$endLevel->getSafeSpawn());
-						//Main::$teleporting[] = $p->getName();
-					}
-				}else{
-					$pk = new ChangeDimensionPacket();
-					$pk->dimension = DimensionIds::OVERWORLD;
-					$pk->position = Server::getInstance()->getDefaultLevel()->getSafeSpawn();
-					$p->dataPacket($pk);
-					$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
-					$p->teleport(Server::getInstance()->getDefaultLevel()->getSafeSpawn());
-					//Main::$teleporting[] = $p->getName();
-				}
-			}
-		}
-
-		return false;
 	}
 
 	/**
@@ -220,6 +177,8 @@ class EventListener implements Listener {
 	 * @priority LOWEST
 	 */
 	public function onDamage(EntityDamageEvent $ev){
+
+		/////////////////////// TOTEM OF UNDYING ///////////////////////////////
 		if($ev->getDamage() >= $ev->getEntity()->getHealth()){
 			$p = $ev->getEntity();
 			if($p instanceof PMPlayer){
@@ -246,6 +205,8 @@ class EventListener implements Listener {
 				}
 			}
 		}
+
+		/////////////////////// ENCHANT HANDLING ///////////////////////////////
 		if($ev instanceof EntityDamageByEntityEvent){ // TODO: ADD MORE ENCHANTS
 			$e = $ev->getEntity();
 			$d = $ev->getDamager();
@@ -280,6 +241,14 @@ class EventListener implements Listener {
 			}
 		}
 
+		/////////////////////// ELYTRA WINGS ///////////////////////////////
+		if($ev->getCause() === EntityDamageEvent::CAUSE_FALL){
+			$p = $ev->getEntity();
+			if($p instanceof PMPlayer && $p->getInventory()->getChestplate() instanceof Elytra){
+				$ev->setCancelled(true);
+			}
+		}
+
 		return true;
 	}
 
@@ -299,6 +268,7 @@ class EventListener implements Listener {
 	 */
 	public function onLogin(PlayerLoginEvent $ev){
 		Main::$lastUses[$ev->getPlayer()->getName()] = 0;
+		Main::$TEMPSkipCheck[$ev->getPlayer()->getName()] = false;
 	}
 
 	/**
@@ -317,6 +287,22 @@ class EventListener implements Listener {
 				} else {
 					Main::$lastUses[$p->getName()] = time();
 				}
+			}
+		}
+	}
+
+	public function onInteract(PlayerInteractEvent $ev){
+		$p = $ev->getPlayer();
+		if($p->getInventory()->getChestplate() instanceof Elytra && $ev->getItem() instanceof FireworkRocket && $p->getLevel()->getBlock($p->getPosition()->subtract(0,1,0)) instanceof Air){
+			if($ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_AIR || $ev->getAction() == PlayerInteractEvent::LEFT_CLICK_AIR){
+				if($p->getGamemode() != PMPlayer::CREATIVE && $p->getGamemode() != PMPlayer::SPECTATOR){
+					$ic = clone $p->getInventory()->getItemInHand();
+					$ic->count--;
+					$p->getInventory()->setItemInHand($ic);
+				}
+				$dir = $p->getDirectionVector();
+				$p->setMotion($dir->multiply(1.25));
+				// TODO: Particles.
 			}
 		}
 	}

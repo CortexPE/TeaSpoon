@@ -52,6 +52,8 @@ use pocketmine\utils\TextFormat;
 class Main extends PluginBase {
 // Use static variables if it's going to be accessed by other Classes :)
 
+	const CONFIG_VERSION = 2;
+
 	/** @var string */
 	public static $netherName = "nether";
 	/** @var Level */
@@ -65,8 +67,6 @@ class Main extends PluginBase {
 	/** @var Config */
 	public static $config;
 
-	/** @var string */
-	public static $checkingMode = "task";
 	/** @var bool */
 	public static $lightningFire = false;
 	/** @var string[] */
@@ -77,6 +77,9 @@ class Main extends PluginBase {
 	public static $lastUses = [];
 	/** @var int */
 	public static $enderPearlCooldown = 2;
+	/** @var array */
+	public static $TEMPSkipCheck = [];
+
 	private $splashes = [
 		'Low-Calorie blend',
 		"Don't panic! Have a cup of tea",
@@ -132,7 +135,6 @@ class Main extends PluginBase {
 
 		self::$netherName = self::$config->get("netherName", "nether");
 		self::$endName = self::$config->get("endName", "ender");
-		self::$checkingMode = self::$config->get("dimensionDetectionType", "task");
 		$this->loadAllAPIs = self::$config->get("loadAllAPIs", false);
 		self::$lightningFire = self::$config->get("lightningFire", false);
 		self::$enderPearlCooldown = self::$config->get("enderPearlCooldown", 2);
@@ -161,37 +163,44 @@ P\'   MM   `7             ' . TextFormat::GREEN . ' ,MI    "Y                   
 		}
 
 		// A E S T H E T H I C S
-		$parts = 10;
+		$parts = 12;
 		$offset = 100 / $parts;
 		$percent = 0;
 
-		echo "Loading " . ($percent += $offset) . "%...   \r";
+		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		CommandManager::init();
-		echo "Loading " . ($percent += $offset) . "%...   \r";
+		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		Enchantment::init();
-		echo "Loading " . ($percent += $offset) . "%...   \r";
+		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		BlockManager::init();
-		echo "Loading " . ($percent += $offset) . "%...   \r";
+		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		ItemManager::init();
-		echo "Loading " . ($percent += $offset) . "%...   \r";
+		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		EntityManager::init();
-		echo "Loading " . ($percent += $offset) . "%...   \r";
+		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		// LevelManager::init(); EXECUTED VIA EventListener
-		echo "Loading " . ($percent += $offset) . "%...   \r";
+		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		if($this->loadAllAPIs){
 			AllAPILoaderManager::init();
 		}
-		echo "Loading " . ($percent += $offset) . "%...   \r";
+		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		Tile::init();
 
-		echo "Loading " . ($percent += $offset) . "%...   \r";
-		if(self::$checkingMode == "task"){
-			$this->getServer()->getScheduler()->scheduleRepeatingTask(new CheckPlayersTask($this), 10);
-		}
-		echo "Loading " . ($percent += $offset) . "%...   \r";
+		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
+		$this->getServer()->getScheduler()->scheduleRepeatingTask(new CheckPlayersTask($this), 10);
+		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
+		$this->getServer()->getPluginManager()->registerEvents(new PacketHandler($this), $this);
+		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
+		$ver = self::$config->get("version");
 		echo "Loading " . $percent . "% Completed...   \r";
 		echo "Copyright (C) CortexPE 2017-Present      \r" . PHP_EOL . PHP_EOL;
 		$this->getLogger()->info("TeaSpoon is distributed under the AGPL License");
+
+
+		if($ver === null || $ver === false || $ver < self::CONFIG_VERSION){
+			$this->getLogger()->critical("Your configuration file is Outdated! Keep a backup of it and delete the outdated file.");
+		}
 	}
 }
