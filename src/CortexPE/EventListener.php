@@ -46,7 +46,7 @@ use pocketmine\event\{Listener, level\LevelLoadEvent};
 use pocketmine\event\player\{PlayerDeathEvent, PlayerInteractEvent, PlayerJoinEvent, PlayerLoginEvent, PlayerRespawnEvent};
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
-use pocketmine\network\mcpe\protocol\{ChangeDimensionPacket, LevelEventPacket, types\DimensionIds;
+use pocketmine\network\mcpe\protocol\{ChangeDimensionPacket, LevelEventPacket, types\DimensionIds};
 use pocketmine\plugin\Plugin;
 use pocketmine\Server as PMServer;
 use pocketmine\Player as PMPlayer;
