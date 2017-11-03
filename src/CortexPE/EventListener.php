@@ -39,6 +39,7 @@ namespace CortexPE;
 
 use CortexPE\entity\projectile\EnderPearl;
 use CortexPE\item\{Elytra, enchantment\Enchantment, FireworkRocket};
+use CortexPE\task\DelayedTeleportTask;
 use pocketmine\block\Air;
 use pocketmine\entity\Living;
 use pocketmine\event\entity\{EntityDamageByEntityEvent, EntityDamageEvent, EntityTeleportEvent, ProjectileLaunchEvent};
