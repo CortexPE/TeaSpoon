@@ -35,9 +35,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\plugin;
 
-use CortexPE\plugin\AllAPI\FolderPluginLoader;
-use CortexPE\plugin\AllAPI\PharPluginLoader;
-use CortexPE\plugin\AllAPI\ScriptPluginLoader;
+use CortexPE\plugin\AllAPI\{PharPluginLoader, ScriptPluginLoader, FolderPluginLoader};
 use pocketmine\plugin\PluginLoadOrder;
 use pocketmine\Server as PMServer;
 

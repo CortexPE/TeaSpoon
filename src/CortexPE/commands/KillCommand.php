@@ -22,13 +22,10 @@ declare(strict_types = 1);
 
 namespace CortexPE\commands;
 
-use pocketmine\command\Command;
-use pocketmine\command\CommandSender;
-use pocketmine\command\defaults\VanillaCommand;
-use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\event\TranslationContainer;
+use CortexPE\utils\TextFormat;
+use pocketmine\command\{Command, CommandSender, defaults\VanillaCommand};
+use pocketmine\event\{TranslationContainer, entity\EntityDamageEvent};
 use pocketmine\Player;
-use pocketmine\utils\TextFormat;
 
 class KillCommand extends VanillaCommand {
 

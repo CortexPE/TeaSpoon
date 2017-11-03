@@ -35,8 +35,7 @@ declare(strict_types = 1);
 
 namespace CortexPE;
 
-use pocketmine\event\Listener;
-use pocketmine\event\server\DataPacketReceiveEvent;
+use pocketmine\event\{Listener, server\DataPacketReceiveEvent};
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\plugin\Plugin;
 use pocketmine\Player as PMPlayer;

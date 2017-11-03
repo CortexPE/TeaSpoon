@@ -37,8 +37,7 @@ namespace CortexPE\entity;
 
 use CortexPE\Main;
 use pocketmine\block\Liquid;
-use pocketmine\entity\Animal;
-use pocketmine\entity\Living;
+use pocketmine\entity\{Animal, Living};
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;

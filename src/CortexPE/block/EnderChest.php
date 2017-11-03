@@ -26,18 +26,11 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
-use CortexPE\tile\EnderChest as TileEnderChest;
-use CortexPE\tile\Tile;
-use pocketmine\block\Block;
-use pocketmine\block\Transparent;
-use pocketmine\item\enchantment\Enchantment;
-use pocketmine\item\Item;
-use pocketmine\item\Tool;
-use pocketmine\math\AxisAlignedBB;
-use pocketmine\math\Vector3;
-use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\nbt\tag\IntTag;
-use pocketmine\nbt\tag\StringTag;
+use CortexPE\tile\{EnderChest as TileEnderChest, Tile};
+use pocketmine\block\{Block, Transparent};
+use pocketmine\item\{Item, Tool, enchantment\Enchantment};
+use pocketmine\math\{AxisAlignedBB, Vector3};
+use pocketmine\nbt\tag\{CompoundTag, IntTag, StringTag};
 use pocketmine\Player;
 
 class EnderChest extends Transparent {

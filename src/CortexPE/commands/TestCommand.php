@@ -8,8 +8,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\commands;
 
-use pocketmine\command\CommandSender;
-use pocketmine\command\defaults\VanillaCommand;
+use pocketmine\command\{CommandSender, defaults\VanillaCommand};
 
 class TestCommand extends VanillaCommand {
 

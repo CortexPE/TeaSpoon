@@ -35,8 +35,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\entity;
 
-use pocketmine\entity\Entity;
-use pocketmine\entity\Monster;
+use pocketmine\entity\{Entity, Monster};
 use pocketmine\item\Item;
 
 class Shulker extends Monster {

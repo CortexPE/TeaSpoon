@@ -35,11 +35,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\entity;
 
-use CortexPE\entity\projectile\Egg;
-use CortexPE\entity\projectile\EnchantingBottle;
-use CortexPE\entity\projectile\EnderPearl;
-use CortexPE\entity\projectile\Snowball;
-use CortexPE\entity\projectile\SplashPotion;
+use CortexPE\entity\projectile\{Egg, EnchantingBottle, EnderPearl, Snowball, SplashPotion};
 use pocketmine\entity\Entity;
 
 class EntityManager extends Entity {

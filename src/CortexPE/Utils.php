@@ -35,8 +35,7 @@ declare(strict_types = 1);
 
 namespace CortexPE;
 
-use CortexPE\block\EndPortal;
-use CortexPE\block\Portal;
+use CortexPE\block\{EndPortal, Portal};
 use pocketmine\block\BlockFactory;
 use pocketmine\entity\Entity;
 use pocketmine\item\ItemFactory;

@@ -35,9 +35,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\plugin\AllAPI;
 
-use pocketmine\plugin\Plugin;
-use pocketmine\plugin\PluginDescription;
-use pocketmine\plugin\ScriptPluginLoader as PMScriptPluginLoader;
+use pocketmine\plugin\{Plugin, PluginDescription, ScriptPluginLoader as PMScriptPluginLoader};
 use pocketmine\Server;
 
 class ScriptPluginLoader extends PMScriptPluginLoader {

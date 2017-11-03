@@ -35,7 +35,9 @@ declare(strict_types = 1);
 
 namespace CortexPE\item\enchantment;
 
-class Enchantment extends \pocketmine\item\enchantment\Enchantment {
+use pocketmine\item\enchantment\Enchantment as EnchantmentPM;
+
+class Enchantment extends EnchantmentPM {
 	public static function init(){
 		self::registerEnchantment(new Enchantment(self::BLAST_PROTECTION, "%enchantment.protect.explosion", self::RARITY_UNCOMMON, self::ACTIVATION_EQUIP, self::SLOT_ARMOR));
 		self::registerEnchantment(new Enchantment(self::PROJECTILE_PROTECTION, "%enchantment.protect.projectile", self::RARITY_UNCOMMON, self::ACTIVATION_EQUIP, self::SLOT_ARMOR));

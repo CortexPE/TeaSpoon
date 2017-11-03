@@ -26,43 +26,38 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with TeaSpoon.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author CortexPE
+ * @author NycuRO
  * @link http://CortexPE.xyz
  *
  */
 
 declare(strict_types = 1);
 
-namespace CortexPE\plugin\AllAPI;
+namespace CortexPE\utils;
 
-use pocketmine\plugin\{Plugin, PluginDescription, PharPluginLoader as PMPharPluginLoader};
-use pocketmine\Server;
+use pocketmine\utils\TextFormat as TF;
 
-class PharPluginLoader extends PMPharPluginLoader {
+class TextFormat extends TF {
 
-	private $server;
+    public static function center($input){
+        $clear = TextFormat::clean($input);
+        $lines = explode("\n", $clear);
+        $max = max(array_map("strlen", $lines));
+        $lines = explode("\n", $input);
+        foreach($lines as $key => $line){
+            $lines[$key] = str_pad($line, $max + self::colorCount($line), " ", STR_PAD_LEFT);
+        }
 
-	public function __construct(Server $server){
-		parent::__construct($server);
-		$this->server = $server;
-	}
+        return implode("\n", $lines);
+    }
 
-	public function getPluginDescription(string $file){
-		$phar = new \Phar($file);
-		if(isset($phar["plugin.yml"])){
-			$pluginYml = $phar["plugin.yml"];
-			if($pluginYml instanceof \PharFileInfo){
-				$description = new PluginDescription($pluginYml->getContent());
-				if(!$this->server->getPluginManager()->getPlugin($description->getName()) instanceof Plugin and !in_array($this->server->getApiVersion(), $description->getCompatibleApis())){
-					$api = (new \ReflectionClass("pocketmine\plugin\PluginDescription"))->getProperty("api");
-					$api->setAccessible(true);
-					$api->setValue($description, [$this->server->getApiVersion()]);
+    public static function colorCount($input){
+        $colors = "abcdef0123456789lo";
+        $count = 0;
+        for($i = 0; $i < strlen($colors); $i++){
+            $count += substr_count($input, "§". $colors{$i});
+        }
 
-					return $description;
-				}
-			}
-		}
-
-		return null;
-	}
+        return $count;
+    }
 }

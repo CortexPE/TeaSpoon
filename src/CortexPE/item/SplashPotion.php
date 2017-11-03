@@ -35,11 +35,9 @@ declare(strict_types = 1);
 
 namespace CortexPE\item;
 
-use pocketmine\entity\Entity;
-use pocketmine\entity\projectile\Projectile;
+use pocketmine\entity\{Entity, projectile\Projectile};
 use pocketmine\event\entity\ProjectileLaunchEvent;
-use pocketmine\item\Item;
-use pocketmine\item\ProjectileItem;
+use pocketmine\item\{Item, ProjectileItem};
 use pocketmine\level\sound\LaunchSound;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\ShortTag;

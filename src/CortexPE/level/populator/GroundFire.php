@@ -24,8 +24,7 @@ declare(strict_types = 1);
 namespace CortexPE\level\generator\populator;
 
 use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\generator\populator\Populator;
+use pocketmine\level\{ChunkManager, generator\populator\Populator};
 use pocketmine\utils\Random;
 
 class GroundFire extends Populator {

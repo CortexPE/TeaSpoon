@@ -35,9 +35,7 @@ declare(strict_types = 1);
 
 namespace CortexPE;
 
-use CortexPE\level\generator\ender\Ender;
-use CortexPE\level\generator\hell\Nether;
-use CortexPE\level\generator\VoidGenerator;
+use CortexPE\level\generator\{VoidGenerator, ender\Ender, hell\Nether};
 use pocketmine\level\generator\Generator;
 use pocketmine\Server as PMServer;
 

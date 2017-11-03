@@ -37,8 +37,7 @@ namespace CortexPE\entity\projectile;
 
 use CortexPE\item\Potion;
 use CortexPE\level\particle\SpellParticle;
-use pocketmine\entity\Living;
-use pocketmine\entity\projectile\Throwable;
+use pocketmine\entity\{Living, projectile\Throwable};
 
 class SplashPotion extends Throwable {
 	const NETWORK_ID = self::SPLASH_POTION;

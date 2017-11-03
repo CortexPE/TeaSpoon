@@ -25,8 +25,7 @@ namespace CortexPE\level\generator\populator;
 
 //use pocketmine\block\Glowstone;
 use pocketmine\level\ChunkManager;
-use pocketmine\level\generator\object\Ore as ObjectOre;
-use pocketmine\level\generator\populator\Populator;
+use pocketmine\level\generator\{object\Ore as ObjectOre, populator\Populator};
 use pocketmine\utils\Random;
 
 class NetherGlowStone extends Populator {

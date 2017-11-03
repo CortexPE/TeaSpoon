@@ -35,9 +35,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\task;
 
-use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
-use pocketmine\network\mcpe\protocol\PlayStatusPacket;
-use pocketmine\network\mcpe\protocol\types\DimensionIds;
+use pocketmine\network\mcpe\protocol\{ChangeDimensionPacket, PlayStatusPacket, types\DimensionIds};
 use pocketmine\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\scheduler\PluginTask;

@@ -24,9 +24,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\item;
 
-use pocketmine\entity\Effect;
-use pocketmine\entity\Entity;
-use pocketmine\entity\Human;
+use pocketmine\entity\{Effect, Entity, Human};
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\EntityEventPacket;
 use pocketmine\Player;

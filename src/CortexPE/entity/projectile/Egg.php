@@ -36,8 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\entity\projectile;
 
 use pocketmine\block\Block;
-use pocketmine\entity\Entity;
-use pocketmine\entity\projectile\Throwable;
+use pocketmine\entity\{Entity, projectile\Throwable};
 use pocketmine\level\particle\DestroyBlockParticle;
 
 class Egg extends Throwable {

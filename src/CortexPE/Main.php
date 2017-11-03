@@ -38,16 +38,14 @@ namespace CortexPE;
 use CortexPE\block\BlockManager;
 use CortexPE\commands\CommandManager;
 use CortexPE\entity\EntityManager;
-use CortexPE\item\enchantment\Enchantment;
-use CortexPE\item\ItemManager;
+use CortexPE\item\{ItemManager, enchantment\Enchantment};
 use CortexPE\plugin\AllAPILoaderManager;
 use CortexPE\task\CheckPlayersTask;
 use CortexPE\tile\Tile;
+use CortexPE\utils\TextFormat;
 use pocketmine\level\Level;
 use pocketmine\plugin\PluginBase;
-use pocketmine\utils\Config;
-use pocketmine\utils\Terminal;
-use pocketmine\utils\TextFormat;
+use pocketmine\utils\{Config, Terminal};
 
 class Main extends PluginBase {
 // Use static variables if it's going to be accessed by other Classes :)

@@ -3,6 +3,7 @@
   <component name="PhpIncludePathManager">
     <include_path>
       <path value="C:\Users\CortexPE\Desktop\MCPE Server Softwares\PocketMine-MP\src" />
+      <path value="C:\Users\user\Desktop\Proiecte\PocketMine-MP\src" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />

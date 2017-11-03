@@ -11,8 +11,7 @@ namespace CortexPE\inventory;
 
 use pocketmine\inventory\ContainerInventory;
 use pocketmine\item\Item;
-use pocketmine\nbt\NBT;
-use pocketmine\nbt\tag\ListTag;
+use pocketmine\nbt\{NBT, tag\ListTag};
 use pocketmine\network\mcpe\protocol\types\WindowTypes;
 use pocketmine\Player;
 

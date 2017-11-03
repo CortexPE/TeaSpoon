@@ -25,10 +25,8 @@ namespace CortexPE\tile;
 
 use CortexPE\inventory\EnderChestInventory;
 use pocketmine\inventory\InventoryHolder;
-use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\nbt\tag\StringTag;
-use pocketmine\tile\Nameable;
-use pocketmine\tile\Spawnable;
+use pocketmine\nbt\tag\{CompoundTag, StringTag};
+use pocketmine\tile\{Nameable, Spawnable};
 
 class EnderChest extends Spawnable implements InventoryHolder, Nameable {
 

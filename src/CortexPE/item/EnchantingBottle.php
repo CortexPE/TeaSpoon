@@ -35,8 +35,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\item;
 
-use pocketmine\item\Item;
-use pocketmine\item\ProjectileItem;
+use pocketmine\item\{Item, ProjectileItem};
 
 class EnchantingBottle extends ProjectileItem {
 

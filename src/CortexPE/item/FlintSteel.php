@@ -35,10 +35,8 @@ declare(strict_types = 1);
 
 namespace CortexPE\item;
 
-use pocketmine\block\Block;
-use pocketmine\block\BlockFactory;
 use CortexPE\block\Portal;
-use pocketmine\block\Solid;
+use pocketmine\block\{Block, BlockFactory, Solid};
 use pocketmine\item\Tool;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;

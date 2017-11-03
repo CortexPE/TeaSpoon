@@ -36,8 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\entity\projectile;
 
 use CortexPE\level\particle\SpellParticle;
-use pocketmine\entity\Entity;
-use pocketmine\entity\projectile\Throwable;
+use pocketmine\entity\{Entity, projectile\Throwable};
 
 class EnchantingBottle extends Throwable {
 	const NETWORK_ID = self::XP_BOTTLE;

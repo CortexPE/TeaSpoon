@@ -24,9 +24,7 @@ declare(strict_types = 1);
 namespace CortexPE\level\generator;
 
 use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\format\Chunk;
-use pocketmine\level\generator\Generator;
+use pocketmine\level\{ChunkManager, format\Chunk, generator\Generator};
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
 

@@ -23,10 +23,7 @@ declare(strict_types=1);
 
 namespace CortexPE\level\generator\populator;
 
-use pocketmine\level\ChunkManager;
-use pocketmine\level\generator\object\Ore as ObjectOre;
-use pocketmine\level\generator\object\OreType;
-use pocketmine\level\generator\populator\Populator;
+use pocketmine\level\{ChunkManager, generator\populator\Populator, generator\object\Ore as ObjectOre, generator\object\OreType};
 use pocketmine\utils\Random;
 
 class NetherOre extends Populator {

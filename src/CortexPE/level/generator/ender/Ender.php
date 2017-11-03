@@ -26,14 +26,9 @@ declare(strict_types = 1);
 
 namespace CortexPE\level\generator\ender;
 
-use CortexPE\level\generator\biome\Biome;
-use CortexPE\level\generator\ender\populator\EnderPilar;
+use CortexPE\level\generator\{biome\Biome, ender\populator\EnderPilar};
 use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\generator\Generator;
-use pocketmine\level\generator\noise\Simplex;
-use pocketmine\level\generator\populator\Populator;
-use pocketmine\level\Level;
+use pocketmine\level\{Level, ChunkManager, generator\populator\Populator, generator\noise\Simplex, generator\Generator};
 use pocketmine\math\Vector3 as Vector3;
 use pocketmine\utils\Random;
 

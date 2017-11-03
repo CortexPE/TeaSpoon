@@ -35,8 +35,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\task;
 
-use CortexPE\Main;
-use CortexPE\Utils;
+use CortexPE\{Main, Utils};
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player;
