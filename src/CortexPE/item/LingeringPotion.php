@@ -13,16 +13,15 @@
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * @author ClearSky - thebigsmile
+ * @author ClearSky
  *
  *
 */
 
 declare(strict_types = 1);
 
-namespace pocketmine\item;
+namespace CortexPE\item;
 
-use CortexPE\item\Potion;
 use pocketmine\entity\{Entity, projectile\Projectile};
 use pocketmine\event\entity\ProjectileLaunchEvent;
 use pocketmine\level\sound\LaunchSound;
