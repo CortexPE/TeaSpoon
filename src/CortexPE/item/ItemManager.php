@@ -42,7 +42,7 @@ class ItemManager {
 		ItemFactory::registerItem(new EnchantingBottle());
 		ItemFactory::registerItem(new EnderPearl());
 		ItemFactory::registerItem(new Potion(), true);
-		ItemFactory::registerItem(new LingeringPotion(), true));
+		ItemFactory::registerItem(new LingeringPotion(), true);
 		ItemFactory::registerItem(new SplashPotion());
 		ItemFactory::registerItem(new FlintSteel(), true);
 		ItemFactory::registerItem(new FireCharge());
