@@ -24,6 +24,7 @@ namespace CortexPE\item;
 
 use pocketmine\entity\{Entity, projectile\Projectile};
 use pocketmine\event\entity\ProjectileLaunchEvent;
+use pocketmine\item\{Item, ProjectileItem};
 use pocketmine\level\sound\LaunchSound;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\ShortTag;
@@ -32,7 +33,7 @@ use pocketmine\Player;
 class LingeringPotion extends ProjectileItem {
 
     public function __construct($meta = 0){
-        parent::__construct(self::LINGERING_POTION, $meta, $this->getNameByMeta($meta));
+        parent::__construct(Item::LINGERING_POTION, $meta, $this->getNameByMeta($meta));
     }
 
     public function getNameByMeta($meta){
