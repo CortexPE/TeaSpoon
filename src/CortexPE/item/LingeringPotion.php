@@ -103,6 +103,7 @@ class LingeringPotion extends ProjectileItem {
         $nbt->PotionId = new ShortTag("PotionId", $this->getDamage());
         $projectile = Entity::createEntity($this->getProjectileEntityType(), $player->getLevel(), $nbt, $player);
         if ($projectile !== null) {
+            var_dump("Projectile Start");
             $projectile->setMotion($projectile->getMotion()->multiply($this->getThrowForce()));
         }
         $this->count--;
@@ -111,10 +112,12 @@ class LingeringPotion extends ProjectileItem {
             if ($projectileEv->isCancelled()) {
                 $projectile->kill();
             } else {
+                var_dump("Projectile work!");
                 $projectile->spawnToAll();
                 $player->getLevel()->addSound(new LaunchSound($player), $player->getViewers());
             }
         } else {
+            var_dump("Problem..Projectile LingeringPotion not works :(");
             $projectile->spawnToAll();
         }
         return true;

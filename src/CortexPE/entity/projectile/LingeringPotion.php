@@ -34,10 +34,10 @@ class LingeringPotion extends Throwable {
     }
 
     public function getPotionId() {
-        return (int)$this->namedtag["PotionId"];
+        return (int) $this->namedtag["PotionId"];
     }
 
-    public function kill() {
+    public function onUpdate(int $currentTick): bool {
         if ($this->isAlive()) {
             $this->getLevel()->addParticle(new ItemBreakParticle($this, ItemItem::get(ItemItem::LINGERING_POTION)));
 
@@ -76,7 +76,7 @@ class LingeringPotion extends Throwable {
                 $aec->spawnToAll();
             }
         }
-        parent::kill();
+        return parent::onUpdate($currentTick);
     }
 
 }
