@@ -55,14 +55,14 @@ class ElytraRocketBoostTrackingTask extends PluginTask {
 	/** @var int */
 	private $internalCount = 1;
 
-	public function __construct(Plugin $owner, Player $player, int $count){
+	public function __construct(Plugin $owner, Player $player, int $count) {
 		$this->owner = $owner;
 		$this->player = $player;
 		$this->count = $count;
 	}
 
-	public function onRun(int $currentTick){
-		if($this->internalCount <= $this->count){
+	public function onRun(int $currentTick) {
+		if ($this->internalCount <= $this->count) {
 			$this->player->getLevel()->addParticle(new RocketParticle($this->player->getPosition()));
 			$this->internalCount++;
 		} else {
