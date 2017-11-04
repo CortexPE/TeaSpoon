@@ -77,6 +77,8 @@ class Main extends PluginBase {
 	public static $enderPearlCooldown = 2;
 	/** @var array */
 	public static $TEMPSkipCheck = [];
+	/** @var array */
+	public static $usingElytra = [];
 
 	private $splashes = [
 		'Low-Calorie blend',

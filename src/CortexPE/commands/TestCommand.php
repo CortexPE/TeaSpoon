@@ -9,6 +9,8 @@ declare(strict_types = 1);
 namespace CortexPE\commands;
 
 use pocketmine\command\{CommandSender, defaults\VanillaCommand};
+use pocketmine\level\particle\GenericParticle;
+use pocketmine\Player as PMPlayer;
 
 class TestCommand extends VanillaCommand {
 
@@ -21,6 +23,8 @@ class TestCommand extends VanillaCommand {
 	}
 
 	public function execute(CommandSender $sender, $currentAlias, array $args){
-
+		if($sender instanceof PMPlayer){
+			$sender->getLevel()->addParticle(new GenericParticle($sender->getPosition(), (int) $args[0], (int) $args[1]));
+		}
 	}
 }

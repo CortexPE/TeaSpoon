@@ -40,6 +40,7 @@ namespace CortexPE;
 use CortexPE\entity\projectile\EnderPearl;
 use CortexPE\item\{Elytra, enchantment\Enchantment, FireworkRocket};
 use CortexPE\task\DelayedTeleportTask;
+use CortexPE\task\ElytraRocketBoostTrackingTask;
 use pocketmine\block\Air;
 use pocketmine\entity\Living;
 use pocketmine\event\entity\{EntityDamageByEntityEvent, EntityDamageEvent, EntityTeleportEvent, ProjectileLaunchEvent};
@@ -257,6 +258,7 @@ class EventListener implements Listener {
 	public function onLogin(PlayerLoginEvent $ev){
 		Main::$lastUses[$ev->getPlayer()->getName()] = 0;
 		Main::$TEMPSkipCheck[$ev->getPlayer()->getName()] = false;
+		Main::$usingElytra[$ev->getPlayer()->getName()] = false;
 	}
 
 	/**
@@ -281,7 +283,7 @@ class EventListener implements Listener {
 
 	public function onInteract(PlayerInteractEvent $ev){
 		$p = $ev->getPlayer();
-		if($p->getInventory()->getChestplate() instanceof Elytra && $ev->getItem() instanceof FireworkRocket && $p->getLevel()->getBlock($p->getPosition()->subtract(0,1,0)) instanceof Air){
+		if($p->getInventory()->getChestplate() instanceof Elytra && $ev->getItem() instanceof FireworkRocket && Main::$usingElytra[$p->getName()]){
 			if($ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_AIR || $ev->getAction() == PlayerInteractEvent::LEFT_CLICK_AIR){
 				if($p->getGamemode() != PMPlayer::CREATIVE && $p->getGamemode() != PMPlayer::SPECTATOR){
 					$ic = clone $p->getInventory()->getItemInHand();
@@ -290,7 +292,8 @@ class EventListener implements Listener {
 				}
 				$dir = $p->getDirectionVector();
 				$p->setMotion($dir->multiply(1.25));
-				// TODO: Particles.
+				// TODO: Rocket Sound
+				$this->plugin->getServer()->getScheduler()->scheduleRepeatingTask(new ElytraRocketBoostTrackingTask($this->plugin, $p, 6), 5);
 			}
 		}
 	}

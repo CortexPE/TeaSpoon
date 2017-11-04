@@ -35,9 +35,9 @@ declare(strict_types = 1);
 
 namespace CortexPE\utils;
 
-use pocketmine\utils\TextFormat as TF;
+use pocketmine\utils\TextFormat as PMTextFormat;
 
-class TextFormat extends TF {
+class TextFormat extends PMTextFormat {
 
     public static function center($input){
         $clear = TextFormat::clean($input);

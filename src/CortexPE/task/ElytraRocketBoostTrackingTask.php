@@ -33,47 +33,40 @@
 
 declare(strict_types = 1);
 
-namespace CortexPE;
+namespace CortexPE\task;
 
-use pocketmine\event\{Listener, server\DataPacketReceiveEvent};
-use pocketmine\network\mcpe\protocol\PlayerActionPacket;
+use CortexPE\level\particle\RocketParticle;
+use pocketmine\Player;
 use pocketmine\plugin\Plugin;
-use pocketmine\Player as PMPlayer;
+use pocketmine\scheduler\PluginTask;
+use pocketmine\Server as PMServer;
 
-class PacketHandler implements Listener {
+class ElytraRocketBoostTrackingTask extends PluginTask {
 
 	/** @var Plugin */
-	public $plugin;
+	protected $owner;
 
-	public function __construct(Plugin $plugin){
-		$this->plugin = $plugin;
+	/** @var Player */
+	protected $player;
+
+	/** @var int */
+	protected $count;
+
+	/** @var int */
+	private $internalCount = 1;
+
+	public function __construct(Plugin $owner, Player $player, int $count){
+		$this->owner = $owner;
+		$this->player = $player;
+		$this->count = $count;
 	}
 
-	/**
-	 * @param DataPacketReceiveEvent $ev
-	 *
-	 * @priority LOWEST
-	 */
-	public function onDataPacket(DataPacketReceiveEvent $ev) {
-		$pkr = $ev->getPacket();
-		if($pkr instanceof PlayerActionPacket) {
-			$p = $ev->getPlayer();
-			switch($pkr->action){
-				case PlayerActionPacket::ACTION_START_GLIDE:
-					$p->setDataFlag(PMPlayer::DATA_FLAGS, PMPlayer::DATA_FLAG_GLIDING, true, PMPlayer::DATA_TYPE_BYTE);
-					if($p->getGamemode() != PMPlayer::CREATIVE && $p->getGamemode() != PMPlayer::SPECTATOR){
-						$p->setAllowFlight(true); //hacky code. eh. the only dweebs who'd come screaming about it are PMMP Elitists. -_-
-					}
-					Main::$usingElytra[$p->getName()] = true;
-					break;
-				case PlayerActionPacket::ACTION_STOP_GLIDE:
-					$p->setDataFlag(PMPlayer::DATA_FLAGS, PMPlayer::DATA_FLAG_GLIDING, false, PMPlayer::DATA_TYPE_BYTE);
-					if($p->getGamemode() != PMPlayer::CREATIVE && $p->getGamemode() != PMPlayer::SPECTATOR){
-						$p->setAllowFlight(false);
-					}
-					Main::$usingElytra[$p->getName()] = false;
-					break;
-			}
+	public function onRun(int $currentTick){
+		if($this->internalCount <= $this->count){
+			$this->player->getLevel()->addParticle(new RocketParticle($this->player->getPosition()));
+			$this->internalCount++;
+		} else {
+			PMServer::getInstance()->getScheduler()->cancelTask($this->getTaskId());
 		}
 	}
 }
