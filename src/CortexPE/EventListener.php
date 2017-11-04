@@ -195,41 +195,6 @@ class EventListener implements Listener {
 			}
 		}
 
-		/////////////////////// ENCHANT HANDLING ///////////////////////////////
-		if($ev instanceof EntityDamageByEntityEvent){ // TODO: ADD MORE ENCHANTS
-			$e = $ev->getEntity();
-			$d = $ev->getDamager();
-
-			if($d instanceof Player && $e instanceof Living){
-				$i = $d->getInventory()->getItemInHand();
-				if($i->hasEnchantments()){
-					foreach($i->getEnchantments() as $ench){
-						switch($ench->getId()){
-							case Enchantment::FIRE_ASPECT:
-								$e->setOnFire(($ench->getLevel() * 4) * 20); // #BlamePMMP // Fire doesnt last for less than half a second. wtf.
-								break;
-							case Enchantment::KNOCKBACK:
-								$ev->setKnockBack($ev->getKnockBack() + ($ench->getLevel() * 1.5));
-								break;
-						}
-					}
-				}
-				if($e instanceof Player){
-					foreach($e->getInventory()->getArmorContents() as $armorContent){
-						if($armorContent->hasEnchantments()){
-							foreach($armorContent->getEnchantments() as $enchantment){
-								switch($enchantment->getId()){
-									case Enchantment::THORNS:
-										$d->attack(new EntityDamageEvent($e, EntityDamageEvent::CAUSE_ENTITY_ATTACK, mt_rand($enchantment->getLevel(), 3 + $enchantment->getLevel())));
-										break;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
 		/////////////////////// ELYTRA WINGS ///////////////////////////////
 		if($ev->getCause() === EntityDamageEvent::CAUSE_FALL){
 			$p = $ev->getEntity();

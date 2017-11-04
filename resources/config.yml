@@ -9,7 +9,7 @@
 #                                   .JMML.
 # TeaSpoon Configuration File
 
-version: 2
+version: 3
 
 netherName: "nether"
 endName: "ender"
@@ -21,3 +21,4 @@ loadAllAPIs: false
 lightningFire: false
 
 enderPearlCooldown: 2
+enderPearlDamage: 5

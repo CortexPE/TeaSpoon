@@ -33,8 +33,9 @@
 
 declare(strict_types = 1);
 
-namespace CortexPE;
+namespace CortexPE\handlers;
 
+use CortexPE\Main;
 use pocketmine\event\{Listener, server\DataPacketReceiveEvent};
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\plugin\Plugin;

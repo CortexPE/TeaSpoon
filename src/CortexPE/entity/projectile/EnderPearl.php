@@ -35,6 +35,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\entity\projectile;
 
+use CortexPE\Main;
 use pocketmine\entity\projectile\Throwable;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\math\Vector3;
@@ -55,7 +56,7 @@ class EnderPearl extends Throwable {
 				$p->getServer()->broadcastPacket($p->getLevel()->getPlayers(), $pk1);
 
 				$p->teleport($this->getPosition());
-				$p->attack(new EntityDamageEvent($p, EntityDamageEvent::CAUSE_FALL, 5));
+				$p->attack(new EntityDamageEvent($p, EntityDamageEvent::CAUSE_FALL, Main::$ePearlDamage));
 
 				$pk2 = new LevelEventPacket();
 				$pk2->data = 0;

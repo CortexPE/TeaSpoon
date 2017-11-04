@@ -38,6 +38,8 @@ namespace CortexPE;
 use CortexPE\block\BlockManager;
 use CortexPE\commands\CommandManager;
 use CortexPE\entity\EntityManager;
+use CortexPE\handlers\EnchantHandler;
+use CortexPE\handlers\PacketHandler;
 use CortexPE\item\{ItemManager, enchantment\Enchantment};
 use CortexPE\plugin\AllAPILoaderManager;
 use CortexPE\task\CheckPlayersTask;
@@ -50,7 +52,7 @@ use pocketmine\utils\{Config, Terminal};
 class Main extends PluginBase {
 // Use static variables if it's going to be accessed by other Classes :)
 
-	const CONFIG_VERSION = 2;
+	const CONFIG_VERSION = 3;
 
 	/** @var string */
 	public static $netherName = "nether";
@@ -79,6 +81,8 @@ class Main extends PluginBase {
 	public static $TEMPSkipCheck = [];
 	/** @var array */
 	public static $usingElytra = [];
+	/** @var int */
+	public static $ePearlDamage = 5;
 
 	private $splashes = [
 		'Low-Calorie blend',
@@ -138,6 +142,7 @@ class Main extends PluginBase {
 		$this->loadAllAPIs = self::$config->get("loadAllAPIs", false);
 		self::$lightningFire = self::$config->get("lightningFire", false);
 		self::$enderPearlCooldown = self::$config->get("enderPearlCooldown", 2);
+		self::$ePearlDamage = self::$config->get("enderPearlDamage", 5);
 	}
 
 	public function onEnable(){
@@ -163,7 +168,7 @@ P\'   MM   `7             ' . TextFormat::GREEN . ' ,MI    "Y                   
 		}
 
 		// A E S T H E T H I C S
-		$parts = 12;
+		$parts = 13;
 		$offset = 100 / $parts;
 		$percent = 0;
 
@@ -193,6 +198,8 @@ P\'   MM   `7             ' . TextFormat::GREEN . ' ,MI    "Y                   
 		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		$this->getServer()->getPluginManager()->registerEvents(new PacketHandler($this), $this);
 		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
+		$this->getServer()->getPluginManager()->registerEvents(new EnchantHandler($this), $this);
+		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		$ver = self::$config->get("version");
 		echo "Loading " . $percent . "% Completed...   \r";
 		echo "Copyright (C) CortexPE 2017-Present      \r" . PHP_EOL . PHP_EOL;
@@ -201,6 +208,8 @@ P\'   MM   `7             ' . TextFormat::GREEN . ' ,MI    "Y                   
 
 		if($ver === null || $ver === false || $ver < self::CONFIG_VERSION){
 			$this->getLogger()->critical("Your configuration file is Outdated! Keep a backup of it and delete the outdated file.");
+		} elseif($ver > self::CONFIG_VERSION){
+			$this->getLogger()->critical("Your configuration file is from a higher version of TeaSpoon! Please update the plugin from https://github.com/CortexPE/TeaSpoon");
 		}
 	}
 }
