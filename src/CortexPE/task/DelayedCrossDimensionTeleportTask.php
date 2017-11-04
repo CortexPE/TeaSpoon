@@ -59,7 +59,7 @@ class DelayedCrossDimensionTeleportTask extends PluginTask {
 	/** @var bool */
 	protected $respawn;
 
-	public function __construct(Plugin $owner, Player $player, int $dimension, Vector3 $position, bool $respawn = false) {
+	public function __construct(Plugin $owner, Player $player, int $dimension, Vector3 $position, bool $respawn = false){
 		$this->owner = $owner;
 		$this->player = $player;
 		$this->dimension = $dimension;
@@ -68,8 +68,8 @@ class DelayedCrossDimensionTeleportTask extends PluginTask {
 	}
 
 	public function onRun(int $currentTick) {
-		if (Utils::isDelayedTeleportCancellable($this->player)) {
-			if (Main::$TEMPSkipCheck[$this->player->getName()]) {
+		if(Utils::isDelayedTeleportCancellable($this->player)){
+			if(Main::$TEMPSkipCheck[$this->player->getName()]){
 				Main::$TEMPSkipCheck[$this->player->getName()] = false;
 			}
 			return false;
@@ -82,7 +82,7 @@ class DelayedCrossDimensionTeleportTask extends PluginTask {
 		$this->player->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
 		$this->player->teleport($this->position);
 
-		if (Main::$TEMPSkipCheck[$this->player->getName()]) {
+		if(Main::$TEMPSkipCheck[$this->player->getName()]){
 			Main::$TEMPSkipCheck[$this->player->getName()] = false;
 		}
 		return true;

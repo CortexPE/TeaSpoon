@@ -43,33 +43,32 @@ use pocketmine\scheduler\PluginTask;
 use pocketmine\Server;
 
 class CheckPlayersTask extends PluginTask {
-
-	public function onRun(int $currentTick) {
-		foreach(Server::getInstance()->getOnlinePlayers() as $p) {
-			if (Main::$TEMPSkipCheck[$p->getName()]) {
+	public function onRun(int $currentTick){
+		foreach(Server::getInstance()->getOnlinePlayers() as $p){
+			if(Main::$TEMPSkipCheck[$p->getName()]){
 				continue;
 			}
 			$epo = Utils::isInsideOfEndPortal($p);
 			$po = Utils::isInsideOfPortal($p);
-			if ($epo || $po) {
-				if ($p->getLevel()->getSafeSpawn()->distance($p) <= 0.1){
+			if($epo || $po){
+				if($p->getLevel()->getSafeSpawn()->distance($p) <= 0.1){
 					return; // It's Probably a PMMP Teleport Bug Causing it. Short desc: $player->getBlocksAround() doesnt update on teleport... it only updates again on move.
 				}
-				if ($p->getLevel()->getName() !== Main::$netherLevel->getName() && $p->getLevel()->getName() !== Main::$endLevel->getName()) {
-					if ($po) {
+				if($p->getLevel()->getName() !== Main::$netherLevel->getName() && $p->getLevel()->getName() !== Main::$endLevel->getName()){
+					if($po){
 						$this->scheduleTeleport($p, DimensionIds::NETHER, Main::$netherLevel->getSafeSpawn(), true);
-					} elseif ($epo) {
+					}elseif($epo){
 						$this->scheduleTeleport($p, DimensionIds::THE_END, Main::$endLevel->getSafeSpawn());
 					}
-				} else {
+				}else{
 					$this->scheduleTeleport($p, DimensionIds::OVERWORLD, Server::getInstance()->getDefaultLevel()->getSafeSpawn(), $po);
 				}
 			}
 		}
 	}
 
-	private function scheduleTeleport(Player $player, int $dimension, Vector3 $pos, bool $toAndFromNether = false) {
-		if ($toAndFromNether) {
+	private function scheduleTeleport(Player $player, int $dimension, Vector3 $pos, bool $toAndFromNether = false){
+		if($toAndFromNether){
 			Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($this->owner, $player, $dimension, $pos), 4 * 20); // 80 ticks i think it's 4 seconds (On vanilla it's 4 sec for wait teleport)
 		} else {
 			Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($this->owner, $player, $dimension, $pos), 10); // @CortexPE what it's that?

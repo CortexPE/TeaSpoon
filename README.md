@@ -25,7 +25,7 @@ Contributions are very welcome :smile:<br />You may contribute by opening a Pull
    - [X] Totem of Undying
    - [X] Fully Functional Elytra Wings
    - [X] Firework Rocket (as Elytra Booster)
-   - [ ] Lingering Potions. (Particles don't spawn and effect isn't gived (Client Side if Particles Spawned))
+   - [ ] Lingering Potions.
  - Entities & Mobs
    - [X] Projectiles
      - [X] EnderPearls
@@ -83,5 +83,4 @@ Contributions are very welcome :smile:<br />You may contribute by opening a Pull
    - [X] World Command
  - Utils
    - [X] TextFormat::center like PC or MiNET. (@Credits: DarkSystem).
-   - [X] Player::setLocale() for setLanguage for Player. (@Credits: NycuRO).
 <br />***More to do...***

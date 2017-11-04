@@ -40,7 +40,6 @@ use CortexPE\level\particle\SpellParticle;
 use pocketmine\entity\{Living, projectile\Throwable};
 
 class SplashPotion extends Throwable {
-
 	const NETWORK_ID = self::SPLASH_POTION;
 
 	public function onUpdate(int $currentTick): bool{
@@ -62,6 +61,6 @@ class SplashPotion extends Throwable {
 	}
 
 	public function getPotionId(): int{
-		return (int) $this->namedtag["PotionId"];
+		return (int)$this->namedtag["PotionId"];
 	}
 }
