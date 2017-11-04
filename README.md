@@ -25,7 +25,7 @@ Contributions are very welcome :smile:<br />You may contribute by opening a Pull
    - [X] Totem of Undying
    - [X] Fully Functional Elytra Wings
    - [X] Firework Rocket (as Elytra Booster)
-   - [ ] Lingering Potions.
+   - [X] Lingering Potions.
  - Entities & Mobs
    - [X] Projectiles
      - [X] EnderPearls

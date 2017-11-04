@@ -35,13 +35,16 @@ declare(strict_types = 1);
 
 namespace CortexPE\item;
 
-use pocketmine\item\{Item, ItemFactory};
+use pocketmine\item\{
+    Item, ItemFactory, LingeringPotion
+};
 
 class ItemManager {
 	public static function init(){
 		ItemFactory::registerItem(new EnchantingBottle());
 		ItemFactory::registerItem(new EnderPearl());
 		ItemFactory::registerItem(new Potion(), true);
+		ItemFactory::registerItem(new LingeringPotion(), true));
 		ItemFactory::registerItem(new SplashPotion());
 		ItemFactory::registerItem(new FlintSteel(), true);
 		ItemFactory::registerItem(new FireCharge());
