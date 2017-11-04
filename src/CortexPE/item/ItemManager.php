@@ -35,7 +35,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\item;
 
-use pocketmine\item\{Item, ItemFactory, LingeringPotion};
+use pocketmine\item\{Item, ItemFactory};
 
 class ItemManager {
 	public static function init(){
