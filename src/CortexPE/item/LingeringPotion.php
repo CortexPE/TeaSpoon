@@ -32,8 +32,12 @@ use pocketmine\Player;
 
 class LingeringPotion extends ProjectileItem {
 
-    public function __construct($meta = 0){
+    public function __construct($meta = 0, $count = 1) {
         parent::__construct(Item::LINGERING_POTION, $meta, $this->getNameByMeta($meta));
+    }
+
+    public function getMaxStackSize(): int{
+        return 16;
     }
 
     public function getNameByMeta($meta){
@@ -98,28 +102,29 @@ class LingeringPotion extends ProjectileItem {
         return 1.1;
     }
 
-    public function onClickAir(Player $player, Vector3 $directionVector) : bool{//TODO optimise
+    public function onClickAir(Player $player, Vector3 $directionVector) : bool {//TODO optimise
         $nbt = Entity::createBaseNBT($player->add(0, $player->getEyeHeight(), 0), $directionVector, $player->yaw, $player->pitch);
-        $nbt->PotionId = new ShortTag("PotionId", $this->getDamage());
+        $nbt["PotionId"] = new ShortTag("PotionId", $this->meta);
         $projectile = Entity::createEntity($this->getProjectileEntityType(), $player->getLevel(), $nbt, $player);
+
         if ($projectile !== null) {
-            var_dump("Projectile Start");
             $projectile->setMotion($projectile->getMotion()->multiply($this->getThrowForce()));
         }
+
         $this->count--;
+
         if ($projectile instanceof Projectile) {
             $player->getServer()->getPluginManager()->callEvent($projectileEv = new ProjectileLaunchEvent($projectile));
             if ($projectileEv->isCancelled()) {
                 $projectile->kill();
             } else {
-                var_dump("Projectile work!");
                 $projectile->spawnToAll();
                 $player->getLevel()->addSound(new LaunchSound($player), $player->getViewers());
             }
         } else {
-            var_dump("Problem..Projectile LingeringPotion not works :(");
             $projectile->spawnToAll();
         }
+
         return true;
     }
 }
