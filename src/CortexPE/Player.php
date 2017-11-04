@@ -39,6 +39,7 @@ use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
 use pocketmine\Player as PMPlayer;
 
 class Player extends PMPlayer {
+
 	public function sendDimensionChange(int $dimension): bool{
 		$pk = new ChangeDimensionPacket();
 		$pk->dimension = $dimension;
@@ -46,4 +47,8 @@ class Player extends PMPlayer {
 
 		return true;
 	}
+
+	public function setLocale(string $locale): string {
+        $this->locale = $locale;
+    }
 }

@@ -83,4 +83,5 @@ Contributions are very welcome :smile:<br />You may contribute by opening a Pull
    - [X] World Command
  - Utils
    - [X] TextFormat::center like PC or MiNET. (@Credits: DarkSystem).
+   - [X] Player::setLocale() for setLanguage for Player. (@Credits: NycuRO).
 <br />***More to do...***
