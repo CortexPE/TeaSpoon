@@ -60,6 +60,9 @@ class ItemManager {
 
 		for($i = 0; $i <= 36; $i++){
 			Item::addCreativeItem(Item::get(Item::SPLASH_POTION, $i));
+		}
+
+		for($i = 0; $i <= 36; $i++){
 			Item::addCreativeItem(Item::get(Item::LINGERING_POTION, $i));
 		}
 	}
