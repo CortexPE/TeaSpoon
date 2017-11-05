@@ -46,6 +46,8 @@ class CommandManager {
 		]);
 
 		self::overwrite(new KillCommand("kill"), "kill");
+		self::overwrite(new PingCommand("ping"), "ping");
+		
 	}
 
 	public static function overwrite(Command $cmd, string $commandName){
