@@ -65,6 +65,7 @@ class EntityManager extends Entity {
 		self::registerEntity(Mooshroom::class, false, ['Mooshroom', 'minecraft:mooshroom']);
 		self::registerEntity(Mule::class, false, ['Mule', 'minecraft:mule']);
 		self::registerEntity(Ocelot::class, false, ['Ocelot', 'minecraft:ocelot']);
+		self::registerEntity(Parrot::class, false, ['Parrot', 'minecraft:parrot']);
 		self::registerEntity(Pig::class, false, ['Pig', 'minecraft:pig']);
 		self::registerEntity(PigZombie::class, false, ['PigZombie', 'minecraft:pigzombie']);
 		self::registerEntity(PolarBear::class, false, ['PolarBear', 'minecraft:polarbear']);
