@@ -1,0 +1,40 @@
+language: php
+
+php:
+ - 7.2
+
+branches:
+ - master
+
+before_script:
+ - cd /home/travis/build/
+ - phpenv config-rm xdebug.ini
+ - pecl install channel://pecl.php.net/pthreads-3.1.6
+ - pecl install channel://pecl.php.net/weakref-0.3.3
+ - echo | pecl install channel://pecl.php.net/yaml-2.0.0
+ - git clone --recursive --depth=50 --branch=master https://github.com/pmmp/PocketMine-MP.git
+ - mkdir -p PocketMine-MP/plugins/TeaSpoon-src
+ - cp -rf TeaSpoon/CortexPE/src PocketMine-MP/plugins/TeaSpoon-src
+ - cp -rf TeaSpoon/CortexPE/resources PocketMine-MP/plugins/TeaSpoon-src
+ - cp -rf TeaSpoon/CortexPE/plugin.yml PocketMine-MP/plugins/TeaSpoon-src
+ - cp -rf TeaSpoon/CortexPE/LICENSE PocketMine-MP/plugins/TeaSpoon-src
+ - cp -rf SalmonDE/CortexPE/build.php PocketMine-MP/
+ - git clone https://github.com/pmmp/PocketMine-DevTools.git
+ - cp CortexPE/TeaSpoon/compiledevtools.php /home/travis/build/
+ - php compiledevtools.php
+ - cd PocketMine-MP/
+
+script:
+ - php build.php
+
+deploy:
+  provider: releases
+  api_key: "$traviskey"
+  file: "/home/travis/build/PocketMine-MP/plugins/DevTools/TeaSpoon.phar"
+  skip_cleanup: true
+  overwrite: true
+  on:
+    tags: false
+
+notifications:
+ email: false
