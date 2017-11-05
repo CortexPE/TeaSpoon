@@ -57,26 +57,26 @@ class SplashPotion extends ProjectileItem {
 		return 16;
 	}
 
-	public function onClickAir(Player $player, Vector3 $directionVector): bool{
+	public function onClickAir(Player $player, Vector3 $directionVector): bool {
 		$nbt = Entity::createBaseNBT($player->add(0, $player->getEyeHeight(), 0), $directionVector, $player->yaw, $player->pitch);
 		$nbt["PotionId"] = new ShortTag("PotionId", $this->meta);
 
 		$projectile = Entity::createEntity($this->getProjectileEntityType(), $player->getLevel(), $nbt, $player);
-		if($projectile !== null){
+		if ($projectile !== null) {
 			$projectile->setMotion($projectile->getMotion()->multiply($this->getThrowForce()));
 		}
 
 		$this->count--;
 
-		if($projectile instanceof Projectile){
+		if ($projectile instanceof Projectile) {
 			$player->getServer()->getPluginManager()->callEvent($projectileEv = new ProjectileLaunchEvent($projectile));
-			if($projectileEv->isCancelled()){
+			if ($projectileEv->isCancelled()) {
 				$projectile->kill();
-			}else{
+			} else {
 				$projectile->spawnToAll();
 				$player->getLevel()->addSound(new LaunchSound($player), $player->getViewers());
 			}
-		}else{
+        } else {
 			$projectile->spawnToAll();
 		}
 

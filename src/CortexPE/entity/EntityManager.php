@@ -35,7 +35,9 @@ declare(strict_types = 1);
 
 namespace CortexPE\entity;
 
-use CortexPE\entity\projectile\{Egg, EnchantingBottle, EnderPearl, Snowball, SplashPotion};
+use CortexPE\entity\projectile\{
+    Egg, EnchantingBottle, EnderPearl, LingeringPotion, Snowball, SplashPotion
+};
 use pocketmine\entity\Entity;
 
 class EntityManager extends Entity {
@@ -91,9 +93,10 @@ class EntityManager extends Entity {
 		self::registerEntity(EnderPearl::class, false, ['EnderPearl', 'minecraft:enderpearl']);
 		self::registerEntity(Snowball::class, true, ['Snowball', 'minecraft:snowball']);
 		self::registerEntity(SplashPotion::class, false, ['SplashPotion', 'minecraft:splashpotion']);
+		self::registerEntity(LingeringPotion::class, false, ['LingeringPotion', 'minecraft:lingeringpotion']);
 
 		self::registerEntity(XPOrb::class, false, ['XPOrb', 'minecraft:xporb']);
-
+		self::registerEntity(AreaEffectCloud::class, false, ['AreaEffectCloud', 'minecraft:areaeffectcloud']);
 		self::registerEntity(Human::class, true);
 	}
 }

@@ -42,6 +42,7 @@ class ItemManager {
 		ItemFactory::registerItem(new EnchantingBottle());
 		ItemFactory::registerItem(new EnderPearl());
 		ItemFactory::registerItem(new Potion(), true);
+		ItemFactory::registerItem(new LingeringPotion(), true);
 		ItemFactory::registerItem(new SplashPotion());
 		ItemFactory::registerItem(new FlintSteel(), true);
 		ItemFactory::registerItem(new FireCharge());
@@ -59,6 +60,10 @@ class ItemManager {
 
 		for($i = 0; $i <= 36; $i++){
 			Item::addCreativeItem(Item::get(Item::SPLASH_POTION, $i));
+		}
+
+		for($i = 0; $i <= 36; $i++){
+			Item::addCreativeItem(Item::get(Item::LINGERING_POTION, $i));
 		}
 	}
 }
