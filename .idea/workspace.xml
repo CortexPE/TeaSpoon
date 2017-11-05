@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="626fe3a4-ee92-485e-8b37-4aeb370d8e12" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.travis.yml" afterPath="$PROJECT_DIR$/.travis.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/EventListener.php" afterPath="$PROJECT_DIR$/src/CortexPE/EventListener.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -13,142 +14,35 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="LingeringPotion.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/CortexPE/item/LingeringPotion.php">
+      <file leaf-file-name="Potion.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/CortexPE/item/Potion.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1428">
-              <caret line="119" column="20" lean-forward="false" selection-start-line="119" selection-start-column="20" selection-end-line="119" selection-end-column="20" />
+            <state relative-caret-position="1315">
+              <caret line="127" column="61" lean-forward="false" selection-start-line="127" selection-start-column="46" selection-end-line="127" selection-end-column="61" />
               <folding>
-                <marker date="1509873701286" expanded="true" signature="9:713" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="775:1045" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="1151:1245" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="1291:1315" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="1359:3571" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="1383:3565" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="1422:1471" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="1548:1599" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="1631:1680" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="1714:1765" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="1845:1904" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="1974:2028" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="2066:2123" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="2209:2270" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="2344:2400" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="2440:2499" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="2571:2626" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="2712:2774" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="2808:2862" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="2900:2957" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="3025:3078" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="3115:3171" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="3205:3259" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="3297:3354" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="3434:3492" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="3513:3556" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="3628:3667" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="3713:3738" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="4185:4290" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="4366:4755" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="4535:4585" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="4593:4745" ph="..." />
-                <marker date="1509873701286" expanded="true" signature="4763:4811" ph="..." />
+                <element signature="e#691#737#0#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EntityManager.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/CortexPE/entity/EntityManager.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-546">
-              <caret line="45" column="77" lean-forward="true" selection-start-line="45" selection-start-column="77" selection-end-line="45" selection-end-column="77" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LingeringPotion.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/CortexPE/entity/projectile/LingeringPotion.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1575">
-              <caret line="75" column="35" lean-forward="false" selection-start-line="75" selection-start-column="35" selection-end-line="75" selection-end-column="35" />
-              <folding>
-                <element signature="e#74#99#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="422">
-                <caret line="30" column="22" lean-forward="true" selection-start-line="30" selection-start-column="22" selection-end-line="30" selection-end-column="22" />
-                <folding />
-              </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Boat.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/CortexPE/item/Boat.php">
+      <file leaf-file-name="EventListener.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/CortexPE/EventListener.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="168">
-              <caret line="25" column="39" lean-forward="true" selection-start-line="25" selection-start-column="39" selection-end-line="25" selection-end-column="39" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name=".travis.yml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.travis.yml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="20" column="27" lean-forward="false" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="compiledevtools.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/compiledevtools.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="42">
-              <caret line="2" column="58" lean-forward="true" selection-start-line="2" selection-start-column="58" selection-end-line="2" selection-end-column="58" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="build.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/build.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="12" column="18" lean-forward="true" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="18" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ItemManager.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/CortexPE/item/ItemManager.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
-              <caret line="47" column="58" lean-forward="true" selection-start-line="47" selection-start-column="58" selection-end-line="47" selection-end-column="58" />
+              <caret line="179" column="37" lean-forward="true" selection-start-line="179" selection-start-column="37" selection-end-line="179" selection-end-column="37" />
               <folding>
-                <marker date="1509873701420" expanded="true" signature="2422:2588" ph="..." />
+                <element signature="e#1461#1503#0#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FireworkRocket.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/CortexPE/item/FireworkRocket.php">
+      <file leaf-file-name="Living.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../PocketMine-MP/src/pocketmine/entity/Living.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="266">
+              <caret line="233" column="46" lean-forward="true" selection-start-line="233" selection-start-column="46" selection-end-line="233" selection-end-column="46" />
               <folding />
             </state>
           </provider>
@@ -162,6 +56,11 @@
       <find>spawnTot</find>
       <find>type</find>
       <find>$type</find>
+      <find>REGENERATION_TWO</find>
+      <find>AB</find>
+      <find>FIRE_RESISTANCE_T</find>
+      <find>FIRE_RESISTANCE</find>
+      <find>fIRE rESISTANCE</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -198,7 +97,6 @@
         <option value="$PROJECT_DIR$/src/CortexPE/plugin/AllAPILoaderManager.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/level/populator/NetherOre.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/tile/EnderChest.php" />
-        <option value="$PROJECT_DIR$/src/CortexPE/EventListener.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/level/populator/NetherGlowStone.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/LevelManager.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/Main.php" />
@@ -221,6 +119,7 @@
         <option value="$PROJECT_DIR$/build.php" />
         <option value="$PROJECT_DIR$/compiledevtools.php" />
         <option value="$PROJECT_DIR$/.travis.yml" />
+        <option value="$PROJECT_DIR$/src/CortexPE/EventListener.php" />
       </list>
     </option>
   </component>
@@ -257,6 +156,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -287,14 +188,6 @@
               <item name="TeaSpoon" type="2a2b976b:PhpTreeStructureProvider$1" />
               <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
               <item name="CortexPE" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="entity" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="projectile" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="TeaSpoon" type="b2602c69:ProjectViewProjectNode" />
-              <item name="TeaSpoon" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="CortexPE" type="2a2b976b:PhpTreeStructureProvider$1" />
               <item name="item" type="2a2b976b:PhpTreeStructureProvider$1" />
             </path>
             <path>
@@ -308,8 +201,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -341,11 +232,12 @@
       <updated>1509725193586</updated>
       <workItem from="1509725194724" duration="3262000" />
       <workItem from="1509807962033" duration="6529000" />
+      <workItem from="1509876244009" duration="824000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10668000" />
+    <option name="totallyTimeSpent" value="11665000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1060" extended-state="6" />
@@ -362,22 +254,12 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.09586056" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -391,20 +273,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/CortexPE/plugin/AllAPI/PharPluginLoader.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="36" column="0" lean-forward="false" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/CortexPE/plugin/AllAPI/FolderPluginLoader.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/CortexPE/level/populator/NetherOre.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="231">
@@ -479,20 +347,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
           <caret line="26" column="34" lean-forward="false" selection-start-line="26" selection-start-column="34" selection-end-line="26" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/CortexPE/EventListener.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="42" column="29" lean-forward="true" selection-start-line="42" selection-start-column="29" selection-end-line="42" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/CortexPE/LevelManager.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="38" column="41" lean-forward="false" selection-start-line="38" selection-start-column="41" selection-end-line="38" selection-end-column="41" />
         </state>
       </provider>
     </entry>
@@ -597,7 +451,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/CortexPE/item/ItemManager.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
+        <state relative-caret-position="378">
           <caret line="47" column="58" lean-forward="true" selection-start-line="47" selection-start-column="58" selection-end-line="47" selection-end-column="58" />
           <folding>
             <marker date="1509873701420" expanded="true" signature="2422:2588" ph="..." />
@@ -606,16 +460,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/CortexPE/item/ProjectileItem.php" />
-    <entry file="file://$PROJECT_DIR$/src/CortexPE/item/Potion.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3114">
-          <caret line="54" column="24" lean-forward="false" selection-start-line="54" selection-start-column="24" selection-end-line="54" selection-end-column="24" />
-          <folding>
-            <element signature="e#691#737#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/CortexPE/entity/projectile/EnderPearl.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-195">
@@ -660,42 +504,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/CortexPE/item/LingeringPotion.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1428">
+        <state relative-caret-position="2037">
           <caret line="119" column="20" lean-forward="false" selection-start-line="119" selection-start-column="20" selection-end-line="119" selection-end-column="20" />
           <folding>
-            <marker date="1509873701286" expanded="true" signature="9:713" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="775:1045" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="1151:1245" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="1291:1315" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="1359:3571" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="1383:3565" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="1422:1471" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="1548:1599" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="1631:1680" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="1714:1765" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="1845:1904" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="1974:2028" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="2066:2123" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="2209:2270" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="2344:2400" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="2440:2499" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="2571:2626" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="2712:2774" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="2808:2862" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="2900:2957" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="3025:3078" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="3115:3171" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="3205:3259" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="3297:3354" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="3434:3492" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="3513:3556" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="3628:3667" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="3713:3738" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="4185:4290" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="4366:4755" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="4535:4585" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="4593:4745" ph="..." />
-            <marker date="1509873701286" expanded="true" signature="4763:4811" ph="..." />
+            <element signature="e#7#715#0#PHP" expanded="true" />
+            <element signature="e#771#825#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -709,15 +522,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/CortexPE/entity/EntityManager.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-546">
-          <caret line="45" column="77" lean-forward="true" selection-start-line="45" selection-start-column="77" selection-end-line="45" selection-end-column="77" />
+        <state relative-caret-position="273">
+          <caret line="45" column="77" lean-forward="false" selection-start-line="45" selection-start-column="77" selection-end-line="45" selection-end-column="77" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/CortexPE/entity/projectile/LingeringPotion.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1575">
+        <state relative-caret-position="1470">
           <caret line="75" column="35" lean-forward="false" selection-start-line="75" selection-start-column="35" selection-end-line="75" selection-end-column="35" />
           <folding>
             <element signature="e#74#99#0#PHP" expanded="true" />
@@ -728,7 +541,7 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="422">
+          <first_editor relative-caret-position="630">
             <caret line="30" column="22" lean-forward="true" selection-start-line="30" selection-start-column="22" selection-end-line="30" selection-end-column="22" />
             <folding />
           </first_editor>
@@ -749,7 +562,7 @@
         <state relative-caret-position="142">
           <caret line="15" column="26" lean-forward="true" selection-start-line="15" selection-start-column="26" selection-end-line="15" selection-end-column="26" />
           <folding>
-            <element signature="e#35#72#0#PHP" expanded="true" />
+            <element signature="e#35#72#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -774,7 +587,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="308">
           <caret line="275" column="51" lean-forward="true" selection-start-line="275" selection-start-column="51" selection-end-line="275" selection-end-column="51" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -791,6 +603,50 @@
         <state relative-caret-position="420">
           <caret line="20" column="27" lean-forward="false" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="27" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CortexPE/item/FireworkRocket.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CortexPE/LevelManager.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="79">
+          <caret line="38" column="41" lean-forward="false" selection-start-line="38" selection-start-column="41" selection-end-line="38" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../PocketMine-MP/src/pocketmine/entity/Living.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="233" column="46" lean-forward="true" selection-start-line="233" selection-start-column="46" selection-end-line="233" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CortexPE/item/Potion.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1315">
+          <caret line="127" column="61" lean-forward="false" selection-start-line="127" selection-start-column="46" selection-end-line="127" selection-end-column="61" />
+          <folding>
+            <element signature="e#691#737#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CortexPE/EventListener.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="179" column="37" lean-forward="true" selection-start-line="179" selection-start-column="37" selection-end-line="179" selection-end-column="37" />
+          <folding>
+            <element signature="e#1461#1503#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -42,6 +42,7 @@ use CortexPE\item\{Elytra, enchantment\Enchantment, FireworkRocket};
 use CortexPE\task\DelayedTeleportTask;
 use CortexPE\task\ElytraRocketBoostTrackingTask;
 use pocketmine\block\Air;
+use pocketmine\entity\Effect;
 use pocketmine\entity\Living;
 use pocketmine\event\entity\{EntityDamageByEntityEvent, EntityDamageEvent, EntityTeleportEvent, ProjectileLaunchEvent};
 use pocketmine\event\{Listener, level\LevelLoadEvent};
@@ -176,7 +177,20 @@ class EventListener implements Listener {
 					$ic->count--;
 					$p->getInventory()->setItemInHand($ic);
 					$ev->setCancelled(true);
-					$p->setHealth(2);
+					$p->setHealth(1);
+                    $p->removeAllEffects();
+                    $effect1 = Effect::getEffect(30); // Regeneration II
+                    $effect2 = Effect::getEffect(22); // Absorption
+                    $effect3 = Effect::getEffect(12); // Fire Resistance
+                    $effect1->setVisible(true);
+                    $effect2->setVisible(true);
+                    $effect3->setVisible(true);
+                    $effect1->setDuration(40 * 60); // 40 seconds, Duration it's in ticks
+                    $effect2->setDuration(5 * 60);
+                    $effect3->setDuration(40 * 60);
+                    $p->addEffect($effect1);
+                    $p->addEffect($effect2);
+                    $p->addEffect($effect3);
 
 					$pk = new LevelEventPacket();
 					$pk->evid = LevelEventPacket::EVENT_SOUND_TOTEM;
