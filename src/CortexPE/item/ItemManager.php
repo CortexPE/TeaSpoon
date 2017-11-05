@@ -39,6 +39,7 @@ use pocketmine\item\{Item, ItemFactory};
 
 class ItemManager {
 	public static function init(){
+	    ItemFactory::registerItem(new Boat());
 		ItemFactory::registerItem(new EnchantingBottle());
 		ItemFactory::registerItem(new EnderPearl());
 		ItemFactory::registerItem(new Potion(), true);
@@ -62,5 +63,8 @@ class ItemManager {
 			Item::addCreativeItem(Item::get(Item::SPLASH_POTION, $i));
 			Item::addCreativeItem(Item::get(Item::LINGERING_POTION, $i));
 		}
+		for ($i = 0; $i <= 5 ; $i++) {
+		    Item::addCreativeItem(Item::get(Item::BOAT, $i));
+        }
 	}
 }

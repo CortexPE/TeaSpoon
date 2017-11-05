@@ -34,6 +34,7 @@ Contributions are very welcome :smile:<br />You may contribute by opening a Pull
    - [ ] Entities
      - [X] Lightning
      - [X] XPOrbs (Non Functional)
+     - [X] Boats (@Credits: ClearSky)
    - [X] Mobs
      - [X] Bat
      - [X] Blaze
@@ -57,6 +58,7 @@ Contributions are very welcome :smile:<br />You may contribute by opening a Pull
      - [X] Mooshroom
      - [X] Mule
      - [X] Ocelot
+     - [X] Parrots
      - [X] Pig
      - [X] PolarBear
      - [X] Rabbit
