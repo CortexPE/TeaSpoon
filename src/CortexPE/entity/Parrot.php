@@ -33,41 +33,19 @@
 
 declare(strict_types = 1);
 
-namespace CortexPE\item;
+namespace CortexPE\entity;
 
-use pocketmine\item\{Item, ItemFactory};
+use pocketmine\entity\Animal;
+use pocketmine\item\Item;
 
-class ItemManager {
-	public static function init(){
-	    ItemFactory::registerItem(new Boat());
-		ItemFactory::registerItem(new EnchantingBottle());
-		ItemFactory::registerItem(new EnderPearl());
-		ItemFactory::registerItem(new Potion(), true);
-		ItemFactory::registerItem(new LingeringPotion(), true);
-		ItemFactory::registerItem(new SplashPotion());
-		ItemFactory::registerItem(new FlintSteel(), true);
-		ItemFactory::registerItem(new FireCharge());
-		ItemFactory::registerItem(new TotemOfUndying());
-		ItemFactory::registerItem(new Elytra());
-		ItemFactory::registerItem(new FireworkRocket());
+class Parrot extends Animal {
+	const NETWORK_ID = self::PARROT;
 
-		Item::addCreativeItem(Item::get(Item::ENDER_PEARL));
-		Item::addCreativeItem(Item::get(Item::ENDER_CHEST));
-		Item::addCreativeItem(Item::get(Item::BOTTLE_O_ENCHANTING));
-		Item::addCreativeItem(Item::get(Item::FIRE_CHARGE));
-		Item::addCreativeItem(Item::get(Item::TOTEM));
-		Item::addCreativeItem(Item::get(Item::ELYTRA));
-		Item::addCreativeItem(Item::get(Item::FIREWORKS));
+	public function getName(): string{
+		return "Parrot";
+	}
 
-		for($i = 0; $i <= 36; $i++){
-			Item::addCreativeItem(Item::get(Item::SPLASH_POTION, $i));
-		}
-
-		for($i = 0; $i <= 36; $i++){
-			Item::addCreativeItem(Item::get(Item::LINGERING_POTION, $i));
-		}
-		for ($i = 0; $i <= 5 ; $i++) {
-		    Item::addCreativeItem(Item::get(Item::BOAT, $i));
-        }
+	public function getDrops(): array{
+		return [Item::get(Item::FEATHER,0, mt_rand(1,2))];
 	}
 }

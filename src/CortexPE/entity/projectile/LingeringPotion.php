@@ -38,7 +38,7 @@ class LingeringPotion extends Throwable {
     }
 
     public function onUpdate(int $currentTick): bool {
-        if ($this->isAlive()) {
+        if ($this->isCollided || $this->age > 1200) {
             $this->getLevel()->addParticle(new ItemBreakParticle($this, ItemItem::get(ItemItem::LINGERING_POTION)));
 
             $aec = null;
@@ -75,6 +75,8 @@ class LingeringPotion extends Throwable {
             if ($aec instanceof Entity) {
                 $aec->spawnToAll();
             }
+            //$this->close();
+            //$this->kill();
         }
         return parent::onUpdate($currentTick);
     }

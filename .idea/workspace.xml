@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="626fe3a4-ee92-485e-8b37-4aeb370d8e12" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Boat.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/CortexPE/item/Boat.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/EntityManager.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/EntityManager.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/item/ItemManager.php" afterPath="$PROJECT_DIR$/src/CortexPE/item/ItemManager.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -21,8 +17,8 @@
       <file leaf-file-name="LingeringPotion.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/CortexPE/item/LingeringPotion.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1428">
-              <caret line="119" column="20" lean-forward="false" selection-start-line="119" selection-start-column="20" selection-end-line="119" selection-end-column="20" />
+            <state relative-caret-position="625">
+              <caret line="119" column="20" lean-forward="true" selection-start-line="119" selection-start-column="20" selection-end-line="119" selection-end-column="20" />
               <folding>
                 <element signature="e#7#663#0#PHP" expanded="true" />
                 <element signature="e#719#773#0#PHP" expanded="true" />
@@ -34,9 +30,21 @@
       <file leaf-file-name="EntityManager.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/CortexPE/entity/EntityManager.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-546">
-              <caret line="45" column="77" lean-forward="true" selection-start-line="45" selection-start-column="77" selection-end-line="45" selection-end-column="77" />
+            <state relative-caret-position="2">
+              <caret line="69" column="41" lean-forward="false" selection-start-line="69" selection-start-column="41" selection-end-line="69" selection-end-column="41" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Snowball.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/CortexPE/entity/projectile/Snowball.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="378">
+              <caret line="35" column="27" lean-forward="true" selection-start-line="35" selection-start-column="27" selection-end-line="35" selection-end-column="27" />
+              <folding>
+                <element signature="e#775#802#0#PHP" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -44,22 +52,10 @@
       <file leaf-file-name="LingeringPotion.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/CortexPE/entity/projectile/LingeringPotion.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1575">
-              <caret line="75" column="35" lean-forward="false" selection-start-line="75" selection-start-column="35" selection-end-line="75" selection-end-column="35" />
+            <state relative-caret-position="499">
+              <caret line="75" column="35" lean-forward="true" selection-start-line="75" selection-start-column="35" selection-end-line="75" selection-end-column="35" />
               <folding>
                 <element signature="e#74#99#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Boat.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/CortexPE/entity/Boat.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="142">
-              <caret line="15" column="26" lean-forward="true" selection-start-line="15" selection-start-column="26" selection-end-line="15" selection-end-column="26" />
-              <folding>
-                <element signature="e#35#72#0#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -69,8 +65,8 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="548">
-                <caret line="36" column="36" lean-forward="false" selection-start-line="36" selection-start-column="36" selection-end-line="36" selection-end-column="36" />
+              <first_editor relative-caret-position="338">
+                <caret line="27" column="38" lean-forward="false" selection-start-line="27" selection-start-column="38" selection-end-line="27" selection-end-column="38" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -78,51 +74,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Boat.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/CortexPE/item/Boat.php">
+      <file leaf-file-name="Entity.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../PocketMine-MP/src/pocketmine/entity/Entity.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="25" column="39" lean-forward="true" selection-start-line="25" selection-start-column="39" selection-end-line="25" selection-end-column="39" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Elytra.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/CortexPE/item/Elytra.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ItemManager.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/CortexPE/item/ItemManager.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
-              <caret line="47" column="58" lean-forward="true" selection-start-line="47" selection-start-column="58" selection-end-line="47" selection-end-column="58" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ItemFactory.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../PocketMine-MP/src/pocketmine/item/ItemFactory.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="275" column="51" lean-forward="true" selection-start-line="275" selection-start-column="51" selection-end-line="275" selection-end-column="51" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FireworkRocket.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/CortexPE/item/FireworkRocket.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="265">
+              <caret line="249" column="34" lean-forward="true" selection-start-line="249" selection-start-column="34" selection-end-line="249" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -144,6 +100,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/src/CortexPE/block/Obsidian.php" />
+        <option value="$PROJECT_DIR$/src/CortexPE/block/Portal.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/commands/KillCommand.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/block/EnderChest.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/commands/TestCommand.php" />
@@ -185,15 +143,13 @@
         <option value="$PROJECT_DIR$/src/CortexPE/task/DelayedCrossDimensionTeleportTask.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/task/DelayedTeleportTask.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/task/ElytraRocketBoostTrackingTask.php" />
+        <option value="$PROJECT_DIR$/src/CortexPE/item/ItemManager.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/entity/projectile/LingeringPotion.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/item/SplashPotion.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/item/LingeringPotion.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/entity/projectile/SplashPotion.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/Player.php" />
-        <option value="$PROJECT_DIR$/src/CortexPE/entity/Boat.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/entity/EntityManager.php" />
-        <option value="$PROJECT_DIR$/src/CortexPE/item/Boat.php" />
-        <option value="$PROJECT_DIR$/src/CortexPE/item/ItemManager.php" />
         <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
@@ -209,7 +165,7 @@
       <path value="C:\Users\user\Desktop\Proiecte\PocketMine-MP\src" />
     </include_path>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="260" />
     <option name="y" value="21" />
     <option name="width" value="1400" />
@@ -314,16 +270,15 @@
       <option name="presentableId" value="Default" />
       <updated>1509725193586</updated>
       <workItem from="1509725194724" duration="3262000" />
-      <workItem from="1509807962033" duration="6614000" />
-      <workItem from="1509872768308" duration="854000" />
+      <workItem from="1509807962033" duration="6529000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10868000" />
+    <option name="totallyTimeSpent" value="9929000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1060" extended-state="7" />
+    <frame x="-9" y="-9" width="1938" height="1060" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -356,6 +311,64 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/CortexPE/item/FlintSteel.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="40" column="27" lean-forward="true" selection-start-line="40" selection-start-column="27" selection-end-line="40" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CortexPE/item/TotemOfUndying.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CortexPE/level/generator/biome/Biome.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="40" column="15" lean-forward="false" selection-start-line="40" selection-start-column="15" selection-end-line="40" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CortexPE/level/generator/ender/biome/EnderBiome.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CortexPE/level/generator/ender/Ender.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="30" column="120" lean-forward="false" selection-start-line="30" selection-start-column="120" selection-end-line="30" selection-end-column="120" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CortexPE/level/particle/SpellParticle.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CortexPE/level/populator/NetherLava.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-945">
+          <caret line="26" column="67" lean-forward="false" selection-start-line="26" selection-start-column="67" selection-end-line="26" selection-end-column="67" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CortexPE/plugin/AllAPI/PharPluginLoader.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="36" column="0" lean-forward="false" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/CortexPE/plugin/AllAPI/FolderPluginLoader.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -437,6 +450,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
           <caret line="26" column="34" lean-forward="false" selection-start-line="26" selection-start-column="34" selection-end-line="26" selection-end-column="34" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -519,6 +533,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="378">
           <caret line="18" column="2" lean-forward="true" selection-start-line="18" selection-start-column="2" selection-end-line="18" selection-end-column="2" />
+          <folding>
+            <element signature="e#7#540#0#PHP" expanded="false" />
+            <element signature="e#600#630#0#PHP" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -526,6 +544,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="84">
           <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="26" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -541,6 +560,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="861">
           <caret line="70" column="115" lean-forward="false" selection-start-line="70" selection-start-column="115" selection-end-line="70" selection-end-column="115" />
+          <folding>
+            <element signature="e#1371#1398#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -548,6 +570,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="813">
           <caret line="86" column="9" lean-forward="true" selection-start-line="86" selection-start-column="9" selection-end-line="87" selection-end-column="12" />
+          <folding>
+            <element signature="e#1371#1398#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -555,6 +580,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="561">
           <caret line="64" column="39" lean-forward="false" selection-start-line="64" selection-start-column="39" selection-end-line="64" selection-end-column="39" />
+          <folding>
+            <element signature="e#1371#1470#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -562,10 +590,26 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="525">
           <caret line="64" column="50" lean-forward="false" selection-start-line="64" selection-start-column="50" selection-end-line="64" selection-end-column="50" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/CortexPE/item/ProjectileItem.php" />
+    <entry file="file://$PROJECT_DIR$/src/CortexPE/item/ItemManager.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="630">
+          <caret line="62" column="73" lean-forward="false" selection-start-line="62" selection-start-column="73" selection-end-line="62" selection-end-column="73" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CortexPE/item/ProjectileItem.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="29" column="25" lean-forward="true" selection-start-line="29" selection-start-column="25" selection-end-line="29" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/CortexPE/item/Potion.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-3114">
@@ -618,73 +662,23 @@
         <state relative-caret-position="483">
           <caret line="52" column="5" lean-forward="true" selection-start-line="52" selection-start-column="5" selection-end-line="52" selection-end-column="5" />
           <folding>
-            <element signature="e#1366#1425#0#PHP" expanded="false" />
+            <element signature="e#1366#1425#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../PocketMine-MP/src/pocketmine/entity/Entity.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4053">
+        <state relative-caret-position="265">
           <caret line="249" column="34" lean-forward="true" selection-start-line="249" selection-start-column="34" selection-end-line="249" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/CortexPE/entity/projectile/Snowball.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="35" column="27" lean-forward="false" selection-start-line="35" selection-start-column="27" selection-end-line="35" selection-end-column="27" />
-          <folding>
-            <element signature="e#775#802#0#PHP" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/CortexPE/entity/CaveSpider.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/CortexPE/entity/Chicken.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="37" column="29" lean-forward="true" selection-start-line="37" selection-start-column="29" selection-end-line="37" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/CortexPE/entity/Blaze.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-68">
-          <caret line="40" column="25" lean-forward="true" selection-start-line="40" selection-start-column="25" selection-end-line="40" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/CortexPE/entity/EntityManager.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-546">
-          <caret line="45" column="77" lean-forward="true" selection-start-line="45" selection-start-column="77" selection-end-line="45" selection-end-column="77" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/CortexPE/item/FireworkRocket.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/CortexPE/item/LingeringPotion.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1428">
-          <caret line="119" column="20" lean-forward="false" selection-start-line="119" selection-start-column="20" selection-end-line="119" selection-end-column="20" />
+        <state relative-caret-position="625">
+          <caret line="119" column="20" lean-forward="true" selection-start-line="119" selection-start-column="20" selection-end-line="119" selection-end-column="20" />
           <folding>
             <element signature="e#7#663#0#PHP" expanded="true" />
             <element signature="e#719#773#0#PHP" expanded="true" />
@@ -692,54 +686,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/CortexPE/entity/projectile/LingeringPotion.php">
+    <entry file="file://$PROJECT_DIR$/src/CortexPE/entity/projectile/Snowball.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1575">
-          <caret line="75" column="35" lean-forward="false" selection-start-line="75" selection-start-column="35" selection-end-line="75" selection-end-column="35" />
+        <state relative-caret-position="378">
+          <caret line="35" column="27" lean-forward="true" selection-start-line="35" selection-start-column="27" selection-end-line="35" selection-end-column="27" />
           <folding>
-            <element signature="e#74#99#0#PHP" expanded="true" />
+            <element signature="e#775#802#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/CortexPE/item/Elytra.php">
+    <entry file="file://$PROJECT_DIR$/src/CortexPE/entity/EntityManager.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="2">
+          <caret line="69" column="41" lean-forward="false" selection-start-line="69" selection-start-column="41" selection-end-line="69" selection-end-column="41" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../PocketMine-MP/src/pocketmine/item/ItemFactory.php">
+    <entry file="file://$PROJECT_DIR$/src/CortexPE/entity/projectile/LingeringPotion.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="275" column="51" lean-forward="true" selection-start-line="275" selection-start-column="51" selection-end-line="275" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/CortexPE/item/Boat.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="25" column="39" lean-forward="true" selection-start-line="25" selection-start-column="39" selection-end-line="25" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/CortexPE/item/ItemManager.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="47" column="58" lean-forward="true" selection-start-line="47" selection-start-column="58" selection-end-line="47" selection-end-column="58" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/CortexPE/entity/Boat.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="15" column="26" lean-forward="true" selection-start-line="15" selection-start-column="26" selection-end-line="15" selection-end-column="26" />
+        <state relative-caret-position="499">
+          <caret line="75" column="35" lean-forward="true" selection-start-line="75" selection-start-column="35" selection-end-line="75" selection-end-column="35" />
           <folding>
-            <element signature="e#35#72#0#PHP" expanded="true" />
+            <element signature="e#74#99#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -747,8 +717,8 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="548">
-            <caret line="36" column="36" lean-forward="false" selection-start-line="36" selection-start-column="36" selection-end-line="36" selection-end-column="36" />
+          <first_editor relative-caret-position="338">
+            <caret line="27" column="38" lean-forward="false" selection-start-line="27" selection-start-column="38" selection-end-line="27" selection-end-column="38" />
             <folding />
           </first_editor>
           <second_editor />
