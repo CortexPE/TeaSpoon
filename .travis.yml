@@ -14,11 +14,11 @@ before_script:
  - echo | pecl install channel://pecl.php.net/yaml-2.0.0
  - git clone --recursive --depth=50 --branch=master https://github.com/pmmp/PocketMine-MP.git
  - mkdir -p PocketMine-MP/plugins/TeaSpoon-src
- - cp -rf TeaSpoon/CortexPE/src PocketMine-MP/plugins/TeaSpoon-src
- - cp -rf TeaSpoon/CortexPE/resources PocketMine-MP/plugins/TeaSpoon-src
- - cp -rf TeaSpoon/CortexPE/plugin.yml PocketMine-MP/plugins/TeaSpoon-src
- - cp -rf TeaSpoon/CortexPE/LICENSE PocketMine-MP/plugins/TeaSpoon-src
- - cp -rf SalmonDE/CortexPE/build.php PocketMine-MP/
+ - cp -rf CortexPE/TeaSpoon/src PocketMine-MP/plugins/TeaSpoon-src
+ - cp -rf CortexPE/TeaSpoon/resources PocketMine-MP/plugins/TeaSpoon-src
+ - cp -rf CortexPE/TeaSpoon/plugin.yml PocketMine-MP/plugins/TeaSpoon-src
+ - cp -rf CortexPE/TeaSpoon/LICENSE PocketMine-MP/plugins/TeaSpoon-src
+ - cp -rf CortexPE/TeaSpoon/build.php PocketMine-MP/
  - git clone https://github.com/pmmp/PocketMine-DevTools.git
  - cp CortexPE/TeaSpoon/compiledevtools.php /home/travis/build/
  - php compiledevtools.php
