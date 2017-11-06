@@ -178,19 +178,20 @@ class EventListener implements Listener {
 					$p->getInventory()->setItemInHand($ic);
 					$ev->setCancelled(true);
 					$p->setHealth(1);
-                    $p->removeAllEffects();
-                    $effect1 = Effect::getEffect(30); // Regeneration II
-                    $effect2 = Effect::getEffect(22); // Absorption
-                    $effect3 = Effect::getEffect(12); // Fire Resistance
-                    $effect1->setVisible(true);
-                    $effect2->setVisible(true);
-                    $effect3->setVisible(true);
-                    $effect1->setDuration(40 * 60); // 40 seconds, Duration it's in ticks
-                    $effect2->setDuration(5 * 60);
-                    $effect3->setDuration(40 * 60);
-                    $p->addEffect($effect1);
-                    $p->addEffect($effect2);
-                    $p->addEffect($effect3);
+                    			
+					$p->removeAllEffects();
+                    			$effect1 = Effect::getEffect(30); // Regeneration II
+                    			$effect2 = Effect::getEffect(22); // Absorption
+                    			$effect3 = Effect::getEffect(12); // Fire Resistance
+                    			$effect1->setVisible(true);
+                    			$effect2->setVisible(true);
+                    			$effect3->setVisible(true);
+                    			$effect1->setDuration(40 * 20); // 40 seconds, Duration it's in ticks
+                    			$effect2->setDuration(5 * 20);
+                    			$effect3->setDuration(40 * 20);
+                    			$p->addEffect($effect1);
+                    			$p->addEffect($effect2);
+                    			$p->addEffect($effect3);
 
 					$pk = new LevelEventPacket();
 					$pk->evid = LevelEventPacket::EVENT_SOUND_TOTEM;
