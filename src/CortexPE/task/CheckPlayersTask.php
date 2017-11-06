@@ -70,9 +70,9 @@ class CheckPlayersTask extends PluginTask {
 
 	private function scheduleTeleport(Player $player, int $dimension, Vector3 $pos, bool $toAndFromNether = false) {
 		if ($toAndFromNether) {
-			Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($this->owner, $player, $dimension, $pos), 4 * 20); // 80 ticks i think it's 4 seconds (On vanilla it's 4 sec for wait teleport)
+			Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($this->owner, $player, $dimension, $pos), 4 * 20);
 		} else {
-			Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($this->owner, $player, $dimension, $pos), 10); // @CortexPE what it's that?
+			Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($this->owner, $player, $dimension, $pos), 1);
 		}
 		Main::$TEMPSkipCheck[$player->getName()] = true;
 	}

@@ -123,6 +123,8 @@ class Main extends PluginBase {
 		"Bug Fix 2 FINALFINANFINAL",
 		"We have VCS Systems. :P",
 		":shrug:",
+		"Also try V A P O R W A V E",
+		"Or S I M P S O N W A V E idk xD",
 		// Add more splashes fur fun. xD
 	];
 

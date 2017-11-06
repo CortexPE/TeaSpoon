@@ -39,10 +39,13 @@ use CortexPE\item\enchantment\Enchantment;
 use CortexPE\Player;
 use CortexPE\Utils;
 use pocketmine\block\Block;
+use pocketmine\entity\Attribute;
 use pocketmine\entity\Living;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\item\Item;
 use pocketmine\plugin\Plugin;
 use pocketmine\Player as PMPlayer;
@@ -66,8 +69,16 @@ class EnchantHandler implements Listener {
 		$this->plugin = $plugin;
 	}
 
+	/**
+	 * @param EntityDamageEvent $ev
+	 *
+	 * @priority HIGHEST
+	 */
 	public function onDamage(EntityDamageEvent $ev){
 		$e = $ev->getEntity();
+		if($ev->isCancelled()){
+			return;
+		}
 		if($ev instanceof EntityDamageByEntityEvent){ // TODO: ADD MORE ENCHANTS
 			$d = $ev->getDamager();
 			if($d instanceof PMPlayer && $e instanceof Living){
@@ -81,6 +92,11 @@ class EnchantHandler implements Listener {
 								break;
 							case Enchantment::KNOCKBACK:
 								$ev->setKnockBack(($ev->getKnockBack() + 0.3) * $ench->getLevel());
+								break;
+							case Enchantment::PUNCH:
+								if($d->getInventory()->getItemInHand()->getId() == Item::BOW){
+									$ev->setKnockBack(($ev->getKnockBack() + 0.2) * $ench->getLevel());
+								}
 								break;
 							case Enchantment::BANE_OF_ARTHROPODS:
 								if(Utils::in_arrayi($e->getName(),self::BANE_OF_ARTHROPODS_AFFECTED_ENTITIES)){
@@ -108,7 +124,49 @@ class EnchantHandler implements Listener {
 								if($enchantment->getLevel() <= 0)continue;
 								switch($enchantment->getId()){
 									case Enchantment::THORNS:
-										$d->attack(new EntityDamageEvent($e, EntityDamageEvent::CAUSE_ENTITY_ATTACK, mt_rand($enchantment->getLevel(), 3 + $enchantment->getLevel())));
+										if($d instanceof PMPlayer){
+											$armor = $d->getInventory()->getHelmet();
+											if(mt_rand(1,2) == 1 && $armor->getId() !== Block::AIR){
+												$armorClone = clone $armor;
+												if($armorClone->getDamage() - 3 > 0){
+													$armorClone->setDamage($armorClone->getDamage() - 3);
+												} else {
+													$armorClone->setDamage(0);
+												}
+												$d->getInventory()->setHelmet($armorClone);
+											}
+											$armor = $d->getInventory()->getChestplate();
+											if(mt_rand(1,2) == 1 && $armor->getId() !== Block::AIR){
+												$armorClone = clone $armor;
+												if($armorClone->getDamage() - 3 > 0){
+													$armorClone->setDamage($armorClone->getDamage() - 3);
+												} else {
+													$armorClone->setDamage(0);
+												}
+												$d->getInventory()->setChestplate($armorClone);
+											}
+											$armor = $d->getInventory()->getLeggings();
+											if(mt_rand(1,2) == 1 && $armor->getId() !== Block::AIR){
+												$armorClone = clone $armor;
+												if($armorClone->getDamage() - 3 > 0){
+													$armorClone->setDamage($armorClone->getDamage() - 3);
+												} else {
+													$armorClone->setDamage(0);
+												}
+												$d->getInventory()->setLeggings($armorClone);
+											}
+											$armor = $d->getInventory()->getBoots();
+											if(mt_rand(1,2) == 1 && $armor->getId() !== Block::AIR){
+												$armorClone = clone $armor;
+												if($armorClone->getDamage() - 3 > 0){
+													$armorClone->setDamage($armorClone->getDamage() - 3);
+												} else {
+													$armorClone->setDamage(0);
+												}
+												$d->getInventory()->setBoots($armorClone);
+											}
+											$d->attack(new EntityDamageEvent($e, EntityDamageEvent::CAUSE_CUSTOM, mt_rand($enchantment->getLevel(), 4 + $enchantment->getLevel())));
+										}
 										break;
 								}
 							}
@@ -163,5 +221,92 @@ class EnchantHandler implements Listener {
 				}
 			}
 		}
+		if(
+			!(
+				$ev->getCause() == EntityDamageEvent::CAUSE_STARVATION ||
+				$ev->getCause() == EntityDamageEvent::CAUSE_MAGIC
+			) &&
+			$e instanceof Player
+		){
+			foreach($e->getInventory()->getArmorContents() as $armor){
+				if($armor->hasEnchantments()){
+					if($armor->hasEnchantment(Enchantment::PROTECTION) && ($ench = $armor->getEnchantment(Enchantment::PROTECTION))->getLevel() > 0){
+						$ev->setDamage($ev->getDamage() - ((0.03 * $ench->getLevel()) * $ev->getDamage()));
+						break;
+					}
+				}
+			}
+		}
+		if(
+
+			$ev->getCause() == EntityDamageEvent::CAUSE_PROJECTILE &&
+			$e instanceof Player
+		){
+			foreach($e->getInventory()->getArmorContents() as $armor){
+				if($armor->hasEnchantments()){
+					if($armor->hasEnchantment(Enchantment::PROJECTILE_PROTECTION) && ($ench = $armor->getEnchantment(Enchantment::PROJECTILE_PROTECTION))->getLevel() > 0){
+						$ev->setDamage($ev->getDamage() - ((0.04 * $ench->getLevel()) * $ev->getDamage()));
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * @param EntityShootBowEvent $ev
+	 *
+	 * @priority HIGHEST
+	 */
+	public function onShoot(EntityShootBowEvent $ev){
+		$p = $ev->getEntity();
+		if($p instanceof PMPlayer && !$ev->isCancelled() && $ev->getBow()->hasEnchantments() && $ev->getBow()->hasEnchantment(Enchantment::INFINITY)){
+			if($p->isSurvival()){
+				$p->getInventory()->addItem(Item::get(Item::ARROW, 0, 1));
+			}
+		}
+	}
+
+	/**
+	 * @param PlayerMoveEvent $ev
+	 *
+	 * @priority HIGHEST
+	 */
+	public function onMove(PlayerMoveEvent $ev){
+		if($ev->isCancelled()){
+			return;
+		}
+		$p = $ev->getPlayer();
+		$armor = $p->getInventory()->getBoots();
+		if($armor->hasEnchantments() && $armor->hasEnchantment(Enchantment::DEPTH_STRIDER)){
+			$lvl = $armor->getEnchantment(Enchantment::DEPTH_STRIDER)->getLevel();
+			$att = $p->getAttributeMap()->getAttribute(Attribute::MOVEMENT_SPEED);
+			if($lvl > 0){
+				if(in_array($p->getLevel()->getBlock($p)->getId(), self::WATER_IDS)){
+					$att->setValue($att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl), true, true);
+					if($p->getGamemode() != PMPlayer::CREATIVE && $p->getGamemode() != PMPlayer::SPECTATOR){
+						$p->setAllowFlight(true);
+						$p->setAllowMovementCheats(true);
+					}
+				} else {
+					if($att->getValue() == $att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl)){
+						$att->setValue($att->getDefaultValue(), true, true);
+						if($p->getGamemode() != PMPlayer::CREATIVE && $p->getGamemode() != PMPlayer::SPECTATOR){
+							$p->setAllowFlight(false);
+							$p->setAllowMovementCheats(false);
+						}
+					}
+				}
+			} else {
+				if($att->getValue() == $att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl)){
+					$att->setValue($att->getDefaultValue(), true, true);
+					if($p->getGamemode() != PMPlayer::CREATIVE && $p->getGamemode() != PMPlayer::SPECTATOR){
+						$p->setAllowFlight(false);
+						$p->setAllowMovementCheats(false);
+					}
+				}
+			}
+		}
+
 	}
 }

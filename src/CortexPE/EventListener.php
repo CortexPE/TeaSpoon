@@ -38,21 +38,29 @@ declare(strict_types = 1);
 namespace CortexPE;
 
 use CortexPE\entity\projectile\EnderPearl;
-use CortexPE\item\{Elytra, enchantment\Enchantment, FireworkRocket};
+use CortexPE\item\{
+	Elytra, FireworkRocket
+};
 use CortexPE\task\DelayedTeleportTask;
 use CortexPE\task\ElytraRocketBoostTrackingTask;
-use pocketmine\block\Air;
 use pocketmine\entity\Effect;
-use pocketmine\entity\Living;
-use pocketmine\event\entity\{EntityDamageByEntityEvent, EntityDamageEvent, EntityTeleportEvent, ProjectileLaunchEvent};
-use pocketmine\event\{Listener, level\LevelLoadEvent};
-use pocketmine\event\player\{PlayerDeathEvent, PlayerInteractEvent, PlayerJoinEvent, PlayerLoginEvent, PlayerRespawnEvent};
+use pocketmine\event\{
+	level\LevelLoadEvent, Listener
+};
+use pocketmine\event\entity\{
+	EntityDamageEvent, EntityTeleportEvent, ProjectileLaunchEvent
+};
+use pocketmine\event\player\{
+	PlayerDeathEvent, PlayerInteractEvent, PlayerJoinEvent, PlayerLoginEvent, PlayerRespawnEvent
+};
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
-use pocketmine\network\mcpe\protocol\{ChangeDimensionPacket, LevelEventPacket, types\DimensionIds};
+use pocketmine\network\mcpe\protocol\{
+	ChangeDimensionPacket, LevelEventPacket, types\DimensionIds
+};
+use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
 use pocketmine\Server as PMServer;
-use pocketmine\Player as PMPlayer;
 
 class EventListener implements Listener {
 
@@ -178,20 +186,26 @@ class EventListener implements Listener {
 					$p->getInventory()->setItemInHand($ic);
 					$ev->setCancelled(true);
 					$p->setHealth(1);
-                    			
+
 					$p->removeAllEffects();
-                    			$effect1 = Effect::getEffect(30); // Regeneration II
-                    			$effect2 = Effect::getEffect(22); // Absorption
-                    			$effect3 = Effect::getEffect(12); // Fire Resistance
-                    			$effect1->setVisible(true);
-                    			$effect2->setVisible(true);
-                    			$effect3->setVisible(true);
-                    			$effect1->setDuration(40 * 20); // 40 seconds, Duration it's in ticks
-                    			$effect2->setDuration(5 * 20);
-                    			$effect3->setDuration(40 * 20);
-                    			$p->addEffect($effect1);
-                    			$p->addEffect($effect2);
-                    			$p->addEffect($effect3);
+
+					$effect1 = Effect::getEffect(Effect::REGENERATION);
+					$effect2 = Effect::getEffect(Effect::ABSORPTION);
+					$effect3 = Effect::getEffect(Effect::FIRE_RESISTANCE);
+
+					$effect1->setAmplifier(1);
+
+					$effect1->setVisible(true);
+					$effect2->setVisible(true);
+					$effect3->setVisible(true);
+
+					$effect1->setDuration(40 * 20);
+					$effect2->setDuration(5 * 20);
+					$effect3->setDuration(40 * 20);
+
+					$p->addEffect($effect1);
+					$p->addEffect($effect2);
+					$p->addEffect($effect3);
 
 					$pk = new LevelEventPacket();
 					$pk->evid = LevelEventPacket::EVENT_SOUND_TOTEM;
@@ -227,7 +241,7 @@ class EventListener implements Listener {
 	 * @priority HIGHEST
 	 */
 	public function onRespawn(PlayerRespawnEvent $ev){ // Other plugins might cancel it. so...
-		if($ev->getPlayer()->isOnFire())$ev->getPlayer()->setOnFire(0);
+		if($ev->getPlayer()->isOnFire()) $ev->getPlayer()->setOnFire(0);
 	}
 
 	/**
@@ -254,7 +268,7 @@ class EventListener implements Listener {
 				if(floor(microtime(true) - Main::$lastUses[$p->getName()]) < Main::$enderPearlCooldown){
 					$ev->setCancelled(true);
 					$e->close();
-				} else {
+				}else{
 					Main::$lastUses[$p->getName()] = time();
 				}
 			}

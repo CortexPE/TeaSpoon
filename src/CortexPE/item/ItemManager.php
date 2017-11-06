@@ -35,11 +35,13 @@ declare(strict_types = 1);
 
 namespace CortexPE\item;
 
-use pocketmine\item\{Item, ItemFactory};
+use pocketmine\item\{
+	Item, ItemFactory
+};
 
 class ItemManager {
 	public static function init(){
-	    	ItemFactory::registerItem(new Boat(), true);
+		ItemFactory::registerItem(new Boat(), true);
 		ItemFactory::registerItem(new EnchantingBottle());
 		ItemFactory::registerItem(new EnderPearl());
 		ItemFactory::registerItem(new Potion(), true);
@@ -66,9 +68,9 @@ class ItemManager {
 		for($i = 0; $i <= 36; $i++){
 			Item::addCreativeItem(Item::get(Item::LINGERING_POTION, $i));
 		}
-		
-		for ($i = 0; $i <= 5 ; $i++) {
-		    Item::addCreativeItem(Item::get(Item::BOAT, $i));
-        	}
+
+		for($i = 0; $i <= 5; $i++){
+			Item::addCreativeItem(Item::get(Item::BOAT, $i));
+		}
 	}
 }
