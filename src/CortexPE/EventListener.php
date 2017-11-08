@@ -51,7 +51,7 @@ use pocketmine\event\entity\{
 	EntityDamageEvent, EntityTeleportEvent, ProjectileLaunchEvent
 };
 use pocketmine\event\player\{
-	PlayerDeathEvent, PlayerInteractEvent, PlayerJoinEvent, PlayerLoginEvent, PlayerRespawnEvent
+	PlayerDeathEvent, PlayerInteractEvent, PlayerJoinEvent, PlayerKickEvent, PlayerLoginEvent, PlayerRespawnEvent
 };
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
@@ -253,6 +253,7 @@ class EventListener implements Listener {
 		Main::$lastUses[$ev->getPlayer()->getName()] = 0;
 		Main::$TEMPSkipCheck[$ev->getPlayer()->getName()] = false;
 		Main::$usingElytra[$ev->getPlayer()->getName()] = false;
+		Main::$TEMPAllowCheats[$ev->getPlayer()->getName()] = false;
 	}
 
 	/**
@@ -289,6 +290,17 @@ class EventListener implements Listener {
 				// TODO: Rocket Sound
 				$this->plugin->getServer()->getScheduler()->scheduleRepeatingTask(new ElytraRocketBoostTrackingTask($this->plugin, $p, 6), 5);
 			}
+		}
+	}
+
+	/**
+	 * @param PlayerKickEvent $ev
+	 *
+	 * @priority HIGHEST
+	 */
+	public function onKick(PlayerKickEvent $ev){
+		if(Main::$TEMPAllowCheats[$ev->getPlayer()->getName()] === true && $ev->getReason() == PMServer::getInstance()->getLanguage()->translateString("kick.reason.cheat", ["%ability.flight"])){
+			$ev->setCancelled(true);
 		}
 	}
 }

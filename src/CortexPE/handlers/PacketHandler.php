@@ -62,17 +62,15 @@ class PacketHandler implements Listener {
 			switch($pkr->action){
 				case PlayerActionPacket::ACTION_START_GLIDE:
 					$p->setDataFlag(PMPlayer::DATA_FLAGS, PMPlayer::DATA_FLAG_GLIDING, true, PMPlayer::DATA_TYPE_BYTE);
-					if($p->getGamemode() != PMPlayer::CREATIVE && $p->getGamemode() != PMPlayer::SPECTATOR){
-						$p->setAllowFlight(true); //hacky code. eh. the only dweebs who'd come screaming about it are PMMP Elitists. -_-
-					}
+
 					Main::$usingElytra[$p->getName()] = true;
+					Main::$TEMPAllowCheats[$ev->getPlayer()->getName()] = true;
 					break;
 				case PlayerActionPacket::ACTION_STOP_GLIDE:
 					$p->setDataFlag(PMPlayer::DATA_FLAGS, PMPlayer::DATA_FLAG_GLIDING, false, PMPlayer::DATA_TYPE_BYTE);
-					if($p->getGamemode() != PMPlayer::CREATIVE && $p->getGamemode() != PMPlayer::SPECTATOR){
-						$p->setAllowFlight(false);
-					}
+
 					Main::$usingElytra[$p->getName()] = false;
+					Main::$TEMPAllowCheats[$ev->getPlayer()->getName()] = false;
 					break;
 			}
 		}

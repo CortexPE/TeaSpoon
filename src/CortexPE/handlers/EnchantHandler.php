@@ -36,6 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\handlers;
 
 use CortexPE\item\enchantment\Enchantment;
+use CortexPE\Main;
 use CortexPE\Player;
 use CortexPE\Utils;
 use pocketmine\block\Block;
@@ -284,26 +285,20 @@ class EnchantHandler implements Listener {
 			if($lvl > 0){
 				if(in_array($p->getLevel()->getBlock($p)->getId(), self::WATER_IDS)){
 					$att->setValue($att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl), true, true);
-					if($p->getGamemode() != PMPlayer::CREATIVE && $p->getGamemode() != PMPlayer::SPECTATOR){
-						$p->setAllowFlight(true);
-						$p->setAllowMovementCheats(true);
-					}
+
+					Main::$TEMPAllowCheats[$ev->getPlayer()->getName()] = true;
 				} else {
 					if($att->getValue() == $att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl)){
 						$att->setValue($att->getDefaultValue(), true, true);
-						if($p->getGamemode() != PMPlayer::CREATIVE && $p->getGamemode() != PMPlayer::SPECTATOR){
-							$p->setAllowFlight(false);
-							$p->setAllowMovementCheats(false);
-						}
+
+						Main::$TEMPAllowCheats[$ev->getPlayer()->getName()] = false;
 					}
 				}
 			} else {
 				if($att->getValue() == $att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl)){
 					$att->setValue($att->getDefaultValue(), true, true);
-					if($p->getGamemode() != PMPlayer::CREATIVE && $p->getGamemode() != PMPlayer::SPECTATOR){
-						$p->setAllowFlight(false);
-						$p->setAllowMovementCheats(false);
-					}
+
+					Main::$TEMPAllowCheats[$ev->getPlayer()->getName()] = false;
 				}
 			}
 		}

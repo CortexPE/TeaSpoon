@@ -83,6 +83,8 @@ class Main extends PluginBase {
 	public static $usingElytra = [];
 	/** @var int */
 	public static $ePearlDamage = 5;
+	/** @var array */
+	public static $TEMPAllowCheats = [];
 
 	private $splashes = [
 		'Low-Calorie blend',
