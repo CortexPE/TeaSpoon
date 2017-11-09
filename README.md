@@ -11,7 +11,7 @@ Contributions are very welcome :smile:<br />You may contribute by opening a Pull
   - [ ] Dimensions
     - [X] Nether Dimension
     - [X] End Dimension
-    - [X] Fully Functional Nether Portal
+    - [X] Fully Functional Nether Portal Frame and Block
     - [X] Funtional END_PORTAL Block (Portal Soon)
   - [ ] Weather System
   - [ ] Temperature System
@@ -19,6 +19,7 @@ Contributions are very welcome :smile:<br />You may contribute by opening a Pull
    - [X] EnderChests
    - [X] EndPortal
    - [X] Portal (Nether Portal Block)
+   - [X] DragonEgg
  - Items
    - [X] Vanilla Enchants (Progress: 80%)
    - [X] Splash Potions

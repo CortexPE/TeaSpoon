@@ -56,7 +56,7 @@ use pocketmine\event\player\{
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\{
-	ChangeDimensionPacket, LevelEventPacket, types\DimensionIds
+	ChangeDimensionPacket, EntityEventPacket, LevelEventPacket, types\DimensionIds
 };
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
@@ -116,57 +116,23 @@ class EventListener implements Listener {
 		return true;
 	}*/
 
-
-	/**
-	 * @param PlayerDeathEvent $ev
-	 * @return bool
-	 *
-	 * @priority HIGHEST
-	 */
-	public function onDeath(PlayerDeathEvent $ev){
-		if($ev->getPlayer()->getLevel()->getName() === Main::$netherLevel->getName() || $ev->getPlayer()->getLevel()->getName() === Main::$endLevel->getName()){
-			PMServer::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedTeleportTask($this->plugin, $ev->getPlayer()), 20);
-		}
-
-		return true;
-	}
-
-
 	/**
 	 * @param EntityTeleportEvent $ev
 	 * @return bool
 	 *
 	 * @priority HIGHEST
 	 */
-	public function onTeleport(EntityTeleportEvent $ev){
+	/*public function onTeleport(EntityTeleportEvent $ev){
 		$p = $ev->getEntity();
-		if($p instanceof Player/* && !in_array($p->getName(), Main::$teleporting)*/){
-			switch($ev->getTo()->getLevel()->getName()){
-				case Main::$netherLevel->getName():
-					$pk = new ChangeDimensionPacket();
-					$pk->dimension = DimensionIds::NETHER;
-					$pk->position = $ev->getTo();
-					$p->dataPacket($pk);
-					break;
-				case Main::$endLevel->getName():
-					$pk = new ChangeDimensionPacket();
-					$pk->dimension = DimensionIds::THE_END;
-					$pk->position = $ev->getTo();
-					$p->dataPacket($pk);
-					break;
-				default:
-					$pk = new ChangeDimensionPacket();
-					$pk->dimension = DimensionIds::OVERWORLD;
-					$pk->position = $ev->getTo();
-					$p->dataPacket($pk);
-					break;
-			}
-		}/* else if(in_array($p->getName(), Main::$teleporting)){
-			unset(Main::$teleporting[array_search($p->getName(), Main::$teleporting)]);
-		}*/
+		if($p instanceof Player){
+			$pk = new ChangeDimensionPacket();
+			$pk->dimension = Utils::getDimension($ev->getTo()->getLevel());
+			$pk->position = $ev->getTo();
+			$p->dataPacket($pk);
+		}
 
 		return true;
-	}
+	}*/
 
 	/**
 	 * @param EntityDamageEvent $ev
@@ -213,13 +179,11 @@ class EventListener implements Listener {
 					$pk->position = new Vector3($p->getX(), $p->getY(), $p->getZ());
 					$p->dataPacket($pk);
 
-					$pk2 = new LevelEventPacket();
-					$pk2->evid = 2005;
+					$pk2 = new EntityEventPacket();
+					$pk2->entityRuntimeId = $p->getId();
+					$pk2->event = EntityEventPacket::CONSUME_TOTEM;
 					$pk2->data = 0;
-					$pk2->position = new Vector3($p->getX(), $p->getY(), $p->getZ());
 					$p->dataPacket($pk2);
-
-					// TODO: Find the LevelEventID for Totem Animation (If it exists... I'm guessing it does.)
 				}
 			}
 		}

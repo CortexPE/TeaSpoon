@@ -39,6 +39,8 @@ use CortexPE\block\{EndPortal, Portal};
 use pocketmine\block\BlockFactory;
 use pocketmine\entity\Entity;
 use pocketmine\item\ItemFactory;
+use pocketmine\level\Level;
+use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player as PMPlayer;
 
 class Utils {
@@ -106,5 +108,14 @@ class Utils {
 
 	public static function in_arrayi($needle, $haystack) {
 		return in_array(strtolower($needle), array_map('strtolower', $haystack));
+	}
+
+	public static function getDimension(Level $level) : int {
+		if($level->getName() == Main::$netherLevel->getName()){
+			return DimensionIds::NETHER;
+		} elseif($level->getName() == Main::$endLevel->getName()){
+			return DimensionIds::THE_END;
+		}
+		return DimensionIds::OVERWORLD;
 	}
 }
