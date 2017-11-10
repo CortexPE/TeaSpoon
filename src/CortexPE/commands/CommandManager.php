@@ -42,6 +42,7 @@ class CommandManager {
 	public static function init(){
 		PMServer::getInstance()->getCommandMap()->registerAll("pocketmine", [
 			new WorldCommand("world"),
+			new ClearCommand("clear"),
 			//new TestCommand("test"), // COMMENT THIS OUT. ALWAYS.
 		]);
 

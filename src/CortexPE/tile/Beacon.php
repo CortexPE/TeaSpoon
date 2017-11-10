@@ -144,7 +144,7 @@ class Beacon extends Spawnable implements InventoryHolder{
 		if (!empty($this->getEffects())){
 			$this->applyEffects($this);
 		}
-		$this->getLevel()->getServer()->getScheduler()->scheduleDelayedTask(new BeaconDelayedCheckTask($this, $this->getLevel()->getId()), 20 * 3 + floor(Server::getInstance()->getTicksPerSecond()));//4 seconds
+		$this->getLevel()->getServer()->getScheduler()->scheduleDelayedTask(new BeaconDelayedCheckTask($this, $this->getLevel()->getId()), 20 * 4);
 		return true;
 	}
 	public function applyEffects(Vector3 $pos){

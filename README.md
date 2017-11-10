@@ -85,6 +85,7 @@ Contributions are very welcome :smile:<br />You may contribute by opening a Pull
  - Commands
    - [X] More Vanilla-Like /kill command (Not perfect)
    - [X] World Command
+   - [X] Clear Command
  - Utils
    - [X] TextFormat::center like PC or MiNET. (Credits: [DarkSystem](https://github.com/DarkSystem)).
    - [X] Player::setLocale() for setLanguage for Player. (Credits: [NycuRO](https://github.com/NycuRO)).
