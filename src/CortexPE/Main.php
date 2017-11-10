@@ -93,6 +93,8 @@ class Main extends PluginBase {
 	public static $chorusFruitCooldown = 2;
 	/** @var bool */
 	public static $registerVanillaEntities = true;
+    /** @var bool */
+    public static $registerVanillaEnchantments = true;
 	/** @var Weather[] */
 	public static $weatherData = [];
 
@@ -161,6 +163,7 @@ class Main extends PluginBase {
 		self::$ePearlDamage = self::$config->get("enderPearlDamage", 5);
 		self::$chorusFruitCooldown = self::$config->get("chorusFruitCooldown", 2);
 		self::$registerVanillaEntities = self::$config->get("registerVanillaEntities", true);
+        self::$registerVanillaEnchantments = self::$config->get("registerVanillaEnchantments", true);
 	}
 
 	public function onEnable(){

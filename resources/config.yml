@@ -15,6 +15,9 @@ version: 5
 # Weather to register Vanilla Mobs (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...)
 registerVanillaEntities: true
 
+# Weather to register Vanilla Enchantments (Set to false if you're going to use a MobAI Plugin such as, VanillaEnchantments etc...)
+registerVanillaEnchantments: true
+
 # Nether & End Dimension
 netherName: "nether"
 endName: "ender"
@@ -24,7 +27,7 @@ endName: "ender"
 loadAllAPIs: false
 
 # Weather Lightning should cause damage
-lightningFire: false
+lightningFire: true
 
 # Ender Pearl Configuration
 enderPearlCooldown: 2

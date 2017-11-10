@@ -42,7 +42,7 @@ use pocketmine\item\{
 class ItemManager {
 	public static function init(){
 		ItemFactory::registerItem(new Boat(), true);
-		ItemFactory::registerItem(new EnchantingBottle());
+		ItemFactory::registerItem(new EnchantingBottle(), true);
 		ItemFactory::registerItem(new EnderPearl());
 		ItemFactory::registerItem(new Potion(), true);
 		ItemFactory::registerItem(new LingeringPotion(), true);

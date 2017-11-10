@@ -43,7 +43,7 @@ use pocketmine\entity\Entity;
 
 class EntityManager extends Entity {
 	public static function init(): void{
-		if(Main::$registerVanillaEntities){
+		if (Main::$registerVanillaEntities) {
 			self::registerEntity(Bat::class, false, ['Bat', 'minecraft:bat']);
 			self::registerEntity(Boat::class, false, ['Boat', 'minecraft:boat']);
 			self::registerEntity(Blaze::class, false, ['Blaze', 'minecraft:blaze']);
