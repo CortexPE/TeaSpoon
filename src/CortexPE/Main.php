@@ -95,6 +95,8 @@ class Main extends PluginBase {
 	public static $registerVanillaEntities = true;
     /** @var bool */
     public static $registerVanillaEnchantments = true;
+    /** @var bool */
+    public static $registerDimensions = true;
 	/** @var Weather[] */
 	public static $weatherData = [];
 
@@ -164,6 +166,7 @@ class Main extends PluginBase {
 		self::$chorusFruitCooldown = self::$config->get("chorusFruitCooldown", 2);
 		self::$registerVanillaEntities = self::$config->get("registerVanillaEntities", true);
         self::$registerVanillaEnchantments = self::$config->get("registerVanillaEnchantments", true);
+        self::$registerDimensions = self::$config->get("registerDimensions", true);
 	}
 
 	public function onEnable(){

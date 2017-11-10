@@ -18,6 +18,9 @@ registerVanillaEntities: true
 # Weather to register Vanilla Enchantments (Set to false if you're going to use a MobAI Plugin such as, VanillaEnchantments etc...)
 registerVanillaEnchantments: true
 
+# Weather to register Dimensions (Set to false if you're going don't use Generators)
+registerDimensions: true
+
 # Nether & End Dimension
 netherName: "nether"
 endName: "ender"

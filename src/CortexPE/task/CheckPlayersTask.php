@@ -51,7 +51,7 @@ class CheckPlayersTask extends PluginTask {
 			}
 			$epo = Utils::isInsideOfEndPortal($p);
 			$po = Utils::isInsideOfPortal($p);
-			if ($epo || $po) {
+			if ($epo || $po && Main::$registerDimensions) {
 				if ($p->getLevel()->getSafeSpawn()->distance($p) <= 0.1){
 					return; // It's Probably a PMMP Teleport Bug Causing it. Short desc: $player->getBlocksAround() doesnt update on teleport... it only updates again on move.
 				}
