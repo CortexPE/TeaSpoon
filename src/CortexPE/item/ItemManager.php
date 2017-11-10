@@ -52,6 +52,7 @@ class ItemManager {
 		ItemFactory::registerItem(new TotemOfUndying());
 		ItemFactory::registerItem(new Elytra());
 		ItemFactory::registerItem(new FireworkRocket());
+		ItemFactory::registerItem(new ChorusFruit());
 
 		Item::addCreativeItem(Item::get(Item::ENDER_PEARL));
 		Item::addCreativeItem(Item::get(Item::ENDER_CHEST));
@@ -60,6 +61,7 @@ class ItemManager {
 		Item::addCreativeItem(Item::get(Item::TOTEM));
 		Item::addCreativeItem(Item::get(Item::ELYTRA));
 		Item::addCreativeItem(Item::get(Item::FIREWORKS));
+		Item::addCreativeItem(Item::get(Item::CHORUS_FRUIT));
 
 		for($i = 0; $i <= 36; $i++){
 			Item::addCreativeItem(Item::get(Item::SPLASH_POTION, $i));

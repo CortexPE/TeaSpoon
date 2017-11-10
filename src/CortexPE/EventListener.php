@@ -39,9 +39,8 @@ namespace CortexPE;
 
 use CortexPE\entity\projectile\EnderPearl;
 use CortexPE\item\{
-	Elytra, FireworkRocket
+	ChorusFruit, Elytra, FireworkRocket
 };
-use CortexPE\task\DelayedTeleportTask;
 use CortexPE\task\ElytraRocketBoostTrackingTask;
 use pocketmine\entity\Effect;
 use pocketmine\event\{
@@ -51,12 +50,12 @@ use pocketmine\event\entity\{
 	EntityDamageEvent, EntityTeleportEvent, ProjectileLaunchEvent
 };
 use pocketmine\event\player\{
-	PlayerDeathEvent, PlayerInteractEvent, PlayerJoinEvent, PlayerKickEvent, PlayerLoginEvent, PlayerRespawnEvent
+	PlayerInteractEvent, PlayerItemConsumeEvent, PlayerJoinEvent, PlayerKickEvent, PlayerLoginEvent, PlayerRespawnEvent
 };
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\{
-	ChangeDimensionPacket, EntityEventPacket, LevelEventPacket, types\DimensionIds
+	EntityEventPacket, LevelEventPacket
 };
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
@@ -218,6 +217,7 @@ class EventListener implements Listener {
 		Main::$TEMPSkipCheck[$ev->getPlayer()->getName()] = false;
 		Main::$usingElytra[$ev->getPlayer()->getName()] = false;
 		Main::$TEMPAllowCheats[$ev->getPlayer()->getName()] = false;
+		Main::$lastEat[$ev->getPlayer()->getName()] = 0;
 	}
 
 	/**
@@ -239,7 +239,27 @@ class EventListener implements Listener {
 			}
 		}
 	}
+	/**
+	 * @param PlayerItemConsumeEvent $ev
+	 *
+	 * @priority LOWEST
+	 */
+	public function onChorusFruitUse(PlayerItemConsumeEvent $ev){
+		if($ev->getItem() instanceof ChorusFruit){
+			$p = $ev->getPlayer();
+			if(floor(microtime(true) - Main::$lastEat[$p->getName()]) < Main::$chorusFruitCooldown){
+				$ev->setCancelled(true);
+			}else{
+				Main::$lastUses[$p->getName()] = time();
+			}
+		}
+	}
 
+	/**
+	 * @param PlayerInteractEvent $ev
+	 *
+	 * @priority HIGHEST
+	 */
 	public function onInteract(PlayerInteractEvent $ev){
 		$p = $ev->getPlayer();
 		if($p->getInventory()->getChestplate() instanceof Elytra && $ev->getItem() instanceof FireworkRocket && Main::$usingElytra[$p->getName()]){

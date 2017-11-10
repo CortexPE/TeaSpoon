@@ -52,7 +52,7 @@ use pocketmine\utils\{Config, Terminal};
 class Main extends PluginBase {
 // Use static variables if it's going to be accessed by other Classes :)
 
-	const CONFIG_VERSION = 3;
+	const CONFIG_VERSION = 4;
 
 	/** @var string */
 	public static $netherName = "nether";
@@ -85,6 +85,10 @@ class Main extends PluginBase {
 	public static $ePearlDamage = 5;
 	/** @var array */
 	public static $TEMPAllowCheats = [];
+	/** @var array */
+	public static $lastEat = [];
+	/** @var int */
+	public static $chorusFruitCooldown = 2;
 
 	private $splashes = [
 		'Low-Calorie blend',
@@ -149,6 +153,7 @@ class Main extends PluginBase {
 		self::$lightningFire = self::$config->get("lightningFire", false);
 		self::$enderPearlCooldown = self::$config->get("enderPearlCooldown", 2);
 		self::$ePearlDamage = self::$config->get("enderPearlDamage", 5);
+		self::$chorusFruitCooldown = self::$config->get("chorusFruitCooldown", 2);
 	}
 
 	public function onEnable(){

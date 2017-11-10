@@ -29,6 +29,7 @@ Contributions are very welcome :smile:<br />You may contribute by opening a Pull
    - [X] Fully Functional Elytra Wings
    - [X] Firework Rocket (as Elytra Booster)
    - [X] Lingering Potions (Credits: [ClearSkyTeam](https://github.com/ClearSkyTeam))
+   - [X] Chorus Fruit
  - Entities & Mobs
    - [X] Projectiles
      - [X] EnderPearls
