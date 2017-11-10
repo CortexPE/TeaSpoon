@@ -9,8 +9,13 @@
 #                                   .JMML.
 # TeaSpoon Configuration File
 
-version: 4
+# Config Version Number [DO-NOT-MODIFY]
+version: 5
 
+# Weather to register Vanilla Mobs
+registerVanillaEntities: true
+
+# Nether & End Dimension
 netherName: "nether"
 endName: "ender"
 
@@ -18,9 +23,12 @@ endName: "ender"
 # !!! PLUGINS ARE COMPATIBLE WITH YOUR CURRENT PMMP BUILD !!!
 loadAllAPIs: false
 
+# Weather Lightning should cause damage
 lightningFire: false
 
+# Ender Pearl Configuration
 enderPearlCooldown: 2
 enderPearlDamage: 5
 
+# Chorus Fruit Configuration
 chorusFruitCooldown: 2
