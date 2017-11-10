@@ -41,6 +41,7 @@ use CortexPE\entity\projectile\EnderPearl;
 use CortexPE\item\{
 	ChorusFruit, Elytra, FireworkRocket
 };
+use CortexPE\level\weather\Weather;
 use CortexPE\task\ElytraRocketBoostTrackingTask;
 use pocketmine\entity\Effect;
 use pocketmine\event\{
@@ -55,7 +56,7 @@ use pocketmine\event\player\{
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\{
-	EntityEventPacket, LevelEventPacket
+	EntityEventPacket, LevelEventPacket, types\DimensionIds
 };
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
@@ -81,6 +82,14 @@ class EventListener implements Listener {
 		if(!Server::$loaded){
 			Server::$loaded = true;
 			LevelManager::init();
+		}
+
+		$lvl = $ev->getLevel();
+		Main::$weatherData[$lvl->getId()] = new Weather($lvl, 0);
+		if($lvl->getName() != Main::$netherName && $lvl->getName() != Main::$endName){
+			Main::$weatherData[$lvl->getId()]->setCanCalculate(true);
+		}else{
+			Main::$weatherData[$lvl->getId()]->setCanCalculate(false);
 		}
 
 		return true;

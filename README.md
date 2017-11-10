@@ -12,12 +12,12 @@ Installation is easy, Just download the [latest "TeaSpoon.phar"](http://cortexpe
 
 # Finished & Planned Features
  - Worlds
-  - [ ] Dimensions
+  - [X] Dimensions
     - [X] Nether Dimension
     - [X] End Dimension
     - [X] Fully Functional Nether Portal Frame and Block
     - [X] Funtional END_PORTAL Block (Portal Soon)
-  - [ ] Weather System
+  - [X] Weather System
   - [ ] Temperature System
  - Blocks
    - [X] EnderChests

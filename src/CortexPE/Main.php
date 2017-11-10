@@ -41,8 +41,10 @@ use CortexPE\entity\EntityManager;
 use CortexPE\handlers\EnchantHandler;
 use CortexPE\handlers\PacketHandler;
 use CortexPE\item\{ItemManager, enchantment\Enchantment};
+use CortexPE\level\weather\Weather;
 use CortexPE\plugin\AllAPILoaderManager;
 use CortexPE\task\CheckPlayersTask;
+use CortexPE\task\TickLevelsTask;
 use CortexPE\tile\Tile;
 use CortexPE\utils\TextFormat;
 use pocketmine\level\Level;
@@ -91,6 +93,8 @@ class Main extends PluginBase {
 	public static $chorusFruitCooldown = 2;
 	/** @var bool */
 	public static $registerVanillaEntities = true;
+	/** @var Weather[] */
+	public static $weatherData = [];
 
 	private $splashes = [
 		'Low-Calorie blend',
@@ -182,7 +186,7 @@ P\'   MM   `7             ' . TextFormat::GREEN . ' ,MI    "Y                   
 		}
 
 		// A E S T H E T H I C S
-		$parts = 13;
+		$parts = 14;
 		$offset = 100 / $parts;
 		$percent = 0;
 
@@ -215,6 +219,8 @@ P\'   MM   `7             ' . TextFormat::GREEN . ' ,MI    "Y                   
 		$this->getServer()->getPluginManager()->registerEvents(new EnchantHandler($this), $this);
 		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		$ver = self::$config->get("version");
+		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
+		$this->getServer()->getScheduler()->scheduleRepeatingTask(new TickLevelsTask($this), 1);
 		echo "Loading " . $percent . "% Completed...   \r";
 		echo "Copyright (C) CortexPE 2017-Present      \r" . PHP_EOL . PHP_EOL;
 		$this->getLogger()->info("TeaSpoon is distributed under the AGPL License");
