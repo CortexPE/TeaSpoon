@@ -39,8 +39,10 @@ use pocketmine\tile\Tile as PMTile;
 
 class Tile extends PMTile {
 	const ENDER_CHEST = "Ender Chest";
+	const BEACON = "Beacon";
 
 	public static function init(){
-		PMTile::registerTile(EnderChest::class);
+		self::registerTile(EnderChest::class);
+		self::registerTile(Beacon::class);
 	}
 }

@@ -44,6 +44,7 @@ class BlockManager {
 		self::register(Block::ENDER_CHEST, new EnderChest());
 		self::register(Block::OBSIDIAN, new Obsidian(), true);
 		self::register(Block::DRAGON_EGG, new DragonEgg());
+		self::register(Block::BEACON, new Beacon());
 	}
 
 	public static function register(int $id, Block $block, bool $overwrite = false): bool{
