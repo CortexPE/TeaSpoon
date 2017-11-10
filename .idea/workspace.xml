@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f0fc1ab1-9b3e-4274-950b-fd59173cb56c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/CortexPE/block/Beacon.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/CortexPE/inventory/BeaconInventory.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/CortexPE/task/BeaconDelayedCheckTask.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/CortexPE/tile/Beacon.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/block/BlockManager.php" afterPath="$PROJECT_DIR$/src/CortexPE/block/BlockManager.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/tile/Tile.php" afterPath="$PROJECT_DIR$/src/CortexPE/tile/Tile.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -44,12 +39,25 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Beacon.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Beacon.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/CortexPE/tile/Beacon.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="108">
               <caret line="36" column="22" lean-forward="true" selection-start-line="36" selection-start-column="22" selection-end-line="36" selection-end-column="22" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="275">
+                <caret line="84" column="11" lean-forward="true" selection-start-line="84" selection-start-column="11" selection-end-line="84" selection-end-column="11" />
+                <folding />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
@@ -137,7 +145,6 @@
         <option value="$PROJECT_DIR$/src/CortexPE/item/TotemOfUndying.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/block/DragonEgg.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/EventListener.php" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/src/CortexPE/handlers/EnchantHandler.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/entity/Boat.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/utils/HumanDecorator.php" />
@@ -157,6 +164,7 @@
         <option value="$PROJECT_DIR$/src/CortexPE/inventory/EnderChestInventory.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/tile/Beacon.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/block/Beacon.php" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -278,7 +286,7 @@
       <workItem from="1510223359527" duration="2779000" />
       <workItem from="1510247258219" duration="2795000" />
       <workItem from="1510276581713" duration="9022000" />
-      <workItem from="1510288124563" duration="4532000" />
+      <workItem from="1510288124563" duration="4818000" />
     </task>
     <task id="LOCAL-00001" summary="More Vanilla Enchants + Bug Fixes&#10;&#10;// gtg do irl stuff... brb tomorrow or in 3 days... sux right?">
       <created>1509967467744</created>
@@ -308,11 +316,18 @@
       <option name="project" value="LOCAL" />
       <updated>1510288365597</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Add Working Beacons">
+      <created>1510301559967</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1510301559967</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="36600000" />
+    <option name="totallyTimeSpent" value="36886000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -417,16 +432,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="232">
-            <caret line="21" column="18" lean-forward="false" selection-start-line="21" selection-start-column="18" selection-end-line="21" selection-end-column="18" />
-          </first_editor>
-          <second_editor />
         </state>
       </provider>
     </entry>
@@ -731,6 +736,17 @@
         <state relative-caret-position="108">
           <caret line="36" column="22" lean-forward="true" selection-start-line="36" selection-start-column="22" selection-end-line="36" selection-end-column="22" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="275">
+            <caret line="84" column="11" lean-forward="true" selection-start-line="84" selection-start-column="11" selection-end-line="84" selection-end-column="11" />
+            <folding />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>

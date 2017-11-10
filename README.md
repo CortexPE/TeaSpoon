@@ -20,6 +20,7 @@ Contributions are very welcome :smile:<br />You may contribute by opening a Pull
    - [X] EndPortal
    - [X] Portal (Nether Portal Block)
    - [X] DragonEgg
+   - [X] Beacon
  - Items
    - [X] Vanilla Enchants (Progress: 80%)
    - [X] Splash Potions
@@ -35,7 +36,7 @@ Contributions are very welcome :smile:<br />You may contribute by opening a Pull
      - [X] Eggs
    - [ ] Entities
      - [X] Lightning
-     - [X] XPOrbs (Non Functional yet)
+     - [X] XPOrbs
    - [X] Mobs
      - [X] Bat
      - [X] Blaze
