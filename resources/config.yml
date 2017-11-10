@@ -12,7 +12,7 @@
 # Config Version Number [DO-NOT-MODIFY]
 version: 5
 
-# Weather to register Vanilla Mobs
+# Weather to register Vanilla Mobs (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...)
 registerVanillaEntities: true
 
 # Nether & End Dimension
