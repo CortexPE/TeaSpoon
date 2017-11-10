@@ -52,13 +52,13 @@ class LevelManager {
 	}
 
 	public static function loadAndGenerateLevels(){
-		if(!PMServer::getInstance()->loadLevel(Main::$netherName)){
+		if(!PMServer::getInstance()->loadLevel(Main::$netherName) and Main::$registerDimensions){
 			PMServer::getInstance()->generateLevel(Main::$netherName, time(), Generator::getGenerator("nether"));
 		}
 		Main::$netherLevel = PMServer::getInstance()->getLevelByName(Main::$netherName);
 
 
-		if(!PMServer::getInstance()->loadLevel(Main::$endName)){
+		if(!PMServer::getInstance()->loadLevel(Main::$endName) and Main::$registerDimensions){
 			PMServer::getInstance()->generateLevel(Main::$endName, time(), Generator::getGenerator("ender"));
 		}
 		Main::$endLevel = PMServer::getInstance()->getLevelByName(Main::$endName);
