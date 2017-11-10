@@ -37,7 +37,9 @@ namespace CortexPE\entity\projectile;
 
 use CortexPE\item\Potion;
 use CortexPE\level\particle\SpellParticle;
-use pocketmine\entity\{Living, projectile\Throwable};
+use pocketmine\entity\{
+	Entity, Living, projectile\Throwable
+};
 
 class SplashPotion extends Throwable {
 
@@ -63,5 +65,9 @@ class SplashPotion extends Throwable {
 
 	public function getPotionId(): int{
 		return (int) $this->namedtag["PotionId"];
+	}
+
+	public function onCollideWithEntity(Entity $entity){
+		return;
 	}
 }

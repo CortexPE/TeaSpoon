@@ -66,4 +66,8 @@ class EnchantingBottle extends Throwable {
 
 		return parent::onUpdate($currentTick);
 	}
+
+	public function onCollideWithEntity(Entity $entity){
+		return;
+	}
 }

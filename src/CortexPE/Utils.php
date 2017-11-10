@@ -45,10 +45,9 @@ use pocketmine\Player as PMPlayer;
 
 class Utils {
 	public static function isInsideOfPortal(Entity $entity): bool{
-		foreach($entity->getBlocksAround() as $block){
-			if($block instanceof Portal){
-				return true;
-			}
+		$block = $entity->getLevel()->getBlock($entity);
+		if($block instanceof Portal){
+			return true;
 		}
 
 		return false;
@@ -117,5 +116,46 @@ class Utils {
 			return DimensionIds::THE_END;
 		}
 		return DimensionIds::OVERWORLD;
+	}
+
+	public static function getTotalXpRequirement(int $level): int{
+		if($level <= 16){
+			return ($level ** 2) + (6 * $level);
+		}elseif($level <= 31){
+			return (2.5 * ($level ** 2)) - (40.5 * $level) + 360;
+		}elseif($level <= 21863){
+			return (4.5 * ($level ** 2)) - (162.5 * $level) + 2220;
+		}
+
+		return PHP_INT_MAX; //prevent float returns for invalid levels on 32-bit systems
+	}
+
+	public static function getLevelFromXp(int $xp): array{
+		$xp &= 0x7fffffff;
+
+		/** These values are correct up to and including level 16 */
+		$a = 1;
+		$b = 6;
+		$c = -$xp;
+		if($xp > self::getTotalXpRequirement(16)){
+			/** Modify the coefficients to fit the relevant equation */
+			if($xp <= self::getTotalXpRequirement(31)){
+				/** Levels 16-31 */
+				$a = 2.5;
+				$b = -40.5;
+				$c += 360;
+			}else{
+				/** Level 32+ */
+				$a = 4.5;
+				$b = -162.5;
+				$c += 2220;
+			}
+		}
+
+		$answer = max(self::solveQuadratic($a, $b, $c)); //Use largest result value
+		$level = floor($answer);
+		$progress = $answer - $level;
+
+		return [$level, $progress];
 	}
 }

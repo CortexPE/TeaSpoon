@@ -36,6 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\entity\projectile;
 
 use CortexPE\Main;
+use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Throwable;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\math\Vector3;
@@ -75,5 +76,9 @@ class EnderPearl extends Throwable {
 		}
 
 		return parent::onUpdate($currentTick);
+	}
+
+	public function onCollideWithEntity(Entity $entity){
+		return;
 	}
 }

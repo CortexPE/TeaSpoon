@@ -128,6 +128,7 @@ class Main extends PluginBase {
 		":shrug:",
 		"Also try V A P O R W A V E",
 		"Or S I M P S O N W A V E idk xD",
+		"Fukkit FTW!!!",
 		// Add more splashes fur fun. xD
 	];
 
