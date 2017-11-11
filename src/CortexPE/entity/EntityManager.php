@@ -62,7 +62,6 @@ class EntityManager extends Entity {
 			self::registerEntity(Horse::class, false, ['Horse', 'minecraft:horse']);
 			self::registerEntity(Husk::class, false, ['Husk', 'minecraft:husk']);
 			self::registerEntity(IronGolem::class, false, ['IronGolem', 'minecraft:irongolem']);
-			self::registerEntity(Lightning::class, false, ['Lightning', 'minecraft:lightning']);
 			self::registerEntity(Llama::class, false, ['Llama', 'minecraft:llama']);
 			self::registerEntity(MagmaCube::class, false, ['MagmaCube', 'minecraft:magmacube']);
 			self::registerEntity(Mooshroom::class, false, ['Mooshroom', 'minecraft:mooshroom']);
@@ -102,6 +101,7 @@ class EntityManager extends Entity {
 
 		self::registerEntity(XPOrb::class, false, ['XPOrb', 'minecraft:xporb']);
 		self::registerEntity(AreaEffectCloud::class, false, ['AreaEffectCloud', 'minecraft:areaeffectcloud']);
+		self::registerEntity(Lightning::class, false, ['Lightning', 'minecraft:lightning']);
 		self::registerEntity(Human::class, true);
 	}
 }
