@@ -1,5 +1,5 @@
 # TeaSpoon
-[![Build Status](http://cortexpe.xyz:8080/job/TeaSpoon/badge/icon)](http://cortexpe.xyz:8080/job/TeaSpoon/) [![HitCount](http://hits.dwyl.io/CortexPE/TeaSpoon.svg)](http://hits.dwyl.io/CortexPE/TeaSpoon) [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/CortexPE/TeaSpoon/pulls) [![License](https://img.shields.io/badge/License-GNU%20AGPL%20v3-brightgreen.svg?style=flat-square)](https://github.com/CortexPE/TeaSpoon/blob/master/LICENSE)
+[![Build Status](http://cortexpe.xyz:8080/job/TeaSpoon/badge/icon)](https://cortexpe.xyz:8080/job/TeaSpoon/) [![Donate](https://img.shields.io/badge/donate-PayPal-yellow.svg?style=flat-square)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MABFZPDR8F5UG) [![HitCount](http://hits.dwyl.io/CortexPE/TeaSpoon.svg)](http://hits.dwyl.io/CortexPE/TeaSpoon) [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/CortexPE/TeaSpoon/pulls) [![License](https://img.shields.io/badge/License-GNU%20AGPL%20v3-brightgreen.svg?style=flat-square)](https://github.com/CortexPE/TeaSpoon/blob/master/LICENSE)
 
 A Massive PocketMine-MP plugin designed and is aiming to extend PMMP's functionalities (Without completely changing it) to Make it more Vanilla-Like.
 

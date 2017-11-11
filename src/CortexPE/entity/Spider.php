@@ -36,7 +36,9 @@ declare(strict_types = 1);
 namespace CortexPE\entity;
 
 use CortexPE\Player;
-use pocketmine\entity\{Human, Monster};
+use pocketmine\entity\{
+	Human, Monster
+};
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\item\Item;
 

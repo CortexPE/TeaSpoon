@@ -51,20 +51,8 @@ class XPOrb extends Entity {
 		}else $this->close();
 	}
 
-	public function FetchNearbyPlayer($DistanceRange) {
-		$MinDistance = $DistanceRange;
-		$Target = null;
-		foreach ($this->getLevel()->getPlayers() as $player){
-			if ($player->isAlive() and $MinDistance >= $Distance = $player->distance($this)){
-				$Target = $player;
-				$MinDistance = $Distance;
-			}
-		}
-		return $Target;
-	}
-
 	public function entityBaseTick(int $tickDiff = 1): bool{
-		if ($this->closed){
+		if($this->closed){
 			return false;
 		}
 
@@ -72,18 +60,19 @@ class XPOrb extends Entity {
 
 		$hasUpdate = parent::entityBaseTick($tickDiff);
 
-		if ($this->age > 7000){
+		if($this->age > 7000){
 			$this->timings->stopTiming();
 			$this->close();
+
 			return true;
 		}
 
-		if (!$this->onGround){
+		if(!$this->onGround){
 			$this->motionY -= $this->gravity;
 		}
 
 		$Target = $this->FetchNearbyPlayer($this->followrange);
-		if ($Target instanceof \pocketmine\entity\Human){
+		if($Target instanceof \pocketmine\entity\Human){
 			$moveSpeed = 0.5;
 			$motX = ($Target->getX() - $this->x) / 8;
 			$motY = ($Target->getY()/* + $Target->getEyeHeight() */ - $this->y) / 8;
@@ -92,17 +81,17 @@ class XPOrb extends Entity {
 			$motSqrt = sqrt($motX * $motX + $motY * $motY + $motZ * $motZ);
 			$motC = 1 - $motSqrt;
 
-			if ($motC > 0){
+			if($motC > 0){
 				$motC *= $motC;
 				$this->motionX = $motX / $motSqrt * $motC * $moveSpeed;
 				$this->motionY = $motY / $motSqrt * $motC * $moveSpeed;
 				$this->motionZ = $motZ / $motSqrt * $motC * $moveSpeed;
 			}
 
-			if ($Target->distance($this) <= $this->pickuprange){
+			if($Target->distance($this) <= $this->pickuprange){
 				$this->timings->stopTiming();
 				$this->close();
-				if ($this->getExperience() > 0){
+				if($this->getExperience() > 0){
 					// [ROT13 Encoded and is pretty Explicit] Jul gur shpx unfa'g CZZC Vzcyrzragrq n CEBCRE KC Flfgrz Lrg? Guvf vf Shpxvat fghcvq naq vf bar bs gur znal ernfbaf jul Crbcyr ybir fcbbaf -_-
 					$add = Utils::getLevelFromXp($Target->getTotalXp() + $this->getExperience());
 					$Target->setXpProgress($add[1]);
@@ -116,7 +105,7 @@ class XPOrb extends Entity {
 
 					if(!isset($Target->namedtag->XpP) or !($Target->namedtag->XpP instanceof FloatTag)){
 						$Target->namedtag->XpP = new FloatTag("XpP", $Target->getXpProgress());
-					} else {
+					}else{
 						$Target->namedtag["XpP"] = $Target->getXpProgress();
 					}
 
@@ -125,8 +114,9 @@ class XPOrb extends Entity {
 					}else{
 						$Target->namedtag["XpTotal"] = $Target->getTotalXp();
 					}
-					$Target->getServer()->saveOfflinePlayerData($Target->getName(),$Target->namedtag, true);
+					$Target->getServer()->saveOfflinePlayerData($Target->getName(), $Target->namedtag, true);
 				}
+
 				return true;
 			}
 		}
@@ -140,16 +130,29 @@ class XPOrb extends Entity {
 		return $hasUpdate or !$this->onGround or abs($this->motionX) > 0.00001 or abs($this->motionY) > 0.00001 or abs($this->motionZ) > 0.00001;
 	}
 
-	public function canCollideWith(Entity $entity): bool{
-		return false;
+	public function FetchNearbyPlayer($DistanceRange){
+		$MinDistance = $DistanceRange;
+		$Target = null;
+		foreach($this->getLevel()->getPlayers() as $player){
+			if($player->isAlive() and $MinDistance >= $Distance = $player->distance($this)){
+				$Target = $player;
+				$MinDistance = $Distance;
+			}
+		}
+
+		return $Target;
+	}
+
+	public function getExperience(){
+		return $this->experience;
 	}
 
 	public function setExperience($exp){
 		$this->experience = $exp;
 	}
 
-	public function getExperience(){
-		return $this->experience;
+	public function canCollideWith(Entity $entity): bool{
+		return false;
 	}
 
 	public function saveNBT(){

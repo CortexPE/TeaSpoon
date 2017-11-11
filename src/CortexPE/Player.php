@@ -48,7 +48,7 @@ class Player extends PMPlayer {
 		return true;
 	}
 
-	public function setLocale(string $locale): string {
-        $this->locale = $locale;
-    }
+	public function setLocale(string $locale){
+		$this->locale = $locale;
+	}
 }

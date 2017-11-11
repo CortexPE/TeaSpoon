@@ -60,7 +60,7 @@ class Sheep extends Animal {
 				$looting = $damager->getInventory()->getItemInHand()->getEnchantment(Enchantment::LOOTING);
 				if($looting !== null){
 					$lootingL = $looting->getLevel();
-				} else {
+				}else{
 					$lootingL = 0;
 				}
 				$drops = [Item::get(Item::WOOL, mt_rand(0, 15), 1)]; // TODO: Implement this properly.

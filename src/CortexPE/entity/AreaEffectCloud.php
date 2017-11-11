@@ -53,52 +53,52 @@ class AreaEffectCloud extends Entity {
 	public function initEntity(){
 		parent::initEntity();
 
-		if (!isset($this->namedtag->PotionId) or !($this->namedtag->PotionId instanceof ShortTag)){
+		if(!isset($this->namedtag->PotionId) or !($this->namedtag->PotionId instanceof ShortTag)){
 			$this->namedtag->PotionId = new ShortTag("PotionId", $this->PotionId);
 		}
 		$this->PotionId = $this->namedtag->PotionId->getValue();
 
-		if (!isset($this->namedtag->Radius) or !($this->namedtag->Radius instanceof FloatTag)){
+		if(!isset($this->namedtag->Radius) or !($this->namedtag->Radius instanceof FloatTag)){
 			$this->namedtag->Radius = new FloatTag("Radius", $this->Radius);
 		}
 		$this->Radius = $this->namedtag->Radius->getValue();
 
-		if (!isset($this->namedtag->RadiusOnUse) or !($this->namedtag->RadiusOnUse instanceof FloatTag)){
+		if(!isset($this->namedtag->RadiusOnUse) or !($this->namedtag->RadiusOnUse instanceof FloatTag)){
 			$this->namedtag->RadiusOnUse = new FloatTag("RadiusOnUse", $this->RadiusOnUse);
 		}
 		$this->RadiusOnUse = $this->namedtag->RadiusOnUse->getValue();
 
-		if (!isset($this->namedtag->RadiusPerTick) or !($this->namedtag->RadiusPerTick instanceof FloatTag)){
+		if(!isset($this->namedtag->RadiusPerTick) or !($this->namedtag->RadiusPerTick instanceof FloatTag)){
 			$this->namedtag->RadiusPerTick = new FloatTag("RadiusPerTick", $this->RadiusPerTick);
 		}
 		$this->RadiusPerTick = $this->namedtag->RadiusPerTick->getValue();
 
-		if (!isset($this->namedtag->WaitTime) or !($this->namedtag->WaitTime instanceof IntTag)){
+		if(!isset($this->namedtag->WaitTime) or !($this->namedtag->WaitTime instanceof IntTag)){
 			$this->namedtag->WaitTime = new IntTag("WaitTime", $this->WaitTime);
 		}
 		$this->WaitTime = $this->namedtag->WaitTime->getValue();
 
-		if (!isset($this->namedtag->TileX) or !($this->namedtag->TileX instanceof IntTag)){
+		if(!isset($this->namedtag->TileX) or !($this->namedtag->TileX instanceof IntTag)){
 			$this->namedtag->TileX = new IntTag("TileX", (int)round($this->getX()));
 		}
 		$this->TileX = $this->namedtag->TileX->getValue();
 
-		if (!isset($this->namedtag->TileY) or !($this->namedtag->TileY instanceof IntTag)){
+		if(!isset($this->namedtag->TileY) or !($this->namedtag->TileY instanceof IntTag)){
 			$this->namedtag->TileY = new IntTag("TileY", (int)round($this->getY()));
 		}
 		$this->TileY = $this->namedtag->TileY->getValue();
 
-		if (!isset($this->namedtag->TileZ) or !($this->namedtag->TileZ instanceof IntTag)){
+		if(!isset($this->namedtag->TileZ) or !($this->namedtag->TileZ instanceof IntTag)){
 			$this->namedtag->TileZ = new IntTag("TileZ", (int)round($this->getZ()));
 		}
 		$this->TileZ = $this->namedtag->TileZ->getValue();
 
-		if (!isset($this->namedtag->Duration) or !($this->namedtag->Duration instanceof IntTag)){
+		if(!isset($this->namedtag->Duration) or !($this->namedtag->Duration instanceof IntTag)){
 			$this->namedtag->Duration = new IntTag("Duration", $this->Duration);
 		}
 		$this->Duration = $this->namedtag->Duration->getValue();
 
-		if (!isset($this->namedtag->DurationOnUse) or !($this->namedtag->DurationOnUse instanceof IntTag)){
+		if(!isset($this->namedtag->DurationOnUse) or !($this->namedtag->DurationOnUse instanceof IntTag)){
 			$this->namedtag->DurationOnUse = new IntTag("DurationOnUse", $this->DurationOnUse);
 		}
 		$this->DurationOnUse = $this->namedtag->DurationOnUse->getValue();
@@ -112,7 +112,7 @@ class AreaEffectCloud extends Entity {
 	}
 
 	public function entityBaseTick(int $tickDiff = 1): bool{
-		if ($this->closed){
+		if($this->closed){
 			return false;
 		}
 
@@ -120,14 +120,15 @@ class AreaEffectCloud extends Entity {
 
 		$hasUpdate = parent::entityBaseTick($tickDiff);
 
-		if ($this->age > $this->Duration || $this->PotionId == 0 || $this->Radius <= 0){
+		if($this->age > $this->Duration || $this->PotionId == 0 || $this->Radius <= 0){
 			$this->close();
 			$hasUpdate = true;
-		} else{
+		}else{
 			$effects = Potion::getEffectsById($this->PotionId);
-			if (count($effects) <= 0){
+			if(count($effects) <= 0){
 				$this->close();
 				$this->timings->stopTiming();
+
 				return true;
 			}
 			/** @var Effect[] $effects */
@@ -135,9 +136,10 @@ class AreaEffectCloud extends Entity {
 			$this->setDataProperty(self::DATA_POTION_COLOR, self::DATA_TYPE_INT, ((255 & 0xff) << 24) | (($firsteffect->getColor()[0] & 0xff) << 16) | (($firsteffect->getColor()[1] & 0xff) << 8) | ($firsteffect->getColor()[2] & 0xff));
 			$this->Radius += $this->RadiusPerTick;
 			$this->setDataProperty(self::DATA_BOUNDING_BOX_WIDTH, self::DATA_TYPE_FLOAT, $this->Radius * 2);
-			if ($this->WaitTime > 0){
+			if($this->WaitTime > 0){
 				$this->WaitTime--;
 				$this->timings->stopTiming();
+
 				return true;
 			}
 			/*foreach($effects as $eff){
@@ -145,15 +147,15 @@ class AreaEffectCloud extends Entity {
 			}*/ // Buggy as of now...
 			$bb = new AxisAlignedBB($this->x - $this->Radius, $this->y, $this->z - $this->Radius, $this->x + $this->Radius, $this->y + $this->height, $this->z + $this->Radius);
 			$used = false;
-			foreach ($this->getLevel()->getCollidingEntities($bb, $this) as $collidingEntity){
-				if ($collidingEntity instanceof Living && $collidingEntity->distanceSquared($this) <= $this->Radius ** 2){
+			foreach($this->getLevel()->getCollidingEntities($bb, $this) as $collidingEntity){
+				if($collidingEntity instanceof Living && $collidingEntity->distanceSquared($this) <= $this->Radius ** 2){
 					$used = true;
 					foreach($effects as $eff){
 						$collidingEntity->addEffect($eff);
 					}
 				}
 			}
-			if ($used){
+			if($used){
 				$this->Duration -= $this->DurationOnUse;
 				$this->Radius += $this->RadiusOnUse;
 				$this->WaitTime = 10;
@@ -172,5 +174,6 @@ class AreaEffectCloud extends Entity {
 		return "Area Effect Cloud";
 	}
 
-	protected function applyGravity(){ }
+	protected function applyGravity(){
+	}
 }

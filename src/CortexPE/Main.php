@@ -40,7 +40,9 @@ use CortexPE\commands\CommandManager;
 use CortexPE\entity\EntityManager;
 use CortexPE\handlers\EnchantHandler;
 use CortexPE\handlers\PacketHandler;
-use CortexPE\item\{ItemManager, enchantment\Enchantment};
+use CortexPE\item\{
+	enchantment\Enchantment, ItemManager
+};
 use CortexPE\level\weather\Weather;
 use CortexPE\plugin\AllAPILoaderManager;
 use CortexPE\task\CheckPlayersTask;
@@ -49,12 +51,14 @@ use CortexPE\tile\Tile;
 use CortexPE\utils\TextFormat;
 use pocketmine\level\Level;
 use pocketmine\plugin\PluginBase;
-use pocketmine\utils\{Config, Terminal};
+use pocketmine\utils\{
+	Config, Terminal
+};
 
 class Main extends PluginBase {
 // Use static variables if it's going to be accessed by other Classes :)
 
-	const CONFIG_VERSION = 5;
+	const CONFIG_VERSION = 7;
 
 	/** @var string */
 	public static $netherName = "nether";
@@ -73,8 +77,6 @@ class Main extends PluginBase {
 	public static $lightningFire = false;
 	/** @var string[] */
 	public static $teleporting = [];
-	/** @var bool */
-	public $loadAllAPIs = false;
 	/** @var int[] */
 	public static $lastUses = [];
 	/** @var int */
@@ -93,13 +95,14 @@ class Main extends PluginBase {
 	public static $chorusFruitCooldown = 2;
 	/** @var bool */
 	public static $registerVanillaEntities = true;
-    /** @var bool */
-    public static $registerVanillaEnchantments = true;
-    /** @var bool */
-    public static $registerDimensions = true;
+	/** @var bool */
+	public static $registerVanillaEnchantments = true;
+	/** @var bool */
+	public static $registerDimensions = true;
 	/** @var Weather[] */
 	public static $weatherData = [];
-
+	/** @var bool */
+	public $loadAllAPIs = false;
 	private $splashes = [
 		'Low-Calorie blend',
 		"Don't panic! Have a cup of tea",
@@ -165,8 +168,8 @@ class Main extends PluginBase {
 		self::$ePearlDamage = self::$config->get("enderPearlDamage", 5);
 		self::$chorusFruitCooldown = self::$config->get("chorusFruitCooldown", 2);
 		self::$registerVanillaEntities = self::$config->get("registerVanillaEntities", true);
-        self::$registerVanillaEnchantments = self::$config->get("registerVanillaEnchantments", true);
-        self::$registerDimensions = self::$config->get("registerDimensions", true);
+		self::$registerVanillaEnchantments = self::$config->get("registerVanillaEnchantments", true);
+		self::$registerDimensions = self::$config->get("registerDimensions", true);
 	}
 
 	public function onEnable(){
@@ -216,13 +219,17 @@ P\'   MM   `7             ' . TextFormat::GREEN . ' ,MI    "Y                   
 		Tile::init();
 
 		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
-		$this->getServer()->getScheduler()->scheduleRepeatingTask(new CheckPlayersTask($this), 10);
+		if(self::$registerDimensions){
+			$this->getServer()->getScheduler()->scheduleRepeatingTask(new CheckPlayersTask($this), 10);
+		}
 		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
 		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		$this->getServer()->getPluginManager()->registerEvents(new PacketHandler($this), $this);
 		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
-		$this->getServer()->getPluginManager()->registerEvents(new EnchantHandler($this), $this);
+		if(self::$registerVanillaEnchantments){
+			$this->getServer()->getPluginManager()->registerEvents(new EnchantHandler($this), $this);
+		}
 		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		$ver = self::$config->get("version");
 		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
@@ -234,7 +241,7 @@ P\'   MM   `7             ' . TextFormat::GREEN . ' ,MI    "Y                   
 
 		if($ver === null || $ver === false || $ver < self::CONFIG_VERSION){
 			$this->getLogger()->critical("Your configuration file is Outdated! Keep a backup of it and delete the outdated file.");
-		} elseif($ver > self::CONFIG_VERSION){
+		}elseif($ver > self::CONFIG_VERSION){
 			$this->getLogger()->critical("Your configuration file is from a higher version of TeaSpoon! Please update the plugin from https://github.com/CortexPE/TeaSpoon");
 		}
 	}

@@ -58,7 +58,7 @@ class ChorusFruit extends Food {
 		return 64;
 	}
 
-	public function canBeConsumedBy(Entity $entity) : bool{
+	public function canBeConsumedBy(Entity $entity): bool{
 		return $entity instanceof Human;
 	}
 

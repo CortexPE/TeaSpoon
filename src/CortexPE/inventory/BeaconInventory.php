@@ -57,7 +57,7 @@ class BeaconInventory extends ContainerInventory {
 	/**
 	 * @return Beacon|InventoryHolder
 	 */
-	public function getHolder() {
+	public function getHolder(){
 		return $this->holder;
 	}
 }

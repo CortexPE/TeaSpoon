@@ -3,7 +3,9 @@
 namespace CortexPE\level\generator\ender\populator;
 
 use pocketmine\block\Block;
-use pocketmine\level\{ChunkManager, generator\populator\Populator};
+use pocketmine\level\{
+	ChunkManager, generator\populator\Populator
+};
 use pocketmine\utils\Random;
 
 class EnderPilar extends Populator {

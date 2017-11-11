@@ -48,19 +48,19 @@ use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\item\Item;
-use pocketmine\plugin\Plugin;
 use pocketmine\Player as PMPlayer;
+use pocketmine\plugin\Plugin;
 
 class EnchantHandler implements Listener {
 
 	const BANE_OF_ARTHROPODS_AFFECTED_ENTITIES = [ // Based on https://minecraft.gamepedia.com/Enchanting#Bane_of_Arthropods ^_^
 		"Spider", "Cave Spider",
-		"Silverfish", "Endermite"
+		"Silverfish", "Endermite",
 	];
 
 	const WATER_IDS = [
 		Block::STILL_WATER,
-		Block::FLOWING_WATER
+		Block::FLOWING_WATER,
 	];
 
 	/** @var Plugin */
@@ -86,7 +86,7 @@ class EnchantHandler implements Listener {
 				$i = $d->getInventory()->getItemInHand();
 				if($i->hasEnchantments()){
 					foreach($i->getEnchantments() as $ench){
-						if($ench->getLevel() <= 0)continue;
+						if($ench->getLevel() <= 0) continue;
 						switch($ench->getId()){
 							case Enchantment::FIRE_ASPECT:
 								$e->setOnFire(($ench->getLevel() * 4) * 20); // #BlamePMMP // Fire doesnt last for less than half a second. wtf.
@@ -100,7 +100,7 @@ class EnchantHandler implements Listener {
 								}
 								break;
 							case Enchantment::BANE_OF_ARTHROPODS:
-								if(Utils::in_arrayi($e->getName(),self::BANE_OF_ARTHROPODS_AFFECTED_ENTITIES)){
+								if(Utils::in_arrayi($e->getName(), self::BANE_OF_ARTHROPODS_AFFECTED_ENTITIES)){
 									$ev->setDamage($ev->getDamage() + ($ench->getLevel() * 2.5));
 								}
 								break;
@@ -122,46 +122,46 @@ class EnchantHandler implements Listener {
 					foreach($e->getInventory()->getArmorContents() as $armorContent){
 						if($armorContent->hasEnchantments()){
 							foreach($armorContent->getEnchantments() as $enchantment){
-								if($enchantment->getLevel() <= 0)continue;
+								if($enchantment->getLevel() <= 0) continue;
 								switch($enchantment->getId()){
 									case Enchantment::THORNS:
 										if($d instanceof PMPlayer){
 											$armor = $d->getInventory()->getHelmet();
-											if(mt_rand(1,2) == 1 && $armor->getId() !== Block::AIR){
+											if(mt_rand(1, 2) == 1 && $armor->getId() !== Block::AIR){
 												$armorClone = clone $armor;
 												if($armorClone->getDamage() - 3 > 0){
 													$armorClone->setDamage($armorClone->getDamage() - 3);
-												} else {
+												}else{
 													$armorClone->setDamage(0);
 												}
 												$d->getInventory()->setHelmet($armorClone);
 											}
 											$armor = $d->getInventory()->getChestplate();
-											if(mt_rand(1,2) == 1 && $armor->getId() !== Block::AIR){
+											if(mt_rand(1, 2) == 1 && $armor->getId() !== Block::AIR){
 												$armorClone = clone $armor;
 												if($armorClone->getDamage() - 3 > 0){
 													$armorClone->setDamage($armorClone->getDamage() - 3);
-												} else {
+												}else{
 													$armorClone->setDamage(0);
 												}
 												$d->getInventory()->setChestplate($armorClone);
 											}
 											$armor = $d->getInventory()->getLeggings();
-											if(mt_rand(1,2) == 1 && $armor->getId() !== Block::AIR){
+											if(mt_rand(1, 2) == 1 && $armor->getId() !== Block::AIR){
 												$armorClone = clone $armor;
 												if($armorClone->getDamage() - 3 > 0){
 													$armorClone->setDamage($armorClone->getDamage() - 3);
-												} else {
+												}else{
 													$armorClone->setDamage(0);
 												}
 												$d->getInventory()->setLeggings($armorClone);
 											}
 											$armor = $d->getInventory()->getBoots();
-											if(mt_rand(1,2) == 1 && $armor->getId() !== Block::AIR){
+											if(mt_rand(1, 2) == 1 && $armor->getId() !== Block::AIR){
 												$armorClone = clone $armor;
 												if($armorClone->getDamage() - 3 > 0){
 													$armorClone->setDamage($armorClone->getDamage() - 3);
-												} else {
+												}else{
 													$armorClone->setDamage(0);
 												}
 												$d->getInventory()->setBoots($armorClone);
@@ -287,14 +287,14 @@ class EnchantHandler implements Listener {
 					$att->setValue($att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl), true, true);
 
 					Main::$TEMPAllowCheats[$ev->getPlayer()->getName()] = true;
-				} else {
+				}else{
 					if($att->getValue() == $att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl)){
 						$att->setValue($att->getDefaultValue(), true, true);
 
 						Main::$TEMPAllowCheats[$ev->getPlayer()->getName()] = false;
 					}
 				}
-			} else {
+			}else{
 				if($att->getValue() == $att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl)){
 					$att->setValue($att->getDefaultValue(), true, true);
 

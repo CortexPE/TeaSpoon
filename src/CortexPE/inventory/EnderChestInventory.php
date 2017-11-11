@@ -5,13 +5,15 @@
  Original File URL: https://github.com/RealDevs/TableSpoon/blob/master/src/tablespoon/inventory/EnderChestInventory.php
 */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace CortexPE\inventory;
 
 use pocketmine\inventory\ContainerInventory;
 use pocketmine\item\Item;
-use pocketmine\nbt\{NBT, tag\ListTag};
+use pocketmine\nbt\{
+	NBT, tag\ListTag
+};
 use pocketmine\network\mcpe\protocol\types\WindowTypes;
 use pocketmine\Player;
 

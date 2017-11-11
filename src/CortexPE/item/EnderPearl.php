@@ -35,12 +35,14 @@ declare(strict_types = 1);
 
 namespace CortexPE\item;
 
-use pocketmine\item\{Item, ProjectileItem};
+use pocketmine\item\{
+	Item, ProjectileItem
+};
 
 class EnderPearl extends ProjectileItem {
 
 	public function __construct($meta = 0, $count = 1){
-		parent::__construct(Item::ENDER_PEARL, $meta,"Ender Pearl");
+		parent::__construct(Item::ENDER_PEARL, $meta, "Ender Pearl");
 	}
 
 	public function getProjectileEntityType(): string{

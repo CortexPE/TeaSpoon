@@ -33,12 +33,13 @@
 
 declare(strict_types = 1);
 
-$class_exists = function (string $class) : bool {
+$class_exists = function(string $class): bool{
 	// CREDITS TO FaigerSYS
-	try {
+	try{
 		$exists = class_exists($class);
-		return ($exists ?: interface_exists($class));
-	} catch (\Throwable $e) {
+
+		return ($exists ? : interface_exists($class));
+	}catch(\Throwable $e){
 		return false;
 	}
 };

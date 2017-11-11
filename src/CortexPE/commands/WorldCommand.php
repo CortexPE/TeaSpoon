@@ -23,7 +23,9 @@ declare(strict_types = 1);
 namespace CortexPE\commands;
 
 use CortexPE\utils\TextFormat;
-use pocketmine\command\{CommandSender, defaults\VanillaCommand};
+use pocketmine\command\{
+	CommandSender, defaults\VanillaCommand
+};
 use pocketmine\Player;
 
 class WorldCommand extends VanillaCommand {

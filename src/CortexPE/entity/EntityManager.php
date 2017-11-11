@@ -36,14 +36,14 @@ declare(strict_types = 1);
 namespace CortexPE\entity;
 
 use CortexPE\entity\projectile\{
-    Egg, EnchantingBottle, EnderPearl, LingeringPotion, Snowball, SplashPotion
+	Egg, EnchantingBottle, EnderPearl, LingeringPotion, Snowball, SplashPotion
 };
 use CortexPE\Main;
 use pocketmine\entity\Entity;
 
 class EntityManager extends Entity {
 	public static function init(): void{
-		if (Main::$registerVanillaEntities) {
+		if(Main::$registerVanillaEntities){
 			self::registerEntity(Bat::class, false, ['Bat', 'minecraft:bat']);
 			self::registerEntity(Boat::class, false, ['Boat', 'minecraft:boat']);
 			self::registerEntity(Blaze::class, false, ['Blaze', 'minecraft:blaze']);

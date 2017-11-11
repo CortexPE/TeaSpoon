@@ -64,10 +64,35 @@ class Weather {
 	}
 
 	/**
-	 * @return bool
+	 * @param $weather
+	 *
+	 * @return int
 	 */
-	public function canCalculate(): bool{
-		return $this->canCalculate;
+	public static function getWeatherFromString($weather){
+		if(is_int($weather)){
+			if($weather <= 3){
+				return $weather;
+			}
+
+			return -1; // invalid weather
+		}
+		switch(strtolower($weather)){
+			case "clear":
+			case "sunny":
+			case "fine":
+				return self::SUNNY;
+			case "rain":
+			case "rainy":
+				return self::RAINY;
+			case "thunder":
+				return self::THUNDER;
+			case "rain_thunder":
+			case "rainy_thunder":
+			case "storm":
+				return self::RAINY_THUNDER;
+			default:
+				return -1;
+		}
 	}
 
 	/**
@@ -106,13 +131,20 @@ class Weather {
 					$z = $p->z + mt_rand(-64, 64);
 					$y = $this->level->getHighestBlockAt($x, $z);
 
-					$nbt = Entity::createBaseNBT(new Vector3($x,$y,$z));
+					$nbt = Entity::createBaseNBT(new Vector3($x, $y, $z));
 					$lightning = Entity::createEntity("Lightning", $this->level, $nbt);
 					$lightning->spawnToAll();
 				}
 			}
 		}
 		$this->lastUpdate = $currentTick;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function canCalculate(): bool{
+		return $this->canCalculate;
 	}
 
 	/**
@@ -127,92 +159,10 @@ class Weather {
 		$this->sendWeatherToAll();
 	}
 
-	/**
-	 * @return array
-	 */
-	public function getRandomWeatherData(): array{
-		return $this->randomWeatherData;
-	}
-
-	/**
-	 * @param array $randomWeatherData
-	 */
-	public function setRandomWeatherData(array $randomWeatherData){
-		$this->randomWeatherData = $randomWeatherData;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getWeather(): int{
-		return $this->weatherNow;
-	}
-
-	/**
-	 * @param $weather
-	 *
-	 * @return int
-	 */
-	public static function getWeatherFromString($weather){
-		if(is_int($weather)){
-			if($weather <= 3){
-				return $weather;
-			}
-
-			return -1; // invalid weather
+	public function sendWeatherToAll(){
+		foreach($this->level->getPlayers() as $player){
+			$this->sendWeather($player);
 		}
-		switch(strtolower($weather)){
-			case "clear":
-			case "sunny":
-			case "fine":
-				return self::SUNNY;
-			case "rain":
-			case "rainy":
-				return self::RAINY;
-			case "thunder":
-				return self::THUNDER;
-			case "rain_thunder":
-			case "rainy_thunder":
-			case "storm":
-				return self::RAINY_THUNDER;
-			default:
-				return -1;
-		}
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function isSunny(): bool{
-		return $this->getWeather() === self::SUNNY;
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function isRainy(): bool{
-		return $this->getWeather() === self::RAINY;
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function isRainyThunder(): bool{
-		return $this->getWeather() === self::RAINY_THUNDER;
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function isThunder(): bool{
-		return $this->getWeather() === self::THUNDER;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getStrength(): array{
-		return [$this->strength1, $this->strength2];
 	}
 
 	/**
@@ -256,10 +206,60 @@ class Weather {
 		//$p->weatherData = [$this->weatherNow, $this->strength1, $this->strength2];
 	}
 
-	public function sendWeatherToAll(){
-		foreach($this->level->getPlayers() as $player){
-			$this->sendWeather($player);
-		}
+	/**
+	 * @return array
+	 */
+	public function getRandomWeatherData(): array{
+		return $this->randomWeatherData;
+	}
+
+	/**
+	 * @param array $randomWeatherData
+	 */
+	public function setRandomWeatherData(array $randomWeatherData){
+		$this->randomWeatherData = $randomWeatherData;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isSunny(): bool{
+		return $this->getWeather() === self::SUNNY;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getWeather(): int{
+		return $this->weatherNow;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isRainy(): bool{
+		return $this->getWeather() === self::RAINY;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isRainyThunder(): bool{
+		return $this->getWeather() === self::RAINY_THUNDER;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isThunder(): bool{
+		return $this->getWeather() === self::THUNDER;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getStrength(): array{
+		return [$this->strength1, $this->strength2];
 	}
 
 }

@@ -56,7 +56,7 @@ use pocketmine\event\player\{
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\{
-	EntityEventPacket, LevelEventPacket, types\DimensionIds
+	EntityEventPacket, LevelEventPacket
 };
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
@@ -248,6 +248,7 @@ class EventListener implements Listener {
 			}
 		}
 	}
+
 	/**
 	 * @param PlayerItemConsumeEvent $ev
 	 *

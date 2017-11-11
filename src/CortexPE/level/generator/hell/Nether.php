@@ -23,6 +23,10 @@ declare(strict_types = 1);
 
 namespace CortexPE\level\generator\hell;
 
+use CortexPE\level\generator\populator\GroundFire;
+use CortexPE\level\generator\populator\NetherGlowStone;
+use CortexPE\level\generator\populator\NetherLava;
+use CortexPE\level\generator\populator\NetherOre;
 use pocketmine\block\Block;
 use pocketmine\block\Gravel;
 use pocketmine\block\Lava;
@@ -33,10 +37,6 @@ use pocketmine\level\generator\biome\Biome;
 use pocketmine\level\generator\Generator;
 use pocketmine\level\generator\noise\Simplex;
 use pocketmine\level\generator\object\OreType;
-use CortexPE\level\generator\populator\GroundFire;
-use CortexPE\level\generator\populator\NetherGlowStone;
-use CortexPE\level\generator\populator\NetherLava;
-use CortexPE\level\generator\populator\NetherOre;
 use pocketmine\level\generator\populator\Populator;
 use pocketmine\math\Vector3 as Vector3;
 use pocketmine\utils\Random;

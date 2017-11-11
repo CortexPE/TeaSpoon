@@ -40,7 +40,7 @@ use CortexPE\Server;
 use pocketmine\scheduler\PluginTask;
 
 class TickLevelsTask extends PluginTask {
-	public function onRun(int $currentTick) {
+	public function onRun(int $currentTick){
 		if(!Server::$loaded){
 			return;
 		}

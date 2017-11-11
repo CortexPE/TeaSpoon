@@ -36,7 +36,9 @@ declare(strict_types = 1);
 namespace CortexPE\item;
 
 use CortexPE\block\Portal;
-use pocketmine\block\{Block, BlockFactory, Solid};
+use pocketmine\block\{
+	Block, BlockFactory, Solid
+};
 use pocketmine\item\Tool;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
@@ -58,7 +60,7 @@ class FlintSteel extends Tool {
 		return true;
 	}
 
-	public function onActivate(Level $level, Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $facePos) : bool{
+	public function onActivate(Level $level, Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $facePos): bool{
 		$target = $blockClicked;
 		if($target->getId() === Block::OBSIDIAN){
 			$tx = $target->getX();

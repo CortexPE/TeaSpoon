@@ -36,7 +36,9 @@ declare(strict_types = 1);
 namespace CortexPE\commands;
 
 use CortexPE\utils\TextFormat;
-use pocketmine\command\{CommandSender, defaults\VanillaCommand};
+use pocketmine\command\{
+	CommandSender, defaults\VanillaCommand
+};
 use pocketmine\event\TranslationContainer;
 use pocketmine\Player;
 
@@ -86,17 +88,20 @@ class ClearCommand extends VanillaCommand {
 					$players = $sender->getServer()->getOnlinePlayers();
 					if(count($players) > 0){
 						$player = $players[array_rand($players)];
-					} else {
+					}else{
 						$sender->sendMessage("No players online");
+
 						return true;
 					}
 
 					if($player instanceof Player){
 						$sender->sendMessage("Cleared " . $this->clearTarget($player) . " items from " . $player->getName());
 					}
+
 					return true;
 				case '@e':
 					$sender->sendMessage("Unimplemented since we don't have MobAI yet :/");
+
 					return true;
 				case '@p':
 					$player = $sender;
@@ -105,6 +110,7 @@ class ClearCommand extends VanillaCommand {
 					}else{
 						$sender->sendMessage("You must run this command in-game");
 					}
+
 					return true;
 				default;
 					$player = $sender->getServer()->getPlayer($args[0]);
@@ -113,6 +119,7 @@ class ClearCommand extends VanillaCommand {
 					}else{
 						$sender->sendMessage(new TranslationContainer(TextFormat::RED . "%commands.generic.player.notFound"));
 					}
+
 					return true;
 			}
 		}
@@ -134,13 +141,14 @@ class ClearCommand extends VanillaCommand {
 		return true;
 	}
 
-	private function clearTarget(Player $p) : int {
+	private function clearTarget(Player $p): int{
 		$count = 0;
 		$inv = $p->getInventory();
 		foreach($inv->getContents() as $item){
 			$count += $item->getCount();
 		}
 		$inv->clearAll();
+
 		return $count;
 	}
 }

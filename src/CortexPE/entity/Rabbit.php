@@ -38,10 +38,14 @@ namespace CortexPE\entity;
 use CortexPE\item\enchantment\Enchantment;
 use CortexPE\Player;
 use pocketmine\entity\Animal;
-use pocketmine\event\entity\{EntityDamageEvent, EntityDamageByEntityEvent};
+use pocketmine\event\entity\{
+	EntityDamageByEntityEvent, EntityDamageEvent
+};
 use pocketmine\item\Item;
 use pocketmine\level\Level;
-use pocketmine\nbt\tag\{ByteTag, CompoundTag};
+use pocketmine\nbt\tag\{
+	ByteTag, CompoundTag
+};
 
 class Rabbit extends Animal {
 	const NETWORK_ID = self::RABBIT;
@@ -99,7 +103,7 @@ class Rabbit extends Animal {
 				$looting = $damager->getInventory()->getItemInHand()->getEnchantment(Enchantment::LOOTING);
 				if($looting !== null){
 					$lootingL = $looting->getLevel();
-				} else {
+				}else{
 					$lootingL = 0;
 				}
 			}

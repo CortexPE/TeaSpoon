@@ -39,25 +39,25 @@ use pocketmine\utils\TextFormat as PMTextFormat;
 
 class TextFormat extends PMTextFormat {
 
-    public static function center($input){
-        $clear = TextFormat::clean($input);
-        $lines = explode("\n", $clear);
-        $max = max(array_map("strlen", $lines));
-        $lines = explode("\n", $input);
-        foreach($lines as $key => $line){
-            $lines[$key] = str_pad($line, $max + self::colorCount($line), " ", STR_PAD_LEFT);
-        }
+	public static function center($input){
+		$clear = TextFormat::clean($input);
+		$lines = explode("\n", $clear);
+		$max = max(array_map("strlen", $lines));
+		$lines = explode("\n", $input);
+		foreach($lines as $key => $line){
+			$lines[$key] = str_pad($line, $max + self::colorCount($line), " ", STR_PAD_LEFT);
+		}
 
-        return implode("\n", $lines);
-    }
+		return implode("\n", $lines);
+	}
 
-    public static function colorCount($input){
-        $colors = "abcdef0123456789lo";
-        $count = 0;
-        for($i = 0; $i < strlen($colors); $i++){
-            $count += substr_count($input, "§". $colors{$i});
-        }
+	public static function colorCount($input){
+		$colors = "abcdef0123456789lo";
+		$count = 0;
+		for($i = 0; $i < strlen($colors); $i++){
+			$count += substr_count($input, "§" . $colors{$i});
+		}
 
-        return $count;
-    }
+		return $count;
+	}
 }

@@ -14,6 +14,8 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
+use CortexPE\tile\Beacon as TileBeacon;
+use CortexPE\tile\Tile;
 use pocketmine\block\Air;
 use pocketmine\block\Block;
 use pocketmine\block\Transparent;
@@ -24,8 +26,6 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\Player;
-use CortexPE\tile\Beacon as TileBeacon;
-use CortexPE\tile\Tile;
 
 class Beacon extends Transparent {
 
@@ -44,23 +44,23 @@ class Beacon extends Transparent {
 		return true;
 	}
 
- 	public function getName() : string {
+	public function getName(): string{
 		return "Beacon";
 	}
 
-	public function getLightLevel() : int {
+	public function getLightLevel(): int{
 		return 15;
 	}
 
-	public function getResistance() : float {
+	public function getResistance(): float{
 		return 15;
 	}
 
-	public function getHardness() : float {
+	public function getHardness(): float{
 		return 3;
 	}
 
-	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
+	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null): bool{
 		$this->getLevel()->setBlock($this, $this, true, true);
 		$nbt = new CompoundTag("", [
 			new StringTag("id", Tile::BEACON),
@@ -76,7 +76,7 @@ class Beacon extends Transparent {
 		return true;
 	}
 
-	public function onActivate(Item $item, Player $player = null) : bool {
+	public function onActivate(Item $item, Player $player = null): bool{
 		if($player instanceof Player){
 			$t = $this->getLevel()->getTile($this);
 			$beacon = null;
@@ -102,7 +102,7 @@ class Beacon extends Transparent {
 	}
 
 
-	public function onBreak(Item $item, Player $player = null) : bool {
+	public function onBreak(Item $item, Player $player = null): bool{
 		$this->getLevel()->setBlock($this, new Air(), true, true);
 
 		return true;

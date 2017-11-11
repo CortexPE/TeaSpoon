@@ -35,7 +35,9 @@ declare(strict_types = 1);
 
 namespace CortexPE\task;
 
-use pocketmine\network\mcpe\protocol\{ChangeDimensionPacket, PlayStatusPacket, types\DimensionIds};
+use pocketmine\network\mcpe\protocol\{
+	ChangeDimensionPacket, PlayStatusPacket, types\DimensionIds
+};
 use pocketmine\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\scheduler\PluginTask;
@@ -49,12 +51,12 @@ class DelayedTeleportTask extends PluginTask {
 	/** @var Player */
 	protected $player;
 
-	public function __construct(Plugin $owner, Player $player) {
+	public function __construct(Plugin $owner, Player $player){
 		$this->owner = $owner;
 		$this->player = $player;
 	}
 
-	public function onRun(int $currentTick) {
+	public function onRun(int $currentTick){
 		$pk = new ChangeDimensionPacket();
 		$pk->dimension = DimensionIds::OVERWORLD;
 		$pk->position = PMServer::getInstance()->getDefaultLevel()->getSafeSpawn();
@@ -62,7 +64,7 @@ class DelayedTeleportTask extends PluginTask {
 		$this->player->dataPacket($pk);
 		$this->player->teleport(PMServer::getInstance()->getDefaultLevel()->getSafeSpawn());
 		$this->player->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
-		if ($this->player->isOnFire()) {
+		if($this->player->isOnFire()){
 			$this->player->setOnFire(0);
 		}
 	}

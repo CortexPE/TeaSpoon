@@ -36,20 +36,20 @@ declare(strict_types = 1);
 namespace CortexPE\entity\projectile;
 
 use CortexPE\level\particle\SpellParticle;
-use pocketmine\entity\{Entity, projectile\Throwable};
+use pocketmine\entity\{
+	Entity, projectile\Throwable
+};
 
 class EnchantingBottle extends Throwable {
 	const NETWORK_ID = self::XP_BOTTLE;
-
-	public $spawnedOrbs = false;
-
 	const RAND_POS_X = [0, -0.1];
 	const RAND_POS_Y = [-0.2];
 	const RAND_POS_Z = [0, -0.1];
+	public $spawnedOrbs = false;
 
 	public function onUpdate(int $currentTick): bool{
 		if($this->isCollided || $this->age > 1200 && !$this->spawnedOrbs){
-			$rand = mt_rand(1,3);
+			$rand = mt_rand(1, 3);
 			$this->getLevel()->addParticle(new SpellParticle($this, 46, 82, 153));
 			for($c = 0; $c <= $rand; $c++){
 				$randomX = self::RAND_POS_X[array_rand(self::RAND_POS_X)];

@@ -36,10 +36,12 @@ declare(strict_types = 1);
 namespace CortexPE\handlers;
 
 use CortexPE\Main;
-use pocketmine\event\{Listener, server\DataPacketReceiveEvent};
+use pocketmine\event\{
+	Listener, server\DataPacketReceiveEvent
+};
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
-use pocketmine\plugin\Plugin;
 use pocketmine\Player as PMPlayer;
+use pocketmine\plugin\Plugin;
 
 class PacketHandler implements Listener {
 
@@ -55,9 +57,9 @@ class PacketHandler implements Listener {
 	 *
 	 * @priority LOWEST
 	 */
-	public function onDataPacket(DataPacketReceiveEvent $ev) {
+	public function onDataPacket(DataPacketReceiveEvent $ev){
 		$pkr = $ev->getPacket();
-		if($pkr instanceof PlayerActionPacket) {
+		if($pkr instanceof PlayerActionPacket){
 			$p = $ev->getPlayer();
 			switch($pkr->action){
 				case PlayerActionPacket::ACTION_START_GLIDE:

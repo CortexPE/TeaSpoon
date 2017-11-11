@@ -23,8 +23,12 @@ declare(strict_types = 1);
 namespace CortexPE\commands;
 
 use CortexPE\utils\TextFormat;
-use pocketmine\command\{Command, CommandSender, defaults\VanillaCommand};
-use pocketmine\event\{TranslationContainer, entity\EntityDamageEvent};
+use pocketmine\command\{
+	Command, CommandSender, defaults\VanillaCommand
+};
+use pocketmine\event\{
+	entity\EntityDamageEvent, TranslationContainer
+};
 use pocketmine\Player;
 
 class KillCommand extends VanillaCommand {
@@ -74,8 +78,9 @@ class KillCommand extends VanillaCommand {
 					$players = $sender->getServer()->getOnlinePlayers();
 					if(count($players) > 0){
 						$player = $players[array_rand($players)];
-					} else {
+					}else{
 						$sender->sendMessage("No players online");
+
 						return true;
 					}
 
@@ -91,6 +96,7 @@ class KillCommand extends VanillaCommand {
 
 						$sender->sendMessage("Killed " . $player->getName());
 					}
+
 					return true;
 				case '@e':
 					$count = 0;
@@ -107,12 +113,12 @@ class KillCommand extends VanillaCommand {
 									$entity->setLastDamageCause($ev);
 									$entity->setHealth(0);
 								}
-							} else {
+							}else{
 								$entity->close();
 							}
 							$count++;
 						}
-					} else {
+					}else{
 						foreach($sender->getServer()->getDefaultLevel()->getEntities() as $entity){
 							if($entity instanceof Player){
 								if($entity->getGamemode() === Player::ADVENTURE or $entity->getGamemode() === Player::SURVIVAL){
@@ -125,7 +131,7 @@ class KillCommand extends VanillaCommand {
 									$entity->setLastDamageCause($ev);
 									$entity->setHealth(0);
 								}
-							} else {
+							}else{
 								$sender->getServer()->getPluginManager()->callEvent($ev = new EntityDamageEvent($entity, EntityDamageEvent::CAUSE_SUICIDE, 1000));
 
 								if($ev->isCancelled()){
@@ -139,6 +145,7 @@ class KillCommand extends VanillaCommand {
 						}
 					}
 					$sender->sendMessage("Killed " . $count . " Entities");
+
 					return true;
 				case '@p':
 					$player = $sender;
@@ -156,6 +163,7 @@ class KillCommand extends VanillaCommand {
 					}else{
 						$sender->sendMessage(new TranslationContainer(TextFormat::RED . "%commands.generic.player.notFound"));
 					}
+
 					return true;
 				default;
 					$player = $sender->getServer()->getPlayer($args[0]);
@@ -173,6 +181,7 @@ class KillCommand extends VanillaCommand {
 					}else{
 						$sender->sendMessage(new TranslationContainer(TextFormat::RED . "%commands.generic.player.notFound"));
 					}
+
 					return true;
 			}
 		}

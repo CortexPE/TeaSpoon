@@ -35,7 +35,9 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
-use pocketmine\block\{Block, BlockFactory};
+use pocketmine\block\{
+	Block, BlockFactory
+};
 
 class BlockManager {
 	public static function init(){

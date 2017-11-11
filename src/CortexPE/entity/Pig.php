@@ -60,7 +60,7 @@ class Pig extends Animal {
 				$looting = $damager->getInventory()->getItemInHand()->getEnchantment(Enchantment::LOOTING);
 				if($looting !== null){
 					$lootingL = $looting->getLevel();
-				} else {
+				}else{
 					$lootingL = 0;
 				}
 

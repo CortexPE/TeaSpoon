@@ -46,6 +46,6 @@ class Parrot extends Animal {
 	}
 
 	public function getDrops(): array{
-		return [Item::get(Item::FEATHER,0, mt_rand(1,2))];
+		return [Item::get(Item::FEATHER, 0, mt_rand(1, 2))];
 	}
 }

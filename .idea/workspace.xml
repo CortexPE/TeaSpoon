@@ -2,9 +2,114 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="626fe3a4-ee92-485e-8b37-4aeb370d8e12" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/config.yml" afterPath="$PROJECT_DIR$/resources/config.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/EventListener.php" afterPath="$PROJECT_DIR$/src/CortexPE/EventListener.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/LevelManager.php" afterPath="$PROJECT_DIR$/src/CortexPE/LevelManager.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/Main.php" afterPath="$PROJECT_DIR$/src/CortexPE/Main.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/Player.php" afterPath="$PROJECT_DIR$/src/CortexPE/Player.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/Server.php" afterPath="$PROJECT_DIR$/src/CortexPE/Server.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/Utils.php" afterPath="$PROJECT_DIR$/src/CortexPE/Utils.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/block/Beacon.php" afterPath="$PROJECT_DIR$/src/CortexPE/block/Beacon.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/block/BlockManager.php" afterPath="$PROJECT_DIR$/src/CortexPE/block/BlockManager.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/block/DragonEgg.php" afterPath="$PROJECT_DIR$/src/CortexPE/block/DragonEgg.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/block/EndPortal.php" afterPath="$PROJECT_DIR$/src/CortexPE/block/EndPortal.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/block/EnderChest.php" afterPath="$PROJECT_DIR$/src/CortexPE/block/EnderChest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/block/Obsidian.php" afterPath="$PROJECT_DIR$/src/CortexPE/block/Obsidian.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/block/Portal.php" afterPath="$PROJECT_DIR$/src/CortexPE/block/Portal.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/commands/ClearCommand.php" afterPath="$PROJECT_DIR$/src/CortexPE/commands/ClearCommand.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/commands/KillCommand.php" afterPath="$PROJECT_DIR$/src/CortexPE/commands/KillCommand.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/commands/TestCommand.php" afterPath="$PROJECT_DIR$/src/CortexPE/commands/TestCommand.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/commands/WorldCommand.php" afterPath="$PROJECT_DIR$/src/CortexPE/commands/WorldCommand.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/AreaEffectCloud.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/AreaEffectCloud.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Bat.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Bat.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Blaze.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Blaze.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Boat.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Boat.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Cow.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Cow.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Donkey.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Donkey.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/ElderGuardian.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/ElderGuardian.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Endermite.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Endermite.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/EntityManager.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/EntityManager.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Evoker.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Evoker.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Ghast.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Ghast.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Guardian.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Guardian.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Horse.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Horse.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Husk.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Husk.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/IronGolem.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/IronGolem.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Lightning.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Lightning.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Llama.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Llama.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/MagmaCube.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/MagmaCube.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Mooshroom.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Mooshroom.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Mule.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Mule.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Ocelot.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Ocelot.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Parrot.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Parrot.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Pig.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Pig.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/PigZombie.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/PigZombie.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/PolarBear.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/PolarBear.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Rabbit.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Rabbit.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Sheep.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Sheep.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Shulker.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Shulker.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Skeleton.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Skeleton.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Slime.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Slime.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Spider.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Spider.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Vex.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Vex.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Wither.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Wither.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/WitherSkeleton.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/WitherSkeleton.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/Wolf.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/Wolf.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/XPOrb.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/XPOrb.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/ZombieVillager.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/ZombieVillager.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/projectile/Egg.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/projectile/Egg.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/projectile/EnchantingBottle.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/projectile/EnchantingBottle.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/projectile/EnderPearl.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/projectile/EnderPearl.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/projectile/LingeringPotion.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/projectile/LingeringPotion.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/projectile/Snowball.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/projectile/Snowball.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/entity/projectile/SplashPotion.php" afterPath="$PROJECT_DIR$/src/CortexPE/entity/projectile/SplashPotion.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/handlers/EnchantHandler.php" afterPath="$PROJECT_DIR$/src/CortexPE/handlers/EnchantHandler.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/handlers/PacketHandler.php" afterPath="$PROJECT_DIR$/src/CortexPE/handlers/PacketHandler.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/inventory/BeaconInventory.php" afterPath="$PROJECT_DIR$/src/CortexPE/inventory/BeaconInventory.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/inventory/EnderChestInventory.php" afterPath="$PROJECT_DIR$/src/CortexPE/inventory/EnderChestInventory.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/item/Boat.php" afterPath="$PROJECT_DIR$/src/CortexPE/item/Boat.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/item/ChorusFruit.php" afterPath="$PROJECT_DIR$/src/CortexPE/item/ChorusFruit.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/item/Elytra.php" afterPath="$PROJECT_DIR$/src/CortexPE/item/Elytra.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/item/EnchantingBottle.php" afterPath="$PROJECT_DIR$/src/CortexPE/item/EnchantingBottle.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/item/EnderPearl.php" afterPath="$PROJECT_DIR$/src/CortexPE/item/EnderPearl.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/item/FireCharge.php" afterPath="$PROJECT_DIR$/src/CortexPE/item/FireCharge.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/item/FireworkRocket.php" afterPath="$PROJECT_DIR$/src/CortexPE/item/FireworkRocket.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/item/FlintSteel.php" afterPath="$PROJECT_DIR$/src/CortexPE/item/FlintSteel.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/item/ItemManager.php" afterPath="$PROJECT_DIR$/src/CortexPE/item/ItemManager.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/item/LingeringPotion.php" afterPath="$PROJECT_DIR$/src/CortexPE/item/LingeringPotion.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/item/Potion.php" afterPath="$PROJECT_DIR$/src/CortexPE/item/Potion.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/item/SplashPotion.php" afterPath="$PROJECT_DIR$/src/CortexPE/item/SplashPotion.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/item/TotemOfUndying.php" afterPath="$PROJECT_DIR$/src/CortexPE/item/TotemOfUndying.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/item/enchantment/Enchantment.php" afterPath="$PROJECT_DIR$/src/CortexPE/item/enchantment/Enchantment.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/level/generator/VoidGenerator.php" afterPath="$PROJECT_DIR$/src/CortexPE/level/generator/VoidGenerator.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/level/generator/biome/Biome.php" afterPath="$PROJECT_DIR$/src/CortexPE/level/generator/biome/Biome.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/level/generator/ender/Ender.php" afterPath="$PROJECT_DIR$/src/CortexPE/level/generator/ender/Ender.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/level/generator/ender/biome/EnderBiome.php" afterPath="$PROJECT_DIR$/src/CortexPE/level/generator/ender/biome/EnderBiome.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/level/generator/ender/populator/EnderPilar.php" afterPath="$PROJECT_DIR$/src/CortexPE/level/generator/ender/populator/EnderPilar.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/level/generator/hell/Nether.php" afterPath="$PROJECT_DIR$/src/CortexPE/level/generator/hell/Nether.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/level/particle/Particle.php" afterPath="$PROJECT_DIR$/src/CortexPE/level/particle/Particle.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/level/particle/RocketParticle.php" afterPath="$PROJECT_DIR$/src/CortexPE/level/particle/RocketParticle.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/level/populator/GroundFire.php" afterPath="$PROJECT_DIR$/src/CortexPE/level/populator/GroundFire.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/level/populator/NetherGlowStone.php" afterPath="$PROJECT_DIR$/src/CortexPE/level/populator/NetherGlowStone.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/level/populator/NetherLava.php" afterPath="$PROJECT_DIR$/src/CortexPE/level/populator/NetherLava.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/level/populator/NetherOre.php" afterPath="$PROJECT_DIR$/src/CortexPE/level/populator/NetherOre.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/level/weather/Weather.php" afterPath="$PROJECT_DIR$/src/CortexPE/level/weather/Weather.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/plugin/AllAPI/FolderPluginLoader.php" afterPath="$PROJECT_DIR$/src/CortexPE/plugin/AllAPI/FolderPluginLoader.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/plugin/AllAPI/PharPluginLoader.php" afterPath="$PROJECT_DIR$/src/CortexPE/plugin/AllAPI/PharPluginLoader.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/plugin/AllAPI/ScriptPluginLoader.php" afterPath="$PROJECT_DIR$/src/CortexPE/plugin/AllAPI/ScriptPluginLoader.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/plugin/AllAPILoaderManager.php" afterPath="$PROJECT_DIR$/src/CortexPE/plugin/AllAPILoaderManager.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/task/BeaconDelayedCheckTask.php" afterPath="$PROJECT_DIR$/src/CortexPE/task/BeaconDelayedCheckTask.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/task/CheckPlayersTask.php" afterPath="$PROJECT_DIR$/src/CortexPE/task/CheckPlayersTask.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/task/DelayedCrossDimensionTeleportTask.php" afterPath="$PROJECT_DIR$/src/CortexPE/task/DelayedCrossDimensionTeleportTask.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/task/DelayedTeleportTask.php" afterPath="$PROJECT_DIR$/src/CortexPE/task/DelayedTeleportTask.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/task/ElytraRocketBoostTrackingTask.php" afterPath="$PROJECT_DIR$/src/CortexPE/task/ElytraRocketBoostTrackingTask.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/task/TickLevelsTask.php" afterPath="$PROJECT_DIR$/src/CortexPE/task/TickLevelsTask.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/tile/Beacon.php" afterPath="$PROJECT_DIR$/src/CortexPE/tile/Beacon.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/tile/EnderChest.php" afterPath="$PROJECT_DIR$/src/CortexPE/tile/EnderChest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/tile/Tile.php" afterPath="$PROJECT_DIR$/src/CortexPE/tile/Tile.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CortexPE/utils/TextFormat.php" afterPath="$PROJECT_DIR$/src/CortexPE/utils/TextFormat.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -14,12 +119,45 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
+    <leaf>
+      <file leaf-file-name="config.yml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/config.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="406">
+              <caret line="40" column="0" lean-forward="true" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="102">
+                <caret line="6" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+                <folding />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Player.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/CortexPE/Player.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="247">
+              <caret line="51" column="32" lean-forward="true" selection-start-line="51" selection-start-column="32" selection-end-line="51" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Main.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/CortexPE/Main.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="292">
-              <caret line="224" column="56" lean-forward="false" selection-start-line="224" selection-start-column="48" selection-end-line="224" selection-end-column="56" />
+            <state relative-caret-position="204">
+              <caret line="60" column="28" lean-forward="false" selection-start-line="60" selection-start-column="28" selection-end-line="60" selection-end-column="28" />
               <folding>
                 <element signature="e#1366#1398#0#PHP" expanded="true" />
               </folding>
@@ -27,21 +165,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CheckPlayersTask.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/CortexPE/task/CheckPlayersTask.php">
+      <file leaf-file-name="EventListener.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/CortexPE/EventListener.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="51" column="50" lean-forward="true" selection-start-line="51" selection-start-column="50" selection-end-line="51" selection-end-column="50" />
+            <state relative-caret-position="202">
+              <caret line="286" column="9" lean-forward="false" selection-start-line="286" selection-start-column="9" selection-end-line="286" selection-end-column="9" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="config.yml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/config.yml">
+      <file leaf-file-name="LevelManager.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/CortexPE/LevelManager.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="317">
-              <caret line="20" column="83" lean-forward="false" selection-start-line="20" selection-start-column="83" selection-end-line="20" selection-end-column="83" />
+            <state relative-caret-position="32">
+              <caret line="50" column="8" lean-forward="false" selection-start-line="50" selection-start-column="8" selection-end-line="50" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -96,7 +234,6 @@
         <option value="$PROJECT_DIR$/src/CortexPE/level/populator/NetherOre.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/tile/EnderChest.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/level/populator/NetherGlowStone.php" />
-        <option value="$PROJECT_DIR$/src/CortexPE/LevelManager.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/PacketHandler.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/Utils.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/item/Potion.php" />
@@ -108,8 +245,6 @@
         <option value="$PROJECT_DIR$/src/CortexPE/item/SplashPotion.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/item/LingeringPotion.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/entity/projectile/SplashPotion.php" />
-        <option value="$PROJECT_DIR$/src/CortexPE/Player.php" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/build.php" />
         <option value="$PROJECT_DIR$/compiledevtools.php" />
         <option value="$PROJECT_DIR$/.travis.yml" />
@@ -117,9 +252,12 @@
         <option value="$PROJECT_DIR$/src/CortexPE/item/ItemManager.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/item/enchantment/Enchantment.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/entity/EntityManager.php" />
-        <option value="$PROJECT_DIR$/resources/config.yml" />
-        <option value="$PROJECT_DIR$/src/CortexPE/Main.php" />
         <option value="$PROJECT_DIR$/src/CortexPE/task/CheckPlayersTask.php" />
+        <option value="$PROJECT_DIR$/src/CortexPE/LevelManager.php" />
+        <option value="$PROJECT_DIR$/src/CortexPE/Main.php" />
+        <option value="$PROJECT_DIR$/resources/config.yml" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/src/CortexPE/Player.php" />
       </list>
     </option>
   </component>
@@ -140,7 +278,9 @@
     <option name="width" value="1400" />
     <option name="height" value="1000" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
@@ -156,6 +296,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -179,55 +321,10 @@
               <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
               <item name="CortexPE" type="2a2b976b:PhpTreeStructureProvider$1" />
             </path>
-            <path>
-              <item name="TeaSpoon" type="b2602c69:ProjectViewProjectNode" />
-              <item name="TeaSpoon" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="CortexPE" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="block" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="TeaSpoon" type="b2602c69:ProjectViewProjectNode" />
-              <item name="TeaSpoon" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="CortexPE" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="entity" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="TeaSpoon" type="b2602c69:ProjectViewProjectNode" />
-              <item name="TeaSpoon" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="CortexPE" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="item" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="TeaSpoon" type="b2602c69:ProjectViewProjectNode" />
-              <item name="TeaSpoon" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="CortexPE" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="item" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="enchantment" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="TeaSpoon" type="b2602c69:ProjectViewProjectNode" />
-              <item name="TeaSpoon" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="CortexPE" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="task" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="TeaSpoon" type="b2602c69:ProjectViewProjectNode" />
-              <item name="TeaSpoon" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="CortexPE" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="utils" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -249,30 +346,6 @@
           <option name="mySupportsDeletion" value="false" />
           <option name="myCanBeAbsent" value="false" />
           <option name="myId" value="UPDATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/workspace.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/README.md</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/resources/config.yml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/EventListener.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/Main.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/Utils.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/block/BlockManager.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/commands/CommandManager.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/entity/Boat.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/entity/EntityManager.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/entity/Human.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/entity/Lightning.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/entity/XPOrb.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/entity/projectile/Egg.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/entity/projectile/EnchantingBottle.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/entity/projectile/EnderPearl.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/entity/projectile/LingeringPotion.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/entity/projectile/SplashPotion.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/handlers/EnchantHandler.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/handlers/PacketHandler.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/item/ItemManager.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/item/TotemOfUndying.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/task/CheckPlayersTask.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/tile/Tile.php</PATH>
         </FILE-GROUP>
         <FILE-GROUP>
           <option name="myUpdateName" value="Created" />
@@ -280,16 +353,6 @@
           <option name="mySupportsDeletion" value="false" />
           <option name="myCanBeAbsent" value="false" />
           <option name="myId" value="CREATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/block/Beacon.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/block/DragonEgg.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/commands/ClearCommand.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/commands/WeatherCommand.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/inventory/BeaconInventory.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/item/ChorusFruit.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/level/weather/Weather.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/task/BeaconDelayedCheckTask.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/task/TickLevelsTask.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/tile/Beacon.php</PATH>
         </FILE-GROUP>
         <FILE-GROUP>
           <option name="myUpdateName" value="Deleted" />
@@ -297,9 +360,6 @@
           <option name="mySupportsDeletion" value="false" />
           <option name="myCanBeAbsent" value="true" />
           <option name="myId" value="REMOVED_FROM_REPOSITORY" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.travis.yml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/build.php</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/compiledevtools.php</PATH>
         </FILE-GROUP>
         <FILE-GROUP>
           <option name="myUpdateName" value="Restored" />
@@ -379,6 +439,932 @@
         <option name="myCanBeAbsent" value="false" />
         <option name="myId" value="SWITCHED" />
       </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Updated from server" />
+        <option name="myStatusName" value="Changed on server" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="CHANGED_ON_SERVER" />
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Updated" />
+          <option name="myStatusName" value="Changed" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="UPDATED" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/workspace.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/README.md</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/resources/config.yml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/EventListener.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/Main.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/Utils.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/block/BlockManager.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/commands/CommandManager.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/entity/Boat.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/entity/EntityManager.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/entity/Human.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/entity/Lightning.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/entity/XPOrb.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/entity/projectile/Egg.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/entity/projectile/EnchantingBottle.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/entity/projectile/EnderPearl.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/entity/projectile/LingeringPotion.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/entity/projectile/SplashPotion.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/handlers/EnchantHandler.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/handlers/PacketHandler.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/item/ItemManager.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/item/TotemOfUndying.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/task/CheckPlayersTask.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/tile/Tile.php</PATH>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Created" />
+          <option name="myStatusName" value="Created" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="CREATED" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/block/Beacon.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/block/DragonEgg.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/commands/ClearCommand.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/commands/WeatherCommand.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/inventory/BeaconInventory.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/item/ChorusFruit.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/level/weather/Weather.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/task/BeaconDelayedCheckTask.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/task/TickLevelsTask.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/CortexPE/tile/Beacon.php</PATH>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Deleted" />
+          <option name="myStatusName" value="Deleted" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="true" />
+          <option name="myId" value="REMOVED_FROM_REPOSITORY" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/.travis.yml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/build.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/compiledevtools.php</PATH>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Restored" />
+          <option name="myStatusName" value="Will be restored" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="RESTORED" />
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" />
+            <option name="myStatusName" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" />
+          </FILE-GROUP>
+        </FILE-GROUP>
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Modified" />
+        <option name="myStatusName" value="Modified" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MODIFIED" />
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Skipped" />
+        <option name="myStatusName" value="Skipped" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SKIPPED" />
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with conflicts" />
+        <option name="myStatusName" value="Will be merged with conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_CONFLICTS" />
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with tree conflicts" />
+        <option name="myStatusName" value="Merged with tree conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with property conflicts" />
+        <option name="myStatusName" value="Will be merged with property conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged" />
+        <option name="myStatusName" value="Will be merged" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED" />
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Not in repository" />
+        <option name="myStatusName" value="Not in repository" />
+        <option name="mySupportsDeletion" value="true" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="UNKNOWN" />
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally added" />
+        <option name="myStatusName" value="Locally added" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_ADDED" />
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally removed" />
+        <option name="myStatusName" value="Locally removed" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_REMOVED" />
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Switched" />
+        <option name="myStatusName" value="Switched" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SWITCHED" />
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" />
+          <option name="myStatusName" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" />
+        </FILE-GROUP>
+      </FILE-GROUP>
     </UpdatedFiles>
   </component>
   <component name="RunDashboard">
@@ -410,39 +1396,39 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12674000" />
+    <option name="totallyTimeSpent" value="14031000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1060" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27760968" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32894737" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.09539474" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.09586056" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19736843" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.09586056" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.09586056" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -450,6 +1436,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Reformat + Some Code Cleanup" />
+    <option name="LAST_COMMIT_MESSAGE" value="Reformat + Some Code Cleanup" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -548,13 +1538,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../PocketMine-MP/src/pocketmine/entity/projectile/Projectile.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="70" column="62" lean-forward="true" selection-start-line="70" selection-start-column="62" selection-end-line="70" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../PocketMine-MP/src/pocketmine/entity/projectile/Projectile.php" />
     <entry file="file://$PROJECT_DIR$/src/CortexPE/item/ProjectileItem.php" />
     <entry file="file://$PROJECT_DIR$/src/CortexPE/entity/projectile/EnderPearl.php">
       <provider selected="true" editor-type-id="text-editor">
@@ -577,27 +1561,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../PocketMine-MP/src/pocketmine/item/ProjectileItem.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="37" column="0" lean-forward="true" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../PocketMine-MP/src/pocketmine/entity/Entity.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
-          <caret line="249" column="34" lean-forward="true" selection-start-line="249" selection-start-column="34" selection-end-line="249" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../PocketMine-MP/src/pocketmine/item/ProjectileItem.php" />
+    <entry file="file://$PROJECT_DIR$/../PocketMine-MP/src/pocketmine/entity/Entity.php" />
     <entry file="file://$PROJECT_DIR$/src/CortexPE/item/LingeringPotion.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2037">
           <caret line="119" column="20" lean-forward="false" selection-start-line="119" selection-start-column="20" selection-end-line="119" selection-end-column="20" />
           <folding>
             <element signature="e#7#715#0#PHP" expanded="true" />
-            <element signature="e#771#825#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -613,16 +1584,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1470">
           <caret line="75" column="35" lean-forward="false" selection-start-line="75" selection-start-column="35" selection-end-line="75" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="630">
-            <caret line="30" column="22" lean-forward="true" selection-start-line="30" selection-start-column="22" selection-end-line="30" selection-end-column="22" />
-          </first_editor>
-          <second_editor />
         </state>
       </provider>
     </entry>
@@ -651,13 +1612,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/build.php" />
-    <entry file="file://$PROJECT_DIR$/../PocketMine-MP/src/pocketmine/item/ItemFactory.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="275" column="51" lean-forward="true" selection-start-line="275" selection-start-column="51" selection-end-line="275" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../PocketMine-MP/src/pocketmine/item/ItemFactory.php" />
     <entry file="file://$PROJECT_DIR$/compiledevtools.php" />
     <entry file="file://$PROJECT_DIR$/.travis.yml" />
     <entry file="file://$PROJECT_DIR$/src/CortexPE/item/FireworkRocket.php">
@@ -668,21 +1623,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../PocketMine-MP/src/pocketmine/entity/Living.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="233" column="46" lean-forward="true" selection-start-line="233" selection-start-column="46" selection-end-line="233" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../PocketMine-MP/src/pocketmine/entity/Living.php" />
     <entry file="file://$PROJECT_DIR$/src/CortexPE/item/Potion.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1315">
           <caret line="127" column="61" lean-forward="false" selection-start-line="127" selection-start-column="46" selection-end-line="127" selection-end-column="61" />
-          <folding>
-            <element signature="e#691#737#0#PHP" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -706,9 +1652,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1323">
           <caret line="92" column="9" lean-forward="true" selection-start-line="92" selection-start-column="9" selection-end-line="92" selection-end-column="9" />
-          <folding>
-            <element signature="e#1373#1487#0#PHP" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -716,9 +1660,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="609">
           <caret line="58" column="165" lean-forward="true" selection-start-line="58" selection-start-column="165" selection-end-line="58" selection-end-column="165" />
-          <folding>
-            <element signature="e#1383#1444#0#PHP" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -738,39 +1680,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/CortexPE/EventListener.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="89" column="69" lean-forward="true" selection-start-line="89" selection-start-column="69" selection-end-line="89" selection-end-column="69" />
-          <folding>
-            <element signature="e#1461#1503#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/CortexPE/task/DelayedCrossDimensionTeleportTask.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="672">
           <caret line="78" column="40" lean-forward="true" selection-start-line="78" selection-start-column="40" selection-end-line="78" selection-end-column="40" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/CortexPE/Player.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="52" column="5" lean-forward="true" selection-start-line="52" selection-start-column="5" selection-end-line="52" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/CortexPE/LevelManager.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="443">
-          <caret line="54" column="67" lean-forward="true" selection-start-line="54" selection-start-column="67" selection-end-line="54" selection-end-column="67" />
-          <folding>
-            <element signature="e#1366#1437#0#PHP" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -798,28 +1712,63 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/config.yml">
+    <entry file="file://$PROJECT_DIR$/src/CortexPE/task/CheckPlayersTask.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="317">
-          <caret line="20" column="83" lean-forward="false" selection-start-line="20" selection-start-column="83" selection-end-line="20" selection-end-column="83" />
+        <state relative-caret-position="357">
+          <caret line="51" column="50" lean-forward="true" selection-start-line="51" selection-start-column="50" selection-end-line="51" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CortexPE/EventListener.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="286" column="9" lean-forward="false" selection-start-line="286" selection-start-column="9" selection-end-line="286" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CortexPE/LevelManager.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="32">
+          <caret line="50" column="8" lean-forward="false" selection-start-line="50" selection-start-column="8" selection-end-line="50" selection-end-column="8" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/CortexPE/Main.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="292">
-          <caret line="224" column="56" lean-forward="false" selection-start-line="224" selection-start-column="48" selection-end-line="224" selection-end-column="56" />
+        <state relative-caret-position="204">
+          <caret line="60" column="28" lean-forward="false" selection-start-line="60" selection-start-column="28" selection-end-line="60" selection-end-column="28" />
           <folding>
             <element signature="e#1366#1398#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/CortexPE/task/CheckPlayersTask.php">
+    <entry file="file://$PROJECT_DIR$/resources/config.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="51" column="50" lean-forward="true" selection-start-line="51" selection-start-column="50" selection-end-line="51" selection-end-column="50" />
+        <state relative-caret-position="406">
+          <caret line="40" column="0" lean-forward="true" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="102">
+            <caret line="6" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CortexPE/Player.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="51" column="32" lean-forward="true" selection-start-line="51" selection-start-column="32" selection-end-line="51" selection-end-column="32" />
           <folding />
         </state>
       </provider>

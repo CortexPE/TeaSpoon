@@ -35,7 +35,9 @@ declare(strict_types = 1);
 
 namespace CortexPE;
 
-use CortexPE\level\generator\{VoidGenerator, ender\Ender, hell\Nether};
+use CortexPE\level\generator\{
+	ender\Ender, hell\Nether, VoidGenerator
+};
 use pocketmine\level\generator\Generator;
 use pocketmine\Server as PMServer;
 
@@ -52,15 +54,17 @@ class LevelManager {
 	}
 
 	public static function loadAndGenerateLevels(){
-		if(!PMServer::getInstance()->loadLevel(Main::$netherName) and Main::$registerDimensions){
-			PMServer::getInstance()->generateLevel(Main::$netherName, time(), Generator::getGenerator("nether"));
-		}
-		Main::$netherLevel = PMServer::getInstance()->getLevelByName(Main::$netherName);
+		if(Main::$registerDimensions){
+			if(!PMServer::getInstance()->loadLevel(Main::$netherName)){
+				PMServer::getInstance()->generateLevel(Main::$netherName, time(), Generator::getGenerator("nether"));
+			}
+			Main::$netherLevel = PMServer::getInstance()->getLevelByName(Main::$netherName);
 
 
-		if(!PMServer::getInstance()->loadLevel(Main::$endName) and Main::$registerDimensions){
-			PMServer::getInstance()->generateLevel(Main::$endName, time(), Generator::getGenerator("ender"));
+			if(!PMServer::getInstance()->loadLevel(Main::$endName)){
+				PMServer::getInstance()->generateLevel(Main::$endName, time(), Generator::getGenerator("ender"));
+			}
+			Main::$endLevel = PMServer::getInstance()->getLevelByName(Main::$endName);
 		}
-		Main::$endLevel = PMServer::getInstance()->getLevelByName(Main::$endName);
 	}
 }

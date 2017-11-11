@@ -31,11 +31,9 @@ use pocketmine\level\sound\GenericSound;
 use pocketmine\Player;
 
 class DragonEgg extends Fallable {
-	protected $id = self::DRAGON_EGG;
-
 	const RAND_VERTICAL = [-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7];
 	const RAND_HORIZONTAL = [-15, -14, -13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-
+	protected $id = self::DRAGON_EGG;
 
 	/**
 	 * DragonEgg constructor.
@@ -46,7 +44,7 @@ class DragonEgg extends Fallable {
 		$this->meta = $meta;
 	}
 
-	public function getName() : string {
+	public function getName(): string{
 		return "Dragon Egg";
 	}
 

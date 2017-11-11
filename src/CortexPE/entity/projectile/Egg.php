@@ -36,7 +36,9 @@ declare(strict_types = 1);
 namespace CortexPE\entity\projectile;
 
 use pocketmine\block\Block;
-use pocketmine\entity\{Entity, projectile\Throwable};
+use pocketmine\entity\{
+	Entity, projectile\Throwable
+};
 use pocketmine\level\particle\DestroyBlockParticle;
 
 class Egg extends Throwable {
@@ -54,7 +56,7 @@ class Egg extends Throwable {
 				$chick = Entity::createEntity("Chicken", $this->getLevel(), $nbt);
 				$chick->setScale(self::RAND_SCALE[array_rand(self::RAND_SCALE)]);
 				$chick->spawnToAll();
-			} elseif(mt_rand(1,32) == 16){
+			}elseif(mt_rand(1, 32) == 16){
 				for($c = 1; $c <= 4; $c++){
 					$randomX = self::RAND_POS_X[array_rand(self::RAND_POS_X)];
 					$randomY = self::RAND_POS_Y[array_rand(self::RAND_POS_Y)];

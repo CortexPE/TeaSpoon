@@ -37,7 +37,9 @@ namespace CortexPE\entity;
 
 use pocketmine\entity\Animal;
 use pocketmine\level\Level;
-use pocketmine\nbt\tag\{ByteTag, CompoundTag};
+use pocketmine\nbt\tag\{
+	ByteTag, CompoundTag
+};
 
 class Bat extends Animal {
 	const NETWORK_ID = self::BAT;

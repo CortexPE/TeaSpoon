@@ -47,6 +47,7 @@ abstract class Particle extends PMParticle {
 	// 45 crash... Test Data Value: 0
 	const TYPE_FIREWORK_WHITE = 46;
 	const TYPE_FLASH = 47;
+
 	// 48-50s just crashes me... :shrug: Just add more particles here if y'all find any. :)
 
 	abstract public function encode();

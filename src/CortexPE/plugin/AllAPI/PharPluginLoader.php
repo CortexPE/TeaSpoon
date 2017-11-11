@@ -35,7 +35,9 @@ declare(strict_types = 1);
 
 namespace CortexPE\plugin\AllAPI;
 
-use pocketmine\plugin\{Plugin, PluginDescription, PharPluginLoader as PMPharPluginLoader};
+use pocketmine\plugin\{
+	PharPluginLoader as PMPharPluginLoader, Plugin, PluginDescription
+};
 use pocketmine\Server;
 
 class PharPluginLoader extends PMPharPluginLoader {

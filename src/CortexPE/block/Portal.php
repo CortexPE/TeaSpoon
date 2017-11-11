@@ -23,8 +23,12 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
-use pocketmine\block\{Air, Block, Transparent};
-use pocketmine\item\{Item, Tool};
+use pocketmine\block\{
+	Air, Block, Transparent
+};
+use pocketmine\item\{
+	Item, Tool
+};
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 

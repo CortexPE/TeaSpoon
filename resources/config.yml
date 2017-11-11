@@ -10,15 +10,15 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 5
+version: 7
 
 # Weather to register Vanilla Mobs (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...)
 registerVanillaEntities: true
 
-# Weather to register Vanilla Enchantments (Set to false if you're going to use a MobAI Plugin such as, VanillaEnchantments etc...)
+# Weather to register Vanilla Enchantments (Set to false if you're going to use VanillaEnchantments plugin etc...)
 registerVanillaEnchantments: true
 
-# Weather to register Dimensions (Set to false if you're going don't use Generators)
+# Weather to register Dimensions (Set to false if you're not going to use Nether And End Dimension)
 registerDimensions: true
 
 # Nether & End Dimension

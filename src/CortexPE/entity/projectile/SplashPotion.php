@@ -64,7 +64,7 @@ class SplashPotion extends Throwable {
 	}
 
 	public function getPotionId(): int{
-		return (int) $this->namedtag["PotionId"];
+		return (int)$this->namedtag["PotionId"];
 	}
 
 	public function onCollideWithEntity(Entity $entity){

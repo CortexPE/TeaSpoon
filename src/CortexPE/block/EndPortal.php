@@ -35,7 +35,9 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
-use pocketmine\block\{Block, Solid};
+use pocketmine\block\{
+	Block, Solid
+};
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 

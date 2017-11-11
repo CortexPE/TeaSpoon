@@ -35,7 +35,9 @@ declare(strict_types = 1);
 
 namespace CortexPE\entity;
 
-use pocketmine\entity\{Animal, Entity};
+use pocketmine\entity\{
+	Animal, Entity
+};
 use pocketmine\item\Item;
 
 class Llama extends Animal {
