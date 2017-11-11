@@ -27,7 +27,7 @@
  * along with TeaSpoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author CortexPE
- * @link http://CortexPE.xyz
+ * @link https://CortexPE.xyz
  *
  */
 
