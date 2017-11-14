@@ -66,7 +66,9 @@ class WeatherCommand extends VanillaCommand {
 
 		if($sender instanceof Player){
 			$wea = Weather::getWeatherFromString($args[0]);
-			if(!isset($args[1])) $duration = mt_rand(min(6000, 12000), max(6000, 12000));
+			if(!isset($args[1])) $duration = mt_rand(
+				min(Main::$weatherMinTime, Main::$weatherMaxTime),
+				max(Main::$weatherMinTime, Main::$weatherMaxTime));
 			else $duration = (int)$args[1];
 			if($wea >= 0 and $wea <= 3){
 				Main::$weatherData[$sender->getLevel()->getId()]->setWeather($wea, $duration);
@@ -102,7 +104,9 @@ class WeatherCommand extends VanillaCommand {
 		}
 
 		$wea = Weather::getWeatherFromString($args[1]);
-		if(!isset($args[1])) $duration = mt_rand(min(6000, 12000), max(6000, 12000));
+		if(!isset($args[1])) $duration = mt_rand(
+			min(Main::$weatherMinTime, Main::$weatherMaxTime),
+			max(Main::$weatherMinTime, Main::$weatherMaxTime));
 		else $duration = (int)$args[1];
 		if($wea >= 0 and $wea <= 3){
 			Main::$weatherData[$level->getId()]->setWeather($wea, $duration);

@@ -21,6 +21,7 @@
 
 namespace CortexPE\level\weather;
 
+use CortexPE\Main;
 use pocketmine\entity\Entity;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
@@ -112,8 +113,8 @@ class Weather {
 
 			if($this->duration <= 0){
 				$duration = mt_rand(
-					min(6000, 12000),
-					max(6000, 12000));
+					min(Main::$weatherMinTime, Main::$weatherMaxTime),
+					max(Main::$weatherMinTime, Main::$weatherMaxTime));
 
 				if($this->weatherNow === self::SUNNY){
 					$weather = $this->randomWeatherData[array_rand($this->randomWeatherData)];

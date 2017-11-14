@@ -58,7 +58,7 @@ use pocketmine\utils\{
 class Main extends PluginBase {
 // Use static variables if it's going to be accessed by other Classes :)
 
-	const CONFIG_VERSION = 7;
+	const CONFIG_VERSION = 8;
 
 	/** @var string */
 	public static $netherName = "nether";
@@ -102,7 +102,14 @@ class Main extends PluginBase {
 	/** @var Weather[] */
 	public static $weatherData = [];
 	/** @var bool */
-	public $loadAllAPIs = false;
+	public static $loadAllAPIs = false;
+	/** @var bool */
+	public static $weatherEnabled = true;
+	/** @var int */
+	public static $weatherMinTime = 6000;
+	/** @var int */
+	public static $weatherMaxTime = 12000;
+
 	private $splashes = [
 		'Low-Calorie blend',
 		"Don't panic! Have a cup of tea",
@@ -162,7 +169,7 @@ class Main extends PluginBase {
 
 		self::$netherName = self::$config->get("netherName", "nether");
 		self::$endName = self::$config->get("endName", "ender");
-		$this->loadAllAPIs = self::$config->get("loadAllAPIs", false);
+		self::$loadAllAPIs = self::$config->get("loadAllAPIs", false);
 		self::$lightningFire = self::$config->get("lightningFire", false);
 		self::$enderPearlCooldown = self::$config->get("enderPearlCooldown", 2);
 		self::$ePearlDamage = self::$config->get("enderPearlDamage", 5);
@@ -170,6 +177,9 @@ class Main extends PluginBase {
 		self::$registerVanillaEntities = self::$config->get("registerVanillaEntities", true);
 		self::$registerVanillaEnchantments = self::$config->get("registerVanillaEnchantments", true);
 		self::$registerDimensions = self::$config->get("registerDimensions", true);
+		self::$weatherEnabled = self::$config->get("weather", true);
+		self::$weatherMinTime = self::$config->get("weatherMinTimeInTicks", 6000);
+		self::$weatherMaxTime = self::$config->get("weatherMaxTimeInTicks", 12000);
 	}
 
 	public function onEnable(){
@@ -212,7 +222,7 @@ P\'   MM   `7             ' . TextFormat::GREEN . ' ,MI    "Y                   
 		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		// LevelManager::init(); EXECUTED VIA EventListener
 		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
-		if($this->loadAllAPIs){
+		if(self::$loadAllAPIs){
 			AllAPILoaderManager::init();
 		}
 		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
@@ -233,7 +243,9 @@ P\'   MM   `7             ' . TextFormat::GREEN . ' ,MI    "Y                   
 		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		$ver = self::$config->get("version");
 		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
-		$this->getServer()->getScheduler()->scheduleRepeatingTask(new TickLevelsTask($this), 1);
+		if(self::$weatherEnabled){
+			$this->getServer()->getScheduler()->scheduleRepeatingTask(new TickLevelsTask($this), 1);
+		}
 		echo "Loading " . $percent . "% Completed...   \r";
 		echo "Copyright (C) CortexPE 2017-Present      \r" . PHP_EOL . PHP_EOL;
 		$this->getLogger()->info("TeaSpoon is distributed under the AGPL License");

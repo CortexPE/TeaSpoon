@@ -84,12 +84,14 @@ class EventListener implements Listener {
 			LevelManager::init();
 		}
 
-		$lvl = $ev->getLevel();
-		Main::$weatherData[$lvl->getId()] = new Weather($lvl, 0);
-		if($lvl->getName() != Main::$netherName && $lvl->getName() != Main::$endName){
-			Main::$weatherData[$lvl->getId()]->setCanCalculate(true);
-		}else{
-			Main::$weatherData[$lvl->getId()]->setCanCalculate(false);
+		if(Main::$weatherEnabled){
+			$lvl = $ev->getLevel();
+			Main::$weatherData[$lvl->getId()] = new Weather($lvl, 0);
+			if($lvl->getName() != Main::$netherName && $lvl->getName() != Main::$endName){
+				Main::$weatherData[$lvl->getId()]->setCanCalculate(true);
+			}else{
+				Main::$weatherData[$lvl->getId()]->setCanCalculate(false);
+			}
 		}
 
 		return true;
@@ -293,8 +295,10 @@ class EventListener implements Listener {
 	 * @priority HIGHEST
 	 */
 	public function onKick(PlayerKickEvent $ev){
-		if(Main::$TEMPAllowCheats[$ev->getPlayer()->getName()] === true && $ev->getReason() == PMServer::getInstance()->getLanguage()->translateString("kick.reason.cheat", ["%ability.flight"])){
-			$ev->setCancelled(true);
+		if(isset(Main::$TEMPAllowCheats[$ev->getPlayer()->getName()])){
+			if(Main::$TEMPAllowCheats[$ev->getPlayer()->getName()] === true && $ev->getReason() == PMServer::getInstance()->getLanguage()->translateString("kick.reason.cheat", ["%ability.flight"])){
+				$ev->setCancelled(true);
+			}
 		}
 	}
 }

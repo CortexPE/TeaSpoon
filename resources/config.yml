@@ -10,7 +10,7 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 7
+version: 8
 
 # Weather to register Vanilla Mobs (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...)
 registerVanillaEntities: true
@@ -29,12 +29,17 @@ endName: "ender"
 # !!! PLUGINS ARE COMPATIBLE WITH YOUR CURRENT PMMP BUILD !!!
 loadAllAPIs: false
 
-# Weather Lightning should cause damage
-lightningFire: true
-
 # Ender Pearl Configuration
 enderPearlCooldown: 2
 enderPearlDamage: 5
 
 # Chorus Fruit Configuration
 chorusFruitCooldown: 2
+
+# Weather Settings
+weather: true
+weatherMinTimeInTicks: 6000
+weatherMaxTimeInTicks: 12000
+
+# Weather Lightning should cause damage or not
+lightningFire: true
