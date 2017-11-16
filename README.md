@@ -1,5 +1,5 @@
 # TeaSpoon
-[![Build Status](http://cortexpe.xyz:8080/job/TeaSpoon/badge/icon)](http://cortexpe.xyz:8080/job/TeaSpoon/) [![Donate](https://img.shields.io/badge/donate-PayPal-yellow.svg?style=flat-square)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MABFZPDR8F5UG) [![HitCount](http://hits.dwyl.io/CortexPE/TeaSpoon.svg)](http://hits.dwyl.io/CortexPE/TeaSpoon) [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/CortexPE/TeaSpoon/pulls) [![License](https://img.shields.io/badge/License-GNU%20AGPL%20v3-brightgreen.svg?style=flat-square)](https://github.com/CortexPE/TeaSpoon/blob/master/LICENSE)
+[![Build Status](http://cortexpe.xyz:8080/job/TeaSpoon/badge/icon)](http://cortexpe.xyz:8080/job/TeaSpoon/) [![Poggit](https://poggit.pmmp.io/ci.shield/CortexPE/TeaSpoon/~)](https://poggit.pmmp.io/ci/CortexPE/TeaSpoon/~) [![Donate](https://img.shields.io/badge/donate-PayPal-yellow.svg?style=flat-square)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MABFZPDR8F5UG) [![HitCount](http://hits.dwyl.io/CortexPE/TeaSpoon.svg)](http://hits.dwyl.io/CortexPE/TeaSpoon) [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/CortexPE/TeaSpoon/pulls) [![License](https://img.shields.io/badge/License-GNU%20AGPL%20v3-brightgreen.svg?style=flat-square)](https://github.com/CortexPE/TeaSpoon/blob/master/LICENSE)
 
 A Massive PocketMine-MP plugin designed and is aiming to extend PMMP's functionalities (Without completely changing it) to Make it more Vanilla-Like.
 
@@ -8,7 +8,7 @@ A Massive PocketMine-MP plugin designed and is aiming to extend PMMP's functiona
 Contributions are very welcome :smile:<br />You may contribute by opening a Pull Request and if it has been proven to be correct & working, I'll surely merge it.
 
 # Installation
-Installation is easy, Just download the [latest "TeaSpoon.phar"](http://cortexpe.xyz:8080/job/TeaSpoon/lastSuccessfulBuild/artifact/TeaSpoon.phar) from my Jenkins Build Server then drag and drop it to your ```./plugins/``` folder...
+Installation is easy, Just download the latest phar from my [Jenkins Build Server](http://cortexpe.xyz:8080/job/TeaSpoon/lastSuccessfulBuild/artifact/TeaSpoon.phar) or from [Poggit](https://poggit.pmmp.io/ci/CortexPE/TeaSpoon/~) then drag and drop it to your ```./plugins/``` folder...
 
 # Finished & Planned Features
  - Worlds
