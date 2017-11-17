@@ -132,9 +132,11 @@ class Weather {
 					$z = $p->z + mt_rand(-64, 64);
 					$y = $this->level->getHighestBlockAt($x, $z);
 
-					$nbt = Entity::createBaseNBT(new Vector3($x, $y, $z));
-					$lightning = Entity::createEntity("Lightning", $this->level, $nbt);
-					$lightning->spawnToAll();
+					if(Main::$enableWeatherLightning){
+						$nbt = Entity::createBaseNBT(new Vector3($x, $y, $z));
+						$lightning = Entity::createEntity("Lightning", $this->level, $nbt);
+						$lightning->spawnToAll();
+					}
 				}
 			}
 		}

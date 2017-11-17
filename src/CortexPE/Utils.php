@@ -80,10 +80,9 @@ class Utils {
 	}
 
 	public static function isInsideOfEndPortal(Entity $entity): bool{
-		foreach($entity->getBlocksAround() as $block){
-			if($block instanceof EndPortal){
-				return true;
-			}
+		$block = $entity->getLevel()->getBlock($entity);
+		if($block instanceof EndPortal){
+			return true;
 		}
 
 		return false;

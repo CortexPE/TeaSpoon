@@ -14,6 +14,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
+use CortexPE\Main;
 use CortexPE\tile\Beacon as TileBeacon;
 use CortexPE\tile\Tile;
 use pocketmine\block\Air;
@@ -93,6 +94,10 @@ class Beacon extends Transparent {
 					new IntTag("z", $this->z),
 				]);
 				Tile::createTile(Tile::BEACON, $this->getLevel(), $nbt);
+			}
+
+			if($player->isCreative() && Main::$limitedCreative){
+				return true;
 			}
 
 			$player->addWindow($beacon->getInventory());

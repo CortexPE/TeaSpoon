@@ -26,6 +26,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
+use CortexPE\Main;
 use CortexPE\tile\{
 	EnderChest as TileEnderChest, Tile
 };
@@ -120,7 +121,7 @@ class EnderChest extends Transparent {
 				$tile = Tile::createTile("EnderChest", $this->getLevel(), $nbt);
 			}
 
-			if($player->isCreative()){
+			if($player->isCreative() && Main::$limitedCreative){
 				return true;
 			}
 
@@ -154,6 +155,10 @@ class EnderChest extends Transparent {
 			$this->y + 0.9475,
 			$this->z + 0.9375
 		);
+	}
+
+	public function getVariantBitmask() : int{
+		return 0;
 	}
 
 }

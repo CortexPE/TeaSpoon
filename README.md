@@ -94,6 +94,5 @@ Installation is easy, Just download the latest phar from my [Jenkins Build Serve
    - [X] World Command
    - [X] Clear Command
  - Utils
-   - [X] TextFormat::center like PC or MiNET. (Credits: [DarkSystem](https://github.com/DarkSystem)).
-   - [X] Player::setLocale() for setLanguage for Player. (Credits: [NycuRO](https://github.com/NycuRO)).
+   - [X] TextFormat::center like PC or MiNET. (Credits: [DarkSystem](https://github.com/DarkSystem))
 <br />***More to do...***

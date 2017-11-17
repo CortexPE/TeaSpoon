@@ -10,7 +10,7 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 8
+version: 9
 
 # Weather to register Vanilla Mobs (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...)
 registerVanillaEntities: true
@@ -40,6 +40,10 @@ chorusFruitCooldown: 2
 weather: true
 weatherMinTimeInTicks: 6000
 weatherMaxTimeInTicks: 12000
+enableWeatherLightning: true
 
 # Weather Lightning should cause damage or not
 lightningFire: true
+
+# To be more vanilla-like, Disable this...
+limitedCreative: false
