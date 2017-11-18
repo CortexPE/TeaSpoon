@@ -47,6 +47,9 @@ class BlockManager {
 		self::register(Block::OBSIDIAN, new Obsidian(), true);
 		self::register(Block::DRAGON_EGG, new DragonEgg());
 		self::register(Block::BEACON, new Beacon());
+		self::register(Block::FIRE, new Fire(), true);
+		self::register(Block::BED_BLOCK, new Bed(), true);
+		self::register(Block::SLIME_BLOCK, new SlimeBlock());
 	}
 
 	public static function register(int $id, Block $block, bool $overwrite = false): bool{

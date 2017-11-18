@@ -5,12 +5,14 @@
 
 A Massive PocketMine-MP plugin designed and is aiming to extend PMMP's functionalities (Without completely changing it) to Make it more Vanilla-Like.
 
-***NOTICE: ALWAYS use the [LATEST PocketMine-MP Build](https://jenkins.pmmp.io/job/PocketMine-MP/lastSuccessfulBuild/artifact/) to use this plugin***
-
 Contributions are very welcome :smile:<br />You may contribute by opening a Pull Request and if it has been proven to be correct & working, I'll surely merge it.
 
 # Installation
 Installation is easy, Just download the latest phar from my [Jenkins Build Server](http://cortexpe.xyz:8080/job/TeaSpoon/lastSuccessfulBuild/artifact/TeaSpoon.phar) or from [Poggit](https://poggit.pmmp.io/ci/CortexPE/TeaSpoon/~) then drag and drop it to your ```./plugins/``` folder...
+
+# Issue Reporting
+ - ALWAYS use the [LATEST PocketMine-MP Build](https://jenkins.pmmp.io/job/PocketMine-MP/lastSuccessfulBuild/artifact/) to use this plugin
+ - Remove any plugins that may interfere with TeaSpoon's current features (if the feature cannot be diabled in the config.yml file)
 
 # Finished & Planned Features
  - Worlds
@@ -27,6 +29,7 @@ Installation is easy, Just download the latest phar from my [Jenkins Build Serve
    - [X] Portal (Nether Portal Block)
    - [X] DragonEgg
    - [X] Beacon
+   - [X] SlimeBlock
  - Items
    - [X] Vanilla Enchants (Progress: 80%)
    - [X] Splash Potions
@@ -36,7 +39,9 @@ Installation is easy, Just download the latest phar from my [Jenkins Build Serve
    - [X] Firework Rocket (as Elytra Booster)
    - [X] Lingering Potions (Credits: [ClearSkyTeam](https://github.com/ClearSkyTeam))
    - [X] Chorus Fruit
+   - [X] FishingHook (Fishing System W.I.P.)
  - Entities & Mobs
+   - [X] XP Drops (Drop amounts needs to be improved)
    - [X] Projectiles
      - [X] EnderPearls
      - [X] Snowballs

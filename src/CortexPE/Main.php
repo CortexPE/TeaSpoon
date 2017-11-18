@@ -49,6 +49,7 @@ use CortexPE\task\CheckPlayersTask;
 use CortexPE\task\TickLevelsTask;
 use CortexPE\tile\Tile;
 use CortexPE\utils\TextFormat;
+use pocketmine\entity\Entity;
 use pocketmine\level\Level;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\{
@@ -118,6 +119,10 @@ class Main extends PluginBase {
 	public static $enableWeatherLightning = true;
 	/** @var bool */
 	public static $limitedCreative = false;
+	/** @var array */
+	public static $fishing = [];
+	/** @var Entity[] | null[] */
+	public static $fishingEntity = [];
 
 	public function onLoad(){
 		if(Utils::checkSpoon()){

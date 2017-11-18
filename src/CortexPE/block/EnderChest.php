@@ -88,12 +88,7 @@ class EnderChest extends Transparent {
 
 		$this->getLevel()->setBlock($block, $this, true, true);
 
-		$nbt = new CompoundTag("", [
-			new StringTag("id", Tile::ENDER_CHEST),
-			new IntTag("x", $this->x),
-			new IntTag("y", $this->y),
-			new IntTag("z", $this->z),
-		]);
+		$nbt = TileEnderChest::createNBT($this, $face, $item, $player);
 
 		if($item->hasCustomName()){
 			$nbt->CustomName = new StringTag("CustomName", $item->getCustomName());
@@ -141,9 +136,11 @@ class EnderChest extends Transparent {
 			];
 		}
 
-		return [
-			[Item::OBSIDIAN, 0, 8],
-		];
+		if($item->isPickaxe() >= Tool::TIER_WOODEN){
+			return [Item::get(Item::OBSIDIAN, 0, 8)];
+		} else {
+			return [];
+		}
 	}
 
 	protected function recalculateBoundingBox(): AxisAlignedBB{
@@ -156,9 +153,4 @@ class EnderChest extends Transparent {
 			$this->z + 0.9375
 		);
 	}
-
-	public function getVariantBitmask() : int{
-		return 0;
-	}
-
 }

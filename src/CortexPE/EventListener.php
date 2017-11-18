@@ -43,12 +43,14 @@ use CortexPE\item\{
 };
 use CortexPE\level\weather\Weather;
 use CortexPE\task\ElytraRocketBoostTrackingTask;
+use CortexPE\utils\Xp;
+use pocketmine\block\Block;
 use pocketmine\entity\Effect;
 use pocketmine\event\{
-	level\LevelLoadEvent, Listener
+	block\BlockBreakEvent, level\LevelLoadEvent, Listener
 };
 use pocketmine\event\entity\{
-	EntityDamageEvent, EntityTeleportEvent, ProjectileLaunchEvent
+	EntityDamageEvent, EntityDeathEvent, EntityTeleportEvent, ProjectileLaunchEvent
 };
 use pocketmine\event\player\{
 	PlayerInteractEvent, PlayerItemConsumeEvent, PlayerJoinEvent, PlayerKickEvent, PlayerLoginEvent, PlayerRespawnEvent
@@ -151,7 +153,6 @@ class EventListener implements Listener {
 	 * @priority LOWEST
 	 */
 	public function onDamage(EntityDamageEvent $ev){
-
 		/////////////////////// TOTEM OF UNDYING ///////////////////////////////
 		if($ev->getDamage() >= $ev->getEntity()->getHealth()){
 			$p = $ev->getEntity();
@@ -198,11 +199,16 @@ class EventListener implements Listener {
 			}
 		}
 
-		/////////////////////// ELYTRA WINGS ///////////////////////////////
+		/////////////////////// ELYTRA WINGS & SLIME BLOCK ///////////////////////////////
 		if($ev->getCause() === EntityDamageEvent::CAUSE_FALL){
 			$p = $ev->getEntity();
-			if($p instanceof PMPlayer && $p->getInventory()->getChestplate() instanceof Elytra){
-				$ev->setCancelled(true);
+			if($p instanceof PMPlayer){
+				if($p->getInventory()->getChestplate() instanceof Elytra){
+					$ev->setCancelled(true);
+				}
+				if($p->getLevel()->getBlock($p->subtract(0,1,0))->getId() == Block::SLIME_BLOCK){
+					$ev->setCancelled(true);
+				}
 			}
 		}
 
@@ -229,6 +235,8 @@ class EventListener implements Listener {
 		Main::$usingElytra[$ev->getPlayer()->getName()] = false;
 		Main::$TEMPAllowCheats[$ev->getPlayer()->getName()] = false;
 		Main::$lastEat[$ev->getPlayer()->getName()] = 0;
+		Main::$fishing[$ev->getPlayer()->getName()] = false;
+		Main::$fishingEntity[$ev->getPlayer()->getName()] = null;
 	}
 
 	/**
@@ -300,5 +308,25 @@ class EventListener implements Listener {
 				$ev->setCancelled(true);
 			}
 		}
+	}
+
+	/**
+	 * @param EntityDeathEvent $ev
+	 *
+	 * @priority HIGHEST
+	 */
+	public function onEntityDeath(EntityDeathEvent $ev){
+		$xp = Xp::getXpDropsForEntity($ev->getEntity());
+		Xp::spawnXpOrb($ev->getEntity()->getPosition(), $ev->getEntity()->getLevel(), $xp);
+	}
+
+	/**
+	 * @param BlockBreakEvent $ev
+	 *
+	 * @priority HIGHEST
+	 */
+	public function onBlockBreak(BlockBreakEvent $ev){
+		$xp = Xp::getXpDropsForBlock($ev->getBlock());
+		Xp::spawnXpOrb($ev->getBlock(), $ev->getBlock()->getLevel(), $xp);
 	}
 }

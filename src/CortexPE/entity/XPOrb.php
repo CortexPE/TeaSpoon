@@ -24,9 +24,8 @@ declare(strict_types = 1);
 
 namespace CortexPE\entity;
 
-use CortexPE\Utils;
+use CortexPE\utils\Xp;
 use pocketmine\entity\Entity;
-use pocketmine\nbt\tag\FloatTag;
 use pocketmine\nbt\tag\IntTag;
 
 class XPOrb extends Entity {
@@ -92,29 +91,7 @@ class XPOrb extends Entity {
 				$this->timings->stopTiming();
 				$this->close();
 				if($this->getExperience() > 0){
-					// [ROT13 Encoded and is pretty Explicit] Jul gur shpx unfa'g CZZC Vzcyrzragrq n CEBCRE KC Flfgrz Lrg? Guvf vf Shpxvat fghcvq naq vf bar bs gur znal ernfbaf jul Crbcyr ybir fcbbaf -_-
-					$add = Utils::getLevelFromXp($Target->getTotalXp() + $this->getExperience());
-					$Target->setXpProgress($add[1]);
-					$Target->setXpLevel(intval($Target->getXpLevel() + round($Target->getXpProgress()))); // hacky code to *SOMEHOW* get it working...
-
-					if(!isset($Target->namedtag->XpLevel) or !($Target->namedtag->XpLevel instanceof IntTag)){
-						$Target->namedtag->XpLevel = new IntTag("XpLevel", $Target->getXpLevel());
-					}else{
-						$Target->namedtag["XpLevel"] = $Target->getXpLevel();
-					}
-
-					if(!isset($Target->namedtag->XpP) or !($Target->namedtag->XpP instanceof FloatTag)){
-						$Target->namedtag->XpP = new FloatTag("XpP", $Target->getXpProgress());
-					}else{
-						$Target->namedtag["XpP"] = $Target->getXpProgress();
-					}
-
-					if(!isset($Target->namedtag->XpTotal) or !($Target->namedtag->XpTotal instanceof IntTag)){
-						$Target->namedtag->XpTotal = new IntTag("XpTotal", $Target->getTotalXp());
-					}else{
-						$Target->namedtag["XpTotal"] = $Target->getTotalXp();
-					}
-					$Target->getServer()->saveOfflinePlayerData($Target->getName(), $Target->namedtag, true);
+					Xp::addXp($Target, $this->getExperience());
 				}
 
 				return true;

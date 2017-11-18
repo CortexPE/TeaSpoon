@@ -33,27 +33,36 @@
 
 declare(strict_types = 1);
 
-namespace CortexPE\entity;
+namespace CortexPE\block;
 
-use pocketmine\entity\Monster;
-use pocketmine\item\Item;
+use pocketmine\block\Block;
+use pocketmine\block\BlockFactory;
+use pocketmine\block\Fire as PMFire;
+use pocketmine\level\Level;
+use pocketmine\math\Vector3;
 
-class Creeper extends Monster {
-	const NETWORK_ID = self::CREEPER;
+class Fire extends PMFire {
 
-	public $height = 1.7;
-	public $width = 0.6;
-	public $length = 0.6;
+	public function onUpdate(int $type){
+		if($type == Level::BLOCK_UPDATE_RANDOM){
+			if($this->getSide(Vector3::SIDE_DOWN)->getId() !== self::NETHERRACK){
+				if($this->meta >= 15){
+					$this->level->setBlock($this, BlockFactory::get(Block::AIR));
+				}else{
+					$this->meta += mt_rand(0, 4);
+					if($this->meta >= 15){
+						$this->level->setBlock($this, BlockFactory::get(Block::AIR));
+					} else {
+						$this->level->setBlock($this, $this);
+					}
+				}
+				return $type;
+			}
 
-	public function getName(): string{
-		return "Creeper";
-	}
-
-	public function getDrops(): array{
-		if(mt_rand(1, 10) < 3){
-			return [Item::get(Item::GUNPOWDER, 0, 1)];
+			//TODO: fire spread
 		}
 
-		return [];
+		return false;
 	}
+
 }

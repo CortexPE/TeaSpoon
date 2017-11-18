@@ -33,27 +33,36 @@
 
 declare(strict_types = 1);
 
-namespace CortexPE\entity;
+namespace CortexPE\block;
 
-use pocketmine\entity\Monster;
+use pocketmine\block\{
+	Block, Solid
+};
 use pocketmine\item\Item;
 
-class Creeper extends Monster {
-	const NETWORK_ID = self::CREEPER;
+class SlimeBlock extends Solid {
 
-	public $height = 1.7;
-	public $width = 0.6;
-	public $length = 0.6;
+	protected $id = Block::SLIME_BLOCK;
 
-	public function getName(): string{
-		return "Creeper";
+	public function __construct($meta = 0){
+		$this->meta = $meta;
 	}
 
-	public function getDrops(): array{
-		if(mt_rand(1, 10) < 3){
-			return [Item::get(Item::GUNPOWDER, 0, 1)];
-		}
+	public function getName(): string{
+		return "Slime Block";
+	}
 
-		return [];
+	public function getHardness(): float{
+		return 0;
+	}
+
+	public function hasEntityCollision(): bool{
+		return true;
+	}
+
+	public function getDrops(Item $item): array{
+		return [
+			Item::get(Item::SLIME_BLOCK, 0, 1)
+		];
 	}
 }

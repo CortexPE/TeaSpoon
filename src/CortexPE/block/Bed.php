@@ -33,27 +33,27 @@
 
 declare(strict_types = 1);
 
-namespace CortexPE\entity;
+namespace CortexPE\block;
 
-use pocketmine\entity\Monster;
+use CortexPE\Utils;
+use pocketmine\block\Bed as PMBed;
 use pocketmine\item\Item;
+use pocketmine\level\Explosion;
+use pocketmine\network\mcpe\protocol\types\DimensionIds;
+use pocketmine\Player;
 
-class Creeper extends Monster {
-	const NETWORK_ID = self::CREEPER;
+class Bed extends PMBed {
 
-	public $height = 1.7;
-	public $width = 0.6;
-	public $length = 0.6;
+	public function onActivate(Item $item, Player $player = null): bool{
+		$dimension = Utils::getDimension($this->getLevel());
+		if($dimension == DimensionIds::NETHER || $dimension == DimensionIds::THE_END){
+			$explosion = new Explosion($this, 6);
+			$explosion->explodeA();
+			$explosion->explodeB();
 
-	public function getName(): string{
-		return "Creeper";
-	}
-
-	public function getDrops(): array{
-		if(mt_rand(1, 10) < 3){
-			return [Item::get(Item::GUNPOWDER, 0, 1)];
+			return true;
 		}
-
-		return [];
+		return parent::onActivate($item, $player);
 	}
+
 }
