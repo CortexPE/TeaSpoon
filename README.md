@@ -12,8 +12,8 @@ Installation is easy, Just download the latest phar from my [Jenkins Build Serve
 
 # Issue Reporting
  - ALWAYS use the [LATEST PocketMine-MP Build](https://jenkins.pmmp.io/job/PocketMine-MP/lastSuccessfulBuild/artifact/) to use this plugin
- - Remove any plugins that may interfere with TeaSpoon's current features (if the feature cannot be diabled in the config.yml file)
-
+ - Remove any plugins that may interfere with TeaSpoon's current features (if the feature cannot be disabled in the config.yml file)
+ - Including the "Steps to Reproduce" in the issue report would be really helpful in fixing bugs.
 # Finished & Planned Features
  - Worlds
   - [X] Dimensions
