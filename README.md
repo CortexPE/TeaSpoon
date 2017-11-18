@@ -46,7 +46,7 @@ Installation is easy, Just download the latest phar from my [Jenkins Build Serve
      - [X] EnderPearls
      - [X] Snowballs
      - [X] Eggs
-   - [ ] Entities
+   - [X] Entities
      - [X] Lightning
      - [X] XPOrbs
    - [X] Mobs
