@@ -52,9 +52,7 @@ use CortexPE\utils\TextFormat;
 use pocketmine\entity\Entity;
 use pocketmine\level\Level;
 use pocketmine\plugin\PluginBase;
-use pocketmine\utils\{
-	Config, Terminal
-};
+use pocketmine\utils\Config;
 
 class Main extends PluginBase {
 	private $splashes = [
@@ -155,6 +153,7 @@ class Main extends PluginBase {
 	public function onEnable(){
 		$rm = $this->splashes[array_rand($this->splashes)];
 		$stms = TextFormat::DARK_GREEN . '
+		
 MMP""MM""YMM              ' . TextFormat::GREEN . ' .M"""bgd                                        ' . TextFormat::DARK_GREEN . '
 P\'   MM   `7             ' . TextFormat::GREEN . ' ,MI    "Y                                        ' . TextFormat::DARK_GREEN . '
      MM  .gP"Ya   ,6"Yb.  ' . TextFormat::GREEN . '`MMb.   `7MMpdMAo.  ,pW"Wq.   ,pW"Wq.`7MMpMMMb.  ' . TextFormat::DARK_GREEN . '
@@ -165,14 +164,7 @@ P\'   MM   `7             ' . TextFormat::GREEN . ' ,MI    "Y                   
                                     MM                                     
                                   .JMML.  ' . TextFormat::YELLOW . $rm . TextFormat::RESET;
 
-		$message = TextFormat::toANSI($stms . TextFormat::RESET);
-		$cleanMessage = TextFormat::clean($message);
-
-		if(!Terminal::hasFormattingCodes()){
-			echo $cleanMessage . PHP_EOL;
-		}else{
-			echo $message . PHP_EOL;
-		}
+		$this->getLogger()->info("Loading..." . $stms);
 
 		// A E S T H E T H I C S
 		$parts = 14;
