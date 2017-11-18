@@ -162,54 +162,34 @@ P\'   MM   `7             ' . TextFormat::GREEN . ' ,MI    "Y                   
      MM YM.    , 8M   MM  ' . TextFormat::GREEN . 'Mb     dM MM   ,AP YA.   ,A9 YA.   ,A9 MM    MM  ' . TextFormat::DARK_GREEN . '
    .JMML.`Mbmmd\' `Moo9^Yo.' . TextFormat::GREEN . 'P"Ybmmd"  MMbmmd\'   `Ybmd9\'   `Ybmd9\'.JMML  JMML.' . TextFormat::GREEN . '
                                     MM                                     
-                                  .JMML.  ' . TextFormat::YELLOW . $rm . TextFormat::RESET;
+                                  .JMML.  ' . TextFormat::YELLOW . $rm . TextFormat::RESET . '
+Copyright (C) CortexPE 2017-Present
+';
 
 		$this->getLogger()->info("Loading..." . $stms);
 
-		// A E S T H E T H I C S
-		$parts = 14;
-		$offset = 100 / $parts;
-		$percent = 0;
-
-		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		CommandManager::init();
-		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		Enchantment::init();
-		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		BlockManager::init();
-		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		ItemManager::init();
-		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		EntityManager::init();
-		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		// LevelManager::init(); EXECUTED VIA EventListener
-		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		if(self::$loadAllAPIs){
 			AllAPILoaderManager::init();
 		}
-		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		Tile::init();
-
-		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		if(self::$registerDimensions){
 			$this->getServer()->getScheduler()->scheduleRepeatingTask(new CheckPlayersTask($this), 10);
 		}
-		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
-		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		$this->getServer()->getPluginManager()->registerEvents(new PacketHandler($this), $this);
-		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		if(self::$registerVanillaEnchantments){
 			$this->getServer()->getPluginManager()->registerEvents(new EnchantHandler($this), $this);
 		}
-		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		$ver = self::$config->get("version");
-		echo "Loading " . round(($percent += $offset), 3) . "%...   \r";
 		if(self::$weatherEnabled){
 			$this->getServer()->getScheduler()->scheduleRepeatingTask(new TickLevelsTask($this), 1);
 		}
-		echo "Loading " . $percent . "% Completed...   \r";
-		echo "Copyright (C) CortexPE 2017-Present      \r" . PHP_EOL . PHP_EOL;
 		$this->getLogger()->info("TeaSpoon is distributed under the AGPL License");
 
 
