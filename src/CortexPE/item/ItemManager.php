@@ -54,6 +54,7 @@ class ItemManager {
 		ItemFactory::registerItem(new FireworkRocket());
 		ItemFactory::registerItem(new ChorusFruit());
 		ItemFactory::registerItem(new FishingRod(), true);
+		ItemFactory::registerItem(new EyeOfEnder());
 
 		Item::addCreativeItem(Item::get(Item::ENDER_PEARL));
 		Item::addCreativeItem(Item::get(Item::ENDER_CHEST));
@@ -64,6 +65,7 @@ class ItemManager {
 		Item::addCreativeItem(Item::get(Item::FIREWORKS));
 		Item::addCreativeItem(Item::get(Item::CHORUS_FRUIT));
 		Item::addCreativeItem(Item::get(Item::SLIME_BLOCK));
+		Item::addCreativeItem(Item::get(Item::ENDER_EYE));
 
 		for($i = 0; $i <= 36; $i++){
 			Item::addCreativeItem(Item::get(Item::SPLASH_POTION, $i));

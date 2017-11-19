@@ -49,6 +49,9 @@ use CortexPE\task\CheckPlayersTask;
 use CortexPE\task\TickLevelsTask;
 use CortexPE\tile\Tile;
 use CortexPE\utils\TextFormat;
+use pocketmine\command\defaults\DumpMemoryCommand;
+use pocketmine\command\defaults\GarbageCollectorCommand;
+use pocketmine\command\defaults\StatusCommand;
 use pocketmine\entity\Entity;
 use pocketmine\level\Level;
 use pocketmine\plugin\PluginBase;
@@ -121,6 +124,8 @@ class Main extends PluginBase {
 	public static $fishing = [];
 	/** @var Entity[] | null[] */
 	public static $fishingEntity = [];
+	/** @var bool */
+	public static $debug = false;
 
 	public function onLoad(){
 		if(Utils::checkSpoon()){
@@ -148,6 +153,24 @@ class Main extends PluginBase {
 		self::$weatherMaxTime = self::$config->get("weatherMaxTimeInTicks", 12000);
 		self::$enableWeatherLightning = self::$config->get("enableWeatherLightning", true);
 		self::$limitedCreative = self::$config->get("limitedCreative", false);
+		self::$debug = self::$config->get("debug", false); // intentionally don't add this on the config...
+
+		if(self::$debug){
+			if(file_exists($this->getDataFolder() . DIRECTORY_SEPARATOR . "packetlog.txt")){
+				unlink($this->getDataFolder() . DIRECTORY_SEPARATOR . "packetlog.txt");
+			}
+			$this->getServer()->getLogger()->setLogDebug(true);
+			$cm = $this->getServer()->getCommandMap();
+			if($cm->getCommand("status") === null){
+				$cm->register("pocketmine", new StatusCommand("status"));
+			}
+			if($cm->getCommand("gc") === null){
+				$cm->register("pocketmine", new GarbageCollectorCommand("gc"));
+			}
+			if($cm->getCommand("dumpmemory") === null){
+				$cm->register("pocketmine", new DumpMemoryCommand("dumpmemory"));
+			}
+		}
 	}
 
 	public function onEnable(){

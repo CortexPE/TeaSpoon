@@ -50,6 +50,7 @@ class BlockManager {
 		self::register(Block::FIRE, new Fire(), true);
 		self::register(Block::BED_BLOCK, new Bed(), true);
 		self::register(Block::SLIME_BLOCK, new SlimeBlock());
+		self::register(Block::END_PORTAL_FRAME, new EndPortalFrame(), true);
 	}
 
 	public static function register(int $id, Block $block, bool $overwrite = false): bool{

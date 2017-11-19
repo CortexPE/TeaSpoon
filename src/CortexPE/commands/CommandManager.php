@@ -35,17 +35,23 @@ declare(strict_types = 1);
 
 namespace CortexPE\commands;
 
+use CortexPE\Main;
 use pocketmine\command\Command;
 use pocketmine\Server as PMServer;
 
 class CommandManager {
 	public static function init(){
-		PMServer::getInstance()->getCommandMap()->registerAll("pocketmine", [
+		$cmds = [
 			new WorldCommand("world"),
 			new ClearCommand("clear"),
 			new WeatherCommand("weather"),
-			//new TestCommand("test"), // COMMENT THIS OUT. ALWAYS.
-		]);
+		];
+
+		if(Main::$debug){
+			$cmds[] = new TestCommand("test");
+		}
+
+		PMServer::getInstance()->getCommandMap()->registerAll("pocketmine", $cmds);
 
 		self::overwrite(new KillCommand("kill"), "kill");
 	}

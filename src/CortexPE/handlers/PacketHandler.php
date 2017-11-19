@@ -37,8 +37,9 @@ namespace CortexPE\handlers;
 
 use CortexPE\Main;
 use pocketmine\event\{
-	Listener, server\DataPacketReceiveEvent
+	Listener, server\DataPacketReceiveEvent, server\DataPacketSendEvent
 };
+use pocketmine\network\mcpe\protocol\BatchPacket;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
@@ -57,7 +58,7 @@ class PacketHandler implements Listener {
 	 *
 	 * @priority LOWEST
 	 */
-	public function onDataPacket(DataPacketReceiveEvent $ev){
+	public function onPacketReceive(DataPacketReceiveEvent $ev){
 		$pkr = $ev->getPacket();
 		if($pkr instanceof PlayerActionPacket){
 			$p = $ev->getPlayer();
@@ -75,6 +76,40 @@ class PacketHandler implements Listener {
 					Main::$TEMPAllowCheats[$ev->getPlayer()->getName()] = false;
 					break;
 			}
+		}
+		if(Main::$debug){
+			$name = (new \ReflectionClass(($packet = $ev->getPacket())))->getShortName();
+			//$pinfo = $ev->getPlayer()->getName() ?? $ev->getPlayer()->getAddress() . ":" . $ev->getPlayer()->getPort();
+			//$this->plugin->getLogger()->info("RECEIVE " . $name . " from " . $pinfo);
+			$packet = $ev->getPacket();
+			$packet->encode(); //other plugins might have changed the packet
+			$header = "[Client -> Server 0x" . sprintf("%02d", dechex($packet->pid())) . "] " . $name . " (length " . strlen($packet->buffer) . ")";
+			/*$binary = "";
+			$ascii = preg_replace('#([^\x20-\x7E])#', ".", $packet->buffer);
+			$binary .= $ascii . PHP_EOL;*/
+			$binary = print_r($packet, true);
+			file_put_contents($this->plugin->getDataFolder() . "packetlog.txt", $header . PHP_EOL . $binary . PHP_EOL . PHP_EOL . PHP_EOL, FILE_APPEND | LOCK_EX);
+		}
+	}
+
+	public function onPacketSend(DataPacketSendEvent $ev){
+		if(Main::$debug){ // Freezes
+			if($ev->getPacket() instanceof BatchPacket){
+				return;
+			}
+			$name = (new \ReflectionClass(($packet = $ev->getPacket())))->getShortName();
+			//$pinfo = $ev->getPlayer()->getName() ?? $ev->getPlayer()->getAddress() . ":" . $ev->getPlayer()->getPort();
+			//$this->plugin->getLogger()->info("SEND " . $name . " to " . $pinfo);
+
+			$packet->encode(); //needed :(
+			$header = "[Server -> Client 0x" . sprintf("%02d", dechex($packet->pid())) . "] " . $name . " (length " . strlen($packet->buffer) . ")";
+
+			/*$binary = "";
+				$ascii = preg_replace('#([^\x20-\x7E])#', ".", $packet->buffer);
+				$binary .= $ascii . PHP_EOL;*/
+
+			$binary = print_r($packet, true);
+			file_put_contents($this->plugin->getDataFolder() . "packetlog.txt", $header . PHP_EOL . $binary . PHP_EOL . PHP_EOL . PHP_EOL, FILE_APPEND | LOCK_EX);
 		}
 	}
 }

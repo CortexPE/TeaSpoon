@@ -161,4 +161,21 @@ class Utils {
 
 		return $x;
 	}
+
+	public static function getDirectionString(int $direction) : string {
+		switch($direction){
+			case 0:
+				return "south";
+
+			case 1:
+				return "west";
+
+			case 2:
+				return "north";
+
+			case 3:
+				return "east";
+		}
+		return "invalid";
+	}
 }

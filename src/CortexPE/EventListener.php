@@ -317,7 +317,9 @@ class EventListener implements Listener {
 	 */
 	public function onEntityDeath(EntityDeathEvent $ev){
 		$xp = Xp::getXpDropsForEntity($ev->getEntity());
-		Xp::spawnXpOrb($ev->getEntity()->getPosition(), $ev->getEntity()->getLevel(), $xp);
+		if($xp > 0){
+			Xp::spawnXpOrb($ev->getEntity()->getPosition(), $ev->getEntity()->getLevel(), $xp);
+		}
 	}
 
 	/**
@@ -327,6 +329,8 @@ class EventListener implements Listener {
 	 */
 	public function onBlockBreak(BlockBreakEvent $ev){
 		$xp = Xp::getXpDropsForBlock($ev->getBlock());
-		Xp::spawnXpOrb($ev->getBlock(), $ev->getBlock()->getLevel(), $xp);
+		if($xp > 0){
+			Xp::spawnXpOrb($ev->getBlock(), $ev->getBlock()->getLevel(), $xp);
+		}
 	}
 }
