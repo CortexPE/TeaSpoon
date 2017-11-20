@@ -46,10 +46,47 @@ class EndPortalFrame extends PMEndPortalFrame {
 		parent::__construct($meta);
 	}
 
-	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null): bool{
-		return true; // apparently, Block placement is handled client side... you just gotta return a "true" boolean value. get your sh!t together mojang -_-
+	// Code below if ported from ClearSky (Big Thanks to XenialDan for Having the time to actually test it)
+	public function place(Item $item, Block $block, Block $target, int $face, Vector3 $facePos, Player $player = null): bool{
+		$faces = [
+			0 => 3,
+			1 => 0,
+			2 => 1,
+			3 => 2,
+		];
+		$this->meta = $faces[$player instanceof Player ? $player->getDirection() : 0];
+		$this->getLevel()->setBlock($block, $this, true, true);
+		return true;
 	}
-
-	// TODO: Add Ender Portal Generation...
-	// Whenever I try to click an "Eye Of Ender" to an EndPortalFrame, It just disappears... w/o any events triggered... including PlayerInteractEvent
+	
+	public function onActivate(Item $item, Player $player = null): bool{
+		if (($this->getDamage() & 0x04) === 0 && $player instanceof Player && $item->getId() === Item::ENDER_EYE){
+			$this->setDamage($this->getDamage() + 4);
+			$this->getLevel()->setBlock($this, $this, true, true);
+			$corners = $this->isValidPortal();
+			if(is_array($corners)){
+				$this->createPortal($corners);
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	public function isValidPortal() : array {
+		// TODO: Portal Checks
+		return [
+			new Vector3(0,0,0), // corner 1
+			new Vector3(0,0,0), // corner 2
+			new Vector3(0,0,0), // corner 3
+			new Vector3(0,0,0), // corner 4
+		];
+	}
+	
+	private function createPortal(array $corners = null){
+		if($corners === null){
+			return false;
+		}
+		// TODO: set the blocks based from dimensions
+		return true;
+	}
 }

@@ -51,7 +51,7 @@ class BlockManager {
 		self::register(Block::BED_BLOCK, new Bed(), true);
 		self::register(Block::SLIME_BLOCK, new SlimeBlock());
 		self::register(Block::END_PORTAL_FRAME, new EndPortalFrame(), true);
-      self::register(52, new MonsterSpawner(), true);
+    self::register(Block::MONSTER_SPAWNER, new MonsterSpawner(), true);
 	}
 
 	public static function register(int $id, Block $block, bool $overwrite = false): bool{

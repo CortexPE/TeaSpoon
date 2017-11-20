@@ -14,6 +14,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
+use CortexPE\inventory\BeaconInventory;
 use CortexPE\Main;
 use CortexPE\tile\Beacon as TileBeacon;
 use CortexPE\tile\Tile;
@@ -100,7 +101,10 @@ class Beacon extends Transparent {
 				return true;
 			}
 
-			$player->addWindow($beacon->getInventory());
+			$inv = $beacon->getInventory();
+			if($inv instanceof BeaconInventory){
+				$player->addWindow($beacon->getInventory());
+			}
 		}
 
 		return true;

@@ -49,7 +49,7 @@ class Fire extends PMFire {
 				if($this->meta >= 15){
 					$this->level->setBlock($this, BlockFactory::get(Block::AIR));
 				}else{
-					$this->meta += mt_rand(0, 4);
+					$this->meta += mt_rand(1, 4);
 					if($this->meta >= 15){
 						$this->level->setBlock($this, BlockFactory::get(Block::AIR));
 					} else {
