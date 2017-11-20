@@ -84,8 +84,8 @@ class MobSpawner extends Spawnable{
 	    if(!isset($nbt->SpawnData->Delay) or $nbt->SpawnData->Delay instanceof ShortTag == false){
 	      $nbt->SpawnData->Delay = new ShortTag("Delay", 0);
 	    }
-	    if(!isset($nbt->SpawnData->id) or $nbt->SpawnData->id instanceof IntTag == false){
-	      $nbt->SpawnData->id = new IntTag("id", 0);
+	    if(!isset($nbt->SpawnData->id) or $nbt->SpawnData->id instanceof StringTag == false){
+	      $nbt->SpawnData->id = new StringTag("id", 0);
 	    }
 	    if(!isset($nbt->SpawnData->RequiredPlayerRange) or $nbt->SpawnData->RequiredPlayerRange instanceof ShortTag == false){
 	      $nbt->SpawnData->RequiredPlayerRange = new ShortTag("RequiredPlayerRange", Loader::get("range", ["player.range" => 5])["player.range"]);
@@ -100,7 +100,8 @@ class MobSpawner extends Spawnable{
 	      "player" => $nbt->SpawnData->RequiredPlayerRange->getValue(),
 	      "range" => $nbt->SpawnData->SpawnRange->getValue()
 	    ];
-      $this->eid = $this->configureEntityValue($this->entity, false);
+      $this->setEntityEid($this->configureEntityValue($this->entity, false));
+      
 	}
 	
 	/**
@@ -263,7 +264,7 @@ class MobSpawner extends Spawnable{
 	    $this->entity = $id;
 	    $this->eid = $this->configureEntityValue($id, false);
 	    $this->namedtag->SpawnData->id->setValue($id);
-	    $this->onChanged();
+       $this->scheduleUpdate();
 	}
 	
 	/**
@@ -279,20 +280,17 @@ class MobSpawner extends Spawnable{
 	    $server = Server::getInstance();
 	    $maxEntities = $this->getSpawnLimit();
 	    $count = 0;
+	    $nearbyPlayer = false;
 	    foreach($this->getLevel()->getNearbyEntities($this->getLevel()->getBlock($this)->getBoundingBox()->grow($pr, $pr, $pr)) as $ent){
 	       $count += $ent::NETWORK_ID == $this->getEntityEid() ? 1 : 0;
+	       if($ent instanceof Player){
+		      $nearbyPlayer = true;
+		    }
 	    }
 	    if($count >= $maxEntities){
 		   return false;
 		 }
-		 foreach($server->getOnlinePlayers() as $player){
-		   if($player->getLevel()->getName() == $this->getLevel()->getName()){
-			  if($this->asVector3()->distance($player->asVector3()) <= $pr){
-				 return true;
-				}
-			}
-		}
-	return false;
+	return $nearbyPlayer;
 	}
 	
 	/**
@@ -315,11 +313,12 @@ class MobSpawner extends Spawnable{
 	 */
 	
 	public function recalculateSpawnPosition(){
+		 $r = $this->spawnRange["range"];
 	    $pos = $this->add(rand(-$r, $r), rand(0, 2), rand(-$r, $r));
 		 if($this->getLevel()->getBlock($pos)->getId() !== 0){
 			return null;
 		 }
-   return $pos;
+   return new Position($pos->x, $pos->y, $pos->z, $this->level);
 	}
 	
 	/**
@@ -328,18 +327,22 @@ class MobSpawner extends Spawnable{
 	 */
 	
 	public function onUpdate(): bool{
-	    if($this->closed){
+	    if($this->isClosed()){
 		   return false; # Why not?
 		 }
 		 if($this->canSpawn() == false){
 			return true; # Why not again?
 		 }
-		 $r = $this->spawnRange["range"];
 		 $this->delay++;
+		 var_dump($this->delay);
 		 if($this->delay < $this->minSpawnDelay){
-			return true;
+			
 		 }else{
 		   $this->delay = 0;
+		   $pos = $this->recalculateSpawnPosition();
+		   if($pos !== null){
+			  $this->spawnEntity($pos);
+			}
 		 }
 		 if($this->delay >= rand($this->minSpawnDelay, $this->maxSpawnDelay)){
 			$this->delay = 0;
@@ -354,6 +357,7 @@ class MobSpawner extends Spawnable{
 				$pos = $this->recalculateSpawnPosition();
 			}
 	   }
+      $this->scheduleUpdate();
 	return true;
 	}
 	
