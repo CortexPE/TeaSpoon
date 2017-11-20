@@ -10,7 +10,7 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 9
+version: 10
 
 # Weather to register Vanilla Mobs (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...)
 registerVanillaEntities: true
@@ -47,3 +47,19 @@ lightningFire: true
 
 # To be more vanilla-like, Disable this...
 limitedCreative: false
+
+# Mob spawn delay settings [In ticks, 20 tick = 1second]
+delay:
+  min: 200
+  max: 8000
+
+# Mob spawn range settings
+range:
+  player.range: 10
+  spawn.range: 4
+
+# Mob spawning limit per spawner
+spawn.limit: 5
+
+# Mob spawner silking settings
+silk.enabled: true
