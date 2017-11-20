@@ -81,7 +81,7 @@ class MonsterSpawner extends PMMonsterSpawner {
 				new IntTag("x", $this->x),
 				new IntTag("y", $this->y),
 				new IntTag("z", $this->z),
-				new IntTag("EntityId", 0),
+				new IntTag("EntityId", $item->getDamage()),
 			]);
 
 			// Tile::createTile(Tile::MOB_SPAWNER, $this->getLevel(), $nbt);  // Just add the Tile @TheAz928 ^_^
