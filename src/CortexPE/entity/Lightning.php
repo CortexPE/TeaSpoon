@@ -57,12 +57,6 @@ class Lightning extends Animal {
 		return "Lightning";
 	}
 
-	public function initEntity(){
-		$this->setMaxHealth(2);
-		$this->setHealth(2);
-		parent::initEntity();
-	}
-
 	public function onUpdate(int $currentTick): bool{
 		if(!$this->doneDamage){
 			// Tnx Genisys
@@ -77,6 +71,9 @@ class Lightning extends Animal {
 				}else{
 					$v3 = new Vector3($this->x, $this->y, $this->z);
 				}
+
+				$fire->setDamage(14); // Only one random tick away till despawn ;)
+
 				if(isset($v3)) $this->getLevel()->setBlock($v3, $fire);
 
 				foreach($this->level->getNearbyEntities($this->boundingBox->grow(4, 3, 4), $this) as $entity){
