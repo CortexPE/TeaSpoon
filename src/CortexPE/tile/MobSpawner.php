@@ -93,14 +93,14 @@ class MobSpawner extends Spawnable{
 	    parent::__construct($level, $nbt);
 	    $this->delay = $nbt->SpawnData->Delay->getValue();
 	    $this->minSpawnDelay = $nbt->SpawnData->MinSpawnDelay->getValue();
-       $this->maxSpawnDelay = $nbt->SpawnData->MaxSpawnDelay->getValue();
+            $this->maxSpawnDelay = $nbt->SpawnData->MaxSpawnDelay->getValue();
 	    $this->entity = $nbt->SpawnData->id->getValue();
 	    $this->spawnLimit = $nbt->SpawnData->SpawnCount->getValue();
 	    $this->spawnRange = [
 	      "player" => $nbt->SpawnData->RequiredPlayerRange->getValue(),
 	      "range" => $nbt->SpawnData->SpawnRange->getValue()
 	    ];
-      $this->setEntityEid($this->configureEntityValue($this->entity, false));
+            $this->setEntityEid($this->configureEntityValue($this->entity, false));
       
 	}
 	
@@ -112,8 +112,8 @@ class MobSpawner extends Spawnable{
 	
 	public function configureEntityValue($value, bool $asString = false){
 		 $data = [
-		    "Chicken" => 10,
-		    "Cow" => 11,
+		"Chicken" => 10,
+		"Cow" => 11,
 	       "Pig" => 12,
 	       "Sheep" => 13,
 	       "Wolf" => 14,
@@ -264,7 +264,7 @@ class MobSpawner extends Spawnable{
 	    $this->entity = $id;
 	    $this->eid = $this->configureEntityValue($id, false);
 	    $this->namedtag->SpawnData->id->setValue($id);
-       $this->scheduleUpdate();
+            $this->scheduleUpdate();
 	}
 	
 	/**
