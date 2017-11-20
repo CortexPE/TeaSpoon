@@ -35,58 +35,59 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
+use CortexPE\tile\Tile;
 use pocketmine\block\Block;
-use pocketmine\block\EndPortalFrame as PMEndPortalFrame;
+use pocketmine\block\MonsterSpawner as PMMonsterSpawner;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
+use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\nbt\tag\IntTag;
+use pocketmine\nbt\tag\StringTag;
+use function pocketmine\parse_offset;
 use pocketmine\Player;
 
-class EndPortalFrame extends PMEndPortalFrame {
+class MonsterSpawner extends PMMonsterSpawner {
 	public function __construct($meta = 0){
 		parent::__construct($meta);
 	}
 
-	// Code below if ported from ClearSky (Big Thanks to XenialDan for Having the time to actually test it)
-	public function place(Item $item, Block $block, Block $target, int $face, Vector3 $facePos, Player $player = null): bool{
-		$faces = [
-			0 => 3,
-			1 => 0,
-			2 => 1,
-			3 => 2,
-		];
-		$this->meta = $faces[$player instanceof Player ? $player->getDirection() : 0];
-		$this->getLevel()->setBlock($block, $this, true, true);
-		return true;
-	}
-	
-	public function onActivate(Item $item, Player $player = null): bool{
-		if (($this->getDamage() & 0x04) === 0 && $player instanceof Player && $item->getId() === Item::ENDER_EYE){
-			$this->setDamage($this->getDamage() + 4);
-			$this->getLevel()->setBlock($this, $this, true, true);
-			$corners = $this->isValidPortal();
-			if(is_array($corners)){
-				$this->createPortal($corners);
+	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null): bool{
+		if($item->hasCustomBlockData()){
+			$this->getLevel()->setBlock($blockReplace, $this, true, true);
+			$nbt = new CompoundTag("", [
+				new StringTag("id", Tile::MOB_SPAWNER),
+				new IntTag("x", $blockReplace->x),
+				new IntTag("y", $blockReplace->y),
+				new IntTag("z", $blockReplace->z),
+				new IntTag("EntityId", 0),
+			]);
+
+			foreach($item->getCustomBlockData() as $key => $v){
+				$nbt->{$key} = $v;
 			}
+
+			//Tile::createTile(Tile::MOB_SPAWNER, $this->getLevel(), $nbt); // Just add the Tile @TheAz928 ^_^
+
+			return true;
+		} else {
+			return parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player);
+		}
+	}
+
+	public function onActivate(Item $item, Player $player = null): bool{
+		if($item->getId() == Item::SPAWN_EGG){
+			$nbt = new CompoundTag("", [
+				new StringTag("id", Tile::MOB_SPAWNER),
+				new IntTag("x", $this->x),
+				new IntTag("y", $this->y),
+				new IntTag("z", $this->z),
+				new IntTag("EntityId", 0),
+			]);
+
+			// Tile::createTile(Tile::MOB_SPAWNER, $this->getLevel(), $nbt);  // Just add the Tile @TheAz928 ^_^
+
 			return true;
 		}
 		return false;
-	}
-	
-	public function isValidPortal() : array {
-		// TODO: Portal Checks
-		return [
-			new Vector3(0,0,0), // corner 1
-			new Vector3(0,0,0), // corner 2
-			new Vector3(0,0,0), // corner 3
-			new Vector3(0,0,0), // corner 4
-		];
-	}
-	
-	private function createPortal(array $corners = null){
-		if($corners === null){
-			return false;
-		}
-		// TODO: set the blocks based from dimensions
-		return true;
 	}
 }
