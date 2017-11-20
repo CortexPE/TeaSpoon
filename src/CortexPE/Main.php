@@ -26,7 +26,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with TeaSpoon.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author CortexPE
+ * @author CortexPE & TheAz928 (Collaborator)
  * @link https://CortexPE.xyz
  *
  */
@@ -65,7 +65,9 @@ class Main extends PluginBase {
 	];
 // Use static variables if it's going to be accessed by other Classes :)
 
-	const CONFIG_VERSION = 9;
+	const CONFIG_VERSION = 10;
+	
+	private static $that;
 
 	/** @var string */
 	public static $netherName = "nether";
@@ -128,6 +130,7 @@ class Main extends PluginBase {
 	public static $debug = false;
 
 	public function onLoad(){
+		self::$that = $this;
 		if(Utils::checkSpoon()){
 			$this->getLogger()->error("This plugin is for PMMP only. It is meant to extend PMMP's functionality.");
 			$this->getLogger()->error("The plugin will now disable itself to prevent any interference with the existing Spoon features.");
@@ -221,5 +224,11 @@ Copyright (C) CortexPE 2017-Present
 		}elseif($ver > self::CONFIG_VERSION){
 			$this->getLogger()->critical("Your configuration file is from a higher version of TeaSpoon! Please update the plugin from https://github.com/CortexPE/TeaSpoon");
 		}
+	}
+	
+	public static function get($str, $def = null){
+	    $file = self::$that->getConfig();
+	    $file->reload();
+	return $file->get($str, $def);
 	}
 }

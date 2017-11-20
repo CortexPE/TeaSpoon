@@ -1,93 +1,75 @@
 <?php
-
-/**
- *
- * MMP""MM""YMM               .M"""bgd
- * P'   MM   `7              ,MI    "Y
- *      MM  .gP"Ya   ,6"Yb.  `MMb.   `7MMpdMAo.  ,pW"Wq.   ,pW"Wq.`7MMpMMMb.
- *      MM ,M'   Yb 8)   MM    `YMMNq. MM   `Wb 6W'   `Wb 6W'   `Wb MM    MM
- *      MM 8M""""""  ,pm9MM  .     `MM MM    M8 8M     M8 8M     M8 MM    MM
- *      MM YM.    , 8M   MM  Mb     dM MM   ,AP YA.   ,A9 YA.   ,A9 MM    MM
- *    .JMML.`Mbmmd' `Moo9^Yo.P"Ybmmd"  MMbmmd'   `Ybmd9'   `Ybmd9'.JMML  JMML.
- *                                     MM
- *                                   .JMML.
- * This file is part of TeaSpoon.
- *
- * TeaSpoon is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * TeaSpoon is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with TeaSpoon.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author CortexPE
- * @link https://CortexPE.xyz
- *
- */
-
-declare(strict_types = 1);
-
 namespace CortexPE\block;
 
-use CortexPE\tile\Tile;
-use pocketmine\block\Block;
-use pocketmine\block\MonsterSpawner as PMMonsterSpawner;
-use pocketmine\item\Item;
-use pocketmine\math\Vector3;
-use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\nbt\tag\IntTag;
-use pocketmine\nbt\tag\StringTag;
-use function pocketmine\parse_offset;
 use pocketmine\Player;
 
-class MonsterSpawner extends PMMonsterSpawner {
-	public function __construct($meta = 0){
-		parent::__construct($meta);
+use pocketmine\item\Item;
+use pocketmine\item\Tool;
+
+use pocketmine\math\Vector3;
+
+use pocketmine\block\Block;
+use pocketmine\block\Transparent;
+
+use CortexPE\Main as Loader;
+use CortexPE\tile\MobSpawner;
+
+use pocketmine\tile\Tile;
+
+class MonsterSpawner extends Transparent{
+
+	protected $id = self::MONSTER_SPAWNER;
+
+	public function __construct(int $meta = 0){
+		$this->meta = $meta;
 	}
 
-	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null): bool{
-		if($item->hasCustomBlockData()){
-			$this->getLevel()->setBlock($blockReplace, $this, true, true);
-			$nbt = new CompoundTag("", [
-				new StringTag("id", Tile::MOB_SPAWNER),
-				new IntTag("x", $blockReplace->x),
-				new IntTag("y", $blockReplace->y),
-				new IntTag("z", $blockReplace->z),
-				new IntTag("EntityId", 0),
-			]);
-
-			foreach($item->getCustomBlockData() as $key => $v){
-				$nbt->{$key} = $v;
-			}
-
-			//Tile::createTile(Tile::MOB_SPAWNER, $this->getLevel(), $nbt); // Just add the Tile @TheAz928 ^_^
-
-			return true;
-		} else {
-			return parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player);
-		}
+	public function getHardness() : float{
+		return 5;
 	}
 
-	public function onActivate(Item $item, Player $player = null): bool{
-		if($item->getId() == Item::SPAWN_EGG){
-			$nbt = new CompoundTag("", [
-				new StringTag("id", Tile::MOB_SPAWNER),
-				new IntTag("x", $this->x),
-				new IntTag("y", $this->y),
-				new IntTag("z", $this->z),
-				new IntTag("EntityId", $item->getDamage()),
-			]);
+	public function getToolType() : Int{
+		return Tool::TYPE_PICKAXE;
+	}
 
-			// Tile::createTile(Tile::MOB_SPAWNER, $this->getLevel(), $nbt);  // Just add the Tile @TheAz928 ^_^
+	public function getName() : string{
+		return "Monster Spawner";
+	}
 
-			return true;
-		}
-		return false;
+	public function getDrops(Item $item) : array{
+		 $return = [];
+		 if(Loader::get("silk.enabled") and $item->hasEnchantment(16)){
+	      $item = Item::get(self::$id, $this->meta, 1);
+	      $item->setCustomName($item->getName()."\n§r§7EntityId: ".$this->meta);
+	    }
+	return $return;
+	}
+	
+	public function place(Item $item, Block $blockReplace, Block $blockClicked, Int $face, Vector3 $clickVector, Player $player = null) : bool{
+		 $this->getLevel()->setBlock($blockReplace, $this, true, true);
+		 $tile = Tile::createTile("MobSpawner", $this->getLevel(), MobSpawner::createNBT($blockReplace, $face, $item, $player));
+		 $tile->setEntityEid($item->getDamage());
+   return true;
+	}
+	
+	public function onActivate(Item $item, Player $player = null) : bool{
+		  if($item->getId() == Item::SPAWN_EGG){
+			 if(($tile = $this->getLevel()->getTile($this)) instanceof MobSpawner){
+				$tile->setEntityEid($item->getDamage());
+			   if($player !== null and $player->isSurvival()){
+				  $item->setCount(1);
+				  $player->getInventory()->removeItem(1);
+				}
+			 }else{
+				$tile = Tile::createTile("MobSpawner", $this->getLevel(), MobSpawner::createNBT($this));
+			   $tile->setEntityEid($item->getDamage());
+			   if($player !== null and $player->isSurvival()){
+				  $item->setCount(1);
+				  $player->getInventory()->removeItem(1);
+				}
+			 }
+			 $this->meta = $item->getDamage();
+		  }
+	return true;
 	}
 }
