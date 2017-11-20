@@ -44,5 +44,6 @@ class Tile extends PMTile {
 	public static function init(){
 		self::registerTile(EnderChest::class);
 		self::registerTile(Beacon::class);
+      self::registerTile(MobSpawner::class);
 	}
 }
