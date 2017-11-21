@@ -72,9 +72,10 @@ class DelayedCrossDimensionTeleportTask extends PluginTask {
 	}
 
 	public function onRun(int $currentTick){
+		$session = Main::getInstance()->getSessionById($this->player->getId());
 		if(Utils::isDelayedTeleportCancellable($this->player)){
-			if(Main::$TEMPSkipCheck[$this->player->getName()]){
-				Main::$TEMPSkipCheck[$this->player->getName()] = false;
+			if($session->skipCheck){
+				$session->skipCheck = false;
 			}
 
 			return false;
@@ -87,8 +88,8 @@ class DelayedCrossDimensionTeleportTask extends PluginTask {
 		$this->player->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
 		$this->player->teleport($this->position);
 
-		if(Main::$TEMPSkipCheck[$this->player->getName()]){
-			Main::$TEMPSkipCheck[$this->player->getName()] = false;
+		if($session->skipCheck){
+			$session->skipCheck = false;
 		}
 
 		return true;

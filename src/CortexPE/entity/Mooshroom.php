@@ -36,10 +36,10 @@ declare(strict_types = 1);
 namespace CortexPE\entity;
 
 use CortexPE\item\enchantment\Enchantment;
-use CortexPE\Player;
 use pocketmine\entity\Animal;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\item\Item;
+use pocketmine\Player;
 
 class Mooshroom extends Animal {
 	const NETWORK_ID = self::MOOSHROOM;

@@ -54,6 +54,7 @@ use pocketmine\command\defaults\GarbageCollectorCommand;
 use pocketmine\command\defaults\StatusCommand;
 use pocketmine\entity\Entity;
 use pocketmine\level\Level;
+use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 
@@ -65,39 +66,29 @@ class Main extends PluginBase {
 	];
 // Use static variables if it's going to be accessed by other Classes :)
 
-	const CONFIG_VERSION = 9;
+	/** @var Main */
+	private static $instance;
+
+	/** @var Session[] */
+	private $sessions = [];
+
+	/** @var Config */
+	public static $config;
 
 	/** @var string */
 	public static $netherName = "nether";
 	/** @var Level */
 	public static $netherLevel;
-
 	/** @var string */
 	public static $endName = "ender";
 	/** @var Level */
 	public static $endLevel;
-
-	/** @var Config */
-	public static $config;
-
 	/** @var bool */
 	public static $lightningFire = false;
-	/** @var string[] */
-	public static $teleporting = [];
-	/** @var int[] */
-	public static $lastUses = [];
-	/** @var int */
-	public static $enderPearlCooldown = 2;
-	/** @var array */
-	public static $TEMPSkipCheck = [];
-	/** @var array */
-	public static $usingElytra = [];
 	/** @var int */
 	public static $ePearlDamage = 5;
-	/** @var array */
-	public static $TEMPAllowCheats = [];
-	/** @var array */
-	public static $lastEat = [];
+	/** @var int */
+	public static $enderPearlCooldown = 2;
 	/** @var int */
 	public static $chorusFruitCooldown = 2;
 	/** @var bool */
@@ -120,13 +111,11 @@ class Main extends PluginBase {
 	public static $enableWeatherLightning = true;
 	/** @var bool */
 	public static $limitedCreative = false;
-	/** @var array */
-	public static $fishing = [];
-	/** @var Entity[] | null[] */
-	public static $fishingEntity = [];
 	/** @var bool */
 	public static $debug = false;
 
+	const CONFIG_VERSION = 10; // to avoid moving up and down just to update config version xD
+	
 	public function onLoad(){
 		if(Utils::checkSpoon()){
 			$this->getLogger()->error("This plugin is for PMMP only. It is meant to extend PMMP's functionality.");
@@ -134,26 +123,30 @@ class Main extends PluginBase {
 			$this->getServer()->getPluginManager()->disablePlugin($this);
 		}
 		$this->getLogger()->info("Loading configuration...");
-		@mkdir($this->getDataFolder());
+		if(!file_exists($this->getDataFolder())){
+			@mkdir($this->getDataFolder());
+		}
 		$this->saveDefaultConfig();
 		self::$config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
 
-		self::$netherName = self::$config->get("netherName", "nether");
-		self::$endName = self::$config->get("endName", "ender");
-		self::$loadAllAPIs = self::$config->get("loadAllAPIs", false);
-		self::$lightningFire = self::$config->get("lightningFire", false);
-		self::$enderPearlCooldown = self::$config->get("enderPearlCooldown", 2);
-		self::$ePearlDamage = self::$config->get("enderPearlDamage", 5);
-		self::$chorusFruitCooldown = self::$config->get("chorusFruitCooldown", 2);
-		self::$registerVanillaEntities = self::$config->get("registerVanillaEntities", true);
-		self::$registerVanillaEnchantments = self::$config->get("registerVanillaEnchantments", true);
-		self::$registerDimensions = self::$config->get("registerDimensions", true);
-		self::$weatherEnabled = self::$config->get("weather", true);
-		self::$weatherMinTime = self::$config->get("weatherMinTimeInTicks", 6000);
-		self::$weatherMaxTime = self::$config->get("weatherMaxTimeInTicks", 12000);
-		self::$enableWeatherLightning = self::$config->get("enableWeatherLightning", true);
-		self::$limitedCreative = self::$config->get("limitedCreative", false);
+		self::$netherName = self::$config->getNested("dimensions.nether.levelName", "nether");
+		self::$endName = self::$config->getNested("dimensions.end.levelName", "ender");
+		self::$loadAllAPIs = self::$config->getNested("misc.loadAllAPIs", false);
+		self::$lightningFire = self::$config->getNested("entities.lightningFire", false);
+		self::$enderPearlCooldown = self::$config->getNested("enderPearl.cooldown", 2);
+		self::$ePearlDamage = self::$config->getNested("enderPearl.damage", 5);
+		self::$chorusFruitCooldown = self::$config->getNested("chorusFruit.cooldown", 2);
+		self::$registerVanillaEntities = self::$config->getNested("entities.register", true);
+		self::$registerVanillaEnchantments = self::$config->getNested("enchantments.register", true);
+		self::$registerDimensions = self::$config->getNested("dimensions.enable", true);
+		self::$weatherEnabled = self::$config->getNested("weather.enable", true);
+		self::$weatherMinTime = self::$config->getNested("weather.minDuration", 6000);
+		self::$weatherMaxTime = self::$config->getNested("weather.maxDuration", 12000);
+		self::$enableWeatherLightning = self::$config->getNested("weather.lightning", true);
+		self::$limitedCreative = self::$config->getNested("misc.limitedCreative", false);
 		self::$debug = self::$config->get("debug", false); // intentionally don't add this on the config...
+
+		print_r(self::$config);
 
 		if(self::$debug){
 			if(file_exists($this->getDataFolder() . DIRECTORY_SEPARATOR . "packetlog.txt")){
@@ -171,10 +164,13 @@ class Main extends PluginBase {
 				$cm->register("pocketmine", new DumpMemoryCommand("dumpmemory"));
 			}
 		}
+
+		self::$instance = $this;
 	}
 
 	public function onEnable(){
 		$rm = $this->splashes[array_rand($this->splashes)];
+		$yr = 2017 . ((2017 != date('Y')) ? '-' . date('Y') : '');
 		$stms = TextFormat::DARK_GREEN . '
 		
 MMP""MM""YMM              ' . TextFormat::GREEN . ' .M"""bgd                                        ' . TextFormat::DARK_GREEN . '
@@ -186,11 +182,16 @@ P\'   MM   `7             ' . TextFormat::GREEN . ' ,MI    "Y                   
    .JMML.`Mbmmd\' `Moo9^Yo.' . TextFormat::GREEN . 'P"Ybmmd"  MMbmmd\'   `Ybmd9\'   `Ybmd9\'.JMML  JMML.' . TextFormat::GREEN . '
                                     MM                                     
                                   .JMML.  ' . TextFormat::YELLOW . $rm . TextFormat::RESET . '
-Copyright (C) CortexPE 2017-Present
+Copyright (C) CortexPE ' . $yr . '
 ';
-
 		$this->getLogger()->info("Loading..." . $stms);
-
+		
+		$this->loadEverythingElse();
+		$this->getLogger()->info("TeaSpoon is distributed under the AGPL License");
+		$this->checkConfig();
+	}
+	
+	private function loadEverythingElse(){
 		CommandManager::init();
 		Enchantment::init();
 		BlockManager::init();
@@ -209,17 +210,37 @@ Copyright (C) CortexPE 2017-Present
 		if(self::$registerVanillaEnchantments){
 			$this->getServer()->getPluginManager()->registerEvents(new EnchantHandler($this), $this);
 		}
-		$ver = self::$config->get("version");
 		if(self::$weatherEnabled){
 			$this->getServer()->getScheduler()->scheduleRepeatingTask(new TickLevelsTask($this), 1);
 		}
-		$this->getLogger()->info("TeaSpoon is distributed under the AGPL License");
-
-
+	}
+	
+	private function checkConfig(){
+		$ver = self::$config->get("version");
 		if($ver === null || $ver === false || $ver < self::CONFIG_VERSION){
 			$this->getLogger()->critical("Your configuration file is Outdated! Keep a backup of it and delete the outdated file.");
 		}elseif($ver > self::CONFIG_VERSION){
 			$this->getLogger()->critical("Your configuration file is from a higher version of TeaSpoon! Please update the plugin from https://github.com/CortexPE/TeaSpoon");
 		}
+	}
+
+	public function createSession(Player $player) : bool {
+		if(!isset($this->sessions[$player->getId()])){
+			$this->sessions[$player->getId()] = new Session($player);
+			return true;
+		}
+		return false;
+	}
+
+	public function getSessionById(int $id) {
+		if(isset($this->sessions[$id])){
+			return $this->sessions[$id];
+		} else {
+			return null;
+		}
+	}
+
+	public static function getInstance() : Main {
+		return self::$instance;
 	}
 }

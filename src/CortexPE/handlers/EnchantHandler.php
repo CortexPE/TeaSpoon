@@ -37,7 +37,6 @@ namespace CortexPE\handlers;
 
 use CortexPE\item\enchantment\Enchantment;
 use CortexPE\Main;
-use CortexPE\Player;
 use CortexPE\Utils;
 use pocketmine\block\Block;
 use pocketmine\entity\Attribute;
@@ -181,7 +180,7 @@ class EnchantHandler implements Listener {
 				$ev->getCause() == EntityDamageEvent::CAUSE_BLOCK_EXPLOSION ||
 				$ev->getCause() == EntityDamageEvent::CAUSE_ENTITY_EXPLOSION
 			) &&
-			$e instanceof Player
+			$e instanceof PMPlayer
 		){
 			foreach($e->getInventory()->getArmorContents() as $armor){
 				if($armor->hasEnchantments()){
@@ -194,7 +193,7 @@ class EnchantHandler implements Listener {
 		}
 		if(
 			$ev->getCause() == EntityDamageEvent::CAUSE_FALL &&
-			$e instanceof Player
+			$e instanceof PMPlayer
 		){
 			foreach($e->getInventory()->getArmorContents() as $armor){
 				if($armor->hasEnchantments()){
@@ -211,7 +210,7 @@ class EnchantHandler implements Listener {
 				$ev->getCause() == EntityDamageEvent::CAUSE_FIRE_TICK ||
 				$ev->getCause() == EntityDamageEvent::CAUSE_LAVA
 			) &&
-			$e instanceof Player
+			$e instanceof PMPlayer
 		){
 			foreach($e->getInventory()->getArmorContents() as $armor){
 				if($armor->hasEnchantments()){
@@ -227,7 +226,7 @@ class EnchantHandler implements Listener {
 				$ev->getCause() == EntityDamageEvent::CAUSE_STARVATION ||
 				$ev->getCause() == EntityDamageEvent::CAUSE_MAGIC
 			) &&
-			$e instanceof Player
+			$e instanceof PMPlayer
 		){
 			foreach($e->getInventory()->getArmorContents() as $armor){
 				if($armor->hasEnchantments()){
@@ -241,7 +240,7 @@ class EnchantHandler implements Listener {
 		if(
 
 			$ev->getCause() == EntityDamageEvent::CAUSE_PROJECTILE &&
-			$e instanceof Player
+			$e instanceof PMPlayer
 		){
 			foreach($e->getInventory()->getArmorContents() as $armor){
 				if($armor->hasEnchantments()){
@@ -278,6 +277,7 @@ class EnchantHandler implements Listener {
 			return;
 		}
 		$p = $ev->getPlayer();
+		$session = Main::getInstance()->getSessionById($p->getId());
 		$armor = $p->getInventory()->getBoots();
 		if($armor->hasEnchantments() && $armor->hasEnchantment(Enchantment::DEPTH_STRIDER)){
 			$lvl = $armor->getEnchantment(Enchantment::DEPTH_STRIDER)->getLevel();
@@ -286,19 +286,19 @@ class EnchantHandler implements Listener {
 				if(in_array($p->getLevel()->getBlock($p)->getId(), self::WATER_IDS)){
 					$att->setValue($att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl), true, true);
 
-					Main::$TEMPAllowCheats[$ev->getPlayer()->getName()] = true;
+					$session->allowCheats = true;
 				}else{
 					if($att->getValue() == $att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl)){
 						$att->setValue($att->getDefaultValue(), true, true);
 
-						Main::$TEMPAllowCheats[$ev->getPlayer()->getName()] = false;
+						$session->allowCheats = false;
 					}
 				}
 			}else{
 				if($att->getValue() == $att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl)){
 					$att->setValue($att->getDefaultValue(), true, true);
 
-					Main::$TEMPAllowCheats[$ev->getPlayer()->getName()] = false;
+					$session->allowCheats = false;
 				}
 			}
 		}

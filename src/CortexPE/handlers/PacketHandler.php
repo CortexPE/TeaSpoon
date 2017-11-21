@@ -60,20 +60,22 @@ class PacketHandler implements Listener {
 	 */
 	public function onPacketReceive(DataPacketReceiveEvent $ev){
 		$pkr = $ev->getPacket();
+		$p = $ev->getPlayer();
 		if($pkr instanceof PlayerActionPacket){
-			$p = $ev->getPlayer();
+			//Main::getInstance()->getLogger()->debug("Received PlayerActionPacket:" . $pkr->action . " from " . $p->getName());
+			$session = Main::getInstance()->getSessionById($p->getId());
 			switch($pkr->action){
 				case PlayerActionPacket::ACTION_START_GLIDE:
 					$p->setDataFlag(PMPlayer::DATA_FLAGS, PMPlayer::DATA_FLAG_GLIDING, true, PMPlayer::DATA_TYPE_BYTE);
 
-					Main::$usingElytra[$p->getName()] = true;
-					Main::$TEMPAllowCheats[$ev->getPlayer()->getName()] = true;
+					$session->usingElytra = true;
+					$session->allowCheats = true;
 					break;
 				case PlayerActionPacket::ACTION_STOP_GLIDE:
 					$p->setDataFlag(PMPlayer::DATA_FLAGS, PMPlayer::DATA_FLAG_GLIDING, false, PMPlayer::DATA_TYPE_BYTE);
 
-					Main::$usingElytra[$p->getName()] = false;
-					Main::$TEMPAllowCheats[$ev->getPlayer()->getName()] = false;
+					$session->usingElytra = false;
+					$session->allowCheats = false;
 					break;
 			}
 		}

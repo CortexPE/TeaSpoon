@@ -10,40 +10,45 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 9
+version: 10
 
-# Weather to register Vanilla Mobs (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...)
-registerVanillaEntities: true
+entities:
+ # Weather to register Vanilla Entities (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...) or not
+ register: true
+ # Enable Lightning Fire & Damage
+ lightningFire: true
 
-# Weather to register Vanilla Enchantments (Set to false if you're going to use VanillaEnchantments plugin etc...)
-registerVanillaEnchantments: true
+enchantments:
+ # Weather to enable & register Vanilla Enchantments (Set to false if you're going to use VanillaEnchantments plugin etc...) or not
+ register: true
 
-# Weather to register Dimensions (Set to false if you're not going to use Nether And End Dimension)
-registerDimensions: true
+dimensions:
+ # Enable / Disable Dimensions
+ enable: true
+ nether:
+  levelName: "nether"
+ end:
+  levelName: "ender"
 
-# Nether & End Dimension
-netherName: "nether"
-endName: "ender"
+misc:
+ # !!!   ONLY ENABLE THIS IF YOU ARE SURE THAT ALL YOUR    !!!
+ # !!! PLUGINS ARE COMPATIBLE WITH YOUR CURRENT PMMP BUILD !!!
+ loadAllAPIs: false
+ # Enable to dis-allow chest and container interactions when in creative
+ limitedCreative: true
+ 
+enderPearl:
+ cooldown: 2
+ damage: 5
 
-# !!!   ONLY ENABLE THIS IF YOU ARE SURE THAT ALL YOUR    !!!
-# !!! PLUGINS ARE COMPATIBLE WITH YOUR CURRENT PMMP BUILD !!!
-loadAllAPIs: false
+chorusFruit:
+ cooldown: 2
 
-# Ender Pearl Configuration
-enderPearlCooldown: 2
-enderPearlDamage: 5
-
-# Chorus Fruit Configuration
-chorusFruitCooldown: 2
-
-# Weather Settings
-weather: true
-weatherMinTimeInTicks: 6000
-weatherMaxTimeInTicks: 12000
-enableWeatherLightning: true
-
-# Weather Lightning should cause damage or not
-lightningFire: true
-
-# To be more vanilla-like, Disable this...
-limitedCreative: false
+weather: 
+ enable: true
+ # Minimum Weather Duration (IN TICKS)
+ minDuration: 6000
+ # Maximum Weather Duration (IN TICKS)
+ maxDuration: 12000
+ # If lightning should be spawned in stormy weather
+ lightning: true

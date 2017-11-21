@@ -68,7 +68,8 @@ class FishingRod extends ProjectileItem {
 	}
 
 	public function onClickAir(Player $player, Vector3 $directionVector) : bool{
-		if(!Main::$fishing[$player->getName()]){
+		$session = Main::getInstance()->getSessionById($player->getId());
+		if(!$session->fishing){
 			$nbt = Entity::createBaseNBT($player->add(0, $player->getEyeHeight(), 0), $directionVector, $player->yaw, $player->pitch);
 
 			$projectile = Entity::createEntity($this->getProjectileEntityType(), $player->getLevel(), $nbt, $player);
@@ -92,10 +93,10 @@ class FishingRod extends ProjectileItem {
 			$pk->event = EntityEventPacket::FISH_HOOK_POSITION;
 			$player->getServer()->broadcastPacket($player->getLevel()->getPlayers(), $pk);
 
-			Main::$fishingEntity[$player->getName()] = $projectile;
-			Main::$fishing[$player->getName()] = true;
+			$session->fishingHook = $projectile;
+			$session->fishing= true;
 		} else {
-			$projectile = Main::$fishingEntity[$player->getName()];
+			$projectile = $session->fishingHook;
 			if($projectile instanceof FishingHook){
 				$pk = new EntityEventPacket();
 				$pk->entityRuntimeId = $projectile->getId();
@@ -105,8 +106,8 @@ class FishingRod extends ProjectileItem {
 				$projectile->flagForDespawn();
 			}
 
-			Main::$fishingEntity[$player->getName()] = null;
-			Main::$fishing[$player->getName()] = false;
+			$session->fishingHook = null;
+			$session->fishing= false;
 		}
 
 		return true;

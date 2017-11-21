@@ -36,7 +36,6 @@ declare(strict_types = 1);
 namespace CortexPE\entity;
 
 use CortexPE\item\enchantment\Enchantment;
-use CortexPE\Player;
 use pocketmine\entity\Animal;
 use pocketmine\event\entity\{
 	EntityDamageByEntityEvent, EntityDamageEvent
@@ -46,6 +45,7 @@ use pocketmine\level\Level;
 use pocketmine\nbt\tag\{
 	ByteTag, CompoundTag
 };
+use pocketmine\Player;
 
 class Rabbit extends Animal {
 	const NETWORK_ID = self::RABBIT;

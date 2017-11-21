@@ -48,7 +48,8 @@ class CheckPlayersTask extends PluginTask {
 
 	public function onRun(int $currentTick){
 		foreach(Server::getInstance()->getOnlinePlayers() as $p){
-			if(Main::$TEMPSkipCheck[$p->getName()]){
+			$session = Main::getInstance()->getSessionById($p->getId());
+			if($session->skipCheck){
 				continue;
 			}
 			$epo = Utils::isInsideOfEndPortal($p);
@@ -76,6 +77,6 @@ class CheckPlayersTask extends PluginTask {
 		}else{
 			Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($this->owner, $player, $dimension, $pos), 1);
 		}
-		Main::$TEMPSkipCheck[$player->getName()] = true;
+		Main::getInstance()->getSessionById($player->getId())->skipCheck = true;
 	}
 }

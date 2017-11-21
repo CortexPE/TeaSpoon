@@ -206,7 +206,7 @@ class EventListener implements Listener {
 				if($p->getInventory()->getChestplate() instanceof Elytra){
 					$ev->setCancelled(true);
 				}
-				if($p->getLevel()->getBlock($p->subtract(0,1,0))->getId() == Block::SLIME_BLOCK){
+				if($p->getLevel()->getBlock($p->subtract(0, 1, 0))->getId() == Block::SLIME_BLOCK){
 					$ev->setCancelled(true);
 				}
 			}
@@ -230,13 +230,7 @@ class EventListener implements Listener {
 	 * @priority LOWEST
 	 */
 	public function onLogin(PlayerLoginEvent $ev){
-		Main::$lastUses[$ev->getPlayer()->getName()] = 0;
-		Main::$TEMPSkipCheck[$ev->getPlayer()->getName()] = false;
-		Main::$usingElytra[$ev->getPlayer()->getName()] = false;
-		Main::$TEMPAllowCheats[$ev->getPlayer()->getName()] = false;
-		Main::$lastEat[$ev->getPlayer()->getName()] = 0;
-		Main::$fishing[$ev->getPlayer()->getName()] = false;
-		Main::$fishingEntity[$ev->getPlayer()->getName()] = null;
+		Main::getInstance()->createSession($ev->getPlayer());
 	}
 
 	/**
@@ -249,11 +243,12 @@ class EventListener implements Listener {
 			$e = $ev->getEntity();
 			$p = $e->getOwningEntity();
 			if($p instanceof PMPlayer){
-				if(floor(microtime(true) - Main::$lastUses[$p->getName()]) < Main::$enderPearlCooldown){
+				$session = Main::getInstance()->getSessionById($p->getId());
+				if(floor(microtime(true) - $session->lastEnderPearlUse) < Main::$enderPearlCooldown){
 					$ev->setCancelled(true);
 					$e->close();
 				}else{
-					Main::$lastUses[$p->getName()] = time();
+					$session->lastEnderPearlUse = time();
 				}
 			}
 		}
@@ -267,10 +262,11 @@ class EventListener implements Listener {
 	public function onChorusFruitUse(PlayerItemConsumeEvent $ev){
 		if($ev->getItem() instanceof ChorusFruit){
 			$p = $ev->getPlayer();
-			if(floor(microtime(true) - Main::$lastEat[$p->getName()]) < Main::$chorusFruitCooldown){
+			$session = Main::getInstance()->getSessionById($p->getId());
+			if(floor(microtime(true) - $session->lastChorusFruitEat) < Main::$chorusFruitCooldown){
 				$ev->setCancelled(true);
 			}else{
-				Main::$lastUses[$p->getName()] = time();
+				$session->lastChorusFruitEat = time();
 			}
 		}
 	}
@@ -282,7 +278,8 @@ class EventListener implements Listener {
 	 */
 	public function onInteract(PlayerInteractEvent $ev){
 		$p = $ev->getPlayer();
-		if($p->getInventory()->getChestplate() instanceof Elytra && $ev->getItem() instanceof FireworkRocket && Main::$usingElytra[$p->getName()]){
+		$session = Main::getInstance()->getSessionById($p->getId());
+		if($p->getInventory()->getChestplate() instanceof Elytra && $ev->getItem() instanceof FireworkRocket && $session->usingElytra){
 			if($ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_AIR || $ev->getAction() == PlayerInteractEvent::LEFT_CLICK_AIR){
 				if($p->getGamemode() != PMPlayer::CREATIVE && $p->getGamemode() != PMPlayer::SPECTATOR){
 					$ic = clone $p->getInventory()->getItemInHand();
@@ -303,10 +300,10 @@ class EventListener implements Listener {
 	 * @priority HIGHEST
 	 */
 	public function onKick(PlayerKickEvent $ev){
-		if(isset(Main::$TEMPAllowCheats[$ev->getPlayer()->getName()])){
-			if(Main::$TEMPAllowCheats[$ev->getPlayer()->getName()] === true && $ev->getReason() == PMServer::getInstance()->getLanguage()->translateString("kick.reason.cheat", ["%ability.flight"])){
-				$ev->setCancelled(true);
-			}
+		$p = $ev->getPlayer();
+		$session = Main::getInstance()->getSessionById($p->getId());
+		if($session->allowCheats && $ev->getReason() == PMServer::getInstance()->getLanguage()->translateString("kick.reason.cheat", ["%ability.flight"])){
+			$ev->setCancelled(true);
 		}
 	}
 

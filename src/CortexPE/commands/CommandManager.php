@@ -44,11 +44,13 @@ class CommandManager {
 		$cmds = [
 			new WorldCommand("world"),
 			new ClearCommand("clear"),
-			new WeatherCommand("weather"),
 		];
 
 		if(Main::$debug){
 			$cmds[] = new TestCommand("test");
+		}
+		if(Main::$weatherEnabled){
+			$cmds[] = new WeatherCommand("weather");
 		}
 
 		PMServer::getInstance()->getCommandMap()->registerAll("pocketmine", $cmds);

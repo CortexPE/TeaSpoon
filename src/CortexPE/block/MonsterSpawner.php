@@ -43,7 +43,6 @@ use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\StringTag;
-use function pocketmine\parse_offset;
 use pocketmine\Player;
 
 class MonsterSpawner extends PMMonsterSpawner {
