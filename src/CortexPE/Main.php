@@ -52,7 +52,6 @@ use CortexPE\utils\TextFormat;
 use pocketmine\command\defaults\DumpMemoryCommand;
 use pocketmine\command\defaults\GarbageCollectorCommand;
 use pocketmine\command\defaults\StatusCommand;
-use pocketmine\entity\Entity;
 use pocketmine\level\Level;
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
