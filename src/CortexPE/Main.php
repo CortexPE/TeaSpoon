@@ -146,9 +146,8 @@ class Main extends PluginBase {
 		self::$limitedCreative = self::$config->getNested("misc.limitedCreative", false);
 		self::$debug = self::$config->get("debug", false); // intentionally don't add this on the config...
 
-		print_r(self::$config);
-
 		if(self::$debug){
+			// print_r(self::$config);
 			if(file_exists($this->getDataFolder() . DIRECTORY_SEPARATOR . "packetlog.txt")){
 				unlink($this->getDataFolder() . DIRECTORY_SEPARATOR . "packetlog.txt");
 			}
