@@ -75,16 +75,19 @@ class XPOrb extends Entity {
 			$moveSpeed = 0.5;
 			$motX = ($Target->getX() - $this->x) / 8;
 			$motY = ($Target->getY()/* + $Target->getEyeHeight() */ - $this->y) / 8;
-			$motZ = ($Target->getZ() - $this->z) / 8 /* * (1 / $Target->getZ())*/
-			;
+			$motZ = ($Target->getZ() - $this->z) / 8 /* * (1 / $Target->getZ())*/;
 			$motSqrt = sqrt($motX * $motX + $motY * $motY + $motZ * $motZ);
 			$motC = 1 - $motSqrt;
 
 			if($motC > 0){
 				$motC *= $motC;
-				$this->motionX = $motX / $motSqrt * $motC * $moveSpeed;
-				$this->motionY = $motY / $motSqrt * $motC * $moveSpeed;
-				$this->motionZ = $motZ / $motSqrt * $motC * $moveSpeed;
+				$d = $motSqrt * $motC * $moveSpeed;
+				$d = ($d == 0 ? NULL : $d);
+				if($d !== NULL){
+					$this->motionX = $motX / $d;
+					$this->motionY = $motY / $d;
+					$this->motionZ = $motZ / $d;
+				}
 			}
 
 			if($Target->distance($this) <= $this->pickuprange){
