@@ -43,6 +43,7 @@ use pocketmine\entity\{
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 
 class Lightning extends Animal {
 	const NETWORK_ID = self::LIGHTNING_BOLT;
@@ -93,6 +94,17 @@ class Lightning extends Animal {
 						$entity->setPowered(true, $this);
 					}*/
 				}
+			}
+			$spk = new PlaySoundPacket();
+			$spk->soundName = "ambient.weather.lightning.impact";
+			$spk->x = $this->getX();
+			$spk->y = $this->getY();
+			$spk->z = $this->getZ();
+			$spk->volume = 500;
+			$spk->pitch = 1;
+
+			foreach($this->level->getPlayers() as $p){
+				$p->dataPacket($spk);
 			}
 		}
 		if($this->age > 6 * 20){

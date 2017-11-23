@@ -58,4 +58,14 @@ class Session {
 	public function __construct(Player $player){
 		$this->player = $player;
 	}
+
+	public function __destruct(){
+		if($this->fishingHook !== null){
+			$this->fishingHook->flagForDespawn();
+		}
+	}
+
+	public function getPlayer() : Player {
+		return $this->player;
+	}
 }

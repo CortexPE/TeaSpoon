@@ -26,7 +26,7 @@ class TestCommand extends VanillaCommand {
 
 	public function execute(CommandSender $sender, $currentAlias, array $args){
 		if($sender instanceof PMPlayer){
-			$sender->getLevel()->addParticle(new GenericParticle($sender->getPosition(), (int)$args[0], (int)$args[1]));
+			$sender->sendMessage($sender->getPosition()->asVector3()->__toString());
 		}
 	}
 }

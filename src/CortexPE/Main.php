@@ -225,6 +225,16 @@ Copyright (C) CortexPE ' . $yr . '
 	public function createSession(Player $player) : bool {
 		if(!isset($this->sessions[$player->getId()])){
 			$this->sessions[$player->getId()] = new Session($player);
+			$this->getLogger()->debug("Created " . $player->getName() . "'s Session");
+			return true;
+		}
+		return false;
+	}
+
+	public function destroySession(Player $player) : bool {
+		if(isset($this->sessions[$player->getId()])){
+			unset($this->sessions[$player->getId()]);
+			$this->getLogger()->debug("Destroyed " . $player->getName() . "'s Session");
 			return true;
 		}
 		return false;

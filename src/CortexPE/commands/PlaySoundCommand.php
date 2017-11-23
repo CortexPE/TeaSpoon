@@ -35,27 +35,22 @@ declare(strict_types = 1);
 
 namespace CortexPE\commands;
 
-use CortexPE\utils\TextFormat;
+use pocketmine\Server;
 use pocketmine\command\{
 	CommandSender, defaults\VanillaCommand
 };
 use pocketmine\event\TranslationContainer;
+use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\Player;
 
-class ClearCommand extends VanillaCommand {
-
-	/**
-	 * ClearCommand constructor.
-	 *
-	 * @param $name
-	 */
+class PlaySoundCommand extends VanillaCommand {
 	public function __construct($name){
 		parent::__construct(
 			$name,
-			"Clears your / another player's inventory",
-			"/clear [player]"
+			"Plays a sound",
+			"/playsound <sound> <player> [x] [y] [z] [volume] [pitch]"
 		);
-		$this->setPermission("pocketmine.command.clear.self;pocketmine.command.clear.other");
+		$this->setPermission("pocketmine.command.playsound");
 	}
 
 	/**
@@ -70,74 +65,36 @@ class ClearCommand extends VanillaCommand {
 			return true;
 		}
 
-		if(count($args) >= 2){
+		if(!isset($args[0]) || !isset($args[1])){
 			$sender->sendMessage(new TranslationContainer("commands.generic.usage", [$this->usageMessage]));
-
 			return false;
 		}
 
-		if(count($args) === 1){
-			if(!$sender->hasPermission("pocketmine.command.clear.other")){
-				$sender->sendMessage(new TranslationContainer(TextFormat::RED . "%commands.generic.permission"));
+		$server = Server::getInstance();
+		$player = $server->getPlayer($args[1]);
 
-				return true;
-			}
-
-			switch($args[0]){
-				case '@r':
-					$players = $sender->getServer()->getOnlinePlayers();
-					if(count($players) > 0){
-						$player = $players[array_rand($players)];
-					}else{
-						$sender->sendMessage("No players online");
-
-						return true;
-					}
-
-					if($player instanceof Player){
-						$sender->sendMessage("Cleared " . $this->clearTarget($player) . " items from " . $player->getName());
-					}
-
-					return true;
-				case '@e':
-					$sender->sendMessage("Unimplemented since we don't have MobAI yet :/");
-
-					return true;
-				case '@p':
-					$player = $sender;
-					if($player instanceof Player){
-						$this->clearTarget($player);
-					}else{
-						$sender->sendMessage("You must run this command in-game");
-					}
-
-					return true;
-				default;
-					$player = $sender->getServer()->getPlayer($args[0]);
-					if($player instanceof Player){
-						$sender->sendMessage("Cleared " . $this->clearTarget($player) . " items from " . $player->getName());
-					}else{
-						$sender->sendMessage(new TranslationContainer(TextFormat::RED . "%commands.generic.player.notFound"));
-					}
-
-					return true;
-			}
-		}
-
-		if($sender instanceof Player){
-			if(!$sender->hasPermission("pocketmine.command.clear.self")){
-				$sender->sendMessage(new TranslationContainer(TextFormat::RED . "%commands.generic.permission"));
-
-				return true;
-			}
-
-			$sender->sendMessage("Cleared " . $this->clearTarget($sender) . " items from " . $sender->getName());
-		}else{
-			$sender->sendMessage(new TranslationContainer("commands.generic.usage", [$this->usageMessage]));
-
+		if($player instanceof Player === false){
+			$sender->sendMessage("Cannot find Player.");
 			return false;
 		}
 
+		$sound = $args[0] ?? "";
+		$x = $args[2] ?? $player->getX();
+		$y = $args[3] ?? $player->getY();
+		$z = $args[4] ?? $player->getZ();
+		$volume = $args[5] ?? 500;
+		$pitch = $args[6] ?? 1;
+
+		$pk = new PlaySoundPacket();
+		$pk->soundName = $sound;
+		$pk->x = $x;
+		$pk->y = $y;
+		$pk->z = $z;
+		$pk->volume = $volume;
+		$pk->pitch = $pitch;
+
+		$server->broadcastPacket($player->getLevel()->getPlayers(), $pk);
+		$sender->sendMessage("Playing " . $sound . " to " . $player->getName());
 		return true;
 	}
 

@@ -44,6 +44,7 @@ class CommandManager {
 		$cmds = [
 			new WorldCommand("world"),
 			new ClearCommand("clear"),
+			new PlaySoundCommand("playsound"),
 		];
 
 		if(Main::$debug){

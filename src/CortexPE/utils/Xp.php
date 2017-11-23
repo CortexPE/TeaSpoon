@@ -35,6 +35,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\utils;
 
+use CortexPE\entity\Lightning;
 use CortexPE\entity\XPOrb;
 use CortexPE\Utils;
 use pocketmine\block\Block;
@@ -71,20 +72,25 @@ class Xp extends Utils{
 	}
 
 	public static function getXpDropsForEntity(Entity $e) : int {
-		if($e instanceof Monster){
-			switch($e->getName()){
-				default:
-					return 5;
-			}
-		}elseif($e instanceof Animal){
-			switch($e->getName()){
-				default:
-					return mt_rand(1,3);
-			}
-		}elseif($e instanceof Human){
-			return 7;
+		switch($e::NETWORK_ID){
+			case Lightning::NETWORK_ID:
+				return 0;
+			default:
+				if($e instanceof Monster){
+					switch($e->getName()){
+						default:
+							return 5;
+					}
+				}elseif($e instanceof Animal){
+					switch($e->getName()){
+						default:
+							return mt_rand(1,3);
+					}
+				}elseif($e instanceof Human){
+					return 7;
+				}
+				return 0;
 		}
-		return 0;
 	}
 
 	public static function getXpDropsForBlock(Block $b) : int {

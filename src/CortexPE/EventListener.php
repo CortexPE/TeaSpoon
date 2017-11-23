@@ -53,7 +53,7 @@ use pocketmine\event\entity\{
 	EntityDamageEvent, EntityDeathEvent, EntityTeleportEvent, ProjectileLaunchEvent
 };
 use pocketmine\event\player\{
-	PlayerInteractEvent, PlayerItemConsumeEvent, PlayerJoinEvent, PlayerKickEvent, PlayerLoginEvent, PlayerRespawnEvent
+	PlayerInteractEvent, PlayerItemConsumeEvent, PlayerJoinEvent, PlayerKickEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
 };
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
@@ -234,6 +234,15 @@ class EventListener implements Listener {
 	}
 
 	/**
+	 * @param PlayerQuitEvent $ev
+	 *
+	 * @priority LOWEST
+	 */
+	public function onLeave(PlayerQuitEvent $ev){
+		Main::getInstance()->destroySession($ev->getPlayer());
+	}
+
+	/**
 	 * @param ProjectileLaunchEvent $ev
 	 *
 	 * @priority LOWEST
@@ -302,6 +311,9 @@ class EventListener implements Listener {
 	public function onKick(PlayerKickEvent $ev){
 		$p = $ev->getPlayer();
 		$session = Main::getInstance()->getSessionById($p->getId());
+		if($session === null){
+			return;
+		}
 		if($session->allowCheats && $ev->getReason() == PMServer::getInstance()->getLanguage()->translateString("kick.reason.cheat", ["%ability.flight"])){
 			$ev->setCancelled(true);
 		}

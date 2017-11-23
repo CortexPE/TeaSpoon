@@ -5,6 +5,8 @@
 
 A Massive PocketMine-MP plugin designed and is aiming to extend PMMP's functionalities (Without completely changing it) to Make it more Vanilla-Like.
 
+A/N: If you don't like it / hate it, Then don't even bother using it. It's that simple... TeaSpoon was made for those who need it. :wink:
+
 Contributions are very welcome :smile:<br />You may contribute by opening a Pull Request and if it has been proven to be correct & working, I'll surely merge it.
 
 # Installation
@@ -24,7 +26,7 @@ Installation is easy, Just download the latest phar from my [Jenkins Build Serve
   - [X] Weather System
   - [ ] Temperature System
  - Blocks
-   - [X] EnderChests
+   <!-- - [X] EnderChests (Already Implemented by PMMP) -->
    - [X] EndPortal
    - [X] Portal (Nether Portal Block)
    - [X] DragonEgg
