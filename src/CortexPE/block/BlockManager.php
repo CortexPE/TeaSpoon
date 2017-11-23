@@ -43,7 +43,6 @@ class BlockManager {
 	public static function init(){
 		self::register(Block::PORTAL, new Portal());
 		self::register(Block::END_PORTAL, new EndPortal());
-		self::register(Block::ENDER_CHEST, new EnderChest());
 		self::register(Block::OBSIDIAN, new Obsidian(), true);
 		self::register(Block::DRAGON_EGG, new DragonEgg());
 		self::register(Block::BEACON, new Beacon());
