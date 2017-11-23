@@ -26,6 +26,7 @@ use CortexPE\inventory\BeaconInventory;
 use CortexPE\task\BeaconDelayedCheckTask;
 use pocketmine\block\Block;
 use pocketmine\entity\Effect;
+use pocketmine\entity\Living;
 use pocketmine\inventory\InventoryHolder;
 use pocketmine\item\Item;
 use pocketmine\level\Level;
@@ -179,7 +180,7 @@ class Beacon extends Spawnable implements InventoryHolder {
 		/** @var Player $player */
 		foreach($this->getLevel()->getCollidingEntities(new AxisAlignedBB($pos->x - (10 + 10 * $layers), 0, $pos->z - (10 + 10 * $layers), $pos->x + (10 + 10 * $layers), Level::Y_MAX, $pos->z + (10 + 10 * $layers))) as $player)
 			foreach($this->getEffects() as $effectId){
-				if($this->isEffectAvailable($effectId)){
+				if($this->isEffectAvailable($effectId) and $player instanceof Living){
 					$player->removeEffect($effectId);//Pretty hacky..
 					$effect = Effect::getEffect($effectId)->setDuration(20 * 9 + $layers * 2 * 20);
 					if($this->getSecondaryEffect() !== 0 && $this->getSecondaryEffect() !== Effect::REGENERATION)
