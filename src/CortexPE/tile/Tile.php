@@ -38,11 +38,9 @@ namespace CortexPE\tile;
 use pocketmine\tile\Tile as PMTile;
 
 class Tile extends PMTile {
-	const ENDER_CHEST = "Ender Chest";
 	const BEACON = "Beacon";
 
 	public static function init(){
-		self::registerTile(EnderChest::class);
 		self::registerTile(Beacon::class);
 		// self::registerTile(MobSpawner::class);
 	}
