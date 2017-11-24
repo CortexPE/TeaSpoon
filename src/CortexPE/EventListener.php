@@ -310,7 +310,11 @@ class EventListener implements Listener {
 	 */
 	public function onKick(PlayerKickEvent $ev){
 		$p = $ev->getPlayer();
-		$session = Main::getInstance()->getSessionById($p->getId());
+		$pid = $p->getId();
+		if($pid === null){
+			return;
+		}
+		$session = Main::getInstance()->getSessionById($pid);
 		if($session === null){
 			return;
 		}
