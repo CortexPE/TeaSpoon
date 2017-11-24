@@ -103,7 +103,5 @@ class EntityManager extends Entity {
 		self::registerEntity(XPOrb::class, false, ['XPOrb', 'minecraft:xporb']);
 		self::registerEntity(AreaEffectCloud::class, false, ['AreaEffectCloud', 'minecraft:areaeffectcloud']);
 		self::registerEntity(Lightning::class, false, ['Lightning', 'minecraft:lightning']);
-
-		self::registerEntity(Human::class, true);
 	}
 }
