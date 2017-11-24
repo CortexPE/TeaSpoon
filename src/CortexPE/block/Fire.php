@@ -35,6 +35,8 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
+use CortexPE\Main;
+use CortexPE\Utils;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
 use pocketmine\block\Fire as PMFire;
@@ -44,6 +46,14 @@ use pocketmine\math\Vector3;
 class Fire extends PMFire {
 
 	public function onUpdate(int $type){
+		$weather = Main::$weatherData[$this->getLevel()->getId()];
+		$rainy = $weather->isRainy() || $weather->isRainyThunder();
+		if($rainy){
+			if(Utils::canBlockSeeSky($this->getLevel(), $this)){
+				$this->level->setBlock($this, BlockFactory::get(Block::AIR));
+			}
+		}
+
 		if($type == Level::BLOCK_UPDATE_RANDOM){
 			if($this->getSide(Vector3::SIDE_DOWN)->getId() !== self::NETHERRACK){
 				if($this->meta >= 15){
@@ -52,17 +62,18 @@ class Fire extends PMFire {
 					$this->meta += mt_rand(1, 4);
 					if($this->meta >= 15){
 						$this->level->setBlock($this, BlockFactory::get(Block::AIR));
-					} else {
+					}else{
 						$this->level->setBlock($this, $this);
 					}
 				}
+
 				return $type;
 			}
 
 			//TODO: fire spread
 		}
 
-		return false;
+		return $type;
 	}
 
 }

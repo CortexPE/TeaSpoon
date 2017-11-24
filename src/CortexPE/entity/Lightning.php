@@ -79,7 +79,7 @@ class Lightning extends Animal {
 
 				foreach($this->level->getNearbyEntities($this->boundingBox->grow(4, 3, 4), $this) as $entity){
 					if($entity instanceof Living){
-						$damage = mt_rand(8, 20);
+						$damage = 5;
 						$ev = new EntityDamageByEntityEvent($this, $entity, 16, $damage); // LIGHTNING
 						/*if($entity->attack($ev) === true){
 							if($entity instanceof Player){

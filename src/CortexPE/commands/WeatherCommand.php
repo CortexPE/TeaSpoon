@@ -41,7 +41,7 @@ class WeatherCommand extends VanillaCommand {
 		parent::__construct(
 			$name,
 			"Changes the Weather",
-			"/weather [level] < clear | sunny | rain | rainy_thunder | thunder >"
+			"/weather [level] < get | clear | sunny | rain | rainy_thunder | thunder >"
 		);
 		$this->setPermission("pocketmine.command.weather");
 	}
@@ -65,6 +65,22 @@ class WeatherCommand extends VanillaCommand {
 		}
 
 		if($sender instanceof Player){
+			if($args[0] == "get"){
+				switch(Main::$weatherData[$sender->getLevel()->getId()]->getWeather()){
+					case 0:
+						$sender->sendMessage("Weather: Clear");
+						return true;
+					case 1:
+						$sender->sendMessage("Weather: Rainy");
+						return true;
+					case 2:
+						$sender->sendMessage("Weather: Rainy Thunder");
+						return true;
+					case 3:
+						$sender->sendMessage("Weather: Thunder");
+						return true;
+				}
+			}
 			$wea = Weather::getWeatherFromString($args[0]);
 			if(!isset($args[1])) $duration = mt_rand(
 				min(Main::$weatherMinTime, Main::$weatherMaxTime),
@@ -101,6 +117,22 @@ class WeatherCommand extends VanillaCommand {
 			$sender->sendMessage(TextFormat::RED . "Couldn't find level: " . $args[0]);
 
 			return false;
+		}
+		if($args[0] == "get"){
+			switch(Main::$weatherData[$level->getId()]->getWeather()){
+				case 0:
+					$sender->sendMessage("Weather: Clear");
+					return true;
+				case 1:
+					$sender->sendMessage("Weather: Rainy");
+					return true;
+				case 2:
+					$sender->sendMessage("Weather: Rainy Thunder");
+					return true;
+				case 3:
+					$sender->sendMessage("Weather: Thunder");
+					return true;
+			}
 		}
 
 		$wea = Weather::getWeatherFromString($args[1]);

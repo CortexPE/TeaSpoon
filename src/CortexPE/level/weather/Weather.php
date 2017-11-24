@@ -19,6 +19,8 @@
  *
  */
 
+// Modded by @CortexPE to make it more realistic
+
 namespace CortexPE\level\weather;
 
 use CortexPE\Main;
@@ -48,7 +50,7 @@ class Weather {
 
 	private $lastUpdate = 0;
 
-	private $randomWeatherData = [0, 1, 0, 1, 0, 1, 0, 2, 0, 3];
+	private $randomWeatherData = [0, 1, 0, 1, 0, 1, 0, 2, 0];
 
 	/**
 	 * Weather constructor.

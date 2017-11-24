@@ -38,14 +38,20 @@ namespace CortexPE;
 use CortexPE\block\{
 	EndPortal, Portal
 };
+use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
 use pocketmine\entity\Entity;
 use pocketmine\item\ItemFactory;
 use pocketmine\level\Level;
+use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player as PMPlayer;
 
 class Utils {
+	public static function canBlockSeeSky(Level $lvl, Block $block){
+		return ($lvl->getHighestBlockAt($block->getFloorX(), $block->getFloorZ()) <= $block->getY());
+	}
+
 	public static function checkSpoon(){
 		return (
 			Server::getInstance()->getName() !== "PocketMine-MP" ||
