@@ -49,7 +49,7 @@ class CheckPlayersTask extends PluginTask {
 	public function onRun(int $currentTick){
 		foreach(Server::getInstance()->getOnlinePlayers() as $p){
 			$session = Main::getInstance()->getSessionById($p->getId());
-			if($session->skipCheck){
+			if($session === null || $session->skipCheck){
 				continue;
 			}
 			$epo = Utils::isInsideOfEndPortal($p);
