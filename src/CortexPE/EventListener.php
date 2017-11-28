@@ -39,7 +39,7 @@ namespace CortexPE;
 
 use CortexPE\entity\projectile\EnderPearl;
 use CortexPE\item\{
-	ChorusFruit, Elytra, FireworkRocket
+	ArmorDurability, ChorusFruit, Elytra, FireworkRocket
 };
 use CortexPE\level\weather\Weather;
 use CortexPE\task\ElytraRocketBoostTrackingTask;
@@ -60,6 +60,7 @@ use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\{
 	EntityEventPacket, LevelEventPacket
 };
+use pocketmine\Player;
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
 use pocketmine\Server as PMServer;
@@ -198,6 +199,40 @@ class EventListener implements Listener {
 				}
 			}
 		}
+		////////////////////////////// ARMOR DAMAGE //////////////////////////////////////
+		if($ev->getEntity() instanceof Player){
+			/** @var $p Player */
+			$p = $ev->getEntity();
+			if($p->isSurvival() && $p->isAlive()){
+				$inv = $p->getInventory();
+				$size = $inv->getSize();
+				for($i = $size; $i < $size + 4; $i++){
+					$armor = $inv->getItem($i);
+
+					if($armor->getId() == Item::ELYTRA){
+						continue;
+					}
+
+					$dura = ArmorDurability::getDurability($armor->getId());
+					if($dura == -1){
+						continue;
+					}
+
+					$cost = 1; // TODO: UNBREAKING AND STUFF
+					$ac = clone $armor;
+					$ac->setDamage($ac->getDamage() + $cost);
+					if($ac->getDamage() >= $dura){
+						$inv->setItem($i, Item::get(Item::AIR, 0, 1));
+					}else{
+						$inv->setItem($i, $ac);
+					}
+
+					$inv->sendArmorContents($inv->getViewers());
+
+					echo $armor->getName() . ":" . $armor->getDamage() . PHP_EOL;
+				}
+			}
+		}
 
 		/////////////////////// ELYTRA WINGS & SLIME BLOCK ///////////////////////////////
 		if($ev->getCause() === EntityDamageEvent::CAUSE_FALL){
@@ -220,7 +255,7 @@ class EventListener implements Listener {
 	 *
 	 * @priority HIGHEST
 	 */
-	public function onRespawn(PlayerRespawnEvent $ev){ // Other plugins might cancel it. so...
+	public function onRespawn(PlayerRespawnEvent $ev){
 		if($ev->getPlayer()->isOnFire()) $ev->getPlayer()->setOnFire(0);
 	}
 
@@ -310,7 +345,7 @@ class EventListener implements Listener {
 	 */
 	public function onKick(PlayerKickEvent $ev){
 		$p = $ev->getPlayer();
-		if (!$p->isOnline()){
+		if(!$p->isOnline()){
 			return;
 		}
 		$pid = $p->getId();

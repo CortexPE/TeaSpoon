@@ -35,14 +35,18 @@ declare(strict_types = 1);
 
 namespace CortexPE\handlers;
 
+use CortexPE\item\ArmorDurability;
+use CortexPE\item\Elytra;
 use CortexPE\Main;
 use pocketmine\event\{
 	Listener, server\DataPacketReceiveEvent, server\DataPacketSendEvent
 };
+use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\BatchPacket;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
+use pocketmine\Server;
 
 class PacketHandler implements Listener {
 
@@ -65,6 +69,14 @@ class PacketHandler implements Listener {
 			//Main::getInstance()->getLogger()->debug("Received PlayerActionPacket:" . $pkr->action . " from " . $p->getName());
 			$session = Main::getInstance()->getSessionById($p->getId());
 			switch($pkr->action){
+				case PlayerActionPacket::ACTION_DIMENSION_CHANGE_ACK:
+					// TODO: USE THIS FOR CROSS-DIMENSION TELEPORT
+					break;
+
+				case PlayerActionPacket::ACTION_DIMENSION_CHANGE_REQUEST:
+					$p->teleport(Server::getInstance()->getDefaultLevel()->getSafeSpawn());
+					break;
+
 				case PlayerActionPacket::ACTION_START_GLIDE:
 					$p->setDataFlag(PMPlayer::DATA_FLAGS, PMPlayer::DATA_FLAG_GLIDING, true, PMPlayer::DATA_TYPE_BYTE);
 
@@ -76,6 +88,25 @@ class PacketHandler implements Listener {
 
 					$session->usingElytra = false;
 					$session->allowCheats = false;
+
+					if($p->isSurvival() && $p->isAlive()){
+						$inv = $p->getInventory();
+						$elytra = $inv->getChestplate();
+						if($elytra instanceof Elytra){
+							$dura = ArmorDurability::OTHERS[$elytra->getId()];
+
+							$cost = 1; // TODO: UNBREAKING AND STUFF
+							$ec = clone $elytra;
+							$ec->setDamage($ec->getDamage() + $cost);
+							if($ec->getDamage() >= $dura){
+								$inv->setChestplate(Item::get(Item::AIR, 0, 0));
+							}else{
+								$inv->setChestplate($ec);
+							}
+
+							$inv->sendArmorContents($inv->getViewers());
+						}
+					}
 					break;
 			}
 		}
@@ -94,7 +125,8 @@ class PacketHandler implements Listener {
 		}
 	}
 
-	public function onPacketSend(DataPacketSendEvent $ev){
+	public
+	function onPacketSend(DataPacketSendEvent $ev){
 		if(Main::$debug){ // Freezes
 			if($ev->getPacket() instanceof BatchPacket){
 				return;
