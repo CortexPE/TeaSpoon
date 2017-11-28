@@ -310,6 +310,9 @@ class EventListener implements Listener {
 	 */
 	public function onKick(PlayerKickEvent $ev){
 		$p = $ev->getPlayer();
+		if (!$p->isOnline()){
+			return;
+		}
 		$pid = $p->getId();
 		if($pid === null){
 			return;
