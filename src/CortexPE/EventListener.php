@@ -228,8 +228,6 @@ class EventListener implements Listener {
 					}
 
 					$inv->sendArmorContents($inv->getViewers());
-
-					echo $armor->getName() . ":" . $armor->getDamage() . PHP_EOL;
 				}
 			}
 		}
