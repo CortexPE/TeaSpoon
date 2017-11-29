@@ -34,6 +34,7 @@ Installation is easy, Just download the latest phar from my [Jenkins Build Serve
    - [X] SlimeBlock
  - Items
    - [X] Vanilla Enchants (Progress: 80%)
+   - [X] Armor Damage
    - [X] Splash Potions
    - [X] FireCharge
    - [X] Totem of Undying
