@@ -46,11 +46,13 @@ use pocketmine\math\Vector3;
 class Fire extends PMFire {
 
 	public function onUpdate(int $type){
-		$weather = Main::$weatherData[$this->getLevel()->getId()];
-		$rainy = $weather->isRainy() || $weather->isRainyThunder();
-		if($rainy){
-			if(Utils::canBlockSeeSky($this->getLevel(), $this)){
-				$this->level->setBlock($this, BlockFactory::get(Block::AIR));
+		if(Main::$weatherEnabled){
+			$weather = Main::$weatherData[$this->getLevel()->getId()];
+			$rainy = $weather->isRainy() || $weather->isRainyThunder();
+			if($rainy){
+				if(Utils::canBlockSeeSky($this->getLevel(), $this)){
+					$this->level->setBlock($this, BlockFactory::get(Block::AIR));
+				}
 			}
 		}
 
