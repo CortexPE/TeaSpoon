@@ -1,12 +1,12 @@
 <?php
 
 /*
- *     __						    _
+ *     __                           _
  *    / /  _____   _____ _ __ _   _| |
  *   / /  / _ \ \ / / _ \ '__| | | | |
  *  / /__|  __/\ V /  __/ |  | |_| | |
  *  \____/\___| \_/ \___|_|   \__, |_|
- *						      |___/
+ *                            |___/
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -61,6 +61,10 @@ class WorldCommand extends VanillaCommand {
 				$sender->getServer()->loadLevel($args[1]);
 				if(($level = $sender->getServer()->getLevelByName($args[1])) !== null){
 					$player = $sender->getServer()->getPlayer($args[0]);
+					if($player === null){
+						$sender->sendMessage("Player not found.");
+						return false;
+					}
 					$player->teleport($level->getSafeSpawn());
 					$player->sendMessage("Teleported to Level: " . $level->getName());
 
