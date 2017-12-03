@@ -199,4 +199,12 @@ class Utils {
 		}
 		return "invalid";
 	}
+
+	public static function stringToASCIIHex(string $string) : string {
+		$return = "";
+		for ($i = 0; $i < strlen($string); $i++) {
+			$return .= "\x".str_pad(dechex(ord($string[$i])), 2, '0', STR_PAD_LEFT);
+		}
+		return $return;
+	}
 }
