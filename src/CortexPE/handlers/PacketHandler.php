@@ -38,12 +38,15 @@ namespace CortexPE\handlers;
 use CortexPE\item\ArmorDurability;
 use CortexPE\item\Elytra;
 use CortexPE\Main;
+use CortexPE\Utils;
 use pocketmine\event\{
 	Listener, server\DataPacketReceiveEvent, server\DataPacketSendEvent
 };
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\BatchPacket;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
+use pocketmine\network\mcpe\protocol\StartGamePacket;
+use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
 use pocketmine\Server;
@@ -125,8 +128,22 @@ class PacketHandler implements Listener {
 		}
 	}
 
-	public
-	function onPacketSend(DataPacketSendEvent $ev){
+	/**
+	 * @param DataPacketSendEvent $ev
+	 *
+	 * @priority LOWEST
+	 */
+	public function onPacketSend(DataPacketSendEvent $ev){
+		$pk = $ev->getPacket();
+		if($pk instanceof StartGamePacket){
+			if(Utils::getDimension($ev->getPlayer()->getLevel()) != DimensionIds::OVERWORLD){
+				/*$sgRef = new \ReflectionObject($pk); well that was easy xD I got over-complicated there for a bit. lulz
+				$sgProp = $sgRef->getProperty("dimension");
+				$sgProp->setAccessible(true);
+				$sgProp->setValue(null, Utils::getDimension($ev->getPlayer()->getLevel()));*/
+				$pk->dimension = Utils::getDimension($ev->getPlayer()->getLevel());
+			}
+		}
 		if(Main::$debug){ // Freezes
 			if($ev->getPacket() instanceof BatchPacket){
 				return;

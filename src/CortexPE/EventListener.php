@@ -47,13 +47,13 @@ use CortexPE\utils\Xp;
 use pocketmine\block\Block;
 use pocketmine\entity\Effect;
 use pocketmine\event\{
-	block\BlockBreakEvent, level\LevelLoadEvent, Listener
+	block\BlockBreakEvent, level\LevelLoadEvent, Listener, server\RemoteServerCommandEvent, server\ServerCommandEvent
 };
 use pocketmine\event\entity\{
 	EntityDamageEvent, EntityDeathEvent, EntityTeleportEvent, ProjectileLaunchEvent
 };
 use pocketmine\event\player\{
-	PlayerInteractEvent, PlayerItemConsumeEvent, PlayerJoinEvent, PlayerKickEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
+	PlayerCommandPreprocessEvent, PlayerInteractEvent, PlayerItemConsumeEvent, PlayerJoinEvent, PlayerKickEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
 };
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
@@ -66,6 +66,8 @@ use pocketmine\plugin\Plugin;
 use pocketmine\Server as PMServer;
 
 class EventListener implements Listener {
+
+	const VERSION_COMMANDS = ["version","ver","about"];
 
 	/** @var Plugin */
 	public $plugin;
@@ -80,8 +82,7 @@ class EventListener implements Listener {
 	 *
 	 * @priority LOWEST
 	 */
-	public function onPostLevelLoad(/** @noinspection PhpUnusedParameterInspection */
-		LevelLoadEvent $ev){
+	public function onPostLevelLoad(LevelLoadEvent $ev){
 		if(!Server::$loaded){
 			Server::$loaded = true;
 			LevelManager::init();
@@ -380,6 +381,42 @@ class EventListener implements Listener {
 		$xp = Xp::getXpDropsForBlock($ev->getBlock());
 		if($xp > 0){
 			Xp::spawnXpOrb($ev->getBlock(), $ev->getBlock()->getLevel(), $xp);
+		}
+	}
+
+	/**
+	 * @param PlayerCommandPreprocessEvent $ev
+	 *
+	 * @priority HIGHEST
+	 */
+	public function onPlayerCommandPreProcess(PlayerCommandPreprocessEvent $ev){
+		if(in_array(substr($ev->getMessage(),1),self::VERSION_COMMANDS) && !$ev->isCancelled()){
+			$ev->setCancelled();
+			Main::sendVersion($ev->getPlayer());
+		}
+	}
+
+	/**
+	 * @param ServerCommandEvent $ev
+	 *
+	 * @priority HIGHEST
+	 */
+	public function onServerCommand(ServerCommandEvent $ev){
+		if(Utils::in_arrayi($ev->getCommand(),self::VERSION_COMMANDS) && !$ev->isCancelled()){
+			$ev->setCancelled();
+			Main::sendVersion($ev->getSender());
+		}
+	}
+
+	/**
+	 * @param RemoteServerCommandEvent $ev
+	 *
+	 * @priority HIGHEST
+	 */
+	public function onRemoteServerCommand(RemoteServerCommandEvent $ev){
+		if(Utils::in_arrayi($ev->getCommand(),self::VERSION_COMMANDS) && !$ev->isCancelled()){
+			$ev->setCancelled();
+			Main::sendVersion($ev->getSender());
 		}
 	}
 }

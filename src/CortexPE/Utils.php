@@ -48,6 +48,19 @@ use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player as PMPlayer;
 
 class Utils {
+
+	/** @var bool */
+	private static $phared = null;
+
+	public static function isPhared() : bool {
+		if(self::$phared == null){
+			self::$phared = strlen(\Phar::running()) > 0 ? true : false;
+			return self::$phared;
+		} else {
+			return self::$phared;
+		}
+	}
+
 	public static function canBlockSeeSky(Level $lvl, Block $block){
 		return ($lvl->getHighestBlockAt($block->getFloorX(), $block->getFloorZ()) <= $block->getY());
 	}

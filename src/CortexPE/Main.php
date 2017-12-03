@@ -45,10 +45,12 @@ use CortexPE\item\{
 };
 use CortexPE\level\weather\Weather;
 use CortexPE\plugin\AllAPILoaderManager;
+use CortexPE\task\AsynchronousEvaluator;
 use CortexPE\task\CheckPlayersTask;
 use CortexPE\task\TickLevelsTask;
 use CortexPE\tile\Tile;
 use CortexPE\utils\TextFormat;
+use pocketmine\command\CommandSender;
 use pocketmine\command\defaults\DumpMemoryCommand;
 use pocketmine\command\defaults\GarbageCollectorCommand;
 use pocketmine\command\defaults\StatusCommand;
@@ -145,10 +147,10 @@ class Main extends PluginBase {
 		self::$limitedCreative = self::$config->getNested("misc.limitedCreative", false);
 		self::$debug = self::$config->get("debug", false); // intentionally don't add this on the config...
 
-		if(self::$debug){
-			// print_r(self::$config);
-			if(file_exists($this->getDataFolder() . DIRECTORY_SEPARATOR . "packetlog.txt")){
-				unlink($this->getDataFolder() . DIRECTORY_SEPARATOR . "packetlog.txt");
+		if(self::$debug && !Utils::isPhared()){
+			$this->getLogger()->warning("Debug Mode is enabled, this might cause performance issues.");
+			if(file_exists(($fn = $this->getDataFolder() . DIRECTORY_SEPARATOR . "packetlog.txt"))){
+				$this->getServer()->getScheduler()->scheduleAsyncTask(new AsynchronousEvaluator('unlink("' . $fn .'");'));
 			}
 			$this->getServer()->getLogger()->setLogDebug(true);
 			$cm = $this->getServer()->getCommandMap();
@@ -161,6 +163,8 @@ class Main extends PluginBase {
 			if($cm->getCommand("dumpmemory") === null){
 				$cm->register("pocketmine", new DumpMemoryCommand("dumpmemory"));
 			}
+		} elseif(Utils::isPhared()){
+			self::$debug = false;
 		}
 
 		self::$instance = $this;
@@ -250,5 +254,14 @@ Copyright (C) CortexPE ' . $yr . '
 
 	public static function getInstance() : Main {
 		return self::$instance;
+	}
+
+	public static function sendVersion(CommandSender $sender){
+		$sender->getServer()->dispatchCommand($sender,"ver");
+		// anti-skid
+		$sender->sendMessage("\x2d\x2d\x2d\x20\x2b\x20\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x20\x2b\x20\x2d\x2d\x2d");
+		$sender->sendMessage("\x54\x68\x69\x73\x20\x73\x65\x72\x76\x65\x72\x20\x69\x73\x20\x72\x75\x6e\x6e\x69\x6e\x67\x20" . TextFormat::DARK_GREEN . "\x54\x65\x61" . TextFormat::GREEN . "\x53\x70\x6f\x6f\x6e" . TextFormat::WHITE . "\x20\x76" . self::$instance->getDescription()->getVersion() . "\x20\x66\x6f\x72\x20\x5b" . implode("\x2c\x20",self::$instance->getDescription()->getCompatibleApis()) . "\x5d");
+		$sender->sendMessage("\x52\x65\x70\x6f\x73\x69\x74\x6f\x72\x79\x3a\x20\x68\x74\x74\x70\x73\x3a\x2f\x2f\x67\x69\x74\x68\x75\x62\x2e\x63\x6f\x6d\x2f\x43\x6f\x72\x74\x65\x78\x50\x45\x2f\x54\x65\x61\x53\x70\x6f\x6f\x6e");
+		$sender->sendMessage("\x57\x65\x62\x73\x69\x74\x65\x3a\x20\x68\x74\x74\x70\x73\x3a\x2f\x2f\x43\x6f\x72\x74\x65\x78\x50\x45\x2e\x78\x79\x7a");
 	}
 }
