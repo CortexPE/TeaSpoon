@@ -121,10 +121,12 @@ class Utils {
 	}
 
 	public static function getDimension(Level $level): int{
-		if($level->getName() == Main::$netherLevel->getName()){
-			return DimensionIds::NETHER;
-		}elseif($level->getName() == Main::$endLevel->getName()){
-			return DimensionIds::THE_END;
+		if(Main::$registerDimensions){
+			if($level->getName() == Main::$netherLevel->getName()){
+				return DimensionIds::NETHER;
+			}elseif($level->getName() == Main::$endLevel->getName()){
+				return DimensionIds::THE_END;
+			}
 		}
 
 		return DimensionIds::OVERWORLD;
