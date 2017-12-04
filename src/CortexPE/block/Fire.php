@@ -42,11 +42,12 @@ use pocketmine\block\BlockFactory;
 use pocketmine\block\Fire as PMFire;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\protocol\types\DimensionIds;
 
 class Fire extends PMFire {
 
 	public function onUpdate(int $type){
-		if(Main::$weatherEnabled){
+		if(Main::$weatherEnabled && Utils::getDimension($this->getLevel()) == DimensionIds::OVERWORLD){
 			$weather = Main::$weatherData[$this->getLevel()->getId()];
 			$rainy = $weather->isRainy() || $weather->isRainyThunder();
 			if($rainy){
