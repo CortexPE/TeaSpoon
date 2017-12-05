@@ -43,7 +43,7 @@ use pocketmine\block\BlockFactory;
 use pocketmine\entity\Entity;
 use pocketmine\item\ItemFactory;
 use pocketmine\level\Level;
-use pocketmine\math\Vector3;
+use pocketmine\math\Math;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player as PMPlayer;
 
@@ -52,11 +52,12 @@ class Utils {
 	/** @var bool */
 	private static $phared = null;
 
-	public static function isPhared() : bool {
+	public static function isPhared(): bool{
 		if(self::$phared == null){
 			self::$phared = strlen(\Phar::running()) > 0 ? true : false;
+
 			return self::$phared;
-		} else {
+		}else{
 			return self::$phared;
 		}
 	}
@@ -108,7 +109,7 @@ class Utils {
 	}
 
 	public static function isInsideOfPortal(Entity $entity): bool{
-		$block = $entity->getLevel()->getBlock($entity);
+		$block = $block = $entity->getLevel()->getBlockAt(Math::floorFloat($entity->getX()), Math::floorFloat($entity->getY()), Math::floorFloat($entity->getZ()));;
 		if($block instanceof Portal){
 			return true;
 		}
@@ -183,7 +184,7 @@ class Utils {
 		return $x;
 	}
 
-	public static function getDirectionString(int $direction) : string {
+	public static function getDirectionString(int $direction): string{
 		switch($direction){
 			case 0:
 				return "south";
@@ -197,14 +198,22 @@ class Utils {
 			case 3:
 				return "east";
 		}
+
 		return "invalid";
 	}
 
-	public static function stringToASCIIHex(string $string) : string {
+	public static function stringToASCIIHex(string $string): string{
 		$return = "";
-		for ($i = 0; $i < strlen($string); $i++) {
-			$return .= "\x".str_pad(dechex(ord($string[$i])), 2, '0', STR_PAD_LEFT);
+		for($i = 0; $i < strlen($string); $i++){
+			$return .= "\x" . str_pad(dechex(ord($string[$i])), 2, '0', STR_PAD_LEFT);
 		}
+
 		return $return;
+	}
+
+	public static function isRightNowHalfASecondYet(): bool{
+		$time = microtime(true);
+
+		return (abs($time - floor($time) - 0.5) < 0.0001);
 	}
 }

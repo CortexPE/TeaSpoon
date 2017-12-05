@@ -57,7 +57,7 @@ class EnchantingBottle extends Throwable {
 				$randomY = self::RAND_POS_Y[array_rand(self::RAND_POS_Y)];
 				$randomZ = self::RAND_POS_Z[array_rand(self::RAND_POS_Z)];
 
-				Xp::spawnXpOrb($this->add($randomX, $randomY, $randomZ),$this->getLevel(), mt_rand(1,4));
+				Xp::spawnXpOrb($this->add($randomX, $randomY, $randomZ), $this->getLevel(), mt_rand(1, 4));
 			}
 			$this->kill();
 		}

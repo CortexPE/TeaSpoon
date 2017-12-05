@@ -35,14 +35,11 @@ declare(strict_types = 1);
 
 namespace CortexPE\handlers;
 
-use CortexPE\item\ArmorDurability;
-use CortexPE\item\Elytra;
 use CortexPE\Main;
 use CortexPE\Utils;
 use pocketmine\event\{
 	Listener, server\DataPacketReceiveEvent, server\DataPacketSendEvent
 };
-use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\BatchPacket;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\network\mcpe\protocol\StartGamePacket;
@@ -83,33 +80,14 @@ class PacketHandler implements Listener {
 				case PlayerActionPacket::ACTION_START_GLIDE:
 					$p->setDataFlag(PMPlayer::DATA_FLAGS, PMPlayer::DATA_FLAG_GLIDING, true, PMPlayer::DATA_TYPE_BYTE);
 
-					$session->usingElytra = true;
-					$session->allowCheats = true;
+					$session->usingElytra = $session->allowCheats = true;
 					break;
 				case PlayerActionPacket::ACTION_STOP_GLIDE:
 					$p->setDataFlag(PMPlayer::DATA_FLAGS, PMPlayer::DATA_FLAG_GLIDING, false, PMPlayer::DATA_TYPE_BYTE);
 
-					$session->usingElytra = false;
-					$session->allowCheats = false;
+					$session->usingElytra = $session->allowCheats = false;
 
-					if($p->isSurvival() && $p->isAlive()){
-						$inv = $p->getInventory();
-						$elytra = $inv->getChestplate();
-						if($elytra instanceof Elytra){
-							$dura = ArmorDurability::OTHERS[$elytra->getId()];
-
-							$cost = 1; // TODO: UNBREAKING AND STUFF
-							$ec = clone $elytra;
-							$ec->setDamage($ec->getDamage() + $cost);
-							if($ec->getDamage() >= $dura){
-								$inv->setChestplate(Item::get(Item::AIR, 0, 0));
-							}else{
-								$inv->setChestplate($ec);
-							}
-
-							$inv->sendArmorContents($inv->getViewers());
-						}
-					}
+					$session->damageElytra();
 					break;
 			}
 		}
@@ -137,10 +115,6 @@ class PacketHandler implements Listener {
 		$pk = $ev->getPacket();
 		if($pk instanceof StartGamePacket){
 			if(Utils::getDimension($ev->getPlayer()->getLevel()) != DimensionIds::OVERWORLD){
-				/*$sgRef = new \ReflectionObject($pk); well that was easy xD I got over-complicated there for a bit. lulz
-				$sgProp = $sgRef->getProperty("dimension");
-				$sgProp->setAccessible(true);
-				$sgProp->setValue(null, Utils::getDimension($ev->getPlayer()->getLevel()));*/
 				$pk->dimension = Utils::getDimension($ev->getPlayer()->getLevel());
 			}
 		}

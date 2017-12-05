@@ -55,19 +55,11 @@ class FishingRod extends ProjectileItem {
 		return 1;
 	}
 
-	public function getProjectileEntityType(): string{
-		return "FishingHook";
-	}
-
-	public function getThrowForce(): float{
-		return 1.6;
-	}
-
 	public function getMaxDurability(){
 		return 65;
 	}
 
-	public function onClickAir(Player $player, Vector3 $directionVector) : bool{
+	public function onClickAir(Player $player, Vector3 $directionVector): bool{
 		$session = Main::getInstance()->getSessionById($player->getId());
 		if(!$session->fishing){
 			$nbt = Entity::createBaseNBT($player->add(0, $player->getEyeHeight(), 0), $directionVector, $player->yaw, $player->pitch);
@@ -94,8 +86,8 @@ class FishingRod extends ProjectileItem {
 			$player->getServer()->broadcastPacket($player->getLevel()->getPlayers(), $pk);
 
 			$session->fishingHook = $projectile;
-			$session->fishing= true;
-		} else {
+			$session->fishing = true;
+		}else{
 			$projectile = $session->fishingHook;
 			if($projectile instanceof FishingHook){
 				$pk = new EntityEventPacket();
@@ -107,9 +99,17 @@ class FishingRod extends ProjectileItem {
 			}
 
 			$session->fishingHook = null;
-			$session->fishing= false;
+			$session->fishing = false;
 		}
 
 		return true;
+	}
+
+	public function getProjectileEntityType(): string{
+		return "FishingHook";
+	}
+
+	public function getThrowForce(): float{
+		return 1.6;
 	}
 }

@@ -37,12 +37,10 @@ declare(strict_types = 1);
 
 namespace CortexPE;
 
-use CortexPE\entity\projectile\EnderPearl;
 use CortexPE\item\{
-	ArmorDurability, ChorusFruit, Elytra, FireworkRocket
+	Elytra
 };
 use CortexPE\level\weather\Weather;
-use CortexPE\task\ElytraRocketBoostTrackingTask;
 use CortexPE\utils\Xp;
 use pocketmine\block\Block;
 use pocketmine\entity\Effect;
@@ -50,10 +48,10 @@ use pocketmine\event\{
 	block\BlockBreakEvent, level\LevelLoadEvent, Listener, server\RemoteServerCommandEvent, server\ServerCommandEvent
 };
 use pocketmine\event\entity\{
-	EntityDamageEvent, EntityDeathEvent, EntityTeleportEvent, ProjectileLaunchEvent
+	EntityDamageEvent, EntityDeathEvent, EntityTeleportEvent
 };
 use pocketmine\event\player\{
-	PlayerCommandPreprocessEvent, PlayerInteractEvent, PlayerItemConsumeEvent, PlayerJoinEvent, PlayerKickEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
+	PlayerCommandPreprocessEvent, PlayerJoinEvent, PlayerKickEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
 };
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
@@ -67,7 +65,7 @@ use pocketmine\Server as PMServer;
 
 class EventListener implements Listener {
 
-	const VERSION_COMMANDS = ["version","ver","about"];
+	const VERSION_COMMANDS = ["version", "ver", "about"];
 
 	/** @var Plugin */
 	public $plugin;
@@ -82,7 +80,7 @@ class EventListener implements Listener {
 	 *
 	 * @priority LOWEST
 	 */
-	public function onPostLevelLoad(LevelLoadEvent $ev){
+	public function onLevelLoad(LevelLoadEvent $ev){
 		if(!Server::$loaded){
 			Server::$loaded = true;
 			LevelManager::init();
@@ -202,34 +200,11 @@ class EventListener implements Listener {
 		}
 		////////////////////////////// ARMOR DAMAGE //////////////////////////////////////
 		if($ev->getEntity() instanceof Player){
-			/** @var $p Player */
+			/** @var Player $p */
 			$p = $ev->getEntity();
-			if($p->isSurvival() && $p->isAlive()){
-				$inv = $p->getInventory();
-				$size = $inv->getSize();
-				for($i = $size; $i < $size + 4; $i++){
-					$armor = $inv->getItem($i);
-
-					if($armor->getId() == Item::ELYTRA){
-						continue;
-					}
-
-					$dura = ArmorDurability::getDurability($armor->getId());
-					if($dura == -1){
-						continue;
-					}
-
-					$cost = 1; // TODO: UNBREAKING AND STUFF
-					$ac = clone $armor;
-					$ac->setDamage($ac->getDamage() + $cost);
-					if($ac->getDamage() >= $dura){
-						$inv->setItem($i, Item::get(Item::AIR, 0, 1));
-					}else{
-						$inv->setItem($i, $ac);
-					}
-
-					$inv->sendArmorContents($inv->getViewers());
-				}
+			$session = Main::getInstance()->getSessionById($p->getId());
+			if($session !== null){
+				$session->useArmors($ev->getCause());
 			}
 		}
 
@@ -277,67 +252,6 @@ class EventListener implements Listener {
 	}
 
 	/**
-	 * @param ProjectileLaunchEvent $ev
-	 *
-	 * @priority LOWEST
-	 */
-	public function onEnderPearlUse(ProjectileLaunchEvent $ev){
-		if($ev->getEntity() instanceof EnderPearl){
-			$e = $ev->getEntity();
-			$p = $e->getOwningEntity();
-			if($p instanceof PMPlayer){
-				$session = Main::getInstance()->getSessionById($p->getId());
-				if(floor(microtime(true) - $session->lastEnderPearlUse) < Main::$enderPearlCooldown){
-					$ev->setCancelled(true);
-					$e->close();
-				}else{
-					$session->lastEnderPearlUse = time();
-				}
-			}
-		}
-	}
-
-	/**
-	 * @param PlayerItemConsumeEvent $ev
-	 *
-	 * @priority LOWEST
-	 */
-	public function onChorusFruitUse(PlayerItemConsumeEvent $ev){
-		if($ev->getItem() instanceof ChorusFruit){
-			$p = $ev->getPlayer();
-			$session = Main::getInstance()->getSessionById($p->getId());
-			if(floor(microtime(true) - $session->lastChorusFruitEat) < Main::$chorusFruitCooldown){
-				$ev->setCancelled(true);
-			}else{
-				$session->lastChorusFruitEat = time();
-			}
-		}
-	}
-
-	/**
-	 * @param PlayerInteractEvent $ev
-	 *
-	 * @priority HIGHEST
-	 */
-	public function onInteract(PlayerInteractEvent $ev){
-		$p = $ev->getPlayer();
-		$session = Main::getInstance()->getSessionById($p->getId());
-		if($p->getInventory()->getChestplate() instanceof Elytra && $ev->getItem() instanceof FireworkRocket && $session->usingElytra){
-			if($ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_AIR || $ev->getAction() == PlayerInteractEvent::LEFT_CLICK_AIR){
-				if($p->getGamemode() != PMPlayer::CREATIVE && $p->getGamemode() != PMPlayer::SPECTATOR){
-					$ic = clone $p->getInventory()->getItemInHand();
-					$ic->count--;
-					$p->getInventory()->setItemInHand($ic);
-				}
-				$dir = $p->getDirectionVector();
-				$p->setMotion($dir->multiply(1.25));
-				// TODO: Rocket Sound
-				$this->plugin->getServer()->getScheduler()->scheduleRepeatingTask(new ElytraRocketBoostTrackingTask($this->plugin, $p, 6), 5);
-			}
-		}
-	}
-
-	/**
 	 * @param PlayerKickEvent $ev
 	 *
 	 * @priority HIGHEST
@@ -348,15 +262,11 @@ class EventListener implements Listener {
 			return;
 		}
 		$pid = $p->getId();
-		if($pid === null){
-			return;
-		}
 		$session = Main::getInstance()->getSessionById($pid);
-		if($session === null){
-			return;
-		}
-		if($session->allowCheats && $ev->getReason() == PMServer::getInstance()->getLanguage()->translateString("kick.reason.cheat", ["%ability.flight"])){
-			$ev->setCancelled(true);
+		if($session !== null){
+			if($session->isUsingElytra() && $ev->getReason() == PMServer::getInstance()->getLanguage()->translateString("kick.reason.cheat", ["%ability.flight"])){
+				$ev->setCancelled(true);
+			}
 		}
 	}
 
@@ -390,7 +300,7 @@ class EventListener implements Listener {
 	 * @priority HIGHEST
 	 */
 	public function onPlayerCommandPreProcess(PlayerCommandPreprocessEvent $ev){
-		if(in_array(substr($ev->getMessage(),1),self::VERSION_COMMANDS) && !$ev->isCancelled()){
+		if(in_array(substr($ev->getMessage(), 1), self::VERSION_COMMANDS) && !$ev->isCancelled()){
 			$ev->setCancelled();
 			Main::sendVersion($ev->getPlayer());
 		}
@@ -402,7 +312,7 @@ class EventListener implements Listener {
 	 * @priority HIGHEST
 	 */
 	public function onServerCommand(ServerCommandEvent $ev){
-		if(Utils::in_arrayi($ev->getCommand(),self::VERSION_COMMANDS) && !$ev->isCancelled()){
+		if(Utils::in_arrayi($ev->getCommand(), self::VERSION_COMMANDS) && !$ev->isCancelled()){
 			$ev->setCancelled();
 			Main::sendVersion($ev->getSender());
 		}
@@ -414,7 +324,7 @@ class EventListener implements Listener {
 	 * @priority HIGHEST
 	 */
 	public function onRemoteServerCommand(RemoteServerCommandEvent $ev){
-		if(Utils::in_arrayi($ev->getCommand(),self::VERSION_COMMANDS) && !$ev->isCancelled()){
+		if(Utils::in_arrayi($ev->getCommand(), self::VERSION_COMMANDS) && !$ev->isCancelled()){
 			$ev->setCancelled();
 			Main::sendVersion($ev->getSender());
 		}

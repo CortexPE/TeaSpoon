@@ -53,6 +53,7 @@ class Bed extends PMBed {
 
 			return true;
 		}
+
 		return parent::onActivate($item, $player);
 	}
 

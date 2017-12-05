@@ -35,6 +35,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\item;
 
+use CortexPE\Main;
 use pocketmine\block\Lava;
 use pocketmine\block\Solid;
 use pocketmine\entity\Entity;
@@ -74,6 +75,13 @@ class ChorusFruit extends Food {
 		parent::onConsume($human);
 
 		if($human instanceof Player){
+			$session = Main::getInstance()->getSessionById($human->getId());
+			if(floor(microtime(true) - $session->lastChorusFruitEat) < Main::$chorusFruitCooldown){
+				return;
+			}else{
+				$session->lastChorusFruitEat = time();
+			}
+
 			$tries = 0;
 			$pos = $human->getPosition();
 			while($tries < 100){

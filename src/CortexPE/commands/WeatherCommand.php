@@ -69,15 +69,19 @@ class WeatherCommand extends VanillaCommand {
 				switch(Main::$weatherData[$sender->getLevel()->getId()]->getWeather()){
 					case 0:
 						$sender->sendMessage("Weather: Clear");
+
 						return true;
 					case 1:
 						$sender->sendMessage("Weather: Rainy");
+
 						return true;
 					case 2:
 						$sender->sendMessage("Weather: Rainy Thunder");
+
 						return true;
 					case 3:
 						$sender->sendMessage("Weather: Thunder");
+
 						return true;
 				}
 			}
@@ -122,15 +126,19 @@ class WeatherCommand extends VanillaCommand {
 			switch(Main::$weatherData[$level->getId()]->getWeather()){
 				case 0:
 					$sender->sendMessage("Weather: Clear");
+
 					return true;
 				case 1:
 					$sender->sendMessage("Weather: Rainy");
+
 					return true;
 				case 2:
 					$sender->sendMessage("Weather: Rainy Thunder");
+
 					return true;
 				case 3:
 					$sender->sendMessage("Weather: Thunder");
+
 					return true;
 			}
 		}

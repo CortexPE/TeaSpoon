@@ -36,24 +36,26 @@ declare(strict_types = 1);
 namespace CortexPE;
 
 use CortexPE\entity\projectile\FishingHook;
+use CortexPE\item\ArmorDurability;
+use CortexPE\item\Elytra;
+use CortexPE\item\enchantment\Enchantment;
+use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\item\Item;
 use pocketmine\Player;
 
 class Session {
-	/** @var Player */
-	private $player;
-
 	/** @var int */
 	public $lastEnderPearlUse = 0,
-	       $lastChorusFruitEat = 0;
-
+		$lastChorusFruitEat = 0;
 	/** @var bool */
 	public $skipCheck = false,
-	       $usingElytra = false,
-	       $allowCheats = false,
-	       $fishing = false;
-
+		$usingElytra = false,
+		$allowCheats = false,
+		$fishing = false;
 	/** @var null | FishingHook */
 	public $fishingHook = null;
+	/** @var Player */
+	private $player;
 
 	public function __construct(Player $player){
 		$this->player = $player;
@@ -65,7 +67,120 @@ class Session {
 		}
 	}
 
-	public function getPlayer() : Player {
+	public function getPlayer(): Player{
 		return $this->player;
+	}
+
+	public function useArmors(int $cause, int $damage = 1){
+		if(!$this->player->isAlive() || !$this->player->isSurvival()){
+			return;
+		}
+		if($cause == EntityDamageEvent::CAUSE_LAVA && !Utils::isRightNowHalfASecondYet()){
+			return;
+		}
+		$inv = $this->player->getInventory();
+		$size = $inv->getSize();
+		for($i = $size; $i < $size + 4; $i++){
+			$armor = $inv->getItem($i);
+
+			if($armor->getId() == Item::ELYTRA){
+				continue;
+			}
+
+			$dura = ArmorDurability::getDurability($armor->getId());
+			if($dura == -1){
+				continue;
+			}
+
+			$unbreakingEnchant = $armor->getEnchantment(Enchantment::UNBREAKING);
+			if($armor->hasEnchantment(Enchantment::UNBREAKING) && $unbreakingEnchant->getLevel() > 0){
+				$rand = mt_rand(1, 100);
+				$level = $unbreakingEnchant->getLevel();
+				switch($level){
+					case 1:
+						if($rand >= 80){
+							return;
+						}
+						break;
+					case 2:
+						if($rand >= 73){
+							return;
+						}
+						break;
+					case 3:
+						if($rand >= 70){
+							return;
+						}
+						break;
+					case 0:
+						break;
+				}
+			}
+
+			$ac = clone $armor;
+			$ac->setDamage($ac->getDamage() + $damage);
+			if($ac->getDamage() >= $dura){
+				$inv->setItem($i, Item::get(Item::AIR, 0, 1));
+			}else{
+				$inv->setItem($i, $ac);
+			}
+
+			$inv->sendArmorContents($inv->getViewers());
+		}
+	}
+
+	public function damageElytra(int $damage = 1){
+		if(!$this->player->isAlive() || !$this->player->isSurvival()){
+			return;
+		}
+		$inv = $this->player->getInventory();
+		$elytra = $inv->getChestplate();
+		if($elytra instanceof Elytra){
+			$dura = ArmorDurability::getDurability(Item::ELYTRA);
+
+			$unbreakingEnchant = $elytra->getEnchantment(Enchantment::UNBREAKING);
+			if($elytra->hasEnchantment(Enchantment::UNBREAKING) && $unbreakingEnchant->getLevel() > 0){
+				$rand = mt_rand(1, 100);
+				$level = $unbreakingEnchant->getLevel();
+				switch($level){
+					case 1:
+						if($rand >= 80){
+							return;
+						}
+						break;
+					case 2:
+						if($rand >= 73){
+							return;
+						}
+						break;
+					case 3:
+						if($rand >= 70){
+							return;
+						}
+						break;
+					case 0:
+						break;
+				}
+			}
+
+			$ec = clone $elytra;
+			$ec->setDamage($ec->getDamage() + $damage);
+			if($ec->getDamage() >= $dura){
+				$inv->setChestplate(Item::get(Item::AIR, 0, 1));
+			}else{
+				$inv->setChestplate($ec);
+			}
+
+			$inv->sendArmorContents($inv->getViewers());
+		}
+	}
+
+
+	public function isUsingElytra(): bool{
+		if($this->player->getInventory()->getChestplate() instanceof Elytra){
+			return true;
+		}
+
+		return false;
 	}
 }

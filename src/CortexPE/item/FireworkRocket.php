@@ -35,10 +35,27 @@ declare(strict_types = 1);
 
 namespace CortexPE\item;
 
+use CortexPE\Main;
+use CortexPE\task\ElytraRocketBoostTrackingTask;
 use pocketmine\item\Item;
+use pocketmine\math\Vector3;
+use pocketmine\Player;
+use pocketmine\Server;
 
 class FireworkRocket extends Item {
 	public function __construct($meta = 0, $count = 1){
 		parent::__construct(Item::FIREWORKS, $meta, "Firework Rocket");
+	}
+
+	public function onClickAir(Player $player, Vector3 $directionVector): bool{
+		if($player->getGamemode() != Player::CREATIVE && $player->getGamemode() != Player::SPECTATOR){
+			$this->count--;
+		}
+		$dir = $player->getDirectionVector();
+		$player->setMotion($dir->multiply(1.25));
+		// TODO: Rocket Sound
+		Server::getInstance()->getScheduler()->scheduleRepeatingTask(new ElytraRocketBoostTrackingTask(Main::getInstance(), $player, 6), 5);
+
+		return true;
 	}
 }

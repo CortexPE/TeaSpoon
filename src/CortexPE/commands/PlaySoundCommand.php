@@ -35,13 +35,13 @@ declare(strict_types = 1);
 
 namespace CortexPE\commands;
 
-use pocketmine\Server;
 use pocketmine\command\{
 	CommandSender, defaults\VanillaCommand
 };
 use pocketmine\event\TranslationContainer;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\Player;
+use pocketmine\Server;
 
 class PlaySoundCommand extends VanillaCommand {
 	public function __construct($name){
@@ -67,6 +67,7 @@ class PlaySoundCommand extends VanillaCommand {
 
 		if(!isset($args[0]) || !isset($args[1])){
 			$sender->sendMessage(new TranslationContainer("commands.generic.usage", [$this->usageMessage]));
+
 			return false;
 		}
 
@@ -75,6 +76,7 @@ class PlaySoundCommand extends VanillaCommand {
 
 		if($player instanceof Player === false){
 			$sender->sendMessage("Cannot find Player.");
+
 			return false;
 		}
 
@@ -95,6 +97,7 @@ class PlaySoundCommand extends VanillaCommand {
 
 		$server->broadcastPacket($player->getLevel()->getPlayers(), $pk);
 		$sender->sendMessage("Playing " . $sound . " to " . $player->getName());
+
 		return true;
 	}
 

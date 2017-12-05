@@ -35,9 +35,12 @@ declare(strict_types = 1);
 
 namespace CortexPE\item;
 
+use CortexPE\Main;
 use pocketmine\item\{
 	Item, ProjectileItem
 };
+use pocketmine\math\Vector3;
+use pocketmine\Player;
 
 class EnderPearl extends ProjectileItem {
 
@@ -53,11 +56,19 @@ class EnderPearl extends ProjectileItem {
 		return 1.1;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getMaxStackSize(): int{
 		return 16;
+	}
+
+	public function onClickAir(Player $player, Vector3 $directionVector): bool{
+		$session = Main::getInstance()->getSessionById($player->getId());
+		if(floor(microtime(true) - $session->lastEnderPearlUse) < Main::$enderPearlCooldown){
+			return false;
+		}else{
+			$session->lastEnderPearlUse = time();
+
+			return parent::onClickAir($player, $directionVector);
+		}
 	}
 
 }

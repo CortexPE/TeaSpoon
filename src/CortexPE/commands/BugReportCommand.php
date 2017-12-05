@@ -41,6 +41,7 @@ use CortexPE\Server;
 use pocketmine\command\CommandSender;
 use pocketmine\command\defaults\VanillaCommand;
 use pocketmine\network\mcpe\protocol\ProtocolInfo;
+use pocketmine\Player;
 
 class BugReportCommand extends VanillaCommand {
 	public function __construct($name){
@@ -50,9 +51,11 @@ class BugReportCommand extends VanillaCommand {
 		);
 		$this->setPermission("teaspoon.command.bugreport");
 	}
+
 	public function execute(CommandSender $sender, string $commandLabel, array $args){
-		if(!$sender->isOp() && $sender->hasPermission($this->getPermission())){
-			$sender->sendMessage("You do not have permissions to use this command.");
+		if($sender instanceof Player){
+			$sender->sendMessage("This command must be ran using the server's console.");
+
 			return;
 		}
 		$sender->sendMessage("Dumping Server Information...");
@@ -68,7 +71,7 @@ class BugReportCommand extends VanillaCommand {
 		foreach($sender->getServer()->getPluginManager()->getPlugins() as $pl){
 			$pstr .= $pl->getDescription()->getFullName() . ", ";
 		}
-		$pstr = substr($pstr,0,-2);
+		$pstr = substr($pstr, 0, -2);
 		$str .= $pstr . "\n";
 		$str .= "BASE64 Encoded Config: " . $this->encodeFile(Main::getInstance()->getDataFolder() . "config.yml") . "\n";
 		if(Main::$debug && file_exists(Main::getInstance()->getDataFolder() . "packetlog.txt")){
@@ -80,15 +83,15 @@ class BugReportCommand extends VanillaCommand {
 		if(!is_dir(Main::getInstance()->getDataFolder() . "dumps")){
 			mkdir(Main::getInstance()->getDataFolder() . "dumps");
 		}
-		$fn = Main::getInstance()->getDataFolder() . "dumps/TeaSpoonDump_" . date("M_j_Y-H.i.s",time()) . ".txt";
-		file_put_contents($fn, "TeaSpoon Dump " . date("D M j H:i:s T Y", time()) . "\n",FILE_APPEND);
-		file_put_contents($fn, "=== BEGIN BASE64 ENCODED DUMP ===\n",FILE_APPEND);
-		file_put_contents($fn, wordwrap(base64_encode($str),75,"\n",true) . "\n", FILE_APPEND);
-		file_put_contents($fn, "=== END OF BASE64 ENCODED DUMP ===",FILE_APPEND);
+		$fn = Main::getInstance()->getDataFolder() . "dumps/TeaSpoonDump_" . date("M_j_Y-H.i.s", time()) . ".txt";
+		file_put_contents($fn, "TeaSpoon Dump " . date("D M j H:i:s T Y", time()) . "\n", FILE_APPEND);
+		file_put_contents($fn, "=== BEGIN BASE64 ENCODED DUMP ===\n", FILE_APPEND);
+		file_put_contents($fn, wordwrap(base64_encode($str), 75, "\n", true) . "\n", FILE_APPEND);
+		file_put_contents($fn, "=== END OF BASE64 ENCODED DUMP ===", FILE_APPEND);
 		$sender->sendMessage("Saved to: " . $fn);
 	}
 
-	private function encodeFile(string $filePath) : string {
+	private function encodeFile(string $filePath): string{
 		return base64_encode(file_get_contents($filePath));
 	}
 }

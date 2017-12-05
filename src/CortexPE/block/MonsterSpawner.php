@@ -68,7 +68,7 @@ class MonsterSpawner extends PMMonsterSpawner {
 			//Tile::createTile(Tile::MOB_SPAWNER, $this->getLevel(), $nbt); // Just add the Tile @TheAz928 ^_^
 
 			return true;
-		} else {
+		}else{
 			return parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player);
 		}
 	}
@@ -87,6 +87,7 @@ class MonsterSpawner extends PMMonsterSpawner {
 
 			return true;
 		}
+
 		return false;
 	}
 }

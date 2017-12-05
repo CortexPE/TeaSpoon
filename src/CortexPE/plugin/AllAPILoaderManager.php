@@ -53,8 +53,15 @@ class AllAPILoaderManager {
 		PMServer::getInstance()->enablePlugins(PluginLoadOrder::STARTUP);
 	}
 
-	public static function hasFolderPluginLoader(){
-		return (PMServer::getInstance()->getPluginManager()->getPlugin("DevTools")->isEnabled() or
-			PMServer::getInstance()->getPluginManager()->getPlugin("FolderPluginLoader")->isEnabled());
+	public static function hasFolderPluginLoader(): bool{
+		$dt = PMServer::getInstance()->getPluginManager()->getPlugin("DevTools");
+		$fpl = PMServer::getInstance()->getPluginManager()->getPlugin("FolderPluginLoader");
+		if($dt !== null || $fpl !== null){
+			if($dt->isEnabled() || $fpl->isEnabled()){
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

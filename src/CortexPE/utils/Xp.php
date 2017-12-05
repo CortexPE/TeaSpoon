@@ -49,7 +49,7 @@ use pocketmine\nbt\tag\FloatTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\Player;
 
-class Xp extends Utils{
+class Xp extends Utils {
 	// [ROT13 Encoded and is pretty Explicit] Jul gur shpx unfa'g CZZC Vzcyrzragrq n CEBCRE KC Flfgrz Lrg? Guvf vf Shpxvat fghcvq naq vf bar bs gur znal ernfbaf jul Crbcyr ybir fcbbaf -_-
 	// hacky code to *SOMEHOW* get it working...
 
@@ -60,70 +60,6 @@ class Xp extends Utils{
 		$player->setXpProgress($add[1]);
 		$player->setXpLevel(intval($player->getXpLevel() + round($player->getXpProgress())));
 		self::saveData($player);
-	}
-
-	public static function takeXp(Player $player, int $amount){
-		if(($player->getTotalXp() - $amount) >= 0){
-			$add = self::getLevelFromXp($player->getTotalXp() - $amount);
-			$player->setXpProgress($add[1]);
-			$player->setXpLevel(intval($player->getXpLevel() + round($player->getXpProgress())));
-			self::saveData($player);
-		}
-	}
-
-	public static function getXpDropsForEntity(Entity $e) : int {
-		switch($e::NETWORK_ID){
-			case Lightning::NETWORK_ID:
-				return 0;
-			default:
-				if($e instanceof Monster){
-					switch($e->getName()){
-						default:
-							return 5;
-					}
-				}elseif($e instanceof Animal){
-					switch($e->getName()){
-						default:
-							return mt_rand(1,3);
-					}
-				}elseif($e instanceof Human){
-					return 7;
-				}
-				return 0;
-		}
-	}
-
-	public static function getXpDropsForBlock(Block $b) : int {
-		switch($b->getId()){
-			case Block::COAL_ORE:
-				return mt_rand(0,2);
-
-			case Block::DIAMOND_ORE:
-			case Block::EMERALD_ORE:
-				return mt_rand(3,7);
-
-			case Block::LAPIS_ORE:
-			case Block::NETHER_QUARTZ_ORE:
-				return mt_rand(2,5);
-
-			case Block::REDSTONE_ORE:
-				return mt_rand(1,5);
-
-			case Block::MONSTER_SPAWNER:
-				return mt_rand(15,43);
-
-			default:
-				return 0;
-		}
-	}
-
-	public static function spawnXpOrb(Vector3 $pos, Level $lvl, int $exp) : XPOrb {
-		$nbt = XPOrb::createBaseNBT($pos);
-		$nbt->setLong("Experience", $exp);
-		/** @var XPOrb $entity */
-		$entity = Entity::createEntity("XPOrb", $lvl, $nbt);
-		$entity->spawnToAll();
-		return $entity;
 	}
 
 	private static function saveData(Player $player){
@@ -145,5 +81,71 @@ class Xp extends Utils{
 			$player->namedtag["XpTotal"] = $player->getTotalXp();
 		}
 		$player->getServer()->saveOfflinePlayerData($player->getName(), $player->namedtag, true);
+	}
+
+	public static function takeXp(Player $player, int $amount){
+		if(($player->getTotalXp() - $amount) >= 0){
+			$add = self::getLevelFromXp($player->getTotalXp() - $amount);
+			$player->setXpProgress($add[1]);
+			$player->setXpLevel(intval($player->getXpLevel() + round($player->getXpProgress())));
+			self::saveData($player);
+		}
+	}
+
+	public static function getXpDropsForEntity(Entity $e): int{
+		switch($e::NETWORK_ID){
+			case Lightning::NETWORK_ID:
+				return 0;
+			default:
+				if($e instanceof Monster){
+					switch($e->getName()){
+						default:
+							return 5;
+					}
+				}elseif($e instanceof Animal){
+					switch($e->getName()){
+						default:
+							return mt_rand(1, 3);
+					}
+				}elseif($e instanceof Human){
+					return 7;
+				}
+
+				return 0;
+		}
+	}
+
+	public static function getXpDropsForBlock(Block $b): int{
+		switch($b->getId()){
+			case Block::COAL_ORE:
+				return mt_rand(0, 2);
+
+			case Block::DIAMOND_ORE:
+			case Block::EMERALD_ORE:
+				return mt_rand(3, 7);
+
+			case Block::LAPIS_ORE:
+			case Block::NETHER_QUARTZ_ORE:
+				return mt_rand(2, 5);
+
+			case Block::REDSTONE_ORE:
+				return mt_rand(1, 5);
+
+			case Block::MONSTER_SPAWNER:
+				return mt_rand(15, 43);
+
+			default:
+				return 0;
+		}
+	}
+
+	public static function spawnXpOrb(Vector3 $pos, Level $lvl, int $exp): XPOrb{
+		$nbt = XPOrb::createBaseNBT($pos);
+		$nbt->setLong("Experience", $exp);
+		/** @var XPOrb $entity */
+		$entity = Entity::createEntity("XPOrb", $lvl, $nbt);
+		$entity->spawnToAll();
+
+		return $entity;
 	}
 }

@@ -11,7 +11,6 @@ namespace CortexPE\commands;
 use pocketmine\command\{
 	CommandSender, defaults\VanillaCommand
 };
-use pocketmine\level\particle\GenericParticle;
 use pocketmine\Player as PMPlayer;
 
 class TestCommand extends VanillaCommand {

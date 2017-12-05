@@ -63,6 +63,7 @@ class WorldCommand extends VanillaCommand {
 					$player = $sender->getServer()->getPlayer($args[0]);
 					if($player === null){
 						$sender->sendMessage("Player not found.");
+
 						return false;
 					}
 					$player->teleport($level->getSafeSpawn());

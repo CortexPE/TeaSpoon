@@ -62,7 +62,7 @@ class SlimeBlock extends Solid {
 
 	public function getDrops(Item $item): array{
 		return [
-			Item::get(Item::SLIME_BLOCK, 0, 1)
+			Item::get(Item::SLIME_BLOCK, 0, 1),
 		];
 	}
 }

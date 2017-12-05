@@ -60,22 +60,10 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 
 class Main extends PluginBase {
-	private $splashes = [
-		'Low-Calorie blend', "Don't panic! Have a cup of tea", "In England, Everything stops for tea", "ENGLAND IS MY CITY (not really)", "POWERED By Dubstep", "A E S T H E T H I C S", "WHO PUT THAT HERE?", "#BlameShoghi", "ERMAHGERD", "Written in PHP!", "This is a splash text.", "YOUR NAME", "ONE LOVE", "I KILLED THE SHERIFF... But not the deputy.", "Oops.", "rip.", "Fixed Typo!", "Fixed Typo! 2", "Fixed Typo! 2 FINAL", "Fixed Typo! 2 FINALFINAL", "Fixed Typo! 2 FINALFINALFINAL", "This splash text is a joke.", "Who made this?!", "How may I help you?", "asymmetricalacirtemmysa!", "SUPERCALIFRAGILISTICEXPIALIDOCIOUS!", "Well this exists.", "IE EXISTS TO DOWNLOAD CHROME!", "I'm sorry Dave. I'm afraid I can't do that.", "I might have killed it.", "PUNCHING TREES!", "Bug Fix", "Bug Fix 2", "Bug Fix 2 FINAL", "Bug Fix 2 FINALFINAL", "Bug Fix 2 FINALFINANFINAL", "We have VCS Systems. :P", "We have *crappy* VCS Systems. :P", ":shrug:", "Also try V A P O R W A V E", "Or S I M P S O N W A V E idk xD",
-		"Fukkit FTW!!!",
-		// Add more splashes fur fun. xD
-	];
+const CONFIG_VERSION = 10;
 // Use static variables if it's going to be accessed by other Classes :)
-
-	/** @var Main */
-	private static $instance;
-
-	/** @var Session[] */
-	private $sessions = [];
-
 	/** @var Config */
 	public static $config;
-
 	/** @var string */
 	public static $netherName = "nether";
 	/** @var Level */
@@ -114,9 +102,29 @@ class Main extends PluginBase {
 	public static $limitedCreative = false;
 	/** @var bool */
 	public static $debug = false;
+	/** @var Main */
+	private static $instance;
+	private $splashes = [
+		'Low-Calorie blend', "Don't panic! Have a cup of tea", "In England, Everything stops for tea", "ENGLAND IS MY CITY (not really)", "POWERED By Dubstep", "A E S T H E T H I C S", "WHO PUT THAT HERE?", "#BlameShoghi", "ERMAHGERD", "Written in PHP!", "This is a splash text.", "YOUR NAME", "ONE LOVE", "I KILLED THE SHERIFF... But not the deputy.", "Oops.", "rip.", "Fixed Typo!", "Fixed Typo! 2", "Fixed Typo! 2 FINAL", "Fixed Typo! 2 FINALFINAL", "Fixed Typo! 2 FINALFINALFINAL", "This splash text is a joke.", "Who made this?!", "How may I help you?", "asymmetricalacirtemmysa!", "SUPERCALIFRAGILISTICEXPIALIDOCIOUS!", "Well this exists.", "IE EXISTS TO DOWNLOAD CHROME!", "I'm sorry Dave. I'm afraid I can't do that.", "I might have killed it.", "PUNCHING TREES!", "Bug Fix", "Bug Fix 2", "Bug Fix 2 FINAL", "Bug Fix 2 FINALFINAL", "Bug Fix 2 FINALFINANFINAL", "We have VCS Systems. :P", "We have *crappy* VCS Systems. :P", ":shrug:", "Also try V A P O R W A V E", "Or S I M P S O N W A V E idk xD",
+		"Fukkit FTW!!!",
+		// Add more splashes fur fun. xD
+	];
+	/** @var Session[] */
+	private $sessions = []; // to avoid moving up and down just to update config version xD
 
-	const CONFIG_VERSION = 10; // to avoid moving up and down just to update config version xD
-	
+	public static function getInstance(): Main{
+		return self::$instance;
+	}
+
+	public static function sendVersion(CommandSender $sender){
+		$sender->getServer()->dispatchCommand($sender, "ver");
+		// anti-skid
+		$sender->sendMessage("\x2d\x2d\x2d\x20\x2b\x20\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x20\x2b\x20\x2d\x2d\x2d");
+		$sender->sendMessage("\x54\x68\x69\x73\x20\x73\x65\x72\x76\x65\x72\x20\x69\x73\x20\x72\x75\x6e\x6e\x69\x6e\x67\x20" . TextFormat::DARK_GREEN . "\x54\x65\x61" . TextFormat::GREEN . "\x53\x70\x6f\x6f\x6e" . TextFormat::WHITE . "\x20\x76" . self::$instance->getDescription()->getVersion() . "\x20\x66\x6f\x72\x20\x5b" . implode("\x2c\x20", self::$instance->getDescription()->getCompatibleApis()) . "\x5d");
+		$sender->sendMessage("\x52\x65\x70\x6f\x73\x69\x74\x6f\x72\x79\x3a\x20\x68\x74\x74\x70\x73\x3a\x2f\x2f\x67\x69\x74\x68\x75\x62\x2e\x63\x6f\x6d\x2f\x43\x6f\x72\x74\x65\x78\x50\x45\x2f\x54\x65\x61\x53\x70\x6f\x6f\x6e");
+		$sender->sendMessage("\x57\x65\x62\x73\x69\x74\x65\x3a\x20\x68\x74\x74\x70\x73\x3a\x2f\x2f\x43\x6f\x72\x74\x65\x78\x50\x45\x2e\x78\x79\x7a");
+	}
+
 	public function onLoad(){
 		if(Utils::checkSpoon()){
 			$this->getLogger()->error("This plugin is for PMMP only. It is meant to extend PMMP's functionality.");
@@ -150,7 +158,7 @@ class Main extends PluginBase {
 		if(self::$debug && !Utils::isPhared()){
 			$this->getLogger()->warning("Debug Mode is enabled, this might cause performance issues.");
 			if(file_exists(($fn = $this->getDataFolder() . DIRECTORY_SEPARATOR . "packetlog.txt"))){
-				$this->getServer()->getScheduler()->scheduleAsyncTask(new AsynchronousEvaluator('unlink("' . $fn .'");'));
+				$this->getServer()->getScheduler()->scheduleAsyncTask(new AsynchronousEvaluator('unlink("' . $fn . '");'));
 			}
 			$this->getServer()->getLogger()->setLogDebug(true);
 			$cm = $this->getServer()->getCommandMap();
@@ -163,7 +171,7 @@ class Main extends PluginBase {
 			if($cm->getCommand("dumpmemory") === null){
 				$cm->register("pocketmine", new DumpMemoryCommand("dumpmemory"));
 			}
-		} elseif(Utils::isPhared()){
+		}elseif(Utils::isPhared()){
 			self::$debug = false;
 		}
 
@@ -187,12 +195,12 @@ P\'   MM   `7             ' . TextFormat::GREEN . ' ,MI    "Y                   
 Copyright (C) CortexPE ' . $yr . '
 ';
 		$this->getLogger()->info("Loading..." . $stms);
-		
+
 		$this->loadEverythingElse();
 		$this->getLogger()->info("TeaSpoon is distributed under the AGPL License");
 		$this->checkConfig();
 	}
-	
+
 	private function loadEverythingElse(){
 		CommandManager::init();
 		Enchantment::init();
@@ -216,7 +224,7 @@ Copyright (C) CortexPE ' . $yr . '
 			$this->getServer()->getScheduler()->scheduleRepeatingTask(new TickLevelsTask($this), 1);
 		}
 	}
-	
+
 	private function checkConfig(){
 		$ver = self::$config->get("version");
 		if($ver === null || $ver === false || $ver < self::CONFIG_VERSION){
@@ -226,42 +234,33 @@ Copyright (C) CortexPE ' . $yr . '
 		}
 	}
 
-	public function createSession(Player $player) : bool {
+	public function createSession(Player $player): bool{
 		if(!isset($this->sessions[$player->getId()])){
 			$this->sessions[$player->getId()] = new Session($player);
 			$this->getLogger()->debug("Created " . $player->getName() . "'s Session");
+
 			return true;
 		}
+
 		return false;
 	}
 
-	public function destroySession(Player $player) : bool {
+	public function destroySession(Player $player): bool{
 		if(isset($this->sessions[$player->getId()])){
 			unset($this->sessions[$player->getId()]);
 			$this->getLogger()->debug("Destroyed " . $player->getName() . "'s Session");
+
 			return true;
 		}
+
 		return false;
 	}
 
-	public function getSessionById(int $id) {
+	public function getSessionById(int $id){
 		if(isset($this->sessions[$id])){
 			return $this->sessions[$id];
-		} else {
+		}else{
 			return null;
 		}
-	}
-
-	public static function getInstance() : Main {
-		return self::$instance;
-	}
-
-	public static function sendVersion(CommandSender $sender){
-		$sender->getServer()->dispatchCommand($sender,"ver");
-		// anti-skid
-		$sender->sendMessage("\x2d\x2d\x2d\x20\x2b\x20\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x20\x2b\x20\x2d\x2d\x2d");
-		$sender->sendMessage("\x54\x68\x69\x73\x20\x73\x65\x72\x76\x65\x72\x20\x69\x73\x20\x72\x75\x6e\x6e\x69\x6e\x67\x20" . TextFormat::DARK_GREEN . "\x54\x65\x61" . TextFormat::GREEN . "\x53\x70\x6f\x6f\x6e" . TextFormat::WHITE . "\x20\x76" . self::$instance->getDescription()->getVersion() . "\x20\x66\x6f\x72\x20\x5b" . implode("\x2c\x20",self::$instance->getDescription()->getCompatibleApis()) . "\x5d");
-		$sender->sendMessage("\x52\x65\x70\x6f\x73\x69\x74\x6f\x72\x79\x3a\x20\x68\x74\x74\x70\x73\x3a\x2f\x2f\x67\x69\x74\x68\x75\x62\x2e\x63\x6f\x6d\x2f\x43\x6f\x72\x74\x65\x78\x50\x45\x2f\x54\x65\x61\x53\x70\x6f\x6f\x6e");
-		$sender->sendMessage("\x57\x65\x62\x73\x69\x74\x65\x3a\x20\x68\x74\x74\x70\x73\x3a\x2f\x2f\x43\x6f\x72\x74\x65\x78\x50\x45\x2e\x78\x79\x7a");
 	}
 }

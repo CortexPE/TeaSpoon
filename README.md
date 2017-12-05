@@ -16,6 +16,14 @@ Installation is easy, Just download the latest phar from my [Jenkins Build Serve
  - ALWAYS use the [LATEST PocketMine-MP Build](https://jenkins.pmmp.io/job/PocketMine-MP/lastSuccessfulBuild/artifact/) to use this plugin
  - Remove any plugins that may interfere with TeaSpoon's current features (if the feature cannot be disabled in the config.yml file)
  - Including the "Steps to Reproduce" in the issue report would be really helpful in fixing bugs.
+ - To help me determine why the issue occurs, including the TeaSpoonDump from ```/bugreport``` lets me view all the necessary server information to easily determine incompatibility issues and mis-configuration issues. <sub>Privacy Concerns? You can check the code for yourself <a href="https://github.com/CortexPE/TeaSpoon/blob/master/src/CortexPE/commands/BugReportCommand.php">here</a> ;)</sub>
+ 
+# FAQs
+### MobAI:
+&nbsp;&nbsp;&nbsp;&nbsp;For now, you can use [PureEntitiesX](https://github.com/RevivalPMMP/PureEntitiesX) while disabling ```entities.register``` in TeaSpoon's Configuration File.
+### Redstone System:
+&nbsp;&nbsp;&nbsp;&nbsp;Maybe soon. :wink:
+
 # Finished & Planned Features
  - Worlds
   - [X] Dimensions
