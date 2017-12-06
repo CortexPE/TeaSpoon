@@ -68,6 +68,12 @@ class CheckPlayersTask extends PluginTask {
 					$this->scheduleTeleport($p, DimensionIds::OVERWORLD, Server::getInstance()->getDefaultLevel()->getSafeSpawn(), $po);
 				}
 			}
+
+			if($p->isOnFire()){
+				if(Utils::canSeeSky($p->getLevel(), $p) && Main::$weatherData[$p->getLevel()->getId()]->isRainy() || Main::$weatherData[$p->getLevel()->getId()]->isRainyThunder() && Utils::getDimension($p->getLevel()) == DimensionIds::NETHER){
+					$p->setOnFire(0);
+				}
+			}
 		}
 	}
 

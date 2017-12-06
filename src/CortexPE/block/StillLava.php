@@ -33,36 +33,12 @@
 
 declare(strict_types = 1);
 
-namespace CortexPE\task;
+namespace CortexPE\block;
 
-use pocketmine\network\mcpe\protocol\{
-	ChangeDimensionPacket, PlayStatusPacket, types\DimensionIds
-};
-use pocketmine\Player;
-use pocketmine\plugin\Plugin;
-use pocketmine\scheduler\PluginTask;
-use pocketmine\Server as PMServer;
+class StillLava extends Lava {
+	protected $id = self::STILL_LAVA;
 
-class DelayedTeleportTask extends PluginTask {
-
-	/** @var Plugin */
-	protected $owner;
-
-	/** @var Player */
-	protected $player;
-
-	public function __construct(Plugin $owner, Player $player){
-		$this->owner = $owner;
-		$this->player = $player;
-	}
-
-	public function onRun(int $currentTick){
-		$pk = new ChangeDimensionPacket();
-		$pk->dimension = DimensionIds::OVERWORLD;
-		$pk->position = PMServer::getInstance()->getDefaultLevel()->getSafeSpawn();
-		$pk->respawn = true;
-		$this->player->dataPacket($pk);
-		$this->player->teleport(PMServer::getInstance()->getDefaultLevel()->getSafeSpawn());
-		$this->player->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
+	public function getName() : string{
+		return "Still Lava";
 	}
 }

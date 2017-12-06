@@ -56,7 +56,7 @@ use pocketmine\event\player\{
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\{
-	EntityEventPacket, LevelEventPacket
+	ChangeDimensionPacket, EntityEventPacket, LevelEventPacket, PlayStatusPacket, types\DimensionIds
 };
 use pocketmine\Player;
 use pocketmine\Player as PMPlayer;
@@ -203,8 +203,8 @@ class EventListener implements Listener {
 			/** @var Player $p */
 			$p = $ev->getEntity();
 			$session = Main::getInstance()->getSessionById($p->getId());
-			if($session !== null){
-				$session->useArmors($ev->getCause());
+			if($session !== null && $ev->getCause() != EntityDamageEvent::CAUSE_LAVA){ // lava damage is handled on the Lava class.
+				$session->useArmors();
 			}
 		}
 
@@ -212,7 +212,8 @@ class EventListener implements Listener {
 		if($ev->getCause() === EntityDamageEvent::CAUSE_FALL){
 			$p = $ev->getEntity();
 			if($p instanceof PMPlayer){
-				if($p->getInventory()->getChestplate() instanceof Elytra){
+				$session = Main::getInstance()->getSessionById($p->getId());
+				if($session->usingElytra){
 					$ev->setCancelled(true);
 				}
 				if($p->getLevel()->getBlock($p->subtract(0, 1, 0))->getId() == Block::SLIME_BLOCK){

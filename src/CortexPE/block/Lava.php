@@ -33,36 +33,37 @@
 
 declare(strict_types = 1);
 
-namespace CortexPE\task;
+namespace CortexPE\block;
 
-use pocketmine\network\mcpe\protocol\{
-	ChangeDimensionPacket, PlayStatusPacket, types\DimensionIds
-};
+use CortexPE\Main;
+use CortexPE\Server;
+use pocketmine\block\Lava as PMLava;
+use pocketmine\entity\Entity;
+use pocketmine\event\entity\EntityCombustByBlockEvent;
+use pocketmine\event\entity\EntityDamageByBlockEvent;
+use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\Player;
-use pocketmine\plugin\Plugin;
-use pocketmine\scheduler\PluginTask;
-use pocketmine\Server as PMServer;
 
-class DelayedTeleportTask extends PluginTask {
+class Lava extends PMLava {
 
-	/** @var Plugin */
-	protected $owner;
+	public function onEntityCollide(Entity $entity) : void{
+		$entity->fallDistance *= 0.5;
 
-	/** @var Player */
-	protected $player;
+		$ev = new EntityDamageByBlockEvent($this, $entity, EntityDamageEvent::CAUSE_LAVA, 4);
+		$entity->attack($ev);
 
-	public function __construct(Plugin $owner, Player $player){
-		$this->owner = $owner;
-		$this->player = $player;
+		if($entity instanceof Player){
+			$session = Main::getInstance()->getSessionById($entity->getId());
+			$session->useArmors(1);
+		}
+
+		$ev = new EntityCombustByBlockEvent($this, $entity, 15);
+		Server::getInstance()->getPluginManager()->callEvent($ev);
+		if(!$ev->isCancelled()){
+			$entity->setOnFire($ev->getDuration());
+		}
+
+		$entity->resetFallDistance();
 	}
 
-	public function onRun(int $currentTick){
-		$pk = new ChangeDimensionPacket();
-		$pk->dimension = DimensionIds::OVERWORLD;
-		$pk->position = PMServer::getInstance()->getDefaultLevel()->getSafeSpawn();
-		$pk->respawn = true;
-		$this->player->dataPacket($pk);
-		$this->player->teleport(PMServer::getInstance()->getDefaultLevel()->getSafeSpawn());
-		$this->player->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
-	}
 }

@@ -71,11 +71,8 @@ class Session {
 		return $this->player;
 	}
 
-	public function useArmors(int $cause, int $damage = 1){
+	public function useArmors(int $damage = 1){
 		if(!$this->player->isAlive() || !$this->player->isSurvival()){
-			return;
-		}
-		if($cause == EntityDamageEvent::CAUSE_LAVA && !Utils::isRightNowHalfASecondYet()){
 			return;
 		}
 		$inv = $this->player->getInventory();

@@ -44,6 +44,7 @@ use pocketmine\entity\Entity;
 use pocketmine\item\ItemFactory;
 use pocketmine\level\Level;
 use pocketmine\math\Math;
+use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player as PMPlayer;
 
@@ -62,8 +63,8 @@ class Utils {
 		}
 	}
 
-	public static function canBlockSeeSky(Level $lvl, Block $block){
-		return ($lvl->getHighestBlockAt($block->getFloorX(), $block->getFloorZ()) <= $block->getY());
+	public static function canSeeSky(Level $lvl, Vector3 $pos){
+		return ($lvl->getHighestBlockAt($pos->getFloorX(), $pos->getFloorZ()) <= $pos->getY());
 	}
 
 	public static function checkSpoon(){
@@ -76,19 +77,37 @@ class Utils {
 	}
 
 	public static function toggleBool(bool $boolean): bool{
+		/*
+		A HISTORY OF HOW I SIMPLIFIED THIS...
+		Since: Albert Einstein — 'The definition of genius is taking the complex and making it simple.' LMFAO
+		 - Sarcasm -
+		https://twitter.com/CortexPE/status/938311444961071104
+
+		// first version
 		if($boolean){
 			return false;
 		}else{
 			return true;
 		}
+
+		// second version
+		if($boolean){
+			return false;
+		}
+		return true;
+
+		// third version
+		return $boolean ? false : true;
+
+		// fourth version
+		return !$boolean ? true : false;
+		*/
+		// fifth version
+		return !$boolean;
 	}
 
 	public static function boolToString(bool $boolean): string{
-		if($boolean){
-			return "true";
-		}else{
-			return "false";
-		}
+		return $boolean ? "true" : "false";
 	}
 
 	public static function isDelayedTeleportCancellable(PMPlayer $player): bool{
