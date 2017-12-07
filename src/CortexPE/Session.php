@@ -39,7 +39,6 @@ use CortexPE\entity\projectile\FishingHook;
 use CortexPE\item\ArmorDurability;
 use CortexPE\item\Elytra;
 use CortexPE\item\enchantment\Enchantment;
-use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
 use pocketmine\Player;
 
@@ -77,6 +76,7 @@ class Session {
 		}
 		$inv = $this->player->getInventory();
 		$size = $inv->getSize();
+		$noDamage = false;
 		for($i = $size; $i < $size + 4; $i++){
 			$armor = $inv->getItem($i);
 
@@ -89,40 +89,50 @@ class Session {
 				continue;
 			}
 
-			$unbreakingEnchant = $armor->getEnchantment(Enchantment::UNBREAKING);
-			if($armor->hasEnchantment(Enchantment::UNBREAKING) && $unbreakingEnchant->getLevel() > 0){
-				$rand = mt_rand(1, 100);
-				$level = $unbreakingEnchant->getLevel();
-				switch($level){
-					case 1:
-						if($rand >= 80){
-							return;
-						}
-						break;
-					case 2:
-						if($rand >= 73){
-							return;
-						}
-						break;
-					case 3:
-						if($rand >= 70){
-							return;
-						}
-						break;
-					case 0:
-						break;
+			if($armor->hasEnchantments()){
+				foreach($armor->getEnchantments() as $ench){
+					if($ench->getLevel() <= 0){
+						continue;
+					}
+					switch($ench->getId()){
+						case Enchantment::UNBREAKING:
+							$rand = mt_rand(1, 100);
+							$level = $ench->getLevel();
+							switch($level){
+								case 1:
+									if($rand >= 80){
+										$noDamage = true;
+									}
+									break;
+								case 2:
+									if($rand >= 73){
+										$noDamage = true;
+									}
+									break;
+								case 3:
+									if($rand >= 70){
+										$noDamage = true;
+									}
+									break;
+								case 0:
+									break;
+							}
+							break;
+					}
 				}
 			}
 
-			$ac = clone $armor;
-			$ac->setDamage($ac->getDamage() + $damage);
-			if($ac->getDamage() >= $dura){
-				$inv->setItem($i, Item::get(Item::AIR, 0, 1));
-			}else{
-				$inv->setItem($i, $ac);
-			}
+			if(!$noDamage){
+				$ac = clone $armor;
+				$ac->setDamage($ac->getDamage() + $damage);
+				if($ac->getDamage() >= $dura){
+					$inv->setItem($i, Item::get(Item::AIR, 0, 1));
+				}else{
+					$inv->setItem($i, $ac);
+				}
 
-			$inv->sendArmorContents($inv->getViewers());
+				$inv->sendArmorContents($inv->getViewers());
+			}
 		}
 	}
 
@@ -132,43 +142,54 @@ class Session {
 		}
 		$inv = $this->player->getInventory();
 		$elytra = $inv->getChestplate();
+		$noDamage = false;
 		if($elytra instanceof Elytra){
 			$dura = ArmorDurability::getDurability(Item::ELYTRA);
 
-			$unbreakingEnchant = $elytra->getEnchantment(Enchantment::UNBREAKING);
-			if($elytra->hasEnchantment(Enchantment::UNBREAKING) && $unbreakingEnchant->getLevel() > 0){
-				$rand = mt_rand(1, 100);
-				$level = $unbreakingEnchant->getLevel();
-				switch($level){
-					case 1:
-						if($rand >= 80){
-							return;
-						}
-						break;
-					case 2:
-						if($rand >= 73){
-							return;
-						}
-						break;
-					case 3:
-						if($rand >= 70){
-							return;
-						}
-						break;
-					case 0:
-						break;
+			if($elytra->hasEnchantments()){
+				foreach($elytra->getEnchantments() as $ench){
+					if($ench->getLevel() <= 0){
+						continue;
+					}
+					switch($ench->getId()){
+						case Enchantment::UNBREAKING:
+							$rand = mt_rand(1, 100);
+							$level = $ench->getLevel();
+							switch($level){
+								case 1:
+									if($rand >= 80){
+										$noDamage = true;
+									}
+									break;
+								case 2:
+									if($rand >= 73){
+										$noDamage = true;
+									}
+									break;
+								case 3:
+									if($rand >= 70){
+										$noDamage = true;
+									}
+									break;
+								case 0:
+									break;
+							}
+							break;
+					}
 				}
 			}
 
-			$ec = clone $elytra;
-			$ec->setDamage($ec->getDamage() + $damage);
-			if($ec->getDamage() >= $dura){
-				$inv->setChestplate(Item::get(Item::AIR, 0, 1));
-			}else{
-				$inv->setChestplate($ec);
-			}
+			if(!$noDamage){
+				$ec = clone $elytra;
+				$ec->setDamage($ec->getDamage() + $damage);
+				if($ec->getDamage() >= $dura){
+					$inv->setChestplate(Item::get(Item::AIR, 0, 1));
+				}else{
+					$inv->setChestplate($ec);
+				}
 
-			$inv->sendArmorContents($inv->getViewers());
+				$inv->sendArmorContents($inv->getViewers());
+			}
 		}
 	}
 
