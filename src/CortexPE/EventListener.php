@@ -263,6 +263,9 @@ class EventListener implements Listener {
 			return;
 		}
 		$pid = $p->getId();
+		if($pid === null){
+ 			return;
+ 		}
 		$session = Main::getInstance()->getSessionById($pid);
 		if($session !== null){
 			if($session->isUsingElytra() && $ev->getReason() == PMServer::getInstance()->getLanguage()->translateString("kick.reason.cheat", ["%ability.flight"])){
