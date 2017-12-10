@@ -12,7 +12,6 @@ use CortexPE\Utils;
 use pocketmine\command\{
 	CommandSender, defaults\VanillaCommand
 };
-use pocketmine\Player as PMPlayer;
 
 class TestCommand extends VanillaCommand {
 
