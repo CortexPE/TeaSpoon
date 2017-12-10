@@ -52,6 +52,9 @@ class BlockManager {
 		self::register(Block::END_PORTAL_FRAME, new EndPortalFrame(), true);
 		self::register(Block::LAVA, new Lava(), true);
 		self::register(Block::STILL_LAVA, new StillLava(), true);
+
+		self::register(Block::LEVER, new Lever(), true);
+
 		// @TheAz928 just uncomment this if you;re done with the MonsterSpawner Tile... self::register(Block::MONSTER_SPAWNER, new MonsterSpawner(), true);
 	}
 
