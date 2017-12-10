@@ -42,6 +42,7 @@ use pocketmine\event\{
 };
 use pocketmine\network\mcpe\protocol\BatchPacket;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
+use pocketmine\network\mcpe\protocol\PlayerListPacket;
 use pocketmine\network\mcpe\protocol\StartGamePacket;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player as PMPlayer;
@@ -63,45 +64,47 @@ class PacketHandler implements Listener {
 	 * @priority LOWEST
 	 */
 	public function onPacketReceive(DataPacketReceiveEvent $ev){
-		$pkr = $ev->getPacket();
+		$pk = $ev->getPacket();
 		$p = $ev->getPlayer();
-		if($pkr instanceof PlayerActionPacket){
-			//Main::getInstance()->getLogger()->debug("Received PlayerActionPacket:" . $pkr->action . " from " . $p->getName());
-			$session = Main::getInstance()->getSessionById($p->getId());
-			switch($pkr->action){
-				case PlayerActionPacket::ACTION_DIMENSION_CHANGE_ACK:
-					// TODO: USE THIS FOR CROSS-DIMENSION TELEPORT
-					break;
 
-				case PlayerActionPacket::ACTION_DIMENSION_CHANGE_REQUEST:
-					$p->teleport(Server::getInstance()->getDefaultLevel()->getSafeSpawn());
-					break;
+		switch(true){
+			case ($pk instanceof PlayerActionPacket):
+				//Main::getInstance()->getLogger()->debug("Received PlayerActionPacket:" . $pkr->action . " from " . $p->getName());
+				$session = Main::getInstance()->getSessionById($p->getId());
+				switch($pk->action){
+					case PlayerActionPacket::ACTION_DIMENSION_CHANGE_ACK:
+						// TODO: USE THIS FOR CROSS-DIMENSION TELEPORT
+						break;
 
-				case PlayerActionPacket::ACTION_START_GLIDE:
-					$p->setDataFlag(PMPlayer::DATA_FLAGS, PMPlayer::DATA_FLAG_GLIDING, true, PMPlayer::DATA_TYPE_BYTE);
+					case PlayerActionPacket::ACTION_DIMENSION_CHANGE_REQUEST:
+						$p->teleport(Server::getInstance()->getDefaultLevel()->getSafeSpawn());
+						break;
 
-					$session->usingElytra = $session->allowCheats = true;
-					break;
-				case PlayerActionPacket::ACTION_STOP_GLIDE:
-					$p->setDataFlag(PMPlayer::DATA_FLAGS, PMPlayer::DATA_FLAG_GLIDING, false, PMPlayer::DATA_TYPE_BYTE);
+					case PlayerActionPacket::ACTION_START_GLIDE:
+						$p->setDataFlag(PMPlayer::DATA_FLAGS, PMPlayer::DATA_FLAG_GLIDING, true, PMPlayer::DATA_TYPE_BYTE);
 
-					$session->usingElytra = $session->allowCheats = false;
+						$session->usingElytra = $session->allowCheats = true;
+						break;
+					case PlayerActionPacket::ACTION_STOP_GLIDE:
+						$p->setDataFlag(PMPlayer::DATA_FLAGS, PMPlayer::DATA_FLAG_GLIDING, false, PMPlayer::DATA_TYPE_BYTE);
 
-					$session->damageElytra();
-					break;
-			}
+						$session->usingElytra = $session->allowCheats = false;
+
+						$session->damageElytra();
+						break;
+				}
 		}
 		if(Main::$debug){
-			$name = (new \ReflectionClass(($packet = $ev->getPacket())))->getShortName();
+			$name = (new \ReflectionClass($pk))->getShortName();
 			//$pinfo = $ev->getPlayer()->getName() ?? $ev->getPlayer()->getAddress() . ":" . $ev->getPlayer()->getPort();
 			//$this->plugin->getLogger()->info("RECEIVE " . $name . " from " . $pinfo);
-			$packet = $ev->getPacket();
-			$packet->encode(); //other plugins might have changed the packet
-			$header = "[Client -> Server 0x" . sprintf("%02d", dechex($packet->pid())) . "] " . $name . " (length " . strlen($packet->buffer) . ")";
+			$pk = $ev->getPacket();
+			$pk->encode(); //other plugins might have changed the packet
+			$header = "[Client -> Server 0x" . sprintf("%02d", dechex($pk->pid())) . "] " . $name . " (length " . strlen($pk->buffer) . ")";
 			/*$binary = "";
-			$ascii = preg_replace('#([^\x20-\x7E])#', ".", $packet->buffer);
+			$ascii = preg_replace('#([^\x20-\x7E])#', ".", $pk->buffer);
 			$binary .= $ascii . PHP_EOL;*/
-			$binary = print_r($packet, true);
+			$binary = print_r($pk, true);
 			file_put_contents($this->plugin->getDataFolder() . "packetlog.txt", $header . PHP_EOL . $binary . PHP_EOL . PHP_EOL . PHP_EOL, FILE_APPEND | LOCK_EX);
 		}
 	}
@@ -113,27 +116,42 @@ class PacketHandler implements Listener {
 	 */
 	public function onPacketSend(DataPacketSendEvent $ev){
 		$pk = $ev->getPacket();
-		if($pk instanceof StartGamePacket){
-			if(Utils::getDimension($ev->getPlayer()->getLevel()) != DimensionIds::OVERWORLD){
-				$pk->dimension = Utils::getDimension($ev->getPlayer()->getLevel());
-			}
+		$p = $ev->getPlayer();
+		switch(true){
+			case ($pk instanceof StartGamePacket):
+				if(Utils::getDimension($p->getLevel()) != DimensionIds::OVERWORLD){
+					$pk->dimension = Utils::getDimension($p->getLevel());
+				}
+				break;
+
+			case ($pk instanceof PlayerListPacket):
+				if($pk->type == PlayerListPacket::TYPE_ADD){
+					foreach($pk->entries as $entry){
+						if($p->getXuid() !== null){
+							if($p->getXuid() != ""){
+								$entry->xboxUserId = $p->getXuid();
+							}
+						}
+					}
+				}
+				break;
 		}
 		if(Main::$debug){ // Freezes
 			if($ev->getPacket() instanceof BatchPacket){
 				return;
 			}
-			$name = (new \ReflectionClass(($packet = $ev->getPacket())))->getShortName();
+			$name = (new \ReflectionClass($pk))->getShortName();
 			//$pinfo = $ev->getPlayer()->getName() ?? $ev->getPlayer()->getAddress() . ":" . $ev->getPlayer()->getPort();
 			//$this->plugin->getLogger()->info("SEND " . $name . " to " . $pinfo);
 
-			$packet->encode(); //needed :(
-			$header = "[Server -> Client 0x" . sprintf("%02d", dechex($packet->pid())) . "] " . $name . " (length " . strlen($packet->buffer) . ")";
+			$pk->encode(); //needed :(
+			$header = "[Server -> Client 0x" . sprintf("%02d", dechex($pk->pid())) . "] " . $name . " (length " . strlen($pk->buffer) . ")";
 
 			/*$binary = "";
 				$ascii = preg_replace('#([^\x20-\x7E])#', ".", $packet->buffer);
 				$binary .= $ascii . PHP_EOL;*/
 
-			$binary = print_r($packet, true);
+			$binary = print_r($pk, true);
 			file_put_contents($this->plugin->getDataFolder() . "packetlog.txt", $header . PHP_EOL . $binary . PHP_EOL . PHP_EOL . PHP_EOL, FILE_APPEND | LOCK_EX);
 		}
 	}
