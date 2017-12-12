@@ -181,7 +181,10 @@ class EnchantHandler implements Listener {
 				case EntityDamageEvent::CAUSE_ENTITY_EXPLOSION:
 					foreach($e->getInventory()->getArmorContents() as $armor){
 						if($armor->hasEnchantments()){
-							if(($ench = $this->isEnchantedWith($armor, Enchantment::BLAST_PROTECTION)) instanceof \pocketmine\item\enchantment\Enchantment){
+							if(($ench = $this->isEnchantedWith($armor, Enchantment::BLAST_PROTECTION))){
+								if($ench === null){
+									break 2;
+								}
 								$ev->setDamage($ev->getDamage() - ((0.04 * $ench->getLevel()) * $ev->getDamage()));
 								break 2;
 							}
@@ -192,7 +195,10 @@ class EnchantHandler implements Listener {
 				case EntityDamageEvent::CAUSE_FALL:
 					foreach($e->getInventory()->getArmorContents() as $armor){
 						if($armor->hasEnchantments()){
-							if(($ench = $this->isEnchantedWith($armor, Enchantment::FEATHER_FALLING)) instanceof \pocketmine\item\enchantment\Enchantment){
+							if(($ench = $this->isEnchantedWith($armor, Enchantment::FEATHER_FALLING))){
+								if($ench === null){
+									break 2;
+								}
 								$ev->setDamage($ev->getDamage() - ((0.06 * $ench->getLevel()) * $ev->getDamage()));
 								break 2;
 							}
@@ -205,7 +211,10 @@ class EnchantHandler implements Listener {
 				case EntityDamageEvent::CAUSE_LAVA:
 					foreach($e->getInventory()->getArmorContents() as $armor){
 						if($armor->hasEnchantments()){
-							if(($ench = $this->isEnchantedWith($armor, Enchantment::FIRE_PROTECTION)) instanceof \pocketmine\item\enchantment\Enchantment){
+							if(($ench = $this->isEnchantedWith($armor, Enchantment::FIRE_PROTECTION))){
+								if($ench === null){
+									break 2;
+								}
 								$ev->setDamage($ev->getDamage() - ((0.02 * $ench->getLevel()) * $ev->getDamage()));
 								break 2;
 							}
@@ -217,7 +226,10 @@ class EnchantHandler implements Listener {
 				case EntityDamageEvent::CAUSE_MAGIC:
 					foreach($e->getInventory()->getArmorContents() as $armor){
 						if($armor->hasEnchantments()){
-							if(($ench = $this->isEnchantedWith($armor, Enchantment::PROTECTION)) instanceof \pocketmine\item\enchantment\Enchantment){
+							if(($ench = $this->isEnchantedWith($armor, Enchantment::PROTECTION))){
+								if($ench === null){
+									break 2;
+								}
 								$ev->setDamage($ev->getDamage() - ((0.03 * $ench->getLevel()) * $ev->getDamage()));
 								break 2;
 							}
@@ -228,7 +240,10 @@ class EnchantHandler implements Listener {
 				case EntityDamageEvent::CAUSE_PROJECTILE:
 					foreach($e->getInventory()->getArmorContents() as $armor){
 						if($armor->hasEnchantments()){
-							if(($ench = $this->isEnchantedWith($armor, Enchantment::PROJECTILE_PROTECTION)) instanceof \pocketmine\item\enchantment\Enchantment){
+							if(($ench = $this->isEnchantedWith($armor, Enchantment::PROJECTILE_PROTECTION))){
+								if($ench === null){
+									break 2;
+								}
 								$ev->setDamage($ev->getDamage() - ((0.04 * $ench->getLevel()) * $ev->getDamage()));
 								break 2;
 							}
@@ -290,7 +305,14 @@ class EnchantHandler implements Listener {
 		}
 	}
 
-	private function isEnchantedWith(Item $i, int $enchantId) : \pocketmine\item\enchantment\Enchantment {
+	/**
+	 * Checks if the Item is enchanted with a specific enchant ID
+	 *
+	 * @param Item $i
+	 * @param int $enchantId
+	 * @return \pocketmine\item\enchantment\Enchantment | null
+	 */
+	private function isEnchantedWith(Item $i, int $enchantId) {
 		if($i->getEnchantment($enchantId) !== null){
 			if($i->getEnchantment($enchantId)->getLevel() > 0){
 				return $i->getEnchantment($enchantId);
