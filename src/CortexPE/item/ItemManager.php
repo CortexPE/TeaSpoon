@@ -55,6 +55,7 @@ class ItemManager {
 		ItemFactory::registerItem(new ChorusFruit());
 		ItemFactory::registerItem(new FishingRod(), true);
 		ItemFactory::registerItem(new EyeOfEnder());
+		ItemFactory::registerItem(new SpawnEgg(), true);
 
 		Item::addCreativeItem(Item::get(Item::ENDER_PEARL));
 		Item::addCreativeItem(Item::get(Item::ENDER_CHEST));

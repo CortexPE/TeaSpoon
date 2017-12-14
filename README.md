@@ -22,7 +22,7 @@ Installation is easy, Just download the latest phar from my [Jenkins Build Serve
 ### MobAI:
 &nbsp;&nbsp;&nbsp;&nbsp;For now, you can use [PureEntitiesX](https://github.com/RevivalPMMP/PureEntitiesX) while disabling ```entities.register``` in TeaSpoon's Configuration File.
 ### Redstone System:
-&nbsp;&nbsp;&nbsp;&nbsp;Maybe soon. :wink:
+&nbsp;&nbsp;&nbsp;&nbsp;Being worked on... :wink:
 
 # Finished & Planned Features
  - Worlds
@@ -40,6 +40,7 @@ Installation is easy, Just download the latest phar from my [Jenkins Build Serve
    - [X] DragonEgg
    - [X] Beacon
    - [X] SlimeBlock
+   - [X] Vanilla-Like MobSpawner (Credits: [XenialDan](https://github.com/thebigsmileXD))
  - Items
    - [X] Vanilla Enchants (Progress: 80%)
    - [X] Armor Damage

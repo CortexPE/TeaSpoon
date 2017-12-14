@@ -39,9 +39,10 @@ use pocketmine\tile\Tile as PMTile;
 
 class Tile extends PMTile {
 	const BEACON = "Beacon";
+	const MOB_SPAWNER = "MobSpawner";
 
 	public static function init(){
 		self::registerTile(Beacon::class);
-		// self::registerTile(MobSpawner::class);
+		self::registerTile(MobSpawner::class);
 	}
 }

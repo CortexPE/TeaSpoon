@@ -1,93 +1,191 @@
 <?php
 
-/**
+/*
  *
- * MMP""MM""YMM               .M"""bgd
- * P'   MM   `7              ,MI    "Y
- *      MM  .gP"Ya   ,6"Yb.  `MMb.   `7MMpdMAo.  ,pW"Wq.   ,pW"Wq.`7MMpMMMb.
- *      MM ,M'   Yb 8)   MM    `YMMNq. MM   `Wb 6W'   `Wb 6W'   `Wb MM    MM
- *      MM 8M""""""  ,pm9MM  .     `MM MM    M8 8M     M8 8M     M8 MM    MM
- *      MM YM.    , 8M   MM  Mb     dM MM   ,AP YA.   ,A9 YA.   ,A9 MM    MM
- *    .JMML.`Mbmmd' `Moo9^Yo.P"Ybmmd"  MMbmmd'   `Ybmd9'   `Ybmd9'.JMML  JMML.
- *                                     MM
- *                                   .JMML.
- * This file is part of TeaSpoon.
+ *  ____            _        _   __  __ _                  __  __ ____
+ * |  _ \ ___   ___| | _____| |_|  \/  (_)_ __   ___      |  \/  |  _ \
+ * | |_) / _ \ / __| |/ / _ \ __| |\/| | | '_ \ / _ \_____| |\/| | |_) |
+ * |  __/ (_) | (__|   <  __/ |_| |  | | | | | |  __/_____| |  | |  __/
+ * |_|   \___/ \___|_|\_\___|\__|_|  |_|_|_| |_|\___|     |_|  |_|_|
  *
- * TeaSpoon is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TeaSpoon is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
+ * @author PocketMine Team
+ * @link http://www.pocketmine.net/
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with TeaSpoon.  If not, see <http://www.gnu.org/licenses/>.
+ * Credits to: https://github.com/thebigsmileXD/SimpleSpawner
+ * Modded to make it more vanilla-like and fix some logical bugs
  *
- * @author CortexPE
- * @link https://CortexPE.xyz
- *
- */
+*/
 
 declare(strict_types = 1);
 
 namespace CortexPE\block;
 
-use CortexPE\tile\Tile;
+use CortexPE\tile\MobSpawner;
 use pocketmine\block\Block;
-use pocketmine\block\MonsterSpawner as PMMonsterSpawner;
+use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\Player;
+use pocketmine\tile\Tile;
 
-class MonsterSpawner extends PMMonsterSpawner {
-	public function __construct($meta = 0){
-		parent::__construct($meta);
+class MonsterSpawner extends \pocketmine\block\MonsterSpawner {
+
+	const EID_TO_STR = [
+		10  => "Chicken",
+		11  => "Cow",
+		12  => "Pig",
+		13  => "Sheep",
+		14  => "Wolf",
+		15  => "Villager",
+		16  => "Mooshroom",
+		17  => "Squid",
+		18  => "Rabbit",
+		19  => "Bat",
+		20  => "Iron Golem",
+		21  => "Snow Golem",
+		22  => "Ocelot",
+		23  => "Horse",
+		24  => "Donkey",
+		25  => "Mule",
+		26  => "Skeleton Horse",
+		27  => "Zombie Horse",
+		28  => "Polar Bear",
+		29  => "Llama",
+		30  => "Parrot",
+		32  => "Zombie",
+		33  => "Creeper",
+		34  => "Skeleton",
+		35  => "Spider",
+		36  => "Zombie Pigman",
+		37  => "Slime",
+		38  => "Enderman",
+		39  => "Silverfish",
+		40  => "Cave Spider",
+		41  => "Ghast",
+		42  => "Magma Cube",
+		43  => "Blaze",
+		44  => "Zombie Villager",
+		45  => "Witch",
+		46  => "Stray",
+		47  => "Husk",
+		48  => "Wither Skeleton",
+		49  => "Guardian",
+		50  => "Elder Guardian",
+		51  => "NPC",
+		52  => "Wither",
+		53  => "Ender Dragon",
+		54  => "Shulker",
+		55  => "Endermite",
+		56  => "Agent",
+		57  => "Vindicator",
+		61  => "Armor Stand",
+		62  => "Tripod Camera",
+		63  => "Player",
+		64  => "Item",
+		65  => "TNT",
+		66  => "Falling Block",
+		67  => "Moving Block",
+		68  => "XP Bottle",
+		69  => "XP Orb",
+		70  => "Eye of Ender signal",
+		71  => "Endercrystal",
+		72  => "Fireworks Rocket",
+		76  => "Shulker Bullet",
+		77  => "Fishing Hook",
+		78  => "Chalkboard",
+		79  => "Dragon Fireball",
+		80  => "Arrow",
+		81  => "Snowball",
+		82  => "Egg",
+		83  => "Painting",
+		84  => "Minecart",
+		85  => "Large Fireball",
+		86  => "Splash Potion",
+		87  => "Ender Pearl",
+		88  => "Leash Knot",
+		89  => "Wither Skull",
+		90  => "Boat",
+		91  => "Wither Skull Dangerous",
+		93  => "Lightning Bolt",
+		94  => "Small Fireball",
+		95  => "Area Effect Cloud",
+		96  => "Hopper Minecart",
+		97  => "TNT Minecart",
+		98  => "Chest Minecart",
+		100 => "Command Block Minecart",
+		101 => "Lingering Potion",
+		102 => "Llama Spit",
+		103 => "evocation Fang",
+		104 => "Evocation Illager",
+		105 => "Vex",
+	];
+
+	private $entityid = 0;
+
+	public function __construct(){
 	}
 
-	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null): bool{
-		if($item->hasCustomBlockData()){
-			$this->getLevel()->setBlock($blockReplace, $this, true, true);
-			$nbt = new CompoundTag("", [
-				new StringTag("id", Tile::MOB_SPAWNER),
-				new IntTag("x", $blockReplace->x),
-				new IntTag("y", $blockReplace->y),
-				new IntTag("z", $blockReplace->z),
-				new IntTag("EntityId", 0),
-			]);
-
-			foreach($item->getCustomBlockData() as $key => $v){
-				$nbt->{$key} = $v;
-			}
-
-			//Tile::createTile(Tile::MOB_SPAWNER, $this->getLevel(), $nbt); // Just add the Tile @TheAz928 ^_^
-
-			return true;
-		}else{
-			return parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player);
-		}
+	public function canBeActivated(): bool{
+		return true;
 	}
 
 	public function onActivate(Item $item, Player $player = null): bool{
-		if($item->getId() == Item::SPAWN_EGG){
-			$nbt = new CompoundTag("", [
-				new StringTag("id", Tile::MOB_SPAWNER),
-				new IntTag("x", $this->x),
-				new IntTag("y", $this->y),
-				new IntTag("z", $this->z),
-				new IntTag("EntityId", $item->getDamage()),
-			]);
+		if($this->entityid === 0){
+			if($item->getId() === Item::SPAWN_EGG){
+				$tile = $this->getLevel()->getTile($this);
+				$this->entityid = $item->getDamage();
+				if(!$tile instanceof MobSpawner){
+					$nbt = new CompoundTag("", [
+						new StringTag(Tile::TAG_ID, "MobSpawner"),
+						new IntTag(Tile::TAG_X, (int) $this->x),
+						new IntTag(Tile::TAG_Y, (int) $this->y),
+						new IntTag(Tile::TAG_Z, (int) $this->z)
+					]);
+					$tile = Tile::createTile('MobSpawner', $this->getLevel(), $nbt);
+				}
+				$tile->setEntityId($this->entityid);
 
-			// Tile::createTile(Tile::MOB_SPAWNER, $this->getLevel(), $nbt);  // Just add the Tile @TheAz928 ^_^
-
-			return true;
+				return true;
+			}
 		}
 
 		return false;
+	}
+
+	public function place(Item $item, Block $block, Block $target, int $face, Vector3 $facePos, Player $player = null): bool{
+		$this->getLevel()->setBlock($block, $this, true, true);
+
+		//Tile::createTile('MobSpawner', $this->getLevel(), Tile::createNBT($this));
+		return true;
+	}
+
+	public function getDrops(Item $item): array{
+		$tile = $this->getLevel()->getTile($this);
+		if($tile instanceof MobSpawner){
+			if($item->hasEnchantment(Enchantment::SILK_TOUCH)){
+				return [
+					Item::get($this->getItemId(), (int)$tile->getEntityId(), 1, $this->getLevel()->getTile($this)->namedtag),
+				];
+			}
+		}
+
+		return [];
+	}
+
+	public function getName(): string{
+		if($this->entityid === 0) return "Monster Spawner";
+		else{
+			$name = ucfirst(self::EID_TO_STR[$this->entityid] ?? 'Monster') . ' Spawner';
+
+			return $name;
+		}
 	}
 }

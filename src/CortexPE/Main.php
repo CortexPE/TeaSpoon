@@ -263,4 +263,13 @@ Copyright (C) CortexPE ' . $yr . '
 			return null;
 		}
 	}
+
+	public function getSessionByName(string $name){ // why nawt?
+		foreach($this->sessions as $session){
+			if($session->getPlayer()->getName() == $name){
+				return $session;
+			}
+		}
+		return null;
+	}
 }
