@@ -70,8 +70,12 @@ class CheckPlayersTask extends PluginTask {
 			}
 
 			if($p->isOnFire()){
-				if(Utils::canSeeSky($p->getLevel(), $p) && Main::$weatherData[$p->getLevel()->getId()]->isRainy() || Main::$weatherData[$p->getLevel()->getId()]->isRainyThunder() && Utils::getDimension($p->getLevel()) == DimensionIds::NETHER){
-					$p->setOnFire(0);
+				if(Main::$weatherEnabled){
+					$weather = Main::$weatherData[$p->getLevel()->getId()];
+					$rainy = $weather->isRainy() || $weather->isRainyThunder();
+					if(Utils::canSeeSky($p->getLevel(), $p) && $rainy){
+						$p->setOnFire(0);
+					}
 				}
 			}
 		}
