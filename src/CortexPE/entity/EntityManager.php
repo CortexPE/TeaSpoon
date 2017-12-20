@@ -100,8 +100,10 @@ class EntityManager extends Entity {
 		self::registerEntity(LingeringPotion::class, false, ['LingeringPotion', 'minecraft:lingeringpotion']);
 		self::registerEntity(FishingHook::class, false, ['FishingHook', 'minecraft:fishinghook']);
 
+		// Other Entities ////
 		self::registerEntity(XPOrb::class, false, ['XPOrb', 'minecraft:xporb']);
 		self::registerEntity(AreaEffectCloud::class, false, ['AreaEffectCloud', 'minecraft:areaeffectcloud']);
 		self::registerEntity(Lightning::class, false, ['Lightning', 'minecraft:lightning']);
+		// LAGGY self::registerEntity(EndCrystal::class, false, ['EnderCrystal', 'minecraft:ender_crystal']);
 	}
 }

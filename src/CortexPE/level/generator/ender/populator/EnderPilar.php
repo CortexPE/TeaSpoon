@@ -1,5 +1,29 @@
 <?php
 
+/*
+ *
+ *  _____            _               _____
+ * / ____|          (_)             |  __ \
+ *| |  __  ___ _ __  _ ___ _   _ ___| |__) | __ ___
+ *| | |_ |/ _ \ '_ \| / __| | | / __|  ___/ '__/ _ \
+ *| |__| |  __/ | | | \__ \ |_| \__ \ |   | | | (_) |
+ * \_____|\___|_| |_|_|___/\__, |___/_|   |_|  \___/
+ *                         __/ |
+ *                        |___/
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * @author GenisysPro
+ * @link https://github.com/GenisysPro/GenisysPro
+ *
+ *
+*/
+
+declare(strict_types = 1);
+
 namespace CortexPE\level\generator\ender\populator;
 
 use pocketmine\block\Block;
@@ -23,7 +47,7 @@ class EnderPilar extends Populator {
 	}
 
 	public function populate(ChunkManager $level, $chunkX, $chunkZ, Random $random){
-		if(mt_rand(0, 100) < 10){
+		if(mt_rand(0, 100) <= 10){
 			$this->level = $level;
 			$amount = $random->nextRange(0, $this->randomAmount + 1) + $this->baseAmount;
 			for($i = 0; $i < $amount; ++$i){
@@ -36,7 +60,7 @@ class EnderPilar extends Populator {
 						for($r = 0.5; $r < 5; $r += 0.5){
 							$nd = 360 / (2 * pi() * $r);
 							for($d = 0; $d < 360; $d += $nd){
-								$level->setBlockIdAt($x + (cos(deg2rad($d)) * $r), $ny, $z + (sin(deg2rad($d)) * $r), Block::OBSIDIAN);
+								$level->setBlockIdAt(intval($x + (cos(deg2rad($d)) * $r)),intval($ny),intval($z + (sin(deg2rad($d)) * $r)), Block::OBSIDIAN);
 							}
 						}
 					}

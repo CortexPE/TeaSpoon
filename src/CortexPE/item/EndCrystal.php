@@ -33,42 +33,34 @@
 
 declare(strict_types = 1);
 
-namespace CortexPE\entity\projectile;
+namespace CortexPE\item;
 
-use CortexPE\item\Potion;
-use CortexPE\level\particle\SpellParticle;
-use pocketmine\entity\{
-	Entity, Living, projectile\Throwable
-};
+use pocketmine\block\Block;
+use pocketmine\entity\Entity;
+use pocketmine\item\Item;
+use pocketmine\level\Level;
+use pocketmine\math\Vector3;
+use pocketmine\Player;
 
-class SplashPotion extends Throwable {
+class EndCrystal extends Item {
+	public function __construct($meta = 0, $count = 1){
+		parent::__construct(Item::END_CRYSTAL, $meta, "Ender Crystal");
+	}
 
-	const NETWORK_ID = self::SPLASH_POTION;
+	public function getMaxStackSize(): int{
+		return 64;
+	}
 
-	public function onUpdate(int $currentTick): bool{
-		if($this->isCollided || $this->age > 1200){
-			$color = Potion::getColor($this->getPotionId());
-			$this->getLevel()->addParticle(new SpellParticle($this, $color->getR(), $color->getG(), $color->getB()));
-			$radius = 6;
-			foreach($this->getLevel()->getNearbyEntities($this->getBoundingBox()->grow($radius, $radius, $radius)) as $p){
-				foreach(Potion::getEffectsById($this->getPotionId()) as $effect){
-					if($p instanceof Living){
-						$p->addEffect($effect);
-					}
-				}
+	public function onActivate(Level $level, Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector): bool{
+		$nbt = Entity::createBaseNBT($blockClicked);
+		$crystal = Entity::createEntity("EnderCrystal", $player->getLevel(), $nbt);
+		if($crystal instanceof \CortexPE\entity\EndCrystal){
+			$crystal->spawnToAll();
+			if($player->isSurvival()){
+				--$this->count;
 			}
-			$this->flagForDespawn();
 		}
 
-		return parent::onUpdate($currentTick);
-	}
-
-	public function getPotionId(): int{
-		return (int)$this->namedtag["PotionId"];
-	}
-
-	public function onCollideWithEntity(Entity $entity){
-		$this->isCollided = true;
-		return;
+		return true;
 	}
 }

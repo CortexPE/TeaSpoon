@@ -33,42 +33,43 @@
 
 declare(strict_types = 1);
 
-namespace CortexPE\entity\projectile;
+namespace CortexPE\entity;
 
-use CortexPE\item\Potion;
-use CortexPE\level\particle\SpellParticle;
-use pocketmine\entity\{
-	Entity, Living, projectile\Throwable
-};
+use pocketmine\entity\Entity;
+use pocketmine\level\Level;
+use pocketmine\math\Vector3;
+use pocketmine\nbt\tag\ByteTag;
+use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\nbt\tag\DoubleTag;
+use pocketmine\nbt\tag\ListTag;
 
-class SplashPotion extends Throwable {
+class EndCrystal extends Entity {
+	const NETWORK_ID = self::ENDER_CRYSTAL;
 
-	const NETWORK_ID = self::SPLASH_POTION;
-
-	public function onUpdate(int $currentTick): bool{
-		if($this->isCollided || $this->age > 1200){
-			$color = Potion::getColor($this->getPotionId());
-			$this->getLevel()->addParticle(new SpellParticle($this, $color->getR(), $color->getG(), $color->getB()));
-			$radius = 6;
-			foreach($this->getLevel()->getNearbyEntities($this->getBoundingBox()->grow($radius, $radius, $radius)) as $p){
-				foreach(Potion::getEffectsById($this->getPotionId()) as $effect){
-					if($p instanceof Living){
-						$p->addEffect($effect);
-					}
-				}
-			}
-			$this->flagForDespawn();
+	public function __construct(Level $level, CompoundTag $nbt){
+		if(!isset($nbt->ShowBottom)){
+			$nbt->ShowBottom = new ByteTag("ShowBottom", 0);
 		}
+		parent::__construct($level, $nbt);
 
-		return parent::onUpdate($currentTick);
+		// TODO: The data flag for showing bottom & beam? maybe... I still haven't decompiled the MCPE Source code... takes a long time.
 	}
 
-	public function getPotionId(): int{
-		return (int)$this->namedtag["PotionId"];
+	public function isShowingBottom(): bool{
+		return boolval($this->namedtag["ShowBottom"]);
 	}
 
-	public function onCollideWithEntity(Entity $entity){
-		$this->isCollided = true;
-		return;
+	public function setShowingBottom(bool $value){
+		$this->namedtag->ShowBottom = new ByteTag("ShowBottom", $value ? 1 : 0);
 	}
+
+	public function setBeamTarget(Vector3 $pos){
+		$this->namedtag->BeamTarget = new ListTag("BeamTarget", [
+			new DoubleTag("", $pos->getX()),
+			new DoubleTag("", $pos->getY()),
+			new DoubleTag("", $pos->getZ()),
+		]);
+	}
+
+	// explosions are handled via EventListener...
 }

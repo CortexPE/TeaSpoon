@@ -31,6 +31,7 @@ use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\EntityEventPacket;
 use pocketmine\Player;
 use pocketmine\Server;
+use pocketmine\utils\Color;
 
 class Potion extends Item {
 
@@ -298,14 +299,14 @@ class Potion extends Item {
 		return self::$POTION_NAMES[$meta] ?? "Potion";
 	}
 
-	public static function getColor(int $meta){
+	public static function getColor(int $meta) : Color{
 		$effect = Effect::getEffect(self::getEffectId($meta));
 
 		if($effect === null){
-			return [46, 82, 153]; // Default to Blue
+			return new Color(46, 82, 153); // Default to Blue
 		}
 
-		return $effect->getColor() ?? [0, 0, 0];
+		return $effect->getColor() ?? new Color(0, 0, 0); // effect has no color whatsoever
 	}
 
 	public static function getEffectId(int $meta): int{
@@ -414,9 +415,9 @@ class Potion extends Item {
 		 *      ]
 		 * ]
 		 */
-		foreach(self::$POTION_EFFECTS[$this->meta] as $effs){ // $effs is an array.
-			if(count($effs ?? []) === 3){ // Count
-				if($effs[2] < 2147483646){ // So they can't make potions higher than the limit
+		foreach(self::$POTION_EFFECTS[$this->meta] as $effs){ // $effs is an array of effects.
+			if(count($effs ?? []) === 3){ // if effect array is valid
+				if($effs[2] < 256){ // So they can't make potions higher than the limit
 					$effects[] = Effect::getEffect($effs[0])->setDuration($effs[1])->setAmplifier($effs[2]);
 				}
 			}

@@ -38,7 +38,6 @@ namespace CortexPE;
 use CortexPE\block\{
 	EndPortal, Portal
 };
-use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
 use pocketmine\entity\Entity;
 use pocketmine\item\ItemFactory;
@@ -47,6 +46,7 @@ use pocketmine\math\Math;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player as PMPlayer;
+use pocketmine\Server as PMServer;
 
 class Utils {
 
@@ -69,7 +69,7 @@ class Utils {
 
 	public static function checkSpoon(){
 		return (
-			Server::getInstance()->getName() !== "PocketMine-MP" ||
+			PMServer::getInstance()->getName() !== "PocketMine-MP" ||
 			!class_exists(BlockFactory::class) ||
 			!class_exists(ItemFactory::class) ||
 			class_exists("pocketmine\\network\\protocol\\Info")

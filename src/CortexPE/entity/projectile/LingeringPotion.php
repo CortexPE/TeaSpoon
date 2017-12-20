@@ -79,8 +79,7 @@ class LingeringPotion extends Throwable {
 			if($aec instanceof Entity){
 				$aec->spawnToAll();
 			}
-			//$this->close();
-			//$this->kill();
+			$this->flagForDespawn();
 		}
 
 		return parent::onUpdate($currentTick);

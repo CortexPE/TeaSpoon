@@ -35,11 +35,11 @@ declare(strict_types = 1);
 
 namespace CortexPE;
 
-use pocketmine\Server as PMServer;
+//use pocketmine\Server as PMServer;
 
-class Server extends PMServer {
-	// Might be needed soon but for now, It's here just to state that the server has started... (cuz You'll never know...)
-
+class Server {
 	/** @var bool */
 	public static $loaded = false;
+	/** @var bool */
+	public static $isSpoon = false;
 }

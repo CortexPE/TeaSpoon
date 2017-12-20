@@ -25,15 +25,18 @@ namespace CortexPE\entity\projectile;
 
 use pocketmine\block\Block;
 use pocketmine\entity\projectile\Throwable;
+use pocketmine\item\Item;
 use pocketmine\level\particle\DestroyBlockParticle;
+use pocketmine\level\particle\ItemBreakParticle;
 
 class Snowball extends Throwable {
 	const NETWORK_ID = self::SNOWBALL;
 
 	public function onUpdate(int $currentTick): bool{
 		if($this->isCollided || $this->age > 1200){
-			$this->getLevel()->addParticle(new DestroyBlockParticle($this, Block::get(Block::SNOW))); // Realistic aye?
-			$this->close();
+			$this->getLevel()->addParticle(new ItemBreakParticle($this->asVector3(), Item::get(Item::SNOWBALL)));
+			$this->getLevel()->addParticle(new DestroyBlockParticle($this->asVector3(), Block::get(Block::SNOW))); // Realistic aye?
+			$this->flagForDespawn();
 		}
 
 		return parent::onUpdate($currentTick);

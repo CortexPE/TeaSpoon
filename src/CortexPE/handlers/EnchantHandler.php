@@ -81,6 +81,9 @@ class EnchantHandler implements Listener {
 		}
 		if($ev instanceof EntityDamageByEntityEvent){ // TODO: ADD MORE ENCHANTS
 			$d = $ev->getDamager();
+			if($d === null){
+				return;
+			}
 			if($d instanceof PMPlayer && $e instanceof Living){
 				$i = $d->getInventory()->getItemInHand();
 				if($i->hasEnchantments()){

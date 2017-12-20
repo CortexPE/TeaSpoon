@@ -77,7 +77,7 @@ class PacketHandler implements Listener {
 						break;
 
 					case PlayerActionPacket::ACTION_DIMENSION_CHANGE_REQUEST:
-						$p->teleport(Server::getInstance()->getDefaultLevel()->getSafeSpawn());
+						$pk->action = PlayerActionPacket::ACTION_RESPAWN; // redirect to respawn action so that PMMP would handle it as a respawn
 						break;
 
 					case PlayerActionPacket::ACTION_START_GLIDE:
@@ -93,19 +93,6 @@ class PacketHandler implements Listener {
 						$session->damageElytra();
 						break;
 				}
-		}
-		if(Main::$debug){
-			$name = (new \ReflectionClass($pk))->getShortName();
-			//$pinfo = $ev->getPlayer()->getName() ?? $ev->getPlayer()->getAddress() . ":" . $ev->getPlayer()->getPort();
-			//$this->plugin->getLogger()->info("RECEIVE " . $name . " from " . $pinfo);
-			$pk = $ev->getPacket();
-			$pk->encode(); //other plugins might have changed the packet
-			$header = "[Client -> Server 0x" . sprintf("%02d", dechex($pk->pid())) . "] " . $name . " (length " . strlen($pk->buffer) . ")";
-			/*$binary = "";
-			$ascii = preg_replace('#([^\x20-\x7E])#', ".", $pk->buffer);
-			$binary .= $ascii . PHP_EOL;*/
-			$binary = print_r($pk, true);
-			file_put_contents($this->plugin->getDataFolder() . "packetlog.txt", $header . PHP_EOL . $binary . PHP_EOL . PHP_EOL . PHP_EOL, FILE_APPEND | LOCK_EX);
 		}
 	}
 
@@ -127,32 +114,15 @@ class PacketHandler implements Listener {
 			case ($pk instanceof PlayerListPacket):
 				if($pk->type == PlayerListPacket::TYPE_ADD){
 					foreach($pk->entries as $entry){
-						if($p->getXuid() !== null){
-							if($p->getXuid() != ""){
-								$entry->xboxUserId = $p->getXuid();
+						$player = Server::getInstance()->getPlayer($entry->username);
+						if($player->getXuid() !== null){ // is xbox logged in but causes errors if xuid is null (BLAME PMMP)
+							if($player->getXuid() != ""){
+								$entry->xboxUserId = $player->getXuid();
 							}
 						}
 					}
 				}
 				break;
-		}
-		if(Main::$debug){ // Freezes
-			if($ev->getPacket() instanceof BatchPacket){
-				return;
-			}
-			$name = (new \ReflectionClass($pk))->getShortName();
-			//$pinfo = $ev->getPlayer()->getName() ?? $ev->getPlayer()->getAddress() . ":" . $ev->getPlayer()->getPort();
-			//$this->plugin->getLogger()->info("SEND " . $name . " to " . $pinfo);
-
-			$pk->encode(); //needed :(
-			$header = "[Server -> Client 0x" . sprintf("%02d", dechex($pk->pid())) . "] " . $name . " (length " . strlen($pk->buffer) . ")";
-
-			/*$binary = "";
-				$ascii = preg_replace('#([^\x20-\x7E])#', ".", $packet->buffer);
-				$binary .= $ascii . PHP_EOL;*/
-
-			$binary = print_r($pk, true);
-			file_put_contents($this->plugin->getDataFolder() . "packetlog.txt", $header . PHP_EOL . $binary . PHP_EOL . PHP_EOL . PHP_EOL, FILE_APPEND | LOCK_EX);
 		}
 	}
 }

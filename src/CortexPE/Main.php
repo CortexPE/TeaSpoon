@@ -60,8 +60,9 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 
 class Main extends PluginBase {
-const CONFIG_VERSION = 10;
-// Use static variables if it's going to be accessed by other Classes :)
+
+	const CONFIG_VERSION = 10;
+
 	/** @var Config */
 	public static $config;
 	/** @var string */
@@ -104,13 +105,8 @@ const CONFIG_VERSION = 10;
 	public static $debug = false;
 	/** @var Main */
 	private static $instance;
-	private $splashes = [
-		'Low-Calorie blend', "Don't panic! Have a cup of tea", "In England, Everything stops for tea", "ENGLAND IS MY CITY (not really)", "POWERED By Dubstep", "A E S T H E T H I C S", "WHO PUT THAT HERE?", "#BlameShoghi", "ERMAHGERD", "Written in PHP!", "This is a splash text.", "YOUR NAME", "ONE LOVE", "I KILLED THE SHERIFF... But not the deputy.", "Oops.", "rip.", "Fixed Typo!", "Fixed Typo! 2", "Fixed Typo! 2 FINAL", "Fixed Typo! 2 FINALFINAL", "Fixed Typo! 2 FINALFINALFINAL", "This splash text is a joke.", "Who made this?!", "How may I help you?", "asymmetricalacirtemmysa!", "SUPERCALIFRAGILISTICEXPIALIDOCIOUS!", "Well this exists.", "IE EXISTS TO DOWNLOAD CHROME!", "I'm sorry Dave. I'm afraid I can't do that.", "I might have killed it.", "PUNCHING TREES!", "Bug Fix", "Bug Fix 2", "Bug Fix 2 FINAL", "Bug Fix 2 FINALFINAL", "Bug Fix 2 FINALFINANFINAL", "We have VCS Systems. :P", "We have *crappy* VCS Systems. :P", ":shrug:", "Also try V A P O R W A V E", "Or S I M P S O N W A V E idk xD",
-		"Fukkit FTW!!!",
-		// Add more splashes fur fun. xD
-	];
 	/** @var Session[] */
-	private $sessions = []; // to avoid moving up and down just to update config version xD
+	private $sessions = [];
 
 	public static function getInstance(): Main{
 		return self::$instance;
@@ -128,8 +124,8 @@ const CONFIG_VERSION = 10;
 	public function onLoad(){
 		if(Utils::checkSpoon()){
 			$this->getLogger()->error("This plugin is for PMMP only. It is meant to extend PMMP's functionality.");
-			$this->getLogger()->error("The plugin will now disable itself to prevent any interference with the existing Spoon features.");
-			$this->getServer()->getPluginManager()->disablePlugin($this);
+			$this->getLogger()->error("The plugin will disable itself after being later enabled by the server to prevent any interference with the existing Spoon features.");
+			Server::$isSpoon = true;
 		}
 		$this->getLogger()->info("Loading configuration...");
 		if(!file_exists($this->getDataFolder())){
@@ -156,10 +152,7 @@ const CONFIG_VERSION = 10;
 		self::$debug = self::$config->get("debug", false); // intentionally don't add this on the config...
 
 		if(self::$debug && !Utils::isPhared()){
-			$this->getLogger()->warning("Debug Mode is enabled, this might cause performance issues.");
-			if(file_exists(($fn = $this->getDataFolder() . DIRECTORY_SEPARATOR . "packetlog.txt"))){
-				$this->getServer()->getScheduler()->scheduleAsyncTask(new AsynchronousEvaluator('unlink("' . $fn . '");'));
-			}
+			$this->getLogger()->warning("Debug Mode is enabled!");
 			$this->getServer()->getLogger()->setLogDebug(true);
 			$cm = $this->getServer()->getCommandMap();
 			if($cm->getCommand("status") === null){
@@ -172,6 +165,7 @@ const CONFIG_VERSION = 10;
 				$cm->register("pocketmine", new DumpMemoryCommand("dumpmemory"));
 			}
 		}elseif(Utils::isPhared()){
+			$this->getLogger()->warning("Debug Mode is enabled but the plugin is in PHAR format... Debug mode will be disabled as an assumption that you'll be using the plugin for production purposes.");
 			self::$debug = false;
 		}
 
@@ -179,7 +173,10 @@ const CONFIG_VERSION = 10;
 	}
 
 	public function onEnable(){
-		$rm = $this->splashes[array_rand($this->splashes)];
+		if(Server::$isSpoon){
+			$this->setEnabled(false);
+			return;
+		}
 		$yr = 2017 . ((2017 != date('Y')) ? '-' . date('Y') : '');
 		$stms = TextFormat::DARK_GREEN . '
 		
@@ -191,7 +188,7 @@ P\'   MM   `7             ' . TextFormat::GREEN . ' ,MI    "Y                   
      MM YM.    , 8M   MM  ' . TextFormat::GREEN . 'Mb     dM MM   ,AP YA.   ,A9 YA.   ,A9 MM    MM  ' . TextFormat::DARK_GREEN . '
    .JMML.`Mbmmd\' `Moo9^Yo.' . TextFormat::GREEN . 'P"Ybmmd"  MMbmmd\'   `Ybmd9\'   `Ybmd9\'.JMML  JMML.' . TextFormat::GREEN . '
                                     MM                                     
-                                  .JMML.  ' . TextFormat::YELLOW . $rm . TextFormat::RESET . '
+                                  .JMML.  ' . TextFormat::YELLOW . Splash::getRandomSplash() . TextFormat::RESET . '
 Copyright (C) CortexPE ' . $yr . '
 ';
 		$this->getLogger()->info("Loading..." . $stms);

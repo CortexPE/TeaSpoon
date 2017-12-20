@@ -31,7 +31,7 @@ use CortexPE\level\generator\{
 };
 use pocketmine\block\Block;
 use pocketmine\level\{
-	ChunkManager, generator\Generator, generator\noise\Simplex, generator\populator\Populator, Level
+	ChunkManager, generator\Generator, generator\noise\Simplex, generator\populator\Populator
 };
 use pocketmine\math\Vector3 as Vector3;
 use pocketmine\utils\Random;
@@ -118,13 +118,6 @@ class Ender extends Generator {
 
 				]);
 				$chunk->setBiomeId($x, $z, $biome->getId());
-				$color = [0, 0, 0];
-				$bColor = 2;
-				$color[0] += (($bColor >> 16) ** 2);
-				$color[1] += ((($bColor >> 8) & 0xff) ** 2);
-				$color[2] += (($bColor & 0xff) ** 2);
-
-				//$chunk->setBiomeColor($x, $z, $color[0], $color[1], $color[2]);
 
 				for($y = 0; $y < 128; ++$y){
 
@@ -158,29 +151,6 @@ class Ender extends Generator {
 	}
 
 	public function getSpawn(): Vector3{
-		return $this->findSafeArea();
+		return new Vector3(127.5,128,127.5);
 	}
-
-	private function findSafeArea(): Vector3{
-		$radius = 500;
-		$minRadius = 50;
-		$pos = null;
-		$found = false;
-		$offset = 0;
-		do{
-			$x = mt_rand($minRadius, $radius) + $offset;
-			$z = mt_rand($minRadius, $radius) + $offset;
-			for($y = 0; $y < Level::Y_MAX; $y++){
-				if($this->level->getBlockIdAt($x, $y - 1, $z) != 0 && $this->level->getBlockIdAt($x, $y, $z) == 0 && $this->level->getBlockIdAt($x, $y + 1, $z) == 0){
-					$pos = new Vector3($x, $y, $z);
-					$found = true;
-				}
-			}
-
-			$offset++;
-		}while(!$found);
-
-		return $pos;
-	}
-
 }
