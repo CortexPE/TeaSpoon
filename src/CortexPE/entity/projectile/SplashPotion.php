@@ -41,6 +41,8 @@ use pocketmine\entity\{
 	Entity, Living, projectile\Throwable
 };
 
+use pocketmine\utils\Color;
+
 class SplashPotion extends Throwable {
 
 	const NETWORK_ID = self::SPLASH_POTION;
@@ -48,7 +50,14 @@ class SplashPotion extends Throwable {
 	public function onUpdate(int $currentTick): bool{
 		if($this->isCollided || $this->age > 1200){
 			$color = Potion::getColor($this->getPotionId());
-			$this->getLevel()->addParticle(new SpellParticle($this, $color[0], $color[1], $color[2]));
+			if(is_array($color)){
+			  $this->getLevel()->addParticle(new SpellParticle($this, $color[0], $color[1], $color[2]));
+			}elseif($color instanceof Color){
+			  $this->getLevel()->addParticle(new SpellParticle($this, $color->getR(), $color->getG(), $color->getB()));
+			}else{
+			  var_dump($color);
+			  throw new \Exception("Unknown color returned, see var dump and report it");
+			}
 			$radius = 6;
 			foreach($this->getLevel()->getNearbyEntities($this->getBoundingBox()->grow($radius, $radius, $radius)) as $p){
 				foreach(Potion::getEffectsById($this->getPotionId()) as $effect){
