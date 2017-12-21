@@ -37,7 +37,7 @@ namespace CortexPE\commands;
 
 
 use CortexPE\Main;
-use CortexPE\Server;
+use pocketmine\Server as PMServer;
 use pocketmine\command\CommandSender;
 use pocketmine\command\defaults\VanillaCommand;
 use pocketmine\network\mcpe\protocol\ProtocolInfo;
@@ -77,8 +77,8 @@ class BugReportCommand extends VanillaCommand {
 		if(Main::$debug && file_exists(Main::getInstance()->getDataFolder() . "packetlog.txt")){
 			$str .= "BASE64 Encoded PacketLog: " . $this->encodeFile(Main::getInstance()->getDataFolder() . "packetlog.txt") . "\n";
 		}
-		$str .= "Base64 Encoded PocketMine Configuration: " . $this->encodeFile(Server::getInstance()->getDataPath() . "pocketmine.yml") . "\n";
-		$str .= "Base64 Encoded Server Properties: " . $this->encodeFile(Server::getInstance()->getDataPath() . "server.properties") . "\n";
+		$str .= "Base64 Encoded PocketMine Configuration: " . $this->encodeFile(PMServer::getInstance()->getDataPath() . "pocketmine.yml") . "\n";
+		$str .= "Base64 Encoded Server Properties: " . $this->encodeFile(PMServer::getInstance()->getDataPath() . "server.properties") . "\n";
 
 		if(!is_dir(Main::getInstance()->getDataFolder() . "dumps")){
 			mkdir(Main::getInstance()->getDataFolder() . "dumps");
