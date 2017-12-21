@@ -36,7 +36,6 @@ declare(strict_types = 1);
 namespace CortexPE\block;
 
 use CortexPE\Main;
-use CortexPE\Server;
 use pocketmine\block\Lava as PMLava;
 use pocketmine\entity\Entity;
 use pocketmine\event\entity\EntityCombustByBlockEvent;
@@ -57,8 +56,7 @@ class Lava extends PMLava {
 			$session->useArmors(1);
 		}
 
-		$ev = new EntityCombustByBlockEvent($this, $entity, 15);
-		$this->getServer()->getPluginManager()->callEvent($ev);
+		(new EntityCombustByBlockEvent($this, $entity, 15))->call(); // this is better ;)
 		if(!$ev->isCancelled()){
 			$entity->setOnFire($ev->getDuration());
 		}
