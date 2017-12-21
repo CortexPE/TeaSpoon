@@ -42,6 +42,7 @@ use pocketmine\event\entity\EntityCombustByBlockEvent;
 use pocketmine\event\entity\EntityDamageByBlockEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\Player;
+use pocketmine\Server as PMServer;
 
 class Lava extends PMLava {
 
@@ -56,7 +57,8 @@ class Lava extends PMLava {
 			$session->useArmors(1);
 		}
 
-		(new EntityCombustByBlockEvent($this, $entity, 15))->call(); // this is better ;)
+		$ev = new EntityCombustByBlockEvent($this, $entity, 15);
+		PMServer::getInstance()->getPluginManager()->callEvent($ev); // wait wot? what happened to $ev->call(); ?
 		if(!$ev->isCancelled()){
 			$entity->setOnFire($ev->getDuration());
 		}

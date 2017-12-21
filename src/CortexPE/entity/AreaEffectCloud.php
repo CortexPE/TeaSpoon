@@ -31,6 +31,7 @@ use pocketmine\math\AxisAlignedBB;
 use pocketmine\nbt\tag\FloatTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\ShortTag;
+use pocketmine\utils\Color;
 
 class AreaEffectCloud extends Entity {
 	const NETWORK_ID = self::AREA_EFFECT_CLOUD;
@@ -124,6 +125,7 @@ class AreaEffectCloud extends Entity {
 			$this->close();
 			$hasUpdate = true;
 		}else{
+			/** @var Effect[] $effects */
 			$effects = Potion::getEffectsById($this->PotionId);
 			if(count($effects) <= 0){
 				$this->close();
@@ -131,9 +133,19 @@ class AreaEffectCloud extends Entity {
 
 				return true;
 			}
-			/** @var Effect[] $effects */
-			$firsteffect = $effects[0]; //Todo multiple effects
-			$color = $firsteffect->getColor();
+
+			// Multi effect color... Based off of Color::mix()
+			$count = $r = $g = $b = $a = 0;
+			foreach($effects as $effect){
+				$ecol = $effect->getColor();
+				$r += $ecol->getR();
+				$g += $ecol->getG();
+				$b += $ecol->getB();
+				$a += $ecol->getA();
+				$count++;
+			}
+			$color = new Color((int) ($r / $count), (int) ($g / $count), (int) ($b / $count), (int) ($a / $count));
+
 			$this->setDataProperty(self::DATA_POTION_COLOR, self::DATA_TYPE_INT, ((255 & 0xff) << 24) | (($color->getR() & 0xff) << 16) | (($color->getG() & 0xff) << 8) | ($color->getB() & 0xff));
 			$this->Radius += $this->RadiusPerTick;
 			$this->setDataProperty(self::DATA_BOUNDING_BOX_WIDTH, self::DATA_TYPE_FLOAT, $this->Radius * 2);
