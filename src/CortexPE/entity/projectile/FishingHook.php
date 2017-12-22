@@ -68,6 +68,13 @@ class FishingHook extends Projectile {
 			$this->keepMovement = false;
 			$hasUpdate = true;
 		}
+		if($this->hadCollision){
+			$pk = new EntityEventPacket();
+			$pk->entityRuntimeId = $this->getId();
+			$pk->event = EntityEventPacket::FISH_HOOK_POSITION;
+			PMServer::getInstance()->broadcastPacket($this->getLevel()->getPlayers(), $pk);
+		}
+
 		if($this->attractTimer === 0 && mt_rand(0, 100) <= 30){
 			$this->coughtTimer = mt_rand(5, 10) * 20;
 			$this->attractTimer = mt_rand(30, 100) * 20;

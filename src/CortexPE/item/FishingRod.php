@@ -84,11 +84,6 @@ class FishingRod extends ProjectileItem {
 
 			$projectile->attractTimer = mt_rand(30, 100) * 20;
 
-			$pk = new EntityEventPacket();
-			$pk->entityRuntimeId = $projectile->getId();
-			$pk->event = EntityEventPacket::FISH_HOOK_POSITION;
-			$player->getServer()->broadcastPacket($player->getLevel()->getPlayers(), $pk);
-
 			$session->fishingHook = $projectile;
 			$session->fishing = true;
 		}else{
@@ -111,12 +106,15 @@ class FishingRod extends ProjectileItem {
 
 			$session->fishingHook = null;
 			$session->fishing = false;
+
+			if($player->isSurvival()){
+				$this->meta++;
+				if($this->meta >= 65){
+					$this->setCount(0);
+				}
+			}
 		}
 
-
-		if($player->isSurvival()){
-			$this->meta++;
-		}
 		return true;
 	}
 
