@@ -38,6 +38,7 @@ namespace CortexPE\item;
 use CortexPE\entity\projectile\FishingHook;
 use CortexPE\Main;
 use CortexPE\utils\Xp;
+use pocketmine\block\Block;
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\entity\ProjectileLaunchEvent;
@@ -94,6 +95,17 @@ class FishingRod extends ProjectileItem {
 				$pk->event = EntityEventPacket::FISH_HOOK_TEASE;
 				$player->getServer()->broadcastPacket($player->getLevel()->getPlayers(), $pk);
 
+				if($player->isSurvival()){
+					if($player->getLevel()->getBlock($projectile->asVector3())->getId() == Block::WATER || $player->getLevel()->getBlock($projectile)->getId() == Block::WATER){
+						$this->meta += 5;
+					} else {
+						$this->meta += mt_rand(10,15); // TODO: Implement entity / block collision properly
+					}
+					if($this->meta >= 355){ // TODO: Know why tf it gets removed early at 65 (as the wiki says)
+						$this->setCount(0);
+					}
+				}
+
 				if($projectile->coughtTimer > 0){
 					$fishes = [Item::RAW_FISH, Item::RAW_SALMON, Item::CLOWNFISH, Item::PUFFERFISH];
 					$item = Item::get($fishes[array_rand($fishes)]);
@@ -106,13 +118,6 @@ class FishingRod extends ProjectileItem {
 
 			$session->fishingHook = null;
 			$session->fishing = false;
-
-			if($player->isSurvival()){
-				$this->meta++;
-				if($this->meta >= 65){
-					$this->setCount(0);
-				}
-			}
 		}
 
 		return true;
