@@ -36,7 +36,9 @@ declare(strict_types = 1);
 namespace CortexPE\item;
 
 use CortexPE\entity\projectile\FishingHook;
+use CortexPE\item\enchantment\Enchantment;
 use CortexPE\Main;
+use CortexPE\utils\FishingRodLootTable;
 use CortexPE\utils\Xp;
 use pocketmine\block\Block;
 use pocketmine\entity\Entity;
@@ -83,7 +85,25 @@ class FishingRod extends ProjectileItem {
 				}
 			}
 
-			$projectile->attractTimer = mt_rand(30, 100) * 20;
+			$weather = Main::$weatherData[$player->getLevel()->getId()];
+			if(($weather->isRainy() || $weather->isRainyThunder())){
+				$rand = mt_rand(15, 50);
+			} else {
+				$rand = mt_rand(30, 100);
+			}
+			if($this->hasEnchantments()){
+				$divisor = 0;
+				foreach($this->getEnchantments() as $enchantment){
+					switch($enchantment->getId()){
+						case Enchantment::LURE:
+							$divisor += $enchantment->getLevel() * 0.50;
+							break;
+					}
+				}
+				$rand = intval(round($rand / $divisor)) + 3;
+			}
+
+			$projectile->attractTimer = $rand * 20;
 
 			$session->fishingHook = $projectile;
 			$session->fishing = true;
@@ -107,11 +127,22 @@ class FishingRod extends ProjectileItem {
 				}
 
 				if($projectile->coughtTimer > 0){
-					$fishes = [Item::RAW_FISH, Item::RAW_SALMON, Item::CLOWNFISH, Item::PUFFERFISH];
-					$item = Item::get($fishes[array_rand($fishes)]);
+					$weather = Main::$weatherData[$player->getLevel()->getId()];
+					$lvl = 0;
+					if($this->hasEnchantments()){
+						if($this->hasEnchantment(Enchantment::LUCK_OF_THE_SEA)){
+							$lvl = $this->getEnchantment(Enchantment::LUCK_OF_THE_SEA)->getLevel();
+						}
+					}
+					if(($weather->isRainy() || $weather->isRainyThunder()) && $lvl == 0){
+						$lvl = 2;
+					} else {
+						$lvl = 0;
+					}
+					$item = FishingRodLootTable::getRandom($lvl);
 					$player->getInventory()->addItem($item);
 					Xp::addXp($player, mt_rand(1, 6));
-				} // TODO: Add Junk items
+				}
 
 				$projectile->flagForDespawn();
 			}

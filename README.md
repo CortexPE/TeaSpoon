@@ -41,8 +41,9 @@ Installation is easy, Just download the latest phar from my [Jenkins Build Serve
    - [X] Beacon
    - [X] SlimeBlock
    - [X] Vanilla-Like MobSpawner (Credits: [XenialDan](https://github.com/thebigsmileXD))
+   - [X] Working Shulker Boxes
  - Items
-   - [X] Vanilla Enchants (Progress: 80%)
+   - [X] Vanilla Enchants (Progress: 95% | Credits to [TheAz928](https://github.com/TheAz928) for some of the values)
    - [X] Armor Damage
    - [X] Splash Potions
    - [X] FireCharge
@@ -51,7 +52,7 @@ Installation is easy, Just download the latest phar from my [Jenkins Build Serve
    - [X] Firework Rocket (as Elytra Booster)
    - [X] Lingering Potions (Credits: [ClearSkyTeam](https://github.com/ClearSkyTeam))
    - [X] Chorus Fruit
-   - [X] FishingHook (Fishing System W.I.P.)
+   - [X] FishingRod (Fully working Fishing System)
  - Entities & Mobs
    - [X] XP Drops (Drop amounts needs to be improved)
    - [X] Projectiles

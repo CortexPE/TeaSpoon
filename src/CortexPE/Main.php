@@ -49,6 +49,7 @@ use CortexPE\task\AsynchronousEvaluator;
 use CortexPE\task\CheckPlayersTask;
 use CortexPE\task\TickLevelsTask;
 use CortexPE\tile\Tile;
+use CortexPE\utils\FishingRodLootTable;
 use CortexPE\utils\TextFormat;
 use pocketmine\command\CommandSender;
 use pocketmine\command\defaults\DumpMemoryCommand;
@@ -107,6 +108,8 @@ class Main extends PluginBase {
 	private static $instance;
 	/** @var Session[] */
 	private $sessions = [];
+	/** @var Config */
+	public static $cacheFile;
 
 	public static function getInstance(): Main{
 		return self::$instance;
@@ -127,12 +130,13 @@ class Main extends PluginBase {
 			$this->getLogger()->error("The plugin will disable itself after being later enabled by the server to prevent any interference with the existing Spoon features.");
 			Server::$isSpoon = true;
 		}
-		$this->getLogger()->info("Loading configuration...");
+		$this->getLogger()->info("Loading resources...");
 		if(!file_exists($this->getDataFolder())){
 			@mkdir($this->getDataFolder());
 		}
 		$this->saveDefaultConfig();
 		self::$config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
+		self::$cacheFile = new Config($this->getDataFolder() . "cache.json", Config::JSON);
 
 		self::$netherName = self::$config->getNested("dimensions.nether.levelName", "nether");
 		self::$endName = self::$config->getNested("dimensions.end.levelName", "ender");
@@ -178,24 +182,16 @@ class Main extends PluginBase {
 			return;
 		}
 		$yr = 2017 . ((2017 != date('Y')) ? '-' . date('Y') : '');
-		$stms = TextFormat::DARK_GREEN . '
-		
-MMP""MM""YMM              ' . TextFormat::GREEN . ' .M"""bgd                                        ' . TextFormat::DARK_GREEN . '
-P\'   MM   `7             ' . TextFormat::GREEN . ' ,MI    "Y                                        ' . TextFormat::DARK_GREEN . '
-     MM  .gP"Ya   ,6"Yb.  ' . TextFormat::GREEN . '`MMb.   `7MMpdMAo.  ,pW"Wq.   ,pW"Wq.`7MMpMMMb.  ' . TextFormat::DARK_GREEN . '
-     MM ,M\'   Yb 8)   MM' . TextFormat::GREEN . '    `YMMNq. MM   `Wb 6W\'   `Wb 6W\'   `Wb MM    MM  ' . TextFormat::DARK_GREEN . '
-     MM 8M""""""  ,pm9MM ' . TextFormat::GREEN . ' .     `MM MM    M8 8M     M8 8M     M8 MM    MM  ' . TextFormat::DARK_GREEN . '
-     MM YM.    , 8M   MM  ' . TextFormat::GREEN . 'Mb     dM MM   ,AP YA.   ,A9 YA.   ,A9 MM    MM  ' . TextFormat::DARK_GREEN . '
-   .JMML.`Mbmmd\' `Moo9^Yo.' . TextFormat::GREEN . 'P"Ybmmd"  MMbmmd\'   `Ybmd9\'   `Ybmd9\'.JMML  JMML.' . TextFormat::GREEN . '
-                                    MM                                     
-                                  .JMML.  ' . TextFormat::YELLOW . Splash::getRandomSplash() . TextFormat::RESET . '
-Copyright (C) CortexPE ' . $yr . '
-';
+		$stms = TextFormat::DARK_GREEN . "\nMMP\"\"MM\"\"YMM              " . TextFormat::GREEN . " .M\"\"\"bgd                                        " . TextFormat::DARK_GREEN . "\nP'   MM   `7             " . TextFormat::GREEN . " ,MI    \"Y                                        " . TextFormat::DARK_GREEN . "\n     MM  .gP\"Ya   ,6\"Yb.  " . TextFormat::GREEN . "`MMb.   `7MMpdMAo.  ,pW\"Wq.   ,pW\"Wq.`7MMpMMMb.  " . TextFormat::DARK_GREEN . "\n     MM ,M'   Yb 8)   MM" . TextFormat::GREEN . "    `YMMNq. MM   `Wb 6W'   `Wb 6W'   `Wb MM    MM  " . TextFormat::DARK_GREEN . "\n     MM 8M\"\"\"\"\"\"  ,pm9MM " . TextFormat::GREEN . " .     `MM MM    M8 8M     M8 8M     M8 MM    MM  " . TextFormat::DARK_GREEN . "\n     MM YM.    , 8M   MM  " . TextFormat::GREEN . "Mb     dM MM   ,AP YA.   ,A9 YA.   ,A9 MM    MM  " . TextFormat::DARK_GREEN . "\n   .JMML.`Mbmmd' `Moo9^Yo." . TextFormat::GREEN . "P\"Ybmmd\"  MMbmmd'   `Ybmd9'   `Ybmd9'.JMML  JMML." . TextFormat::GREEN . "\n                                    MM                                     \n                                  .JMML.  " . TextFormat::YELLOW . Splash::getRandomSplash() . TextFormat::RESET . "\nCopyright (C) CortexPE " . $yr . "\n";
 		$this->getLogger()->info("Loading..." . $stms);
 
 		$this->loadEverythingElse();
 		$this->getLogger()->info("TeaSpoon is distributed under the AGPL License");
-		$this->checkConfig();
+		$this->checkConfigs();
+	}
+
+	public function onDisable(){
+		self::$cacheFile->save();
 	}
 
 	private function loadEverythingElse(){
@@ -206,6 +202,7 @@ Copyright (C) CortexPE ' . $yr . '
 		EntityManager::init();
 		// LevelManager::init(); EXECUTED VIA EventListener
 		Tile::init();
+		FishingRodLootTable::init();
 		$this->getServer()->getScheduler()->scheduleRepeatingTask(new CheckPlayersTask($this), 10);
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new PacketHandler($this), $this);
@@ -220,12 +217,17 @@ Copyright (C) CortexPE ' . $yr . '
 		}
 	}
 
-	private function checkConfig(){
+	private function checkConfigs(){
 		$ver = self::$config->get("version");
 		if($ver === null || $ver === false || $ver < self::CONFIG_VERSION){
 			$this->getLogger()->critical("Your configuration file is Outdated! Keep a backup of it and delete the outdated file.");
 		}elseif($ver > self::CONFIG_VERSION){
 			$this->getLogger()->critical("Your configuration file is from a higher version of TeaSpoon! Please update the plugin from https://github.com/CortexPE/TeaSpoon");
+		}
+
+		if(self::$cacheFile->get("date", "") == ""){
+			self::$cacheFile->set("date", strval(date("d-m-y")));
+			self::$cacheFile->save(true);
 		}
 	}
 

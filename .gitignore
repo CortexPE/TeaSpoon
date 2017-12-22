@@ -1,4 +1,5 @@
 config.yml
+cache.json
 .idea/*
 packetlog.txt
 dumps/*

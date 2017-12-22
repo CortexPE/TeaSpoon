@@ -54,6 +54,7 @@ class BlockManager {
 		self::register(Block::STILL_LAVA, new StillLava(), true);
 		self::register(Block::MONSTER_SPAWNER, new MonsterSpawner(), true);
 		self::register(Block::FROSTED_ICE, new FrostedIce());
+		self::register(Block::SHULKER_BOX, new ShulkerBox());
 	}
 
 	public static function register(int $id, Block $block, bool $overwrite = false): bool{

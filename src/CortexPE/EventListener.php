@@ -33,7 +33,7 @@
 
 declare(strict_types = 1);
 
-// FYI: Event Priorities work this way: LOWEST -> LOW -> NORMAL -> HIGH -> HIGHEST -> MONITOR
+// FYI: Event Priorities work this way: LOWEST -> LOW -> NORMAL -> HIGH -> HIGHEST -> MONITOR -> EXECUTE
 
 namespace CortexPE;
 

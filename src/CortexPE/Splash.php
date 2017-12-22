@@ -216,7 +216,8 @@ class Splash {
 		":shrug:",
 		"Fukkit!",
 		"Cortex loves J***** <3",
-		"§4R§cA§6I§eN§2B§aO§bW§3 T§1E§9X§dT§5!"
+		"§4R§cA§6I§eN§2B§aO§bW§3 T§1E§9X§dT§5!",
+		"@TheAz928 is notorious for HardCoding values!",
 	];
 
 	private static $CHRISTMAS_SPLASHES = [

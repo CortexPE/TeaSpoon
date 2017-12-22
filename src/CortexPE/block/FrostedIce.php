@@ -48,7 +48,7 @@ class FrostedIce extends Ice {
 	}
 
 	public function onUpdate(int $type){
-		if((PMServer::getInstance()->getTick() % (mt_rand(1,2) * 10)) == 0){ // every 1-2 seconds
+		//if((PMServer::getInstance()->getTick() % (mt_rand(1,2) * 10)) == 0){ // every 1-2 seconds
 			$this->meta++; // wtf why doesnt this work?!
 			if($this->meta > 3){
 				foreach($this->getAllSides() as $side){
@@ -56,6 +56,6 @@ class FrostedIce extends Ice {
 				}
 				$this->getLevel()->setBlock($this->asVector3(), Block::get(Block::WATER), false, true);
 			}
-		}
+		//}
 	}
 }
