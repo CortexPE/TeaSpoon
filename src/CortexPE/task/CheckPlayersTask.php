@@ -36,8 +36,9 @@ declare(strict_types = 1);
 namespace CortexPE\task;
 
 use CortexPE\{
-	Main, Utils
+	block\FrostedIce, item\enchantment\Enchantment, Main, Utils
 };
+use pocketmine\block\Block;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player;
@@ -52,29 +53,53 @@ class CheckPlayersTask extends PluginTask {
 			if($session === null || $session->skipCheck){
 				continue;
 			}
-			$epo = Utils::isInsideOfEndPortal($p);
-			$po = Utils::isInsideOfPortal($p);
-			if($epo || $po && Main::$registerDimensions){
-				if($p->getLevel()->getSafeSpawn()->distance($p) <= 0.1){
-					return; // It's Probably a PMMP Teleport Bug Causing it. Short desc: $player->getBlocksAround() doesnt update on teleport... it only updates again on move.
-				}
-				if($p->getLevel()->getName() !== Main::$netherLevel->getName() && $p->getLevel()->getName() !== Main::$endLevel->getName()){
-					if($po){
-						$this->scheduleTeleport($p, DimensionIds::NETHER, Main::$netherLevel->getSafeSpawn(), true);
-					}elseif($epo){
-						$this->scheduleTeleport($p, DimensionIds::THE_END, Main::$endLevel->getSafeSpawn());
+			if(Main::$registerDimensions){
+				$epo = Utils::isInsideOfEndPortal($p);
+				$po = Utils::isInsideOfPortal($p);
+				if($epo || $po && Main::$registerDimensions){
+					if($p->getLevel()->getSafeSpawn()->distance($p) <= 0.1){
+						return; // It's Probably a PMMP Teleport Bug Causing it. Short desc: $player->getBlocksAround() doesnt update on teleport... it only updates again on move.
 					}
-				}else{
-					$this->scheduleTeleport($p, DimensionIds::OVERWORLD, Server::getInstance()->getDefaultLevel()->getSafeSpawn(), $po);
+					if($p->getLevel()->getName() !== Main::$netherLevel->getName() && $p->getLevel()->getName() !== Main::$endLevel->getName()){
+						if($po){
+							$this->scheduleTeleport($p, DimensionIds::NETHER, Main::$netherLevel->getSafeSpawn(), true);
+						}elseif($epo){
+							$this->scheduleTeleport($p, DimensionIds::THE_END, Main::$endLevel->getSafeSpawn());
+						}
+					}else{
+						$this->scheduleTeleport($p, DimensionIds::OVERWORLD, Server::getInstance()->getDefaultLevel()->getSafeSpawn(), $po);
+					}
+				}
+
+				if($p->isOnFire()){
+					if(Main::$weatherEnabled){
+						$weather = Main::$weatherData[$p->getLevel()->getId()];
+						$rainy = $weather->isRainy() || $weather->isRainyThunder();
+						if(Utils::canSeeSky($p->getLevel(), $p) && $rainy){
+							$p->setOnFire(0);
+						}
+					}
 				}
 			}
-
-			if($p->isOnFire()){
-				if(Main::$weatherEnabled){
-					$weather = Main::$weatherData[$p->getLevel()->getId()];
-					$rainy = $weather->isRainy() || $weather->isRainyThunder();
-					if(Utils::canSeeSky($p->getLevel(), $p) && $rainy){
-						$p->setOnFire(0);
+			if($p->getInventory()->getBoots()->hasEnchantment(Enchantment::FROST_WALKER)){
+				$ench = $p->getInventory()->getBoots()->getEnchantment(Enchantment::FROST_WALKER);
+				if($ench->getLevel() < 1){
+					continue;
+				}
+				if($ench->getLevel() > 1){
+					$radius = 5;
+				} else {
+					$radius = 3;
+				}
+				for ($a = -$radius; $a <= $radius; $a++) {
+					for ($c = -$radius; $c <= $radius; $c++) {
+						if ($a * $a + $c * $c <= $radius * $radius) {
+							$lvl = $p->getLevel();
+							$pos = new Vector3($p->getX() + $a, $p->getY() - 1, $p->getZ() + $c);
+							if(in_array($lvl->getBlock($pos)->getId(), [Block::WATER, Block::STILL_WATER])){
+								$lvl->setBlock($pos, new FrostedIce(), false, true);
+							}
+						}
 					}
 				}
 			}

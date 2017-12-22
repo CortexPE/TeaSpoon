@@ -205,13 +205,8 @@ Copyright (C) CortexPE ' . $yr . '
 		ItemManager::init();
 		EntityManager::init();
 		// LevelManager::init(); EXECUTED VIA EventListener
-		if(self::$loadAllAPIs){
-			AllAPILoaderManager::init();
-		}
 		Tile::init();
-		if(self::$registerDimensions){
-			$this->getServer()->getScheduler()->scheduleRepeatingTask(new CheckPlayersTask($this), 10);
-		}
+		$this->getServer()->getScheduler()->scheduleRepeatingTask(new CheckPlayersTask($this), 10);
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new PacketHandler($this), $this);
 		if(self::$registerVanillaEnchantments){
@@ -219,6 +214,9 @@ Copyright (C) CortexPE ' . $yr . '
 		}
 		if(self::$weatherEnabled){
 			$this->getServer()->getScheduler()->scheduleRepeatingTask(new TickLevelsTask($this), 1);
+		}
+		if(self::$loadAllAPIs){
+			AllAPILoaderManager::init();
 		}
 	}
 

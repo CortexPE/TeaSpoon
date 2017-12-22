@@ -35,6 +35,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\item;
 
+use pocketmine\block\Block;
 use pocketmine\item\{
 	Item, ItemFactory
 };

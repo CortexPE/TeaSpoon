@@ -23,12 +23,18 @@ declare(strict_types = 1);
 
 namespace CortexPE\entity\projectile;
 
+use CortexPE\Main;
+use CortexPE\utils\Xp;
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\ProjectileHitEvent;
+use pocketmine\item\Item;
+use pocketmine\network\mcpe\protocol\EntityEventPacket;
+use pocketmine\Player;
+use pocketmine\Server as PMServer;
 
 class FishingHook extends Projectile {
 	const NETWORK_ID = self::FISHING_HOOK;
@@ -38,7 +44,70 @@ class FishingHook extends Projectile {
 	protected $gravity = 0.1;
 	protected $drag = 0.05;
 
-	// TODO: Fishing System
+	public $coughtTimer = 0;
+	public $attractTimer = 0;
+
+	public function onUpdate(int $currentTick) : bool {
+		if($this->closed){
+			return false;
+		}
+
+		$this->timings->startTiming();
+
+		$hasUpdate = parent::onUpdate($currentTick);
+
+		if($this->isCollidedVertically && $this->isInsideOfWater()){
+			$this->motionX = 0;
+			$this->motionY += 0.01;
+			$this->motionZ = 0;
+			$hasUpdate = true;
+		}elseif($this->isCollided && $this->keepMovement === true){
+			$this->motionX = 0;
+			$this->motionY = 0;
+			$this->motionZ = 0;
+			$this->keepMovement = false;
+			$hasUpdate = true;
+		}
+		if($this->attractTimer === 0 && mt_rand(0, 100) <= 30){
+			$this->coughtTimer = mt_rand(5, 10) * 20;
+			$this->attractTimer = mt_rand(30, 100) * 20;
+			$this->attractFish();
+			$oe = $this->getOwningEntity();
+			if($oe instanceof Player){
+				$oe->sendTip("A fish bites!");
+			}
+		}elseif($this->attractTimer > 0){
+			$this->attractTimer--;
+		}
+		if($this->coughtTimer > 0){
+			$this->coughtTimer--;
+			$this->fishBites();
+		}
+
+		$this->timings->stopTiming();
+
+		return $hasUpdate;
+	}
+
+	public function fishBites(){
+		$oe = $this->getOwningEntity();
+		if($oe instanceof Player){
+			$pk = new EntityEventPacket();
+			$pk->entityRuntimeId = $this->getId();
+			$pk->event = EntityEventPacket::FISH_HOOK_HOOK;
+			PMServer::getInstance()->broadcastPacket($this->getViewers(), $pk);
+		}
+	}
+
+	public function attractFish(){
+		$oe = $this->getOwningEntity();
+		if($oe instanceof Player){
+			$pk = new EntityEventPacket();
+			$pk->entityRuntimeId = $this->getId();
+			$pk->event = EntityEventPacket::FISH_HOOK_BUBBLE;
+			PMServer::getInstance()->broadcastPacket($this->getViewers(), $pk);
+		}
+	}
 
 	public function onCollideWithEntity(Entity $entity){
 		$this->server->getPluginManager()->callEvent(new ProjectileHitEvent($this));

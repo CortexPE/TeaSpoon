@@ -35,22 +35,61 @@ declare(strict_types = 1);
 
 namespace CortexPE\handlers;
 
+use CortexPE\block\FrostedIce;
 use CortexPE\item\enchantment\Enchantment;
 use CortexPE\Main;
 use CortexPE\Utils;
 use pocketmine\block\Block;
 use pocketmine\entity\Attribute;
 use pocketmine\entity\Living;
+use pocketmine\entity\projectile\Arrow;
+use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\event\entity\EntityDeathEvent;
 use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\item\Item;
+use pocketmine\math\Vector3;
+use pocketmine\nbt\tag\ShortTag;
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
 
 class EnchantHandler implements Listener {
+
+	// TODO: ADD MORE ENCHANTS
+
+	/**
+	 * TO-DO:
+	 * [X] Protection
+	 * [X] Fire Protection
+	 * [X] Feather Falling
+	 * [X] Blast protection
+	 * [X] Projectile protection
+	 * [X] Thorns
+	 * [ ] Respiration
+	 * [X] Depth strider
+	 * [ ] Aqua affinity
+	 * [X] Sharpness
+	 * [X] Smite
+	 * [X] Bane of athropods
+	 * [X] Knockback
+	 * [X] Fire aspect
+	 * [X] Looting
+	 * [ ] Efficiency
+	 * [X] Silk touch
+	 * [ ] Unbreaking
+	 * [X] Fortune
+	 * [X] Power
+	 * [X] Punch
+	 * [X] Flame
+	 * [X] Infinity
+	 * [ ] Luck of the sea
+	 * [ ] Lure
+	 * [/] Frost walker (Partially working as of now)
+	 * [ ] Mending
+	 */
 
 	const BANE_OF_ARTHROPODS_AFFECTED_ENTITIES = [ // Based on https://minecraft.gamepedia.com/Enchanting#Bane_of_Arthropods ^_^
 		"Spider", "Cave Spider",
@@ -79,7 +118,7 @@ class EnchantHandler implements Listener {
 		if($ev->isCancelled()){
 			return;
 		}
-		if($ev instanceof EntityDamageByEntityEvent){ // TODO: ADD MORE ENCHANTS
+		if($ev instanceof EntityDamageByEntityEvent){
 			$d = $ev->getDamager();
 			if($d === null){
 				return;
@@ -263,10 +302,32 @@ class EnchantHandler implements Listener {
 	 * @priority HIGHEST
 	 */
 	public function onShoot(EntityShootBowEvent $ev){
+		if($ev->isCancelled()){
+			return;
+		}
 		$p = $ev->getEntity();
-		if($p instanceof PMPlayer && !$ev->isCancelled() && $ev->getBow()->hasEnchantments() && $ev->getBow()->hasEnchantment(Enchantment::INFINITY)){
-			if($p->isSurvival()){
-				$p->getInventory()->addItem(Item::get(Item::ARROW, 0, 1));
+		if($ev->getBow()->hasEnchantments()){
+			foreach($ev->getBow()->getEnchantments() as $enchantment){
+				switch($enchantment->getId()){
+					case Enchantment::INFINITY:
+						if($p instanceof PMPlayer){
+							if($p->isSurvival()){
+								$p->getInventory()->addItem(Item::get(Item::ARROW, 0, 1));
+							}
+						}
+						break;
+					case Enchantment::FLAME:
+						$level = $enchantment->getLevel();
+						/** @var Arrow $arrow */
+						$arrow = $ev->getProjectile();
+
+						$modarrow = clone $arrow;
+						$modarrow->namedtag->Fire = new ShortTag("Fire", $p->isOnFire() ? 80 * 10 * $level : 80 * $level);
+
+						$ev->setProjectile($modarrow);
+						$modarrow->setOnFire(80 * $level / 2);
+						break;
+				}
 			}
 		}
 	}
@@ -283,27 +344,56 @@ class EnchantHandler implements Listener {
 		$p = $ev->getPlayer();
 		$session = Main::getInstance()->getSessionById($p->getId());
 		$armor = $p->getInventory()->getBoots();
-		if($armor->hasEnchantments() && $armor->hasEnchantment(Enchantment::DEPTH_STRIDER)){
-			$lvl = $armor->getEnchantment(Enchantment::DEPTH_STRIDER)->getLevel();
-			$att = $p->getAttributeMap()->getAttribute(Attribute::MOVEMENT_SPEED);
-			if($lvl > 0){
-				if(in_array($p->getLevel()->getBlock($p)->getId(), self::WATER_IDS)){
-					$att->setValue($att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl), true, true);
+		foreach($armor->getEnchantments() as $enchantment){
+			switch($enchantment->getId()){
+				case Enchantment::DEPTH_STRIDER:
+					$lvl = $enchantment->getLevel();
+					$att = $p->getAttributeMap()->getAttribute(Attribute::MOVEMENT_SPEED);
+					if($lvl > 0){
+						if(in_array($p->getLevel()->getBlock($p)->getId(), self::WATER_IDS)){
+							$att->setValue($att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl), true, true);
 
-					$session->allowCheats = true;
-				}else{
-					if($att->getValue() == $att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl)){
-						$att->setValue($att->getDefaultValue(), true, true);
+							$session->allowCheats = true;
+						}else{
+							if($att->getValue() == $att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl)){
+								$att->setValue($att->getDefaultValue(), true, true);
 
-						$session->allowCheats = false;
+								$session->allowCheats = false;
+							}
+						}
+					}else{
+						if($att->getValue() == $att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl)){
+							$att->setValue($att->getDefaultValue(), true, true);
+
+							$session->allowCheats = false;
+						}
 					}
-				}
-			}else{
-				if($att->getValue() == $att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl)){
-					$att->setValue($att->getDefaultValue(), true, true);
+					break;
+				case Enchantment::FROST_WALKER:
+					/*
+					 HANDLED IN CheckPlayersTask!!!
 
-					$session->allowCheats = false;
-				}
+					  XXX
+					 XXXXX
+					XXXOXXX
+					 XXXXX
+					  XXX
+
+					X - Ice
+					O - Player
+					$radius = ($enchantment->getLevel() == 1 ? 3 : 5);
+					for ($a = -$radius; $a <= $radius; $a++) {
+						for ($c = -$radius; $c <= $radius; $c++) {
+							if ($a * $a + $c * $c <= $radius * $radius) {
+								$lvl = $p->getLevel();
+								$pos = new Vector3($p->getX() + $a, $p->getY() - 1, $p->getZ() + $c);
+								if(in_array($lvl->getBlock($pos)->getId(), self::WATER_IDS)){
+									$lvl->setBlock($pos, new FrostedIce(), false, true);
+								}
+							}
+						}
+					}*/
+					break;
 			}
 		}
 	}
@@ -315,12 +405,151 @@ class EnchantHandler implements Listener {
 	 * @param int $enchantId
 	 * @return \pocketmine\item\enchantment\Enchantment | null
 	 */
-	private function isEnchantedWith(Item $i, int $enchantId) {
+	private function isEnchantedWith(Item $i, int $enchantId){
 		if($i->getEnchantment($enchantId) !== null){
 			if($i->getEnchantment($enchantId)->getLevel() > 0){
 				return $i->getEnchantment($enchantId);
 			}
 		}
+
 		return null;
+	}
+
+	/**
+	 * @param BlockBreakEvent $ev
+	 *
+	 * Attribution:
+	 *  - Big thanks to @TheAz928 for the values... It really helped a lot! :D
+	 *  - The onBreak function below is a refactored, bare-bones and more-human friendly version of his Fortune & SilkTouch enchant handler...
+	 *
+	 * @priority HIGHEST
+	 */
+	public function onBreak(BlockBreakEvent $ev){
+		if($ev->isCancelled()){
+			return;
+		}
+		$p = $ev->getPlayer();
+		$block = $ev->getBlock();
+		$item = $p->getInventory()->getItemInHand();
+		foreach($item->getEnchantments() as $enchantment){
+			switch($enchantment->getId()){
+				case Enchantment::FORTUNE:
+					$level = $item->getEnchantment(Enchantment::FORTUNE)->getLevel() + 1;
+					$rand = rand(1, $item->getEnchantment(Enchantment::FORTUNE)->getLevel() + 1);
+					switch($block->getId()){
+						case Block::COAL_ORE:
+							if($item->isPickaxe()){
+								$ev->setDrops([Item::get(Item::COAL, 0, 1 + $rand)]);
+							}
+							break;
+						case Block::LAPIS_ORE:
+							if($item->isPickaxe() && $item->getId() !== Item::WOODEN_PICKAXE){
+								$ev->setDrops([Item::get(Item::DYE, 4, rand(1, 4) + $rand)]);
+							}
+							break;
+						case Block::GLOWING_REDSTONE_ORE:
+						case Block::REDSTONE_ORE:
+							if($item->isPickaxe() && $item->getId() !== Item::WOODEN_PICKAXE){
+								$ev->setDrops([Item::get(Item::REDSTONE, 0, rand(2, 3) + $rand)]);
+							}
+							break;
+						case Block::NETHER_QUARTZ_ORE:
+							if($item->isPickaxe() && $item->getId() !== Item::WOODEN_PICKAXE){
+								$ev->setDrops([Item::get(Item::QUARTZ, 0, rand(1, 2) + $rand)]);
+							}
+							break;
+						case Block::DIAMOND_ORE:
+							if($item->isPickaxe() && !in_array($item->getId(), [Item::WOODEN_PICKAXE, Item::STONE_PICKAXE, Item::GOLDEN_PICKAXE])){
+								$ev->setDrops([Item::get(Item::DIAMOND, 0, 1 + $rand)]);
+							}
+							break;
+						case Block::EMERALD_ORE:
+							if($item->isPickaxe() && !in_array($item->getId(), [Item::WOODEN_PICKAXE, Item::STONE_PICKAXE, Item::GOLDEN_PICKAXE])){
+								$ev->setDrops([Item::get(Item::EMERALD, 0, 1 + $rand)]);
+							}
+							break;
+						case Block::POTATO_BLOCK:
+							if($item->isAxe() or $item->isPickaxe()){
+								if($block->getDamage() >= 7){
+									$ev->setDrops([Item::get(Item::POTATO, 0, rand(1, 3) + $rand)]);
+								}
+							}
+							break;
+						case Block::CARROT_BLOCK:
+							if($item->isAxe() or $item->isPickaxe()){
+								if($block->getDamage() >= 7){
+									$ev->setDrops([Item::get(Item::CARROT, 0, rand(1, 3) + $rand)]);
+								}
+							}
+							break;
+						case Block::BEETROOT_BLOCK:
+							if($item->isAxe() or $item->isPickaxe()){
+								if($block->getDamage() >= 7){
+									$ev->setDrops([Item::get(Item::BEETROOT, 0, rand(1, 3) + $rand), Item::get(457, 0, 1)]);
+								}
+							}
+							break;
+						case Block::WHEAT_BLOCK:
+							if($item->isAxe() or $item->isPickaxe()){
+								if($block->getDamage() >= 7){
+									$ev->setDrops([Item::get(Item::SEEDS, 0, rand(1, 3) + $rand), Item::get(Item::WHEAT, 0, 1)]);
+								}
+							}
+							break;
+						case Block::MELON_BLOCK:
+							if($item->isAxe() or $item->isPickaxe()){
+								$ev->setDrops([Item::get(Item::MELON, 0, rand(3, 9) + $rand)]);
+							}
+							break;
+						case Block::LEAVES:
+							if(rand(1, 100) <= 10 + $level * 2){
+								$ev->setDrops([Item::get(Item::APPLE, 0, 1)]);
+							}
+							break;
+					}
+					break;
+				case Enchantment::SILK_TOUCH:
+					if($block->getId() !== Block::MOB_SPAWNER){
+						$drops = [];
+						foreach($ev->getDrops() as $drop){
+							if($drop->getId() == $block->getId() and $drop->getDamage() == $block->getDamage()){
+								$drops[] = $drop;
+							}else{
+								$it = Item::get($block->getId(), $block->getDamage(), 1);
+								$drops[] = $it;
+							}
+						}
+						$ev->setDrops($drops);
+					}
+					break;
+			}
+		}
+	}
+
+	public function onEntityDeath(EntityDeathEvent $ev){
+		$ent = $ev->getEntity();
+		if($ent instanceof PMPlayer){
+			return;
+		}
+		$cause = $ent->getLastDamageCause();
+		if ($cause instanceof EntityDamageByEntityEvent){
+			$damager = $cause->getDamager();
+			if($damager instanceof PMPlayer){
+				$item = $damager->getInventory()->getItemInHand();
+				foreach($item->getEnchantments() as $enchantment){
+					switch($enchantment->getId()){
+						case Enchantment::LOOTING:
+							$drops = [];
+							foreach ($ev->getDrops() as $drop){
+								$rand = rand(1, $enchantment->getLevel() + 1);
+								$drop->setCount($drop->getCount() + $rand);
+								$drops[] = $drop;
+							}
+							$ev->setDrops($drops);
+							break;
+					}
+				}
+			}
+		}
 	}
 }

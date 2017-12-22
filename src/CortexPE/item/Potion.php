@@ -24,6 +24,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\item;
 
+use CortexPE\Main;
 use pocketmine\entity\{
 	Effect, Entity, Human
 };
@@ -318,23 +319,21 @@ class Potion extends Item {
 	 *
 	 * @param int $id
 	 * @param string $name
-	 * @param array $effects
-	 * @param Int $color
-	 * @param Server $server
+	 * @param Effect[] $effects
 	 *
 	 * @return bool
 	 */
-	public static function registerPotion(int $id, string $name, array $effects, Int $color, Server $server){
-		if(isset(self::$POTION_NAMES[$id])){ // So it wouldn't mess with other potions
-			$server->getLogger()->warning("Unable to register Potion ID: " . $id);
+	public static function registerPotion(int $id, string $name, array $effects) : bool {
+		if(isset(self::$POTION_NAMES[$id]) || isset(self::$POTION_EFFECTS[$id]) || isset(self::$POTION_EFFECT_ID[$id])){ // So it wouldn't mess with other potions
+			Main::getInstance()->getLogger()->warning("Unable to register Potion ID: " . $id);
 
 			return false;
 		}else{
 			self::$POTION_NAMES[$id] = $name;
 			self::$POTION_EFFECTS[$id] = $effects;
-			self::$POTION_EFFECT_ID[$id] = $color;
+			self::$POTION_EFFECT_ID[$id] = $effects[0]->getId();
 
-			$server->getLogger()->info("Successfully Registered Potion ID: " . $id);
+			Main::getInstance()->getLogger()->info("Successfully Registered Potion ID: " . $id);
 
 			return true;
 		}

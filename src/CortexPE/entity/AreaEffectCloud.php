@@ -144,9 +144,14 @@ class AreaEffectCloud extends Entity {
 				$a += $ecol->getA();
 				$count++;
 			}
-			$color = new Color((int) ($r / $count), (int) ($g / $count), (int) ($b / $count), (int) ($a / $count));
 
-			$this->setDataProperty(self::DATA_POTION_COLOR, self::DATA_TYPE_INT, ((255 & 0xff) << 24) | (($color->getR() & 0xff) << 16) | (($color->getG() & 0xff) << 8) | ($color->getB() & 0xff));
+			$r /= $count;
+			$g /= $count;
+			$b /= $count;
+			$a /= $count;
+
+			$this->setDataProperty(self::DATA_POTION_COLOR, self::DATA_TYPE_INT, (($a & 0xff) << 24) | (($r & 0xff) << 16) | (($g & 0xff) << 8) | ($b & 0xff));
+
 			$this->Radius += $this->RadiusPerTick;
 			$this->setDataProperty(self::DATA_BOUNDING_BOX_WIDTH, self::DATA_TYPE_FLOAT, $this->Radius * 2);
 			if($this->WaitTime > 0){

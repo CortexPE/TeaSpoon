@@ -37,11 +37,13 @@ namespace CortexPE\item;
 
 use CortexPE\entity\projectile\FishingHook;
 use CortexPE\Main;
+use CortexPE\utils\Xp;
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\entity\ProjectileLaunchEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ProjectileItem;
+use pocketmine\level\sound\LaunchSound;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\EntityEventPacket;
 use pocketmine\Player;
@@ -75,7 +77,7 @@ class FishingRod extends ProjectileItem {
 					$projectile->flagForDespawn();
 				}else{
 					$projectile->spawnToAll();
-					//$player->getLevel()->addSound(new LaunchSound($player), $player->getViewers()); TODO: Fishing Sound
+					$player->getLevel()->addSound(new LaunchSound($player), $player->getViewers());
 				}
 			}else{
 				$projectile->spawnToAll();
@@ -94,6 +96,13 @@ class FishingRod extends ProjectileItem {
 				$pk->entityRuntimeId = $projectile->getId();
 				$pk->event = EntityEventPacket::FISH_HOOK_TEASE;
 				$player->getServer()->broadcastPacket($player->getLevel()->getPlayers(), $pk);
+
+				if($projectile->coughtTimer > 0){
+					$fishes = [Item::RAW_FISH, Item::RAW_SALMON, Item::CLOWNFISH, Item::PUFFERFISH];
+					$item = Item::get($fishes[array_rand($fishes)]);
+					$player->getInventory()->addItem($item);
+					Xp::addXp($player, mt_rand(1, 6));
+				}
 
 				$projectile->flagForDespawn();
 			}
