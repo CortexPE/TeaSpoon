@@ -66,6 +66,7 @@ class FishingRod extends ProjectileItem {
 		if(!$session->fishing){
 			$nbt = Entity::createBaseNBT($player->add(0, $player->getEyeHeight(), 0), $directionVector, $player->yaw, $player->pitch);
 
+			/** @var FishingHook $projectile */
 			$projectile = Entity::createEntity($this->getProjectileEntityType(), $player->getLevel(), $nbt, $player);
 			if($projectile !== null){
 				$projectile->setMotion($projectile->getMotion()->multiply($this->getThrowForce()));
@@ -79,9 +80,10 @@ class FishingRod extends ProjectileItem {
 					$projectile->spawnToAll();
 					$player->getLevel()->addSound(new LaunchSound($player), $player->getViewers());
 				}
-			}else{
-				$projectile->spawnToAll();
 			}
+
+			$projectile->attractTimer = mt_rand(30, 100) * 20;
+
 			$pk = new EntityEventPacket();
 			$pk->entityRuntimeId = $projectile->getId();
 			$pk->event = EntityEventPacket::FISH_HOOK_POSITION;
@@ -102,7 +104,7 @@ class FishingRod extends ProjectileItem {
 					$item = Item::get($fishes[array_rand($fishes)]);
 					$player->getInventory()->addItem($item);
 					Xp::addXp($player, mt_rand(1, 6));
-				}
+				} // TODO: Add Junk items
 
 				$projectile->flagForDespawn();
 			}
@@ -111,6 +113,10 @@ class FishingRod extends ProjectileItem {
 			$session->fishing = false;
 		}
 
+
+		if($player->isSurvival()){
+			$this->meta++;
+		}
 		return true;
 	}
 
