@@ -55,7 +55,39 @@ class BlockManager {
 		self::register(Block::MONSTER_SPAWNER, new MonsterSpawner(), true);
 		self::register(Block::FROSTED_ICE, new FrostedIce());
 		self::register(Block::SHULKER_BOX, new ShulkerBox());
+
+		// Redstone
+		self::register(Block::ACTIVATOR_RAIL, new ActivatorRail(), true);
+		self::register(Block::LIT_REDSTONE_LAMP, new ActiveRedstoneLamp(), true);
+		self::register(Block::DAYLIGHT_DETECTOR, new DaylightDetector(), true);
+		self::register(Block::DAYLIGHT_DETECTOR_INVERTED, new DaylightDetectorInverted(), true);
+		self::register(Block::DETECTOR_RAIL, new DetectorRail(), true);
+		self::register(Block::DISPENSER, new Dispenser(), true);
+		self::register(Block::DISPENSER, new Dispenser(), true);
+		// TODO: DOORS
+		self::register(Block::DROPPER, new Dropper(), true);
+		// TODO: FENCEGATES
+		self::register(Block::HEAVY_WEIGHTED_PRESSURE_PLATE, new HeavyWeightedPressurePlate(), true);
+		self::register(Block::HEAVY_WEIGHTED_PRESSURE_PLATE, new InactiveRedstoneLamp(), true);
 		self::register(Block::LEVER, new Lever(), true);
+		self::register(Block::LIGHT_WEIGHTED_PRESSURE_PLATE, new LightWeightedPressurePlate(), true);
+		self::register(Block::LIT_REDSTONE_LAMP, new LitRedstoneLamp(), true);
+		// TODO: NOTEBLOCKS self::register(Block::NOTE_BLOCK, new NoteBlock(), true);
+		self::register(Block::POWERED_RAIL, new PoweredRail(), true);
+		self::register(Block::POWERED_REPEATER, new PoweredRepeater(), true);
+		self::register(Block::STONE_PRESSURE_PLATE, new PressurePlate(), true);
+		self::register(Block::RAIL, new Rail(), true);
+		self::register(Block::REDSTONE_BLOCK, new Redstone(), true);
+		self::register(Block::REDSTONE_TORCH, new RedstoneTorch(), true);
+		self::register(Block::REDSTONE_WIRE, new RedstoneWire(), true);
+		self::register(Block::STONE_BUTTON, new StoneButton(), true);
+		// TODO: TNT self::register(Block::TNT, new StoneButton(), true);
+		self::register(Block::TRAPDOOR, new Trapdoor(), true);
+		self::register(Block::TRAPPED_CHEST, new TrappedChest(), true);
+		self::register(Block::TRIPWIRE, new Tripwire(), true);
+		self::register(Block::TRIPWIRE_HOOK, new TripwireHook(), true);
+		self::register(Block::WOODEN_BUTTON, new WoodenButton(), true);
+		self::register(Block::WOODEN_PRESSURE_PLATE, new WoodenPressurePlate(), true);
 	}
 
 	public static function register(int $id, Block $block, bool $overwrite = false): bool{

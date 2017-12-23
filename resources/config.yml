@@ -10,7 +10,7 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 10
+version: 11
 
 entities:
  # Weather to register Vanilla Entities (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...) or not
@@ -52,3 +52,7 @@ weather:
  maxDuration: 12000
  # If lightning should be spawned in stormy weather
  lightning: true
+
+# Redstone System
+redstone:
+ enable: true

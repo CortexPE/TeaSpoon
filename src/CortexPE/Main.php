@@ -45,12 +45,12 @@ use CortexPE\item\{
 };
 use CortexPE\level\weather\Weather;
 use CortexPE\plugin\AllAPILoaderManager;
-use CortexPE\task\AsynchronousEvaluator;
 use CortexPE\task\CheckPlayersTask;
 use CortexPE\task\TickLevelsTask;
 use CortexPE\tile\Tile;
 use CortexPE\utils\FishingRodLootTable;
 use CortexPE\utils\TextFormat;
+use pocketmine\block\Block;
 use pocketmine\command\CommandSender;
 use pocketmine\command\defaults\DumpMemoryCommand;
 use pocketmine\command\defaults\GarbageCollectorCommand;
@@ -62,7 +62,7 @@ use pocketmine\utils\Config;
 
 class Main extends PluginBase {
 
-	const CONFIG_VERSION = 10;
+	const CONFIG_VERSION = 11;
 
 	/** @var Config */
 	public static $config;
@@ -104,12 +104,19 @@ class Main extends PluginBase {
 	public static $limitedCreative = false;
 	/** @var bool */
 	public static $debug = false;
+	/** @var bool */
+	public static $redstoneEnabled = true;
+	/** @var bool */
+	public static $allowFrequencyPulse = true; ////////////////////////////// conf
+	/** @var bool */
+	public static $pulseFrequency = 20; ///////////////////////////////////////// conf
 	/** @var Main */
 	private static $instance;
 	/** @var Session[] */
 	private $sessions = [];
 	/** @var Config */
 	public static $cacheFile;
+	private static $BlockTempData = [];
 
 	public static function getInstance(): Main{
 		return self::$instance;
@@ -153,6 +160,7 @@ class Main extends PluginBase {
 		self::$weatherMaxTime = self::$config->getNested("weather.maxDuration", 12000);
 		self::$enableWeatherLightning = self::$config->getNested("weather.lightning", true);
 		self::$limitedCreative = self::$config->getNested("misc.limitedCreative", false);
+		self::$redstoneEnabled = self::$config->getNested("redstone.enable", true);
 		self::$debug = self::$config->get("debug", false); // intentionally don't add this on the config...
 
 		if(self::$debug && !Utils::isPhared()){
@@ -268,5 +276,18 @@ class Main extends PluginBase {
 			}
 		}
 		return null;
+	}
+
+	public static function getBlockTempData(Block $block){
+		$serialized = serialize($block);
+		if(isset(self::$BlockTempData[$serialized])){
+			return self::$BlockTempData[$serialized];
+		}
+		return null;
+	}
+
+	public static function setBlockTempData(Block $block, $value = null){
+		$serialized = serialize($block);
+		self::$BlockTempData[$serialized] = $value;
 	}
 }
