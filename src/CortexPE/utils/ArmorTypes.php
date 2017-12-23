@@ -33,27 +33,53 @@
 
 declare(strict_types = 1);
 
-namespace CortexPE\block;
+namespace CortexPE\utils;
 
+use pocketmine\item\Item;
 
-use pocketmine\block\Block;
-use pocketmine\block\Ice;
+class ArmorTypes {
+	const HELMET = [
+		Item::LEATHER_HELMET,
+		Item::CHAIN_HELMET,
+		Item::IRON_HELMET,
+		Item::GOLD_HELMET,
+		Item::DIAMOND_HELMET,
+	];
+	const CHESTPLATE = [
+		Item::LEATHER_CHESTPLATE,
+		Item::CHAIN_CHESTPLATE,
+		Item::IRON_CHESTPLATE,
+		Item::GOLD_CHESTPLATE,
+		Item::DIAMOND_CHESTPLATE,
+	];
+	const LEGGINGS = [
+		Item::LEATHER_LEGGINGS,
+		Item::CHAIN_LEGGINGS,
+		Item::IRON_LEGGINGS,
+		Item::GOLD_LEGGINGS,
+		Item::DIAMOND_LEGGINGS,
+	];
+	const BOOTS = [
+		Item::LEATHER_BOOTS,
+		Item::CHAIN_BOOTS,
+		Item::IRON_BOOTS,
+		Item::GOLD_BOOTS,
+		Item::DIAMOND_BOOTS,
+	];
 
-class FrostedIce extends Ice {
-	protected $id = self::FROSTED_ICE;
-
-	public function getName(): string{
-		return "Frosted Ice";
-	}
-
-	public function onUpdate(int $type){
-		$this->meta++;
-		$this->getLevel()->setBlock($this->asVector3(), $this, false, false);
-		if($this->meta > 3){
-			foreach($this->getAllSides() as $side){
-				$side->onUpdate($type);
-			}
-			$this->getLevel()->setBlock($this->asVector3(), Block::get(Block::WATER), false, true);
+	public static function getType(Item $armor) : string {
+		if(in_array($armor->getId(), self::HELMET)){
+			return "HELMET";
 		}
+		if(in_array($armor->getId(), self::CHESTPLATE)){
+			return "CHESTPLATE";
+		}
+		if(in_array($armor->getId(), self::LEGGINGS)){
+			return "LEGGINGS";
+		}
+		if(in_array($armor->getId(), self::BOOTS)){
+			return "BOOTS";
+		}
+		return "NIL";
 	}
 }

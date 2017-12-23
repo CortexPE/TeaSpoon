@@ -83,6 +83,7 @@ class CheckPlayersTask extends PluginTask {
 			}
 			if($p->getInventory()->getBoots()->hasEnchantment(Enchantment::FROST_WALKER)){
 				$ench = $p->getInventory()->getBoots()->getEnchantment(Enchantment::FROST_WALKER);
+				/* LAGGY
 				if($ench->getLevel() < 1){
 					continue;
 				}
@@ -97,11 +98,11 @@ class CheckPlayersTask extends PluginTask {
 							$lvl = $p->getLevel();
 							$pos = new Vector3($p->getX() + $a, $p->getY() - 1, $p->getZ() + $c);
 							if(in_array($lvl->getBlock($pos)->getId(), [Block::WATER, Block::STILL_WATER])){
-								$lvl->setBlock($pos, new FrostedIce(), false, true);
+								$lvl->setBlock($pos, new FrostedIce(), true, true);
 							}
 						}
 					}
-				}
+				}*/
 			}
 		}
 	}

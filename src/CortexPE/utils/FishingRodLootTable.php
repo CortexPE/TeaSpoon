@@ -46,7 +46,7 @@ class FishingRodLootTable {
 	public static $UN_ENCHANTED_LOOT, $LOS1_ENCHANTED_LOOT, $LOS2_ENCHANTED_LOOT, $LOS3_ENCHANTED_LOOT;
 
 	public static function init(){
-		if(Main::$cacheFile->get("date") != strval(date("d-m-y")) || Main::$cacheFile->get("fishingRodLoots", "") == ""){
+		if(Main::$cacheFile->get("date", "") != strval(date("d-m-y"))){
 			// Generate new Arrays
 			Main::getInstance()->getLogger()->debug("Generating new FishingLootTable");
 

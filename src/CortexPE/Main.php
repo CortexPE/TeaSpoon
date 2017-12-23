@@ -203,7 +203,7 @@ class Main extends PluginBase {
 		// LevelManager::init(); EXECUTED VIA EventListener
 		Tile::init();
 		FishingRodLootTable::init();
-		$this->getServer()->getScheduler()->scheduleRepeatingTask(new CheckPlayersTask($this), 10);
+		$this->getServer()->getScheduler()->scheduleRepeatingTask(new CheckPlayersTask($this), 5);
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new PacketHandler($this), $this);
 		if(self::$registerVanillaEnchantments){
@@ -225,7 +225,7 @@ class Main extends PluginBase {
 			$this->getLogger()->critical("Your configuration file is from a higher version of TeaSpoon! Please update the plugin from https://github.com/CortexPE/TeaSpoon");
 		}
 
-		if(self::$cacheFile->get("date", "") == ""){
+		if(self::$cacheFile->get("date", "") != strval(date("d-m-y"))){
 			self::$cacheFile->set("date", strval(date("d-m-y")));
 			self::$cacheFile->save(true);
 		}

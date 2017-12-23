@@ -87,7 +87,7 @@ class EnchantHandler implements Listener {
 	 * [X] Infinity
 	 * [X] Luck of the sea
 	 * [X] Lure
-	 * [/] Frost walker (Partially working as of now)
+	 * [ ] Frost walker (Very laggy as of now)
 	 * [ ] Mending
 	 */
 
