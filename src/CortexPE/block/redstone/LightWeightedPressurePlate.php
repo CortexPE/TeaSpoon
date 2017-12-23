@@ -19,7 +19,7 @@
  *
  */
 
-namespace CortexPE\block;
+namespace CortexPE\block\redstone;
 
 class LightWeightedPressurePlate extends PressurePlate {
 	protected $id = self::LIGHT_WEIGHTED_PRESSURE_PLATE;

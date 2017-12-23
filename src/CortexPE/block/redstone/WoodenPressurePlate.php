@@ -19,7 +19,7 @@
  *
  */
 
-namespace CortexPE\block;
+namespace CortexPE\block\redstone;
 
 class WoodenPressurePlate extends PressurePlate {
 	protected $id = self::WOODEN_PRESSURE_PLATE;

@@ -19,7 +19,7 @@
  *
 */
 
-namespace CortexPE\block;
+namespace CortexPE\block\redstone;
 
 use pocketmine\block\Block;
 use pocketmine\block\BlockToolType;

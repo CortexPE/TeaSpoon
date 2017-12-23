@@ -19,7 +19,7 @@
  *
 */
 
-namespace CortexPE\block;
+namespace CortexPE\block\redstone;
 
 class DetectorRail extends PoweredRail {
 

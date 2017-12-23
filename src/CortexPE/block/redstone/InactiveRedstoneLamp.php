@@ -19,7 +19,7 @@
  *
  */
 
-namespace CortexPE\block;
+namespace CortexPE\block\redstone;
 
 class InactiveRedstoneLamp extends ActiveRedstoneLamp {
 	protected $id = self::REDSTONE_LAMP;

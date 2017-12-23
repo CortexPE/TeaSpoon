@@ -19,7 +19,7 @@
  *
  */
 
-namespace CortexPE\block;
+namespace CortexPE\block\redstone;
 
 use pocketmine\item\Item;
 use pocketmine\Player;
