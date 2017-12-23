@@ -369,31 +369,22 @@ class EnchantHandler implements Listener {
 						}
 					}
 					break;
-				case Enchantment::FROST_WALKER:
-					/*
-					 HANDLED IN CheckPlayersTask!!!
-
-					  XXX
-					 XXXXX
-					XXXOXXX
-					 XXXXX
-					  XXX
-
-					X - Ice
-					O - Player
-					$radius = ($enchantment->getLevel() == 1 ? 3 : 5);
-					for ($a = -$radius; $a <= $radius; $a++) {
-						for ($c = -$radius; $c <= $radius; $c++) {
-							if ($a * $a + $c * $c <= $radius * $radius) {
-								$lvl = $p->getLevel();
-								$pos = new Vector3($p->getX() + $a, $p->getY() - 1, $p->getZ() + $c);
-								if(in_array($lvl->getBlock($pos)->getId(), self::WATER_IDS)){
-									$lvl->setBlock($pos, new FrostedIce(), false, true);
-								}
+				/*
+			case Enchantment::FROST_WALKER:
+				$radius = ($enchantment->getLevel() == 1 ? 3 : 5);
+				for ($a = -$radius; $a <= $radius; $a++) {
+					for ($c = -$radius; $c <= $radius; $c++) {
+						if ($a * $a + $c * $c <= $radius * $radius) {
+							$lvl = $p->getLevel();
+							$pos = new Vector3($p->getX() + $a, $p->getY() - 1, $p->getZ() + $c);
+							if(in_array($lvl->getBlock($pos)->getId(), self::WATER_IDS)){
+								$lvl->setBlock($pos, new FrostedIce(), false, true);
 							}
 						}
-					}*/
+					}
+				}
 					break;
+				*/
 			}
 		}
 	}

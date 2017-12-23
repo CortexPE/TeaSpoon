@@ -26,7 +26,7 @@ namespace CortexPE\item;
 
 use CortexPE\Main;
 use pocketmine\entity\{
-	Effect, Entity, Human
+	Effect, Entity, Human, Living
 };
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\EntityEventPacket;
@@ -370,30 +370,30 @@ class Potion extends Item {
 		return $entity instanceof Human;
 	}
 
-	public function onConsume(Entity $human){
+	public function onConsume(Living $consumer){
 		$pk = new EntityEventPacket();
-		$pk->entityRuntimeId = $human->getId();
+		$pk->entityRuntimeId = $consumer->getId();
 		$pk->event = EntityEventPacket::USE_ITEM;
-		if($human instanceof Player){
-			$human->dataPacket($pk);
+		if($consumer instanceof Player){
+			$consumer->dataPacket($pk);
 		}
-		$server = $human->getLevel()->getServer();
+		$server = $consumer->getLevel()->getServer();
 
-		$server->broadcastPacket($human->getViewers(), $pk);
+		$server->broadcastPacket($consumer->getViewers(), $pk);
 
 		//($ev = new EntityDrinkPotionEvent($human, $this))->call();
 
 		//if(!$ev->isCancelled()){
 		foreach($this->getEffects() as $effect){
-			$human->addEffect($effect);
+			$consumer->addEffect($effect);
 		}
 		//Don't set the held item to glass bottle if we're in creative
-		if($human instanceof Player){
-			if($human->getGamemode() === 1){
+		if($consumer instanceof Player){
+			if($consumer->getGamemode() === 1){
 				return;
 			}
 		}
-		$human->getInventory()->setItemInHand(Item::get(self::GLASS_BOTTLE));
+		$consumer->getInventory()->setItemInHand(Item::get(self::GLASS_BOTTLE));
 		//}
 	}
 

@@ -41,20 +41,20 @@ use pocketmine\block\{
 
 class BlockManager {
 	public static function init(){
-		self::register(Block::PORTAL, new Portal());
-		self::register(Block::END_PORTAL, new EndPortal());
+		self::register(Block::PORTAL, new Portal(), true);
+		self::register(Block::END_PORTAL, new EndPortal(), true);
 		self::register(Block::OBSIDIAN, new Obsidian(), true);
-		self::register(Block::DRAGON_EGG, new DragonEgg());
-		self::register(Block::BEACON, new Beacon());
+		self::register(Block::DRAGON_EGG, new DragonEgg(), true);
+		self::register(Block::BEACON, new Beacon(), true);
 		self::register(Block::FIRE, new Fire(), true);
 		self::register(Block::BED_BLOCK, new Bed(), true);
-		self::register(Block::SLIME_BLOCK, new SlimeBlock());
+		self::register(Block::SLIME_BLOCK, new SlimeBlock(), true);
 		self::register(Block::END_PORTAL_FRAME, new EndPortalFrame(), true);
 		self::register(Block::LAVA, new Lava(), true);
 		self::register(Block::STILL_LAVA, new StillLava(), true);
 		self::register(Block::MONSTER_SPAWNER, new MonsterSpawner(), true);
-		self::register(Block::FROSTED_ICE, new FrostedIce());
-		self::register(Block::SHULKER_BOX, new ShulkerBox());
+		self::register(Block::FROSTED_ICE, new FrostedIce(), true);
+		self::register(Block::SHULKER_BOX, new ShulkerBox(), true);
 	}
 
 	public static function register(int $id, Block $block, bool $overwrite = false): bool{

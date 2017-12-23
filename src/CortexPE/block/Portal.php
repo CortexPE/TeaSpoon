@@ -24,10 +24,10 @@ declare(strict_types = 1);
 namespace CortexPE\block;
 
 use pocketmine\block\{
-	Air, Block, Transparent
+	Air, Block, BlockToolType, Transparent
 };
 use pocketmine\item\{
-	Item, Tool
+	Item
 };
 use pocketmine\math\Vector3;
 use pocketmine\Player;
@@ -59,7 +59,7 @@ class Portal extends Transparent {
 	}
 
 	public function getToolType(): int{
-		return Tool::TYPE_PICKAXE;
+		return BlockToolType::TYPE_PICKAXE;
 	}
 
 	public function canPassThrough(): bool{

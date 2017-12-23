@@ -40,6 +40,7 @@ use pocketmine\block\Lava;
 use pocketmine\block\Solid;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Human;
+use pocketmine\entity\Living;
 use pocketmine\item\Food;
 use pocketmine\item\Item;
 use pocketmine\level\sound\EndermanTeleportSound;
@@ -71,11 +72,11 @@ class ChorusFruit extends Food {
 		return 0; // todo: check
 	}
 
-	public function onConsume(Entity $human){
-		parent::onConsume($human);
+	public function onConsume(Living $consumer){
+		parent::onConsume($consumer);
 
-		if($human instanceof Player){
-			$session = Main::getInstance()->getSessionById($human->getId());
+		if($consumer instanceof Player){
+			$session = Main::getInstance()->getSessionById($consumer->getId());
 			if(floor(microtime(true) - $session->lastChorusFruitEat) < Main::$chorusFruitCooldown){
 				return;
 			}else{
@@ -83,7 +84,7 @@ class ChorusFruit extends Food {
 			}
 
 			$tries = 0;
-			$pos = $human->getPosition();
+			$pos = $consumer->getPosition();
 			while($tries < 100){
 				$tries++;
 
@@ -92,12 +93,12 @@ class ChorusFruit extends Food {
 					self::RAND_POS_Y[array_rand(self::RAND_POS_Y)],
 					self::RAND_POS_Z[array_rand(self::RAND_POS_Z)]
 				);
-				$b = $human->getLevel()->getBlock($randpos);
-				$below = $human->getLevel()->getBlock($randpos->subtract(0, 1, 0));
+				$b = $consumer->getLevel()->getBlock($randpos);
+				$below = $consumer->getLevel()->getBlock($randpos->subtract(0, 1, 0));
 				if(!($b instanceof Solid) && !($b instanceof Lava) && !($below instanceof Lava) && $below instanceof Solid){
-					$human->teleport($randpos, $human->getYaw(), $human->getPitch());
+					$consumer->teleport($randpos, $consumer->getYaw(), $consumer->getPitch());
 
-					$human->getLevel()->addSound(new EndermanTeleportSound($randpos), $human->getLevel()->getPlayers());
+					$consumer->getLevel()->addSound(new EndermanTeleportSound($randpos), $consumer->getLevel()->getPlayers());
 					break;
 				}
 			}

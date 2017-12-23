@@ -46,7 +46,7 @@ class EndPortalFrame extends PMEndPortalFrame {
 		parent::__construct($meta);
 	}
 
-	// Code below if ported from ClearSky (Big Thanks to XenialDan for Having the time to actually test it)
+	// Code below is ported from ClearSky (Big Thanks to XenialDan)
 	public function place(Item $item, Block $block, Block $target, int $face, Vector3 $facePos, Player $player = null): bool{
 		$faces = [
 			0 => 3,
@@ -86,11 +86,33 @@ class EndPortalFrame extends PMEndPortalFrame {
 	}
 
 	private function createPortal(array $corners = null){
+		// Accepted Format:
+		/*
+		 * Array:
+		 *  - CORNER X ONE
+		 *  - CORNER X TWO
+		 *  - CORNER Z ONE
+		 *  - CORNER Z TWO
+		 *  - BLOCK Y
+		 */
+
 		if($corners === null){
 			return false;
 		}
 
-		// TODO: set the blocks based from dimensions
+		$x1 = min($corners[0][0], $corners[1][0]);
+		$x2 = max($corners[0][0], $corners[1][0]);
+		$z1 = min($corners[0][1], $corners[1][1]);
+		$z2 = max($corners[0][1], $corners[1][1]);
+		$y = $corners[2];
+
+		for($curX = $x1; $curX <= $x2; $curX++){
+			for($curZ = $z1; $curZ <= $z2; $curZ++){
+				$pos = new Vector3($curX, $y, $curZ);
+				$this->getLevel()->setBlock($pos, Block::get(Block::END_PORTAL), false, false);
+			}
+		}
+
 		return true;
 	}
 }

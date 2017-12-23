@@ -36,10 +36,10 @@ declare(strict_types = 1);
 namespace CortexPE\block;
 
 use pocketmine\block\{
-	Air, Block, Solid
+	Air, Block, BlockToolType, Solid
 };
 use pocketmine\item\{
-	Item, Tool
+	Item
 };
 use pocketmine\math\Vector3;
 use pocketmine\Player;
@@ -63,7 +63,7 @@ class Obsidian extends Solid {
 	}
 
 	public function getToolType(): int{
-		return Tool::TYPE_PICKAXE;
+		return BlockToolType::TYPE_PICKAXE;
 	}
 
 	public function getHardness(): float{
@@ -71,7 +71,7 @@ class Obsidian extends Solid {
 	}
 
 	public function getDrops(Item $item): array{
-		if($item->isPickaxe() >= Tool::TIER_DIAMOND){
+		if($item->isPickaxe() && $item->getId() == Item::DIAMOND_PICKAXE){
 			return [
 				[Item::OBSIDIAN, 0, 1],
 			];
