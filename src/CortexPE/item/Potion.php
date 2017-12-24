@@ -300,14 +300,20 @@ class Potion extends Item {
 		return self::$POTION_NAMES[$meta] ?? "Potion";
 	}
 
-	public static function getColor(int $meta) : Color{
+	public static function getColor(int $meta) : Color {
 		$effect = Effect::getEffect(self::getEffectId($meta));
+		$return = $effect->getColor();
 
 		if($effect === null){
 			return new Color(46, 82, 153); // Default to Blue
 		}
 
-		return $effect->getColor() ?? new Color(0, 0, 0); // effect has no color whatsoever
+		// Only for compatibility with the inconsistency -_-
+		if(is_array($return)){
+			return new Color($return[0], $return[1], $return[2]);
+		} else {
+			return $return;
+		}
 	}
 
 	public static function getEffectId(int $meta): int{

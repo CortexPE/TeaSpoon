@@ -229,6 +229,9 @@ class Weather {
 	 * @return bool
 	 */
 	public function isSunny(): bool{
+		if(!$this->canCalculate){
+			return false;
+		}
 		return $this->getWeather() === self::SUNNY;
 	}
 
@@ -236,6 +239,9 @@ class Weather {
 	 * @return int
 	 */
 	public function getWeather(): int{
+		if(!$this->canCalculate){
+			return self::SUNNY;
+		}
 		return $this->weatherNow;
 	}
 
@@ -243,6 +249,9 @@ class Weather {
 	 * @return bool
 	 */
 	public function isRainy(): bool{
+		if(!$this->canCalculate){
+			return false;
+		}
 		return $this->getWeather() === self::RAINY;
 	}
 
@@ -250,6 +259,9 @@ class Weather {
 	 * @return bool
 	 */
 	public function isRainyThunder(): bool{
+		if(!$this->canCalculate){
+			return false;
+		}
 		return $this->getWeather() === self::RAINY_THUNDER;
 	}
 
@@ -257,6 +269,9 @@ class Weather {
 	 * @return bool
 	 */
 	public function isThunder(): bool{
+		if(!$this->canCalculate){
+			return false;
+		}
 		return $this->getWeather() === self::THUNDER;
 	}
 

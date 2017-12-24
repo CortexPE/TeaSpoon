@@ -93,6 +93,10 @@ class EventListener implements Listener {
 			}else{
 				Main::$weatherData[$lvl->getId()]->setCanCalculate(false);
 			}
+		} else {
+			$lvl = $ev->getLevel();
+			Main::$weatherData[$lvl->getId()] = new Weather($lvl, 0);
+			Main::$weatherData[$lvl->getId()]->setCanCalculate(false);
 		}
 
 		return true;
@@ -212,11 +216,13 @@ class EventListener implements Listener {
 			$p = $ev->getEntity();
 			if($p instanceof PMPlayer){
 				$session = Main::getInstance()->getSessionById($p->getId());
-				if($session->usingElytra){
-					$ev->setCancelled(true);
-				}
-				if($p->getLevel()->getBlock($p->subtract(0, 1, 0))->getId() == Block::SLIME_BLOCK){
-					$ev->setCancelled(true);
+				if($session !== null){
+					if($session->usingElytra){
+						$ev->setCancelled(true);
+					}
+					if($p->getLevel()->getBlock($p->subtract(0, 1, 0))->getId() == Block::SLIME_BLOCK){
+						$ev->setCancelled(true);
+					}
 				}
 			}
 		}
