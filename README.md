@@ -113,5 +113,4 @@ Installation is easy, Just download the latest phar from my [Jenkins Build Serve
    - [X] Clear Command
  - Utils
    - [X] TextFormat::center like PC or MiNET. (Credits: [Turanic](https://github.com/TuranicTeam/Turanic))
-<br />
-***More to do...***
+<br />***More to do...***
