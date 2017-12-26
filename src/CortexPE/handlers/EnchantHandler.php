@@ -36,11 +36,8 @@ declare(strict_types = 1);
 namespace CortexPE\handlers;
 
 use CortexPE\item\enchantment\Enchantment;
-use CortexPE\Main;
-use CortexPE\Session;
 use CortexPE\Utils;
 use pocketmine\block\Block;
-use pocketmine\entity\Attribute;
 use pocketmine\entity\Living;
 use pocketmine\entity\projectile\Arrow;
 use pocketmine\event\block\BlockBreakEvent;
@@ -49,16 +46,12 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDeathEvent;
 use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\Listener;
-use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\item\Item;
 use pocketmine\nbt\tag\ShortTag;
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
 
 class EnchantHandler implements Listener {
-
-	// TODO: ADD MORE ENCHANTS
-
 	/**
 	 * TO-DO:
 	 * [X] Protection
@@ -344,65 +337,6 @@ class EnchantHandler implements Listener {
 						$modarrow->setOnFire(80 * $level / 2);
 						break;
 				}
-			}
-		}
-	}
-
-	/**
-	 * @param PlayerMoveEvent $ev
-	 *
-	 * @priority HIGHEST
-	 */
-	public function onMove(PlayerMoveEvent $ev){
-		if($ev->isCancelled()){
-			return;
-		}
-		$p = $ev->getPlayer();
-		$session = Main::getInstance()->getSessionById($p->getId());
-		assert($session instanceof Session, "Session should be an instance of \CortexPE\Session");
-
-		$armor = $p->getInventory()->getBoots();
-		foreach($armor->getEnchantments() as $enchantment){
-			switch($enchantment->getId()){
-				case Enchantment::DEPTH_STRIDER:
-					$lvl = $enchantment->getLevel();
-					//$att = $p->getAttributeMap()->getAttribute(Attribute::MOVEMENT_SPEED);
-					if($lvl > 0){
-						if(in_array($p->getLevel()->getBlock($p)->getId(), self::WATER_IDS)){
-							//$att->setValue($att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl), true, true);
-
-							$session->allowCheats = true;
-						}else{
-							//if($att->getValue() == $att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl)){
-								//$att->setValue($att->getDefaultValue(), true, true);
-
-								$session->allowCheats = false;
-							//}
-						}
-					}else{
-						//if($att->getValue() == $att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl)){
-							//$att->setValue($att->getDefaultValue(), true, true);
-
-							$session->allowCheats = false;
-						//}
-					}
-					break;
-				/*
-			case Enchantment::FROST_WALKER:
-				$radius = ($enchantment->getLevel() == 1 ? 3 : 5);
-				for ($a = -$radius; $a <= $radius; $a++) {
-					for ($c = -$radius; $c <= $radius; $c++) {
-						if ($a * $a + $c * $c <= $radius * $radius) {
-							$lvl = $p->getLevel();
-							$pos = new Vector3($p->getX() + $a, $p->getY() - 1, $p->getZ() + $c);
-							if(in_array($lvl->getBlock($pos)->getId(), self::WATER_IDS)){
-								$lvl->setBlock($pos, new FrostedIce(), false, true);
-							}
-						}
-					}
-				}
-					break;
-				*/
 			}
 		}
 	}
