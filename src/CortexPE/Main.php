@@ -45,7 +45,6 @@ use CortexPE\item\{
 };
 use CortexPE\level\weather\Weather;
 use CortexPE\plugin\AllAPILoaderManager;
-use CortexPE\task\AsynchronousEvaluator;
 use CortexPE\task\CheckPlayersTask;
 use CortexPE\task\TickLevelsTask;
 use CortexPE\tile\Tile;
@@ -104,12 +103,12 @@ class Main extends PluginBase {
 	public static $limitedCreative = false;
 	/** @var bool */
 	public static $debug = false;
+	/** @var Config */
+	public static $cacheFile;
 	/** @var Main */
 	private static $instance;
 	/** @var Session[] */
 	private $sessions = [];
-	/** @var Config */
-	public static $cacheFile;
 
 	public static function getInstance(): Main{
 		return self::$instance;
@@ -179,19 +178,16 @@ class Main extends PluginBase {
 	public function onEnable(){
 		if(Server::$isSpoon){
 			$this->setEnabled(false);
+
 			return;
 		}
 		$yr = 2017 . ((2017 != date('Y')) ? '-' . date('Y') : '');
-		$stms = TextFormat::DARK_GREEN . "\nMMP\"\"MM\"\"YMM              " . TextFormat::GREEN . " .M\"\"\"bgd                                        " . TextFormat::DARK_GREEN . "\nP'   MM   `7             " . TextFormat::GREEN . " ,MI    \"Y                                        " . TextFormat::DARK_GREEN . "\n     MM  .gP\"Ya   ,6\"Yb.  " . TextFormat::GREEN . "`MMb.   `7MMpdMAo.  ,pW\"Wq.   ,pW\"Wq.`7MMpMMMb.  " . TextFormat::DARK_GREEN . "\n     MM ,M'   Yb 8)   MM" . TextFormat::GREEN . "    `YMMNq. MM   `Wb 6W'   `Wb 6W'   `Wb MM    MM  " . TextFormat::DARK_GREEN . "\n     MM 8M\"\"\"\"\"\"  ,pm9MM " . TextFormat::GREEN . " .     `MM MM    M8 8M     M8 8M     M8 MM    MM  " . TextFormat::DARK_GREEN . "\n     MM YM.    , 8M   MM  " . TextFormat::GREEN . "Mb     dM MM   ,AP YA.   ,A9 YA.   ,A9 MM    MM  " . TextFormat::DARK_GREEN . "\n   .JMML.`Mbmmd' `Moo9^Yo." . TextFormat::GREEN . "P\"Ybmmd\"  MMbmmd'   `Ybmd9'   `Ybmd9'.JMML  JMML." . TextFormat::GREEN . "\n                                    MM                                     \n                                  .JMML.  " . TextFormat::YELLOW . Splash::getRandomSplash() . TextFormat::RESET . "\nCopyright (C) CortexPE " . $yr . "\n";
+		$stms = TextFormat::DARK_GREEN . "\n\nMMP\"\"MM\"\"YMM              " . TextFormat::GREEN . " .M\"\"\"bgd                                        " . TextFormat::DARK_GREEN . "\nP'   MM   `7             " . TextFormat::GREEN . " ,MI    \"Y                                        " . TextFormat::DARK_GREEN . "\n     MM  .gP\"Ya   ,6\"Yb.  " . TextFormat::GREEN . "`MMb.   `7MMpdMAo.  ,pW\"Wq.   ,pW\"Wq.`7MMpMMMb.  " . TextFormat::DARK_GREEN . "\n     MM ,M'   Yb 8)   MM" . TextFormat::GREEN . "    `YMMNq. MM   `Wb 6W'   `Wb 6W'   `Wb MM    MM  " . TextFormat::DARK_GREEN . "\n     MM 8M\"\"\"\"\"\"  ,pm9MM " . TextFormat::GREEN . " .     `MM MM    M8 8M     M8 8M     M8 MM    MM  " . TextFormat::DARK_GREEN . "\n     MM YM.    , 8M   MM  " . TextFormat::GREEN . "Mb     dM MM   ,AP YA.   ,A9 YA.   ,A9 MM    MM  " . TextFormat::DARK_GREEN . "\n   .JMML.`Mbmmd' `Moo9^Yo." . TextFormat::GREEN . "P\"Ybmmd\"  MMbmmd'   `Ybmd9'   `Ybmd9'.JMML  JMML." . TextFormat::GREEN . "\n                                    MM                                     \n                                  .JMML.  " . TextFormat::YELLOW . Splash::getRandomSplash() . TextFormat::RESET . "\nCopyright (C) CortexPE " . $yr . "\n";
 		$this->getLogger()->info("Loading..." . $stms);
 
 		$this->loadEverythingElse();
 		$this->getLogger()->info("TeaSpoon is distributed under the AGPL License");
 		$this->checkConfigs();
-	}
-
-	public function onDisable(){
-		self::$cacheFile->save();
 	}
 
 	private function loadEverythingElse(){
@@ -231,6 +227,10 @@ class Main extends PluginBase {
 		}
 	}
 
+	public function onDisable(){
+		self::$cacheFile->save();
+	}
+
 	public function createSession(Player $player): bool{
 		if(!isset($this->sessions[$player->getId()])){
 			$this->sessions[$player->getId()] = new Session($player);
@@ -267,6 +267,7 @@ class Main extends PluginBase {
 				return $session;
 			}
 		}
+
 		return null;
 	}
 }

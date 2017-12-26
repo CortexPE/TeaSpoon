@@ -36,7 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\task;
 
 use CortexPE\{
-	Main, Utils
+	Main, Session, Utils
 };
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\{
@@ -73,6 +73,8 @@ class DelayedCrossDimensionTeleportTask extends PluginTask {
 
 	public function onRun(int $currentTick){
 		$session = Main::getInstance()->getSessionById($this->player->getId());
+		assert($session instanceof Session, "Session should be an instance of \CortexPE\Session");
+
 		if(Utils::isDelayedTeleportCancellable($this->player)){
 			if($session->skipCheck){
 				$session->skipCheck = false;

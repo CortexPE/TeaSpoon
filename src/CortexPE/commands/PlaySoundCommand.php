@@ -100,15 +100,4 @@ class PlaySoundCommand extends VanillaCommand {
 
 		return true;
 	}
-
-	private function clearTarget(Player $p): int{
-		$count = 0;
-		$inv = $p->getInventory();
-		foreach($inv->getContents() as $item){
-			$count += $item->getCount();
-		}
-		$inv->clearAll();
-
-		return $count;
-	}
 }

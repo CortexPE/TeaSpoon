@@ -37,11 +37,11 @@ namespace CortexPE\commands;
 
 
 use CortexPE\Main;
-use pocketmine\Server as PMServer;
 use pocketmine\command\CommandSender;
 use pocketmine\command\defaults\VanillaCommand;
 use pocketmine\network\mcpe\protocol\ProtocolInfo;
 use pocketmine\Player;
+use pocketmine\Server as PMServer;
 
 class BugReportCommand extends VanillaCommand {
 	public function __construct($name){

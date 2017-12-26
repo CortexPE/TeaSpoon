@@ -36,8 +36,8 @@ declare(strict_types = 1);
 namespace CortexPE\block;
 
 use CortexPE\Main;
-use CortexPE\tile\Tile;
 use CortexPE\tile\ShulkerBox as TileShulkerBox;
+use CortexPE\tile\Tile;
 use pocketmine\block\Block;
 use pocketmine\block\BlockToolType;
 use pocketmine\block\Transparent;
@@ -63,14 +63,15 @@ class ShulkerBox extends Transparent {
 		return 6;
 	}
 
-	public function getToolType() : int{
+	public function getToolType(): int{
 		return BlockToolType::TYPE_PICKAXE;
 	}
-	public function getName() :string {
+
+	public function getName(): string{
 		return "Shulker Box";
 	}
 
-	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
+	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null): bool{
 		$this->getLevel()->setBlock($blockReplace, $this, true, true);
 
 		$nbt = TileShulkerBox::createNBT($this->asVector3());
@@ -85,10 +86,11 @@ class ShulkerBox extends Transparent {
 		if($player instanceof Player){ // remove this hack if pmmp adds a way to set the max stack size for blocks...
 			$player->getInventory()->setItemInHand(Item::get(Item::AIR));
 		}
+
 		return true;
 	}
 
-	public function onBreak(Item $item, Player $player = null) : bool{
+	public function onBreak(Item $item, Player $player = null): bool{
 		$t = $this->getLevel()->getTile($this);
 		if($t instanceof TileShulkerBox){
 			$item = Item::get(Item::SHULKER_BOX, $this->meta, 1);
@@ -103,7 +105,7 @@ class ShulkerBox extends Transparent {
 		return true;
 	}
 
-	public function onActivate(Item $item, Player $player = null) : bool{
+	public function onActivate(Item $item, Player $player = null): bool{
 		if($player instanceof Player){
 
 			$t = $this->getLevel()->getTile($this);

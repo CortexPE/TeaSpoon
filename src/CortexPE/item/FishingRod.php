@@ -38,6 +38,7 @@ namespace CortexPE\item;
 use CortexPE\entity\projectile\FishingHook;
 use CortexPE\item\enchantment\Enchantment;
 use CortexPE\Main;
+use CortexPE\Session;
 use CortexPE\utils\FishingRodLootTable;
 use CortexPE\utils\Xp;
 use pocketmine\block\Block;
@@ -66,6 +67,8 @@ class FishingRod extends ProjectileItem {
 
 	public function onClickAir(Player $player, Vector3 $directionVector): bool{
 		$session = Main::getInstance()->getSessionById($player->getId());
+		assert($session instanceof Session, "Session should be an instance of \CortexPE\Session");
+
 		if(!$session->fishing){
 			$nbt = Entity::createBaseNBT($player->add(0, $player->getEyeHeight(), 0), $directionVector, $player->yaw, $player->pitch);
 
@@ -88,7 +91,7 @@ class FishingRod extends ProjectileItem {
 			$weather = Main::$weatherData[$player->getLevel()->getId()];
 			if(($weather->isRainy() || $weather->isRainyThunder())){
 				$rand = mt_rand(15, 50);
-			} else {
+			}else{
 				$rand = mt_rand(30, 100);
 			}
 			if($this->hasEnchantments()){
@@ -110,16 +113,14 @@ class FishingRod extends ProjectileItem {
 		}else{
 			$projectile = $session->fishingHook;
 			if($projectile instanceof FishingHook){
-				$pk = new EntityEventPacket();
-				$pk->entityRuntimeId = $projectile->getId();
-				$pk->event = EntityEventPacket::FISH_HOOK_TEASE;
-				$player->getServer()->broadcastPacket($player->getLevel()->getPlayers(), $pk);
+
+				$session->unsetFishing();
 
 				if($player->isSurvival()){
 					if($player->getLevel()->getBlock($projectile->asVector3())->getId() == Block::WATER || $player->getLevel()->getBlock($projectile)->getId() == Block::WATER){
 						$this->meta += 5;
-					} else {
-						$this->meta += mt_rand(10,15); // TODO: Implement entity / block collision properly
+					}else{
+						$this->meta += mt_rand(10, 15); // TODO: Implement entity / block collision properly
 					}
 					if($this->meta >= 355){ // TODO: Know why tf it gets removed early at 65 (as the wiki says)
 						$this->setCount(0);
@@ -136,7 +137,7 @@ class FishingRod extends ProjectileItem {
 					}
 					if(($weather->isRainy() || $weather->isRainyThunder()) && $lvl == 0){
 						$lvl = 2;
-					} else {
+					}else{
 						$lvl = 0;
 					}
 					$item = FishingRodLootTable::getRandom($lvl);
@@ -146,9 +147,6 @@ class FishingRod extends ProjectileItem {
 
 				$projectile->flagForDespawn();
 			}
-
-			$session->fishingHook = null;
-			$session->fishing = false;
 		}
 
 		return true;

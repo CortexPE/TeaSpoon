@@ -151,6 +151,6 @@ class Ender extends Generator {
 	}
 
 	public function getSpawn(): Vector3{
-		return new Vector3(127.5,128,127.5);
+		return new Vector3(127.5, 128, 127.5);
 	}
 }

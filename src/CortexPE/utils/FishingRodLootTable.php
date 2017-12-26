@@ -68,7 +68,7 @@ class FishingRodLootTable {
 
 			Main::$cacheFile->set("fishingRodLoots", $fishingRodLoots);
 			Main::$cacheFile->save(true);
-		} else {
+		}else{
 			// Load Arrays
 			Main::getInstance()->getLogger()->debug("Loading existing FishingLootTable from cache...");
 			$fishingRodLoots = Main::$cacheFile->get("fishingRodLoots");
@@ -108,6 +108,16 @@ class FishingRodLootTable {
 		self::loopedEntry(self::getItem(Item::BONE), 12, $arr);
 		self::loopedEntry(self::getItem(Item::DYE)->setDamage(0), 1, $arr); // ink sac
 		self::loopedEntry(self::getItem(Item::TRIPWIRE_HOOK), 12, $arr);
+	}
+
+	private static function loopedEntry(Item $item, int $count, string $arrayName){
+		for($i = 0; $i <= $count; $i++){
+			self::${$arrayName}[] = $item;
+		}
+	}
+
+	private static function getItem(int $id): Item{
+		return Item::get($id, 0, 1);
 	}
 
 	private static function initLOS1(){
@@ -203,18 +213,7 @@ class FishingRodLootTable {
 		self::loopedEntry(self::getItem(Item::TRIPWIRE_HOOK), 5, $arr);
 	}
 
-
-	private static function loopedEntry(Item $item, int $count, string $arrayName){
-		for($i = 0; $i <= $count; $i++){
-			self::${$arrayName}[] = $item;
-		}
-	}
-
-	private static function getItem(int $id) : Item {
-		return Item::get($id, 0, 1);
-	}
-
-	public static function getRandom(int $level) : Item {
+	public static function getRandom(int $level): Item{
 		switch($level){
 			default: // hehe peeps be like getting no-effect Luck Of The Sea enchanted rods xD
 			case 0:

@@ -225,10 +225,6 @@ class Splash {
 		"Merry Christmas",
 	];
 
-	public static function getRandomSentence(): string{
-		return self::getRandomNoun() . " " . self::getRandomVerb();
-	}
-
 	public static function getRandomSplash(): string{
 		if(self::isChristmastide()){
 			return self::$CHRISTMAS_SPLASHES[array_rand(self::$CHRISTMAS_SPLASHES)];
@@ -248,19 +244,6 @@ class Splash {
 		return self::getRandomTSPSplash();
 	}
 
-	public static function getRandomTSPSplash(): string{
-		return self::$TEASPOON_SPLASHES[array_rand(self::$TEASPOON_SPLASHES)];
-	}
-
-	public static function getRandomNoun(): string{
-		return self::$RANDOM_NOUN[array_rand(self::$RANDOM_NOUN)];
-	}
-
-	public static function getRandomVerb(): string{
-		return self::$RANDOM_VERB[array_rand(self::$RANDOM_VERB)];
-	}
-
-	// eastereggs?
 	private static function isChristmastide(){
 		$month = date('n');
 		$day = date('j');
@@ -273,5 +256,21 @@ class Splash {
 		$day = date('j');
 
 		return ($month == 10 && $day == 10);
+	}
+
+	public static function getRandomSentence(): string{
+		return self::getRandomNoun() . " " . self::getRandomVerb();
+	}
+
+	public static function getRandomNoun(): string{
+		return self::$RANDOM_NOUN[array_rand(self::$RANDOM_NOUN)];
+	}
+
+	public static function getRandomVerb(): string{
+		return self::$RANDOM_VERB[array_rand(self::$RANDOM_VERB)];
+	}
+
+	public static function getRandomTSPSplash(): string{
+		return self::$TEASPOON_SPLASHES[array_rand(self::$TEASPOON_SPLASHES)];
 	}
 }

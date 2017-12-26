@@ -35,9 +35,9 @@ declare(strict_types = 1);
 
 namespace CortexPE\handlers;
 
-use CortexPE\block\FrostedIce;
 use CortexPE\item\enchantment\Enchantment;
 use CortexPE\Main;
+use CortexPE\Session;
 use CortexPE\Utils;
 use pocketmine\block\Block;
 use pocketmine\entity\Attribute;
@@ -51,7 +51,6 @@ use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\item\Item;
-use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\ShortTag;
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
@@ -68,16 +67,16 @@ class EnchantHandler implements Listener {
 	 * [X] Blast protection
 	 * [X] Projectile protection
 	 * [X] Thorns
-	 * [ ] Respiration
-	 * [X] Depth strider
-	 * [ ] Aqua affinity
+	 * [X] Respiration (Client Side)
+	 * [X] Depth strider (Client Side)
+	 * [X] Aqua affinity (Client Side)
 	 * [X] Sharpness
 	 * [X] Smite
 	 * [X] Bane of athropods
 	 * [X] Knockback
 	 * [X] Fire aspect
 	 * [X] Looting
-	 * [ ] Efficiency
+	 * [X] Efficiency (Client Side)
 	 * [X] Silk touch
 	 * [ ] Unbreaking
 	 * [X] Fortune
@@ -297,6 +296,23 @@ class EnchantHandler implements Listener {
 	}
 
 	/**
+	 * Checks if the Item is enchanted with a specific enchant ID
+	 *
+	 * @param Item $i
+	 * @param int $enchantId
+	 * @return \pocketmine\item\enchantment\EnchantmentInstance | null
+	 */
+	private function isEnchantedWith(Item $i, int $enchantId){
+		if($i->getEnchantment($enchantId) !== null){
+			if($i->getEnchantment($enchantId)->getLevel() > 0){
+				return $i->getEnchantment($enchantId);
+			}
+		}
+
+		return null;
+	}
+
+	/**
 	 * @param EntityShootBowEvent $ev
 	 *
 	 * @priority HIGHEST
@@ -343,30 +359,32 @@ class EnchantHandler implements Listener {
 		}
 		$p = $ev->getPlayer();
 		$session = Main::getInstance()->getSessionById($p->getId());
+		assert($session instanceof Session, "Session should be an instance of \CortexPE\Session");
+
 		$armor = $p->getInventory()->getBoots();
 		foreach($armor->getEnchantments() as $enchantment){
 			switch($enchantment->getId()){
 				case Enchantment::DEPTH_STRIDER:
 					$lvl = $enchantment->getLevel();
-					$att = $p->getAttributeMap()->getAttribute(Attribute::MOVEMENT_SPEED);
+					//$att = $p->getAttributeMap()->getAttribute(Attribute::MOVEMENT_SPEED);
 					if($lvl > 0){
 						if(in_array($p->getLevel()->getBlock($p)->getId(), self::WATER_IDS)){
-							$att->setValue($att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl), true, true);
+							//$att->setValue($att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl), true, true);
 
 							$session->allowCheats = true;
 						}else{
-							if($att->getValue() == $att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl)){
-								$att->setValue($att->getDefaultValue(), true, true);
+							//if($att->getValue() == $att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl)){
+								//$att->setValue($att->getDefaultValue(), true, true);
 
 								$session->allowCheats = false;
-							}
+							//}
 						}
 					}else{
-						if($att->getValue() == $att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl)){
-							$att->setValue($att->getDefaultValue(), true, true);
+						//if($att->getValue() == $att->getDefaultValue() + ($att->getDefaultValue() * 0.75 * $lvl)){
+							//$att->setValue($att->getDefaultValue(), true, true);
 
 							$session->allowCheats = false;
-						}
+						//}
 					}
 					break;
 				/*
@@ -387,23 +405,6 @@ class EnchantHandler implements Listener {
 				*/
 			}
 		}
-	}
-
-	/**
-	 * Checks if the Item is enchanted with a specific enchant ID
-	 *
-	 * @param Item $i
-	 * @param int $enchantId
-	 * @return \pocketmine\item\enchantment\Enchantment | null
-	 */
-	private function isEnchantedWith(Item $i, int $enchantId){
-		if($i->getEnchantment($enchantId) !== null){
-			if($i->getEnchantment($enchantId)->getLevel() > 0){
-				return $i->getEnchantment($enchantId);
-			}
-		}
-
-		return null;
 	}
 
 	/**
@@ -523,7 +524,7 @@ class EnchantHandler implements Listener {
 			return;
 		}
 		$cause = $ent->getLastDamageCause();
-		if ($cause instanceof EntityDamageByEntityEvent){
+		if($cause instanceof EntityDamageByEntityEvent){
 			$damager = $cause->getDamager();
 			if($damager instanceof PMPlayer){
 				$item = $damager->getInventory()->getItemInHand();
@@ -531,7 +532,7 @@ class EnchantHandler implements Listener {
 					switch($enchantment->getId()){
 						case Enchantment::LOOTING:
 							$drops = [];
-							foreach ($ev->getDrops() as $drop){
+							foreach($ev->getDrops() as $drop){
 								$rand = rand(1, $enchantment->getLevel() + 1);
 								$drop->setCount($drop->getCount() + $rand);
 								$drops[] = $drop;

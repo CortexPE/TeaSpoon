@@ -36,9 +36,8 @@ declare(strict_types = 1);
 namespace CortexPE\task;
 
 use CortexPE\{
-	block\FrostedIce, item\enchantment\Enchantment, Main, Utils
+	item\enchantment\Enchantment, Main, Session, Utils
 };
-use pocketmine\block\Block;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player;
@@ -50,6 +49,8 @@ class CheckPlayersTask extends PluginTask {
 	public function onRun(int $currentTick){
 		foreach(Server::getInstance()->getOnlinePlayers() as $p){
 			$session = Main::getInstance()->getSessionById($p->getId());
+			assert($session instanceof Session, "Session should be an instance of \CortexPE\Session");
+
 			if($session === null || $session->skipCheck){
 				continue;
 			}
@@ -82,8 +83,8 @@ class CheckPlayersTask extends PluginTask {
 				}
 			}
 			if($p->getInventory()->getBoots()->hasEnchantment(Enchantment::FROST_WALKER)){
-				$ench = $p->getInventory()->getBoots()->getEnchantment(Enchantment::FROST_WALKER);
-				/* LAGGY
+				/* $ench = $p->getInventory()->getBoots()->getEnchantment(Enchantment::FROST_WALKER);
+				LAGGY
 				if($ench->getLevel() < 1){
 					continue;
 				}

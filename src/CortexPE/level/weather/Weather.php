@@ -232,6 +232,7 @@ class Weather {
 		if(!$this->canCalculate){
 			return false;
 		}
+
 		return $this->getWeather() === self::SUNNY;
 	}
 
@@ -242,6 +243,7 @@ class Weather {
 		if(!$this->canCalculate){
 			return self::SUNNY;
 		}
+
 		return $this->weatherNow;
 	}
 
@@ -252,6 +254,7 @@ class Weather {
 		if(!$this->canCalculate){
 			return false;
 		}
+
 		return $this->getWeather() === self::RAINY;
 	}
 
@@ -262,6 +265,7 @@ class Weather {
 		if(!$this->canCalculate){
 			return false;
 		}
+
 		return $this->getWeather() === self::RAINY_THUNDER;
 	}
 
@@ -272,6 +276,7 @@ class Weather {
 		if(!$this->canCalculate){
 			return false;
 		}
+
 		return $this->getWeather() === self::THUNDER;
 	}
 

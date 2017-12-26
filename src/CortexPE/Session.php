@@ -40,12 +40,14 @@ use CortexPE\item\ArmorDurability;
 use CortexPE\item\Elytra;
 use CortexPE\item\enchantment\Enchantment;
 use pocketmine\item\Item;
+use pocketmine\network\mcpe\protocol\EntityEventPacket;
 use pocketmine\Player;
 
 class Session {
 	/** @var int */
 	public $lastEnderPearlUse = 0,
-		$lastChorusFruitEat = 0;
+		$lastChorusFruitEat = 0,
+		$lastHeldSlot = 0;
 	/** @var bool */
 	public $skipCheck = false,
 		$usingElytra = false,
@@ -61,9 +63,7 @@ class Session {
 	}
 
 	public function __destruct(){
-		if($this->fishingHook !== null){
-			$this->fishingHook->flagForDespawn();
-		}
+		$this->unsetFishing();
 	}
 
 	public function getPlayer(): Player{
@@ -193,12 +193,25 @@ class Session {
 		}
 	}
 
-
 	public function isUsingElytra(): bool{
 		if($this->player->getInventory()->getChestplate() instanceof Elytra){
 			return true;
 		}
 
 		return false;
+	}
+
+	public function unsetFishing(){
+		$this->fishing = false;
+
+		if($this->fishingHook instanceof FishingHook){
+			$pk = new EntityEventPacket();
+			$pk->entityRuntimeId = $this->fishingHook->getId();
+			$pk->event = EntityEventPacket::FISH_HOOK_TEASE;
+			$this->player->getServer()->broadcastPacket($this->player->getLevel()->getPlayers(), $pk);
+
+			$this->fishingHook->close();
+			$this->fishingHook = null;
+		}
 	}
 }

@@ -43,7 +43,7 @@ Installation is easy, Just download the latest phar from my [Jenkins Build Serve
    - [X] Vanilla-Like MobSpawner (Credits: [XenialDan](https://github.com/thebigsmileXD))
    - [X] Working Shulker Boxes
  - Items
-   - [X] Vanilla Enchants (Progress: 95% | Credits to [TheAz928](https://github.com/TheAz928) for some of the values)
+   - [X] Vanilla Enchants (Progress: 98% | Credits to [TheAz928](https://github.com/TheAz928) for some of the values)
    - [X] Armor Damage
    - [X] Splash Potions
    - [X] FireCharge
@@ -51,14 +51,16 @@ Installation is easy, Just download the latest phar from my [Jenkins Build Serve
    - [X] Fully Functional Elytra Wings
    - [X] Firework Rocket (as Elytra Booster)
    - [X] Lingering Potions (Credits: [ClearSkyTeam](https://github.com/ClearSkyTeam))
-   - [X] Chorus Fruit
+   - [X] Chorus Fruit (with customizable Delay)
    - [X] FishingRod (Fully working Fishing System)
+   - [X] Vanilla-Like "Instant-Armor-Equipment"
  - Entities & Mobs
    - [X] XP Drops (Drop amounts needs to be improved)
    - [X] Projectiles
      - [X] EnderPearls
      - [X] Snowballs
      - [X] Eggs
+     - [X] Arrows with potion effects
    - [ ] Entities
      - [X] Lightning
      - [X] XPOrbs
@@ -111,6 +113,7 @@ Installation is easy, Just download the latest phar from my [Jenkins Build Serve
    - [X] More Vanilla-Like /kill command (Not perfect)
    - [X] World Command
    - [X] Clear Command
+   - [X] PlaySound Command
  - Utils
    - [X] TextFormat::center like PC or MiNET. (Credits: [Turanic](https://github.com/TuranicTeam/Turanic))
 <br />***More to do...***

@@ -50,7 +50,7 @@ use pocketmine\tile\Nameable;
 use pocketmine\tile\NameableTrait;
 use pocketmine\tile\Spawnable;
 
-class ShulkerBox extends Spawnable implements InventoryHolder , Container , Nameable {
+class ShulkerBox extends Spawnable implements InventoryHolder, Container, Nameable {
 	use NameableTrait, ContainerTrait;
 
 	/** @var ShulkerBoxInventory */
@@ -60,6 +60,14 @@ class ShulkerBox extends Spawnable implements InventoryHolder , Container , Name
 		parent::__construct($level, $nbt);
 		$this->inventory = new ShulkerBoxInventory($this);
 		$this->loadItems();
+	}
+
+	protected static function createAdditionalNBT(CompoundTag $nbt, Vector3 $pos, ?int $face = null, ?Item $item = null, ?Player $player = null): void{
+		$nbt->setTag(new ListTag("Items", [], NBT::TAG_Compound));
+
+		if($item !== null and $item->hasCustomName()){
+			$nbt->setString("CustomName", $item->getCustomName());
+		}
 	}
 
 	public function addAdditionalSpawnData(CompoundTag $nbt): void{
@@ -95,15 +103,6 @@ class ShulkerBox extends Spawnable implements InventoryHolder , Container , Name
 			$this->inventory = null;
 
 			parent::close();
-		}
-	}
-
-
-	protected static function createAdditionalNBT(CompoundTag $nbt, Vector3 $pos, ?int $face = null, ?Item $item = null, ?Player $player = null) : void{
-		$nbt->setTag(new ListTag("Items", [], NBT::TAG_Compound));
-
-		if($item !== null and $item->hasCustomName()){
-			$nbt->setString("CustomName", $item->getCustomName());
 		}
 	}
 }

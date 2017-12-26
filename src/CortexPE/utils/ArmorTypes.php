@@ -51,6 +51,7 @@ class ArmorTypes {
 		Item::IRON_CHESTPLATE,
 		Item::GOLD_CHESTPLATE,
 		Item::DIAMOND_CHESTPLATE,
+		Item::ELYTRA,
 	];
 	const LEGGINGS = [
 		Item::LEATHER_LEGGINGS,
@@ -67,19 +68,26 @@ class ArmorTypes {
 		Item::DIAMOND_BOOTS,
 	];
 
-	public static function getType(Item $armor) : string {
+	const TYPE_HELMET = "HELMET";
+	const TYPE_CHESTPLATE = "CHESTPLATE";
+	const TYPE_LEGGINGS = "LEGGINGS";
+	const TYPE_BOOTS = "BOOTS";
+	const TYPE_NULL = "NIL";
+
+	public static function getType(Item $armor): string{
 		if(in_array($armor->getId(), self::HELMET)){
-			return "HELMET";
+			return self::TYPE_HELMET;
 		}
 		if(in_array($armor->getId(), self::CHESTPLATE)){
-			return "CHESTPLATE";
+			return self::TYPE_CHESTPLATE;
 		}
 		if(in_array($armor->getId(), self::LEGGINGS)){
-			return "LEGGINGS";
+			return self::TYPE_LEGGINGS;
 		}
 		if(in_array($armor->getId(), self::BOOTS)){
-			return "BOOTS";
+			return self::TYPE_BOOTS;
 		}
-		return "NIL";
+
+		return self::TYPE_NULL;
 	}
 }

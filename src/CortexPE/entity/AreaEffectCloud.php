@@ -31,7 +31,6 @@ use pocketmine\math\AxisAlignedBB;
 use pocketmine\nbt\tag\FloatTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\ShortTag;
-use pocketmine\utils\Color;
 
 class AreaEffectCloud extends Entity {
 	const NETWORK_ID = self::AREA_EFFECT_CLOUD;

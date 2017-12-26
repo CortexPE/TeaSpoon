@@ -35,7 +35,6 @@ declare(strict_types = 1);
 
 namespace CortexPE\item;
 
-use pocketmine\block\Block;
 use pocketmine\item\{
 	Item, ItemFactory
 };
@@ -57,6 +56,7 @@ class ItemManager {
 		ItemFactory::registerItem(new FishingRod(), true);
 		ItemFactory::registerItem(new EyeOfEnder(), true);
 		ItemFactory::registerItem(new SpawnEgg(), true);
+		ItemFactory::registerItem(new Bow(), true);
 		// LAGGY ItemFactory::registerItem(new EndCrystal(), true);
 
 		Item::addCreativeItem(Item::get(Item::ENDER_PEARL));

@@ -69,6 +69,7 @@ class SplashPotion extends Throwable {
 
 	public function onCollideWithEntity(Entity $entity){
 		$this->isCollided = true;
+
 		return;
 	}
 }

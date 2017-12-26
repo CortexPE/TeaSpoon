@@ -145,9 +145,9 @@ class MonsterSpawner extends \pocketmine\block\MonsterSpawner {
 				if(!$tile instanceof MobSpawner){
 					$nbt = new CompoundTag("", [
 						new StringTag(Tile::TAG_ID, "MobSpawner"),
-						new IntTag(Tile::TAG_X, (int) $this->x),
-						new IntTag(Tile::TAG_Y, (int) $this->y),
-						new IntTag(Tile::TAG_Z, (int) $this->z)
+						new IntTag(Tile::TAG_X, (int)$this->x),
+						new IntTag(Tile::TAG_Y, (int)$this->y),
+						new IntTag(Tile::TAG_Z, (int)$this->z),
 					]);
 					$tile = Tile::createTile('MobSpawner', $this->getLevel(), $nbt);
 				}

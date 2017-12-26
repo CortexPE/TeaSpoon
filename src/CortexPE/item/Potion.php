@@ -31,7 +31,6 @@ use pocketmine\entity\{
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\EntityEventPacket;
 use pocketmine\Player;
-use pocketmine\Server;
 use pocketmine\utils\Color;
 
 class Potion extends Item {
@@ -300,7 +299,7 @@ class Potion extends Item {
 		return self::$POTION_NAMES[$meta] ?? "Potion";
 	}
 
-	public static function getColor(int $meta) : Color {
+	public static function getColor(int $meta): Color{
 		$effect = Effect::getEffect(self::getEffectId($meta));
 		$return = $effect->getColor();
 
@@ -311,7 +310,7 @@ class Potion extends Item {
 		// Only for compatibility with the inconsistency -_-
 		if(is_array($return)){
 			return new Color($return[0], $return[1], $return[2]);
-		} else {
+		}else{
 			return $return;
 		}
 	}
@@ -329,7 +328,7 @@ class Potion extends Item {
 	 *
 	 * @return bool
 	 */
-	public static function registerPotion(int $id, string $name, array $effects) : bool {
+	public static function registerPotion(int $id, string $name, array $effects): bool{
 		if(isset(self::$POTION_NAMES[$id]) || isset(self::$POTION_EFFECTS[$id]) || isset(self::$POTION_EFFECT_ID[$id])){ // So it wouldn't mess with other potions
 			Main::getInstance()->getLogger()->warning("Unable to register Potion ID: " . $id);
 

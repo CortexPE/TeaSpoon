@@ -39,6 +39,7 @@ namespace CortexPE;
 
 use CortexPE\entity\EndCrystal;
 use CortexPE\level\weather\Weather;
+use CortexPE\utils\ArmorTypes;
 use CortexPE\utils\Xp;
 use pocketmine\block\Block;
 use pocketmine\entity\Effect;
@@ -49,8 +50,9 @@ use pocketmine\event\entity\{
 	EntityDamageEvent, EntityDeathEvent, EntityTeleportEvent
 };
 use pocketmine\event\player\{
-	PlayerCommandPreprocessEvent, PlayerJoinEvent, PlayerKickEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
+	PlayerCommandPreprocessEvent, PlayerInteractEvent, PlayerItemHeldEvent, PlayerJoinEvent, PlayerKickEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
 };
+use pocketmine\item\Armor;
 use pocketmine\item\Item;
 use pocketmine\level\Explosion;
 use pocketmine\math\Vector3;
@@ -93,7 +95,7 @@ class EventListener implements Listener {
 			}else{
 				Main::$weatherData[$lvl->getId()]->setCanCalculate(false);
 			}
-		} else {
+		}else{
 			$lvl = $ev->getLevel();
 			Main::$weatherData[$lvl->getId()] = new Weather($lvl, 0);
 			Main::$weatherData[$lvl->getId()]->setCanCalculate(false);
@@ -206,6 +208,8 @@ class EventListener implements Listener {
 			/** @var Player $p */
 			$p = $ev->getEntity();
 			$session = Main::getInstance()->getSessionById($p->getId());
+			assert($session instanceof Session, "Session should be an instance of \CortexPE\Session");
+
 			if($session !== null && $ev->getCause() != EntityDamageEvent::CAUSE_LAVA){ // lava damage is handled on the Lava class.
 				$session->useArmors();
 			}
@@ -216,14 +220,15 @@ class EventListener implements Listener {
 			$p = $ev->getEntity();
 			if($p instanceof PMPlayer){
 				$session = Main::getInstance()->getSessionById($p->getId());
-				if($session !== null){
-					if($session->usingElytra){
-						$ev->setCancelled(true);
-					}
-					if($p->getLevel()->getBlock($p->subtract(0, 1, 0))->getId() == Block::SLIME_BLOCK){
-						$ev->setCancelled(true);
-					}
+				assert($session instanceof Session, "Session should be an instance of \CortexPE\Session");
+
+				if($session->usingElytra){
+					$ev->setCancelled(true);
 				}
+				if($p->getLevel()->getBlock($p->subtract(0, 1, 0))->getId() == Block::SLIME_BLOCK){
+					$ev->setCancelled(true);
+				}
+
 			}
 		}
 
@@ -279,13 +284,13 @@ class EventListener implements Listener {
 		}
 		$pid = $p->getId();
 		if($pid === null){
- 			return;
- 		}
+			return;
+		}
 		$session = Main::getInstance()->getSessionById($pid);
-		if($session !== null){
-			if($session->isUsingElytra() && $ev->getReason() == PMServer::getInstance()->getLanguage()->translateString("kick.reason.cheat", ["%ability.flight"])){
-				$ev->setCancelled(true);
-			}
+		assert($session instanceof Session, "Session should be an instance of \CortexPE\Session");
+
+		if($session->isUsingElytra() && $ev->getReason() == PMServer::getInstance()->getLanguage()->translateString("kick.reason.cheat", ["%ability.flight"])){
+			$ev->setCancelled(true);
 		}
 	}
 
@@ -346,6 +351,56 @@ class EventListener implements Listener {
 		if(Utils::in_arrayi($ev->getCommand(), self::VERSION_COMMANDS) && !$ev->isCancelled()){
 			$ev->setCancelled();
 			Main::sendVersion($ev->getSender());
+		}
+	}
+
+	/**
+	 * @param PlayerItemHeldEvent $ev
+	 *
+	 * @priority HIGHEST
+	 */
+	public function onItemHeld(PlayerItemHeldEvent $ev){
+		$session = Main::getInstance()->getSessionById($ev->getPlayer()->getId());
+		assert($session instanceof Session, "Session should be an instance of \CortexPE\Session");
+
+		if($session->fishing){
+			if($ev->getSlot() != $session->lastHeldSlot){
+				$session->unsetFishing();
+			}
+		}
+
+		$session->lastHeldSlot = $ev->getSlot();
+	}
+
+	/**
+	 * @param PlayerInteractEvent $ev
+	 *
+	 * @priority HIGHEST
+	 */
+	public function onInteract(PlayerInteractEvent $ev){
+		// MCPE(BE) does this client-side... we just have to do the same server-side.
+		$item = $ev->getItem();
+		$player = $ev->getPlayer();
+		if($ev->getItem() instanceof Armor){
+			$inventory = $player->getInventory();
+			$type = ArmorTypes::getType($item);
+			if($type !== ArmorTypes::TYPE_NULL){
+				switch($type){
+					case ArmorTypes::TYPE_HELMET:
+						$inventory->setHelmet($item);
+						break;
+					case ArmorTypes::TYPE_CHESTPLATE:
+						$inventory->setChestplate($item);
+						break;
+					case ArmorTypes::TYPE_LEGGINGS:
+						$inventory->setLeggings($item);
+						break;
+					case ArmorTypes::TYPE_BOOTS:
+						$inventory->setBoots($item);
+						break;
+				}
+				$inventory->setItemInHand(Item::get(Item::AIR, 0, 1));
+			}
 		}
 	}
 }

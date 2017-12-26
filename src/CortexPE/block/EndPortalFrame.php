@@ -64,6 +64,7 @@ class EndPortalFrame extends PMEndPortalFrame {
 		if(($this->getDamage() & 0x04) === 0 && $player instanceof Player && $item->getId() === Item::ENDER_EYE){
 			$this->setDamage($this->getDamage() + 4);
 			$this->getLevel()->setBlock($this, $this, true, true);
+
 			/*$corners = $this->isValidPortal();
 			if(is_array($corners)){
 				$this->createPortal($corners);

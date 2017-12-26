@@ -59,11 +59,13 @@ class SpawnEgg extends PMSpawnEgg {
 					--$this->count;
 				}
 				$entity->spawnToAll();
+
 				return true;
 			}
 
 			return false;
 		}
+
 		return false;
 	}
 }

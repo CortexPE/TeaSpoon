@@ -36,6 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\block;
 
 use CortexPE\Main;
+use CortexPE\Session;
 use pocketmine\block\Lava as PMLava;
 use pocketmine\entity\Entity;
 use pocketmine\event\entity\EntityCombustByBlockEvent;
@@ -46,7 +47,7 @@ use pocketmine\Server as PMServer;
 
 class Lava extends PMLava {
 
-	public function onEntityCollide(Entity $entity) : void{
+	public function onEntityCollide(Entity $entity): void{
 		$entity->fallDistance *= 0.5;
 
 		$ev = new EntityDamageByBlockEvent($this, $entity, EntityDamageEvent::CAUSE_LAVA, 4);
@@ -54,6 +55,8 @@ class Lava extends PMLava {
 
 		if($entity instanceof Player){
 			$session = Main::getInstance()->getSessionById($entity->getId());
+			assert($session instanceof Session, "Session should be an instance of \CortexPE\Session");
+
 			$session->useArmors(1);
 		}
 

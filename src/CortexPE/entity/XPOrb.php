@@ -26,6 +26,7 @@ namespace CortexPE\entity;
 
 use CortexPE\utils\Xp;
 use pocketmine\entity\Entity;
+use pocketmine\entity\Human;
 use pocketmine\nbt\tag\IntTag;
 
 class XPOrb extends Entity {
@@ -71,7 +72,7 @@ class XPOrb extends Entity {
 		}
 
 		$Target = $this->FetchNearbyPlayer($this->followrange);
-		if($Target instanceof \pocketmine\entity\Human){
+		if($Target instanceof Human){
 			$moveSpeed = 0.5;
 			$motX = ($Target->getX() - $this->x) / 8;
 			$motY = ($Target->getY()/* + $Target->getEyeHeight() */ - $this->y) / 8;

@@ -36,18 +36,17 @@ declare(strict_types = 1);
 namespace CortexPE\handlers;
 
 use CortexPE\Main;
+use CortexPE\Session;
 use CortexPE\Utils;
 use pocketmine\event\{
 	Listener, server\DataPacketReceiveEvent, server\DataPacketSendEvent
 };
-use pocketmine\network\mcpe\protocol\BatchPacket;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\network\mcpe\protocol\PlayerListPacket;
 use pocketmine\network\mcpe\protocol\StartGamePacket;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
-use pocketmine\Server;
 
 class PacketHandler implements Listener {
 
@@ -71,6 +70,8 @@ class PacketHandler implements Listener {
 			case ($pk instanceof PlayerActionPacket):
 				//Main::getInstance()->getLogger()->debug("Received PlayerActionPacket:" . $pkr->action . " from " . $p->getName());
 				$session = Main::getInstance()->getSessionById($p->getId());
+				assert($session instanceof Session, "Session should be an instance of \CortexPE\Session");
+
 				switch($pk->action){
 					case PlayerActionPacket::ACTION_DIMENSION_CHANGE_ACK:
 						// TODO: USE THIS FOR CROSS-DIMENSION TELEPORT
