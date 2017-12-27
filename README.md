@@ -24,7 +24,7 @@ Installation is easy, Just download the latest phar from my [Jenkins Build Serve
 ### Redstone System:
 &nbsp;&nbsp;&nbsp;&nbsp;Being worked on... :wink:
 
-[***Read More...***](https://github.com/CortexPE/TeaSpoon/wiki#faqs)
+***[Read More...](https://github.com/CortexPE/TeaSpoon/wiki#faqs)***
 
 # Finished & Planned Features
  - Worlds
