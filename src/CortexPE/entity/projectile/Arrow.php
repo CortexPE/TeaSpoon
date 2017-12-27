@@ -57,8 +57,8 @@ class Arrow extends PMArrow {
 	public function __construct(Level $level, CompoundTag $nbt, Entity $shootingEntity = null, bool $critical = false){
 		parent::__construct($level, $nbt, $shootingEntity, $critical);
 		$this->potionId = $this->namedtag->getShort("Potion", 0);
-		$col = Potion::getColor($this->potionId);
 		if($this->potionId != 0){
+			$col = Potion::getColor($this->potionId);
 			$this->color = [
 				"r" => $col->getR(),
 				"g" => $col->getG(),
