@@ -73,7 +73,6 @@ class PacketHandler implements Listener {
 				if($session instanceof Session){
 					switch($pk->action){
 						case PlayerActionPacket::ACTION_DIMENSION_CHANGE_ACK:
-							// TODO: USE THIS FOR CROSS-DIMENSION TELEPORT
 							break;
 
 						case PlayerActionPacket::ACTION_DIMENSION_CHANGE_REQUEST:
@@ -94,6 +93,7 @@ class PacketHandler implements Listener {
 							break;
 					}
 				}
+				break;
 		}
 	}
 

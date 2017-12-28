@@ -28,12 +28,13 @@ use CortexPE\Main;
 use pocketmine\entity\{
 	Effect, Entity, Human, Living
 };
+use pocketmine\item\Consumable;
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\EntityEventPacket;
 use pocketmine\Player;
 use pocketmine\utils\Color;
 
-class Potion extends Item {
+class Potion extends Item implements Consumable {
 
 	//No effects
 	const WATER_BOTTLE = 0;
@@ -375,33 +376,6 @@ class Potion extends Item {
 		return $entity instanceof Human;
 	}
 
-	public function onConsume(Living $consumer){
-		$pk = new EntityEventPacket();
-		$pk->entityRuntimeId = $consumer->getId();
-		$pk->event = EntityEventPacket::USE_ITEM;
-		if($consumer instanceof Player){
-			$consumer->dataPacket($pk);
-		}
-		$server = $consumer->getLevel()->getServer();
-
-		$server->broadcastPacket($consumer->getViewers(), $pk);
-
-		//($ev = new EntityDrinkPotionEvent($human, $this))->call();
-
-		//if(!$ev->isCancelled()){
-		foreach($this->getEffects() as $effect){
-			$consumer->addEffect($effect);
-		}
-		//Don't set the held item to glass bottle if we're in creative
-		if($consumer instanceof Player){
-			if($consumer->getGamemode() === 1){
-				return;
-			}
-		}
-		$consumer->getInventory()->setItemInHand(Item::get(self::GLASS_BOTTLE));
-		//}
-	}
-
 	public function getEffects(): array{
 		/*
 		 * Structure:
@@ -428,5 +402,17 @@ class Potion extends Item {
 		}
 
 		return $effects ?? [];
+	}
+
+	public function getResidue(){
+		return Item::get(Item::GLASS_BOTTLE);
+	}
+
+	public function getAdditionalEffects() : array{
+		return $this->getEffects();
+	}
+
+	public function onConsume(Living $consumer){
+
 	}
 }

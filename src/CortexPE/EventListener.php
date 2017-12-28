@@ -381,6 +381,9 @@ class EventListener implements Listener {
 		// MCPE(BE) does this client-side... we just have to do the same server-side.
 		$item = $ev->getItem();
 		$player = $ev->getPlayer();
+
+		//Main::getInstance()->getLogger()->debug($ev->getAction());
+
 		if($ev->getItem() instanceof Armor){
 			$inventory = $player->getInventory();
 			$type = ArmorTypes::getType($item);
@@ -399,7 +402,9 @@ class EventListener implements Listener {
 						$inventory->setBoots($item);
 						break;
 				}
-				$inventory->setItemInHand(Item::get(Item::AIR, 0, 1));
+				if($player->isSurvival() || $player->isAdventure()){
+					$inventory->setItemInHand(Item::get(Item::AIR, 0, 1));
+				}
 			}
 		}
 	}
