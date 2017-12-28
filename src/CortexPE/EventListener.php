@@ -208,10 +208,11 @@ class EventListener implements Listener {
 			/** @var Player $p */
 			$p = $ev->getEntity();
 			$session = Main::getInstance()->getSessionById($p->getId());
-			assert($session instanceof Session, "Session should be an instance of \CortexPE\Session");
 
-			if($session !== null && $ev->getCause() != EntityDamageEvent::CAUSE_LAVA){ // lava damage is handled on the Lava class.
-				$session->useArmors();
+			if($session instanceof Session){
+				if($ev->getCause() != EntityDamageEvent::CAUSE_LAVA){ // lava damage is handled on the Lava class.
+					$session->useArmors();
+				}
 			}
 		}
 
@@ -220,15 +221,14 @@ class EventListener implements Listener {
 			$p = $ev->getEntity();
 			if($p instanceof PMPlayer){
 				$session = Main::getInstance()->getSessionById($p->getId());
-				assert($session instanceof Session, "Session should be an instance of \CortexPE\Session");
-
-				if($session->usingElytra){
-					$ev->setCancelled(true);
+				if($session instanceof Session){
+					if($session->usingElytra){
+						$ev->setCancelled(true);
+					}
+					if($p->getLevel()->getBlock($p->subtract(0, 1, 0))->getId() == Block::SLIME_BLOCK){
+						$ev->setCancelled(true);
+					}
 				}
-				if($p->getLevel()->getBlock($p->subtract(0, 1, 0))->getId() == Block::SLIME_BLOCK){
-					$ev->setCancelled(true);
-				}
-
 			}
 		}
 
@@ -287,10 +287,10 @@ class EventListener implements Listener {
 			return;
 		}
 		$session = Main::getInstance()->getSessionById($pid);
-		assert($session instanceof Session, "Session should be an instance of \CortexPE\Session");
-
-		if($session->isUsingElytra() && $ev->getReason() == PMServer::getInstance()->getLanguage()->translateString("kick.reason.cheat", ["%ability.flight"])){
-			$ev->setCancelled(true);
+		if($session instanceof Session){
+			if($session->isUsingElytra() && $ev->getReason() == PMServer::getInstance()->getLanguage()->translateString("kick.reason.cheat", ["%ability.flight"])){
+				$ev->setCancelled(true);
+			}
 		}
 	}
 
@@ -361,15 +361,15 @@ class EventListener implements Listener {
 	 */
 	public function onItemHeld(PlayerItemHeldEvent $ev){
 		$session = Main::getInstance()->getSessionById($ev->getPlayer()->getId());
-		assert($session instanceof Session, "Session should be an instance of \CortexPE\Session");
-
-		if($session->fishing){
-			if($ev->getSlot() != $session->lastHeldSlot){
-				$session->unsetFishing();
+		if($session instanceof Session){
+			if($session->fishing){
+				if($ev->getSlot() != $session->lastHeldSlot){
+					$session->unsetFishing();
+				}
 			}
-		}
 
-		$session->lastHeldSlot = $ev->getSlot();
+			$session->lastHeldSlot = $ev->getSlot();
+		}
 	}
 
 	/**

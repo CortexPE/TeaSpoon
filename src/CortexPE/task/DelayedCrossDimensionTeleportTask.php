@@ -73,25 +73,25 @@ class DelayedCrossDimensionTeleportTask extends PluginTask {
 
 	public function onRun(int $currentTick){
 		$session = Main::getInstance()->getSessionById($this->player->getId());
-		assert($session instanceof Session, "Session should be an instance of \CortexPE\Session");
+		if($session instanceof Session){
+			if(Utils::isDelayedTeleportCancellable($this->player)){
+				if($session->skipCheck){
+					$session->skipCheck = false;
+				}
 
-		if(Utils::isDelayedTeleportCancellable($this->player)){
+				return false;
+			}
+			$pk = new ChangeDimensionPacket();
+			$pk->dimension = $this->dimension;
+			$pk->position = $this->position;
+			$pk->respawn = $this->respawn;
+			$this->player->dataPacket($pk);
+			$this->player->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
+			$this->player->teleport($this->position);
+
 			if($session->skipCheck){
 				$session->skipCheck = false;
 			}
-
-			return false;
-		}
-		$pk = new ChangeDimensionPacket();
-		$pk->dimension = $this->dimension;
-		$pk->position = $this->position;
-		$pk->respawn = $this->respawn;
-		$this->player->dataPacket($pk);
-		$this->player->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
-		$this->player->teleport($this->position);
-
-		if($session->skipCheck){
-			$session->skipCheck = false;
 		}
 
 		return true;

@@ -55,9 +55,9 @@ class Lava extends PMLava {
 
 		if($entity instanceof Player){
 			$session = Main::getInstance()->getSessionById($entity->getId());
-			assert($session instanceof Session, "Session should be an instance of \CortexPE\Session");
-
-			$session->useArmors(1);
+			if($session instanceof Session){
+				$session->useArmors(1);
+			}
 		}
 
 		$ev = new EntityCombustByBlockEvent($this, $entity, 15);

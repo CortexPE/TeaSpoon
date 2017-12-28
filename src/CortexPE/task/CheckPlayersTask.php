@@ -36,7 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\task;
 
 use CortexPE\{
-	item\enchantment\Enchantment, Main, Session, Utils
+	Main, Session, Utils
 };
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
@@ -49,65 +49,65 @@ class CheckPlayersTask extends PluginTask {
 	public function onRun(int $currentTick){
 		foreach(Server::getInstance()->getOnlinePlayers() as $p){
 			$session = Main::getInstance()->getSessionById($p->getId());
-			assert($session instanceof Session, "Session should be an instance of \CortexPE\Session");
-
-			if($session === null || $session->skipCheck){
-				continue;
-			}
-			if(Main::$registerDimensions){
-				$epo = Utils::isInsideOfEndPortal($p);
-				$po = Utils::isInsideOfPortal($p);
-				if($epo || $po && Main::$registerDimensions){
-					if($p->getLevel()->getSafeSpawn()->distance($p) <= 0.1){
-						return; // It's Probably a PMMP Teleport Bug Causing it. Short desc: $player->getBlocksAround() doesnt update on teleport... it only updates again on move.
-					}
-					if($p->getLevel()->getName() !== Main::$netherLevel->getName() && $p->getLevel()->getName() !== Main::$endLevel->getName()){
-						if($po){
-							$this->scheduleTeleport($p, DimensionIds::NETHER, Main::$netherLevel->getSafeSpawn(), true);
-						}elseif($epo){
-							$this->scheduleTeleport($p, DimensionIds::THE_END, Main::$endLevel->getSafeSpawn());
-						}
-					}else{
-						$this->scheduleTeleport($p, DimensionIds::OVERWORLD, Server::getInstance()->getDefaultLevel()->getSafeSpawn(), $po);
-					}
-				}
-
-				if($p->isOnFire()){
-					if(Main::$weatherEnabled){
-						$weather = Main::$weatherData[$p->getLevel()->getId()];
-						$rainy = $weather->isRainy() || $weather->isRainyThunder();
-						if(Utils::canSeeSky($p->getLevel(), $p) && $rainy){
-							$p->setOnFire(0);
-						}
-					}
-				}
-			}
-			if($p->getInventory()->getBoots()->hasEnchantment(Enchantment::FROST_WALKER)){
-				/* $ench = $p->getInventory()->getBoots()->getEnchantment(Enchantment::FROST_WALKER);
-				LAGGY
-				if($ench->getLevel() < 1){
+			if($session instanceof Session){
+				if($session->skipCheck){
 					continue;
 				}
-				if($ench->getLevel() > 1){
-					$radius = 5;
-				} else {
-					$radius = 3;
-				}
-				for ($a = -$radius; $a <= $radius; $a++) {
-					for ($c = -$radius; $c <= $radius; $c++) {
-						if ($a * $a + $c * $c <= $radius * $radius) {
-							$lvl = $p->getLevel();
-							$pos = new Vector3($p->getX() + $a, $p->getY() - 1, $p->getZ() + $c);
-							if(in_array($lvl->getBlock($pos)->getId(), [Block::WATER, Block::STILL_WATER])){
-								$lvl->setBlock($pos, new FrostedIce(), true, true);
+				if(Main::$registerDimensions){
+					$epo = Utils::isInsideOfEndPortal($p);
+					$po = Utils::isInsideOfPortal($p);
+					if($epo || $po && Main::$registerDimensions){
+						if($p->getLevel()->getSafeSpawn()->distance($p) <= 0.1){
+							return; // It's Probably a PMMP Teleport Bug Causing it. Short desc: $player->getBlocksAround() doesnt update on teleport... it only updates again on move.
+						}
+						if($p->getLevel()->getName() !== Main::$netherLevel->getName() && $p->getLevel()->getName() !== Main::$endLevel->getName()){
+							if($po){
+								$this->scheduleTeleport($p, DimensionIds::NETHER, Main::$netherLevel->getSafeSpawn(), true);
+							}elseif($epo){
+								$this->scheduleTeleport($p, DimensionIds::THE_END, Main::$endLevel->getSafeSpawn());
+							}
+						}else{
+							$this->scheduleTeleport($p, DimensionIds::OVERWORLD, Server::getInstance()->getDefaultLevel()->getSafeSpawn(), $po);
+						}
+					}
+
+					if($p->isOnFire()){
+						if(Main::$weatherEnabled){
+							$weather = Main::$weatherData[$p->getLevel()->getId()];
+							$rainy = $weather->isRainy() || $weather->isRainyThunder();
+							if(Utils::canSeeSky($p->getLevel(), $p) && $rainy){
+								$p->setOnFire(0);
 							}
 						}
 					}
-				}*/
-			}
-			if(Main::$debug){
-				$lVec = $p->getTargetBlock(10);
-				$p->sendTip("Looking At: [$lVec->x, $lVec->y, $lVec->z] - " . $lVec->getName() . ":" . $lVec->getDamage());
+				}
+				/*if($p->getInventory()->getBoots()->hasEnchantment(Enchantment::FROST_WALKER)){
+					 $ench = $p->getInventory()->getBoots()->getEnchantment(Enchantment::FROST_WALKER);
+					LAGGY
+					if($ench->getLevel() < 1){
+						continue;
+					}
+					if($ench->getLevel() > 1){
+						$radius = 5;
+					} else {
+						$radius = 3;
+					}
+					for ($a = -$radius; $a <= $radius; $a++) {
+						for ($c = -$radius; $c <= $radius; $c++) {
+							if ($a * $a + $c * $c <= $radius * $radius) {
+								$lvl = $p->getLevel();
+								$pos = new Vector3($p->getX() + $a, $p->getY() - 1, $p->getZ() + $c);
+								if(in_array($lvl->getBlock($pos)->getId(), [Block::WATER, Block::STILL_WATER])){
+									$lvl->setBlock($pos, new FrostedIce(), true, true);
+								}
+							}
+						}
+					}
+			}*/
+				if(Main::$debug){
+					$lVec = $p->getTargetBlock(10);
+					$p->sendTip("Looking At: [$lVec->x, $lVec->y, $lVec->z] - " . $lVec->getName() . ":" . $lVec->getDamage());
+				}
 			}
 		}
 	}

@@ -63,14 +63,14 @@ class EnderPearl extends ProjectileItem {
 
 	public function onClickAir(Player $player, Vector3 $directionVector): bool{
 		$session = Main::getInstance()->getSessionById($player->getId());
-		assert($session instanceof Session, "Session should be an instance of \CortexPE\Session");
+		if($session instanceof Session){
+			if(floor(microtime(true) - $session->lastEnderPearlUse) < Main::$enderPearlCooldown){
+				return false;
+			}else{
+				$session->lastEnderPearlUse = time();
 
-		if(floor(microtime(true) - $session->lastEnderPearlUse) < Main::$enderPearlCooldown){
-			return false;
-		}else{
-			$session->lastEnderPearlUse = time();
-
-			return parent::onClickAir($player, $directionVector);
+				return parent::onClickAir($player, $directionVector);
+			}
 		}
 	}
 

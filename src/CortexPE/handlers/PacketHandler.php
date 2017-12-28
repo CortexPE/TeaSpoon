@@ -70,29 +70,29 @@ class PacketHandler implements Listener {
 			case ($pk instanceof PlayerActionPacket):
 				//Main::getInstance()->getLogger()->debug("Received PlayerActionPacket:" . $pkr->action . " from " . $p->getName());
 				$session = Main::getInstance()->getSessionById($p->getId());
-				assert($session instanceof Session, "Session should be an instance of \CortexPE\Session");
+				if($session instanceof Session){
+					switch($pk->action){
+						case PlayerActionPacket::ACTION_DIMENSION_CHANGE_ACK:
+							// TODO: USE THIS FOR CROSS-DIMENSION TELEPORT
+							break;
 
-				switch($pk->action){
-					case PlayerActionPacket::ACTION_DIMENSION_CHANGE_ACK:
-						// TODO: USE THIS FOR CROSS-DIMENSION TELEPORT
-						break;
+						case PlayerActionPacket::ACTION_DIMENSION_CHANGE_REQUEST:
+							$pk->action = PlayerActionPacket::ACTION_RESPAWN; // redirect to respawn action so that PMMP would handle it as a respawn
+							break;
 
-					case PlayerActionPacket::ACTION_DIMENSION_CHANGE_REQUEST:
-						$pk->action = PlayerActionPacket::ACTION_RESPAWN; // redirect to respawn action so that PMMP would handle it as a respawn
-						break;
+						case PlayerActionPacket::ACTION_START_GLIDE:
+							$p->setDataFlag(PMPlayer::DATA_FLAGS, PMPlayer::DATA_FLAG_GLIDING, true, PMPlayer::DATA_TYPE_BYTE);
 
-					case PlayerActionPacket::ACTION_START_GLIDE:
-						$p->setDataFlag(PMPlayer::DATA_FLAGS, PMPlayer::DATA_FLAG_GLIDING, true, PMPlayer::DATA_TYPE_BYTE);
+							$session->usingElytra = $session->allowCheats = true;
+							break;
+						case PlayerActionPacket::ACTION_STOP_GLIDE:
+							$p->setDataFlag(PMPlayer::DATA_FLAGS, PMPlayer::DATA_FLAG_GLIDING, false, PMPlayer::DATA_TYPE_BYTE);
 
-						$session->usingElytra = $session->allowCheats = true;
-						break;
-					case PlayerActionPacket::ACTION_STOP_GLIDE:
-						$p->setDataFlag(PMPlayer::DATA_FLAGS, PMPlayer::DATA_FLAG_GLIDING, false, PMPlayer::DATA_TYPE_BYTE);
+							$session->usingElytra = $session->allowCheats = false;
 
-						$session->usingElytra = $session->allowCheats = false;
-
-						$session->damageElytra();
-						break;
+							$session->damageElytra();
+							break;
+					}
 				}
 		}
 	}
