@@ -302,11 +302,11 @@ class Potion extends Item implements Consumable {
 
 	public static function getColor(int $meta): Color{
 		$effect = Effect::getEffect(self::getEffectId($meta));
-		$return = $effect->getColor();
-
-		if($effect === null){
+		if(!($effect instanceof Effect)){
 			return new Color(46, 82, 153); // Default to Blue
 		}
+		
+		$return = $effect->getColor();
 
 		// Only for compatibility with the inconsistency -_-
 		if(is_array($return)){
