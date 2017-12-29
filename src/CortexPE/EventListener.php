@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  *
  * MMP""MM""YMM               .M"""bgd
@@ -349,7 +351,7 @@ class EventListener implements Listener {
 	 */
 	public function onRemoteServerCommand(RemoteServerCommandEvent $ev){
 		if(Utils::in_arrayi($ev->getCommand(), self::VERSION_COMMANDS) && !$ev->isCancelled()){
-			$ev->setCancelled();
+ 			$ev->setCancelled();
 			Main::sendVersion($ev->getSender());
 		}
 	}
@@ -384,24 +386,44 @@ class EventListener implements Listener {
 
 		//Main::getInstance()->getLogger()->debug($ev->getAction());
 
-		if($ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_BLOCK || $ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_AIR){
+	  if($ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_BLOCK || $ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_AIR){
+   
+          if($ev->getAction() == PlayerInteractEvent::LEFT_CLICK_BLOCK || $ev->getAction() == PlayerInteractEvent::LEFT_CLICK_AIR){
+
 			if($ev->getItem() instanceof Armor){
+
 				$inventory = $player->getInventory();
+
 				$type = ArmorTypes::getType($item);
+
 				if($type !== ArmorTypes::TYPE_NULL){
+
 					switch($type){
+
 						case ArmorTypes::TYPE_HELMET:
+
 							$inventory->setHelmet($item);
+
 							break;
+
 						case ArmorTypes::TYPE_CHESTPLATE:
+
 							$inventory->setChestplate($item);
+
 							break;
+
 						case ArmorTypes::TYPE_LEGGINGS:
+
 							$inventory->setLeggings($item);
+
 							break;
+
 						case ArmorTypes::TYPE_BOOTS:
+
 							$inventory->setBoots($item);
+
 							break;
+
 					}
 					if($player->isSurvival() || $player->isAdventure()){
 						$inventory->setItemInHand(Item::get(Item::AIR, 0, 1));
