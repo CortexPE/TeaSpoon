@@ -94,5 +94,9 @@ class SplashPotion extends ProjectileItem {
 	public function getThrowForce(): float{
 		return 1.1;
 	}
+	
+	public function getMaxStackSize(): int{
+		return 1;
+	}
 
 }
