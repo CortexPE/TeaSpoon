@@ -105,35 +105,6 @@ class EventListener implements Listener {
 	}
 
 	/**
-	 * @param PlayerJoinEvent $ev
-	 * @return bool
-	 *
-	 * @priority HIGHEST
-	 */
-	/*public function onJoin(PlayerJoinEvent $ev){ TODO: Fix this.
-		$p = $ev->getPlayer();
-		if($p->getLevel()->getName() === Main::$netherLevel->getName()){
-			$pk = new ChangeDimensionPacket();
-			$pk->dimension = DimensionIds::NETHER;
-			$pk->position = new Position($p->getX(), $p->getY(), $p->getZ(), $p->getLevel());
-			$p->dataPacket($pk);
-			$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
-			//$p->teleport($ev->getPlayer()->getPosition());
-			//$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
-		}
-		if($p->getLevel()->getName() === Main::$endLevel->getName()){
-			$pk = new ChangeDimensionPacket();
-			$pk->dimension = DimensionIds::THE_END;
-			$pk->position = new Position($p->getX(), $p->getY(), $p->getZ(), $p->getLevel());
-			$p->dataPacket($pk);
-			$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
-			//$p->teleport($ev->getPlayer()->getPosition());
-			//$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
-		}
-		return true;
-	}*/
-
-	/**
 	 * @param EntityTeleportEvent $ev
 	 * @return bool
 	 *
