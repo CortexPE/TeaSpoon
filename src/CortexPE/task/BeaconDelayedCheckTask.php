@@ -22,6 +22,7 @@ namespace CortexPE\task;
 */
 
 use CortexPE\tile\Beacon;
+use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\scheduler\Task;
 use pocketmine\Server;
@@ -50,12 +51,14 @@ class BeaconDelayedCheckTask extends Task {
 	 */
 	public function onRun(int $currentTick){
 		$level = Server::getInstance()->getLevel($this->levelId);
-		if(!Server::getInstance()->isLevelLoaded($level->getName()) || !$level->isChunkLoaded($this->pos->x >> 4, $this->pos->z >> 4)) return;
-		//Stop server from ticking it when chunk unloaded
-		$tile = $level->getTile($this->pos);
-		/** @var Beacon $tile */
-		if($tile instanceof Beacon){
-			$tile->scheduleUpdate();
+		if($level instanceof Level){
+			if(!Server::getInstance()->isLevelLoaded($level->getName()) || !$level->isChunkLoaded($this->pos->x >> 4, $this->pos->z >> 4)) return;
+			//Stop server from ticking it when chunk unloaded
+			$tile = $level->getTile($this->pos);
+			/** @var Beacon $tile */
+			if($tile instanceof Beacon){
+				$tile->scheduleUpdate();
+			}
 		}
 	}
 }
