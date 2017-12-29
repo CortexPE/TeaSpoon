@@ -23,7 +23,6 @@ declare(strict_types = 1);
 namespace CortexPE\tile;
 
 use CortexPE\inventory\BeaconInventory;
-use CortexPE\task\BeaconDelayedCheckTask;
 use pocketmine\block\Block;
 use pocketmine\entity\Effect;
 use pocketmine\inventory\InventoryHolder;
@@ -35,6 +34,7 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\Player;
 use pocketmine\tile\Spawnable;
+use pocketmine\Server as PMServer;
 
 class Beacon extends Spawnable implements InventoryHolder {
 	/**
@@ -165,11 +165,14 @@ class Beacon extends Spawnable implements InventoryHolder {
 	}
 
 	public function onUpdate(): bool{
-		if(!empty($this->getEffects())){
-			$this->applyEffects($this);
+		if(PMServer::getInstance()->getTick() % (20 * 4)){
+			if($this->getLevel() instanceof Level){
+				if(!PMServer::getInstance()->isLevelLoaded($this->getLevel()->getName()) || !$this->getLevel()->isChunkLoaded($this->x >> 4, $this->z >> 4)) return false;
+				if(!empty($this->getEffects())){
+					$this->applyEffects($this);
+				}
+			}
 		}
-		$this->getLevel()->getServer()->getScheduler()->scheduleDelayedTask(new BeaconDelayedCheckTask($this, $this->getLevel()->getId()), 20 * 4);
-
 		return true;
 	}
 

@@ -183,11 +183,11 @@ class Utils {
 
 	public static function getTotalXpRequirement(int $level): int{
 		if($level <= 16){
-			return intval($level ** 2) + (6 * $level);
+			return intval(($level ** 2) + (6 * $level));
 		}elseif($level <= 31){
-			return intval(2.5 * ($level ** 2)) - (40.5 * $level) + 360;
+			return intval((2.5 * ($level ** 2)) - (40.5 * $level) + 360);
 		}elseif($level <= 21863){
-			return intval(4.5 * ($level ** 2)) - (162.5 * $level) + 2220;
+			return intval((4.5 * ($level ** 2)) - (162.5 * $level) + 2220);
 		}
 
 		return PHP_INT_MAX; //prevent float returns for invalid levels on 32-bit systems

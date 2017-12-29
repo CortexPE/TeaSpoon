@@ -106,7 +106,7 @@ class CheckPlayersTask extends PluginTask {
 			}*/
 				if(Main::$debug){
 					$lVec = $p->getTargetBlock(10);
-					$p->sendTip("Looking At: [$lVec->x, $lVec->y, $lVec->z] - " . $lVec->getName() . ":" . $lVec->getDamage());
+					$p->sendTip("Looking At: [$lVec->x, $lVec->y, $lVec->z] - " . $lVec->getName() . "(" . $lVec->getId() . "):" . $lVec->getDamage() . "\nTPS: " . Server::getInstance()->getTicksPerSecond());
 				}
 			}
 		}

@@ -20,12 +20,17 @@
 
 namespace CortexPE\entity;
 
+use pocketmine\entity\Entity;
 use pocketmine\entity\Vehicle;
+use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item as ItemItem;
 use pocketmine\level\Level;
+use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\{
 	ByteTag, CompoundTag
 };
+use pocketmine\network\mcpe\protocol\EntityEventPacket;
+use pocketmine\Server as PMServer;
 
 class Boat extends Vehicle {
 
@@ -33,8 +38,11 @@ class Boat extends Vehicle {
 
 	public $height = 0.7;
 	public $width = 1.6;
-	public $gravity = 0.5;
+	public $gravity = 0;
 	public $drag = 0.1;
+
+	/** @var Entity */
+	public $linkedEntity = null;
 
 	public function __construct(Level $level, CompoundTag $nbt){
 		if(!isset($nbt->WoodID)){
@@ -56,5 +64,45 @@ class Boat extends Vehicle {
 
 	public function getWoodID(){
 		return $this->namedtag["WoodID"];
+	}
+
+	public function attack(EntityDamageEvent $source){
+		parent::attack($source);
+		if(!$source->isCancelled()){
+			$pk = new EntityEventPacket();
+			$pk->entityRuntimeId = $this->id;
+			$pk->event = EntityEventPacket::HURT_ANIMATION;
+			PMServer::getInstance()->broadcastPacket($this->getViewers(), $pk);
+		}
+	}
+
+	public function entityBaseTick(int $tickDiff = 1) : bool {
+		if($this->closed){
+			return false;
+		}
+		if($tickDiff <= 0 and !$this->justCreated){
+			return true;
+		}
+		$this->lastUpdate = PMServer::getInstance()->getTick();
+		$this->timings->startTiming();
+		$hasUpdate = $this->entityBaseTick($tickDiff);
+		if(!$this->level->getBlock(new Vector3($this->x, $this->y, $this->z))->getBoundingBox() == null or $this->isInsideOfWater()){
+			$this->motionY = 0.1;
+		}else{
+			$this->motionY = -0.08;
+		}
+		$this->move($this->motionX, $this->motionY, $this->motionZ);
+		$this->updateMovement();
+		if(!($this->linkedEntity instanceof Entity)){
+			if($this->age > 1500){
+				$this->close();
+				$hasUpdate = true;
+				//$this->scheduleUpdate();
+				$this->age = 0;
+			}
+			$this->age++;
+		}else $this->age = 0;
+		$this->timings->stopTiming();
+		return $hasUpdate or !$this->onGround or abs($this->motionX) > 0.00001 or abs($this->motionY) > 0.00001 or abs($this->motionZ) > 0.00001;
 	}
 }
