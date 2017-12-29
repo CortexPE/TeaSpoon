@@ -349,7 +349,7 @@ class EventListener implements Listener {
 	 */
 	public function onRemoteServerCommand(RemoteServerCommandEvent $ev){
 		if(Utils::in_arrayi($ev->getCommand(), self::VERSION_COMMANDS) && !$ev->isCancelled()){
-			$ev->setCancelled();
+ 			$ev->setCancelled();
 			Main::sendVersion($ev->getSender());
 		}
 	}
@@ -386,7 +386,7 @@ class EventListener implements Listener {
 
 	  if($ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_BLOCK || $ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_AIR){
    
-      if($ev->getAction() == PlayerInteractEvent::LEFT_CLICK_BLOCK || $ev->getAction() == PlayerInteractEvent::LEFT_CLICK_AIR){
+          if($ev->getAction() == PlayerInteractEvent::LEFT_CLICK_BLOCK || $ev->getAction() == PlayerInteractEvent::LEFT_CLICK_AIR){
 
 			if($ev->getItem() instanceof Armor){
 
