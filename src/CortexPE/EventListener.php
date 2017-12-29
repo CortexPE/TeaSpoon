@@ -352,11 +352,11 @@ class EventListener implements Listener {
 		// MCPE(BE) does this client-side... we just have to do the same server-side.
 		$item = $ev->getItem();
 		$player = $ev->getPlayer();
-		$session = Main::getInstance()->getSessionById($player->getId());
+		//$session = Main::getInstance()->getSessionById($player->getId());
 
 		$check = ($ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_BLOCK || $ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_AIR);
 
-		if($session instanceof Session){
+		/*if($session instanceof Session){
 			$controls = $session->clientData["CurrentInputMode"];
 
 			// tnx @Matthww :: https://github.com/Matthww/PlayerInfo/blob/master/src/Matthww/PlayerInfo/PlayerInfo.php
@@ -372,10 +372,10 @@ class EventListener implements Listener {
 					// Let's just ASSUME that its controlled by Mouse...
 					break;
 				case 2: // Touch
-					$check = ($ev->getAction() == PlayerInteractEvent::LEFT_CLICK_BLOCK || $ev->getAction() == PlayerInteractEvent::LEFT_CLICK_AIR || $ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_BLOCK || $ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_AIR);
+					// Doesn't make any difference AT ALL... rip.
 					break;
 			}
-		}
+		}*/
 
 		if($check){
 			if($ev->getItem() instanceof Armor){

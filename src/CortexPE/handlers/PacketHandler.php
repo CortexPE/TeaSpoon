@@ -99,7 +99,6 @@ class PacketHandler implements Listener {
 				}
 				break;
 			case ($pk instanceof LoginPacket):
-				print_r($pk->clientData);
 				self::$cache[$pk->getName()][$pk->username] = $pk->clientData;
 				break;
 		}
