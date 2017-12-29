@@ -50,7 +50,7 @@ use pocketmine\event\entity\{
 	EntityDamageEvent, EntityDeathEvent, EntityTeleportEvent
 };
 use pocketmine\event\player\{
-	PlayerCommandPreprocessEvent, PlayerInteractEvent, PlayerItemHeldEvent, PlayerJoinEvent, PlayerKickEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
+	PlayerCommandPreprocessEvent, PlayerInteractEvent, PlayerItemHeldEvent, PlayerKickEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
 };
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
@@ -352,10 +352,32 @@ class EventListener implements Listener {
 		// MCPE(BE) does this client-side... we just have to do the same server-side.
 		$item = $ev->getItem();
 		$player = $ev->getPlayer();
+		$session = Main::getInstance()->getSessionById($player->getId());
 
-		//Main::getInstance()->getLogger()->debug($ev->getAction());
+		$check = ($ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_BLOCK || $ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_AIR);
 
-		if($ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_BLOCK || $ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_AIR){
+		if($session instanceof Session){
+			$controls = $session->clientData["CurrentInputMode"];
+
+			// tnx @Matthww :: https://github.com/Matthww/PlayerInfo/blob/master/src/Matthww/PlayerInfo/PlayerInfo.php
+
+			switch($controls){
+				case 1: // Mouse
+					// do not modify since this is the default one...
+					break;
+				case 3: // Controller
+					// do not modify since I'm assuming that it works just like a mouse... (I dont have a controller lol)
+					break;
+				case 0: // Unknown
+					// Let's just ASSUME that its controlled by Mouse...
+					break;
+				case 2: // Touch
+					$check = ($ev->getAction() == PlayerInteractEvent::LEFT_CLICK_BLOCK || $ev->getAction() == PlayerInteractEvent::LEFT_CLICK_AIR || $ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_BLOCK || $ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_AIR);
+					break;
+			}
+		}
+
+		if($check){
 			if($ev->getItem() instanceof Armor){
 				$inventory = $player->getInventory();
 				$type = ArmorTypes::getType($item);

@@ -233,7 +233,21 @@ class Main extends PluginBase {
 
 	public function createSession(Player $player): bool{
 		if(!isset($this->sessions[$player->getId()])){
-			$this->sessions[$player->getId()] = new Session($player);
+			$session = $this->sessions[$player->getId()] = new Session($player);
+
+			if(isset(PacketHandler::$cache["LoginPacket"][$player->getName()]) && is_array(PacketHandler::$cache["LoginPacket"][$player->getName()])){
+				$session->clientData = PacketHandler::$cache["LoginPacket"][$player->getName()];
+			} else {
+				$session->clientData = [ // Add all the other clientData values? maybe? Just add them if they would be used... but for now, these are enough.
+					"DeviceOS" => 0, // unknown
+					"DeviceModel" => "unknown",
+					"UIProfile" => 0, // classic UI
+					"GuiScale" => 0, // maximum
+					"CurrentInputMode" => 0, // unknown
+				];
+			}
+
+			unset(PacketHandler::$cache["LoginPacket"][$player->getName()]);
 			$this->getLogger()->debug("Created " . $player->getName() . "'s Session");
 
 			return true;

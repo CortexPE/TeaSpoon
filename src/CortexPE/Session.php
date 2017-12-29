@@ -55,6 +55,8 @@ class Session {
 		$fishing = false;
 	/** @var null | FishingHook */
 	public $fishingHook = null;
+	/** @var array */
+	public $clientData = [];
 	/** @var Player */
 	private $player;
 

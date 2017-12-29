@@ -41,6 +41,7 @@ use CortexPE\Utils;
 use pocketmine\event\{
 	Listener, server\DataPacketReceiveEvent, server\DataPacketSendEvent
 };
+use pocketmine\network\mcpe\protocol\LoginPacket;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\network\mcpe\protocol\PlayerListPacket;
 use pocketmine\network\mcpe\protocol\StartGamePacket;
@@ -52,6 +53,9 @@ class PacketHandler implements Listener {
 
 	/** @var Plugin */
 	public $plugin;
+
+	/** @var array */
+	public static $cache = [];
 
 	public function __construct(Plugin $plugin){
 		$this->plugin = $plugin;
@@ -93,6 +97,10 @@ class PacketHandler implements Listener {
 							break;
 					}
 				}
+				break;
+			case ($pk instanceof LoginPacket):
+				print_r($pk->clientData);
+				self::$cache[$pk->getName()][$pk->username] = $pk->clientData;
 				break;
 		}
 	}
