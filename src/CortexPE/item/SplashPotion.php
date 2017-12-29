@@ -58,7 +58,7 @@ class SplashPotion extends ProjectileItem {
 	}
 
 	public function getMaxStackSize(): int{
-		return 16;
+		return 1;
 	}
 
 	public function onClickAir(Player $player, Vector3 $directionVector): bool{
@@ -94,9 +94,4 @@ class SplashPotion extends ProjectileItem {
 	public function getThrowForce(): float{
 		return 1.1;
 	}
-	
-	public function getMaxStackSize(): int{
-		return 1;
-	}
-
 }
