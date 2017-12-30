@@ -42,25 +42,41 @@ use pocketmine\item\Item;
 
 class SlimeBlock extends Solid {
 
+    /**
+     * @var int $id
+     */
 	protected $id = Block::SLIME_BLOCK;
 
-	public function __construct($meta = 0){
+	public function __construct($meta = 0) {
 		$this->meta = $meta;
 	}
 
-	public function getName(): string{
+    /**
+     * @return string
+     */
+	public function getName() : string{
 		return "Slime Block";
 	}
 
-	public function getHardness(): float{
+    /**
+     * @return float
+     */
+	public function getHardness() : float{
 		return 0;
 	}
 
-	public function hasEntityCollision(): bool{
+    /**
+     * @return bool
+     */
+	public function hasEntityCollision() : bool{
 		return true;
 	}
 
-	public function getDrops(Item $item): array{
+    /**
+     * @param Item $item
+     * @return array
+     */
+	public function getDrops(Item $item) : array{
 		return [
 			Item::get(Item::SLIME_BLOCK, 0, 1),
 		];

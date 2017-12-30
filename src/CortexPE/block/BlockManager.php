@@ -40,7 +40,8 @@ use pocketmine\block\{
 };
 
 class BlockManager {
-	public static function init(){
+
+	public static function init() : void{
 		self::register(Block::PORTAL, new Portal(), true);
 		self::register(Block::END_PORTAL, new EndPortal(), true);
 		self::register(Block::OBSIDIAN, new Obsidian(), true);
@@ -57,17 +58,20 @@ class BlockManager {
 		self::register(Block::SHULKER_BOX, new ShulkerBox(), true);
 	}
 
-	public static function register(int $id, Block $block, bool $overwrite = false): bool{
-		if(!BlockFactory::isRegistered($id) && !$overwrite){
+    /**
+     * @param int $id
+     * @param Block $block
+     * @param bool $overwrite
+     * @return bool
+     */
+	public static function register(int $id, Block $block, bool $overwrite = false) : bool{
+		if (!BlockFactory::isRegistered($id) && !$overwrite) {
 			BlockFactory::registerBlock($block);
-
 			return true;
-		}elseif($overwrite){
+		} elseif($overwrite) {
 			BlockFactory::registerBlock($block, true);
-
 			return true;
 		}
-
 		return false;
 	}
 }

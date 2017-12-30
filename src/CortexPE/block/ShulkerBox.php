@@ -36,104 +36,134 @@ declare(strict_types = 1);
 namespace CortexPE\block;
 
 use CortexPE\Main;
-use CortexPE\tile\ShulkerBox as TileShulkerBox;
-use CortexPE\tile\Tile;
-use pocketmine\block\Block;
-use pocketmine\block\BlockToolType;
-use pocketmine\block\Transparent;
+use CortexPE\tile\{
+    ShulkerBox as TileShulkerBox, Tile
+};
+use pocketmine\block\{
+    Block, BlockToolType, Transparent
+};
+use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
-use pocketmine\nbt\tag\ListTag;
-use pocketmine\nbt\tag\StringTag;
+use pocketmine\nbt\tag\{
+    CompoundTag, ListTag, StringTag
+};
 use pocketmine\Player;
 use pocketmine\tile\Container;
 
 class ShulkerBox extends Transparent {
+
+    /** @var int $id */
 	protected $id = self::SHULKER_BOX;
 
-	public function __construct(int $meta = 0){
+    /**
+     * ShulkerBox constructor.
+     * @param int $meta
+     */
+	public function __construct(int $meta = 0) {
 		$this->meta = $meta;
 	}
 
-	public function getResistance(): float{
+    /**
+     * @return float
+     */
+	public function getResistance() : float{
 		return 30;
 	}
 
-	public function getHardness(): float{
+    /**
+     * @return float
+     */
+	public function getHardness() : float{
 		return 6;
 	}
 
-	public function getToolType(): int{
+    /**
+     * @return int
+     */
+	public function getToolType() : int{
 		return BlockToolType::TYPE_PICKAXE;
 	}
 
-	public function getName(): string{
+    /**
+     * @return string
+     */
+	public function getName() : string{
 		return "Shulker Box";
 	}
 
-	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null): bool{
+    /**
+     * @param Item $item
+     * @param Block $blockReplace
+     * @param Block $blockClicked
+     * @param int $face
+     * @param Vector3 $clickVector
+     * @param Player|null $player
+     * @return bool
+     */
+	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
 		$this->getLevel()->setBlock($blockReplace, $this, true, true);
-
+		/** @var CompoundTag $nbt */
 		$nbt = TileShulkerBox::createNBT($this->asVector3());
 		$nbt->Items = $item->getNamedTag()->getListTag("Items") ?? new ListTag("Items", []);
-
-		if($item->hasCustomName()){
-			$nbt->CustomName = new StringTag("CustomName", $item->getCustomName());
-		}
+		if (!$item->hasCustomName()) return false;
+		if (!$player instanceof Player) return false;
+		$nbt->CustomName = new StringTag("CustomName", $item->getCustomName());
 		/** @var TileShulkerBox $tile */
 		Tile::createTile(Tile::SHULKER_BOX, $this->getLevel(), $nbt);
-
-		if($player instanceof Player){ // remove this hack if pmmp adds a way to set the max stack size for blocks...
-			$player->getInventory()->setItemInHand(Item::get(Item::AIR));
-		}
-
+		$player->getInventory()->setItemInHand(Item::get(Item::AIR));
 		return true;
 	}
 
-	public function onBreak(Item $item, Player $player = null): bool{
+    /**
+     * @param Item $item
+     * @param Player|null $player
+     * @return bool
+     */
+	public function onBreak(Item $item, Player $player = null) : bool{
+	    /** @var TileShulkerBox $t */
 		$t = $this->getLevel()->getTile($this);
-		if($t instanceof TileShulkerBox){
-			$item = Item::get(Item::SHULKER_BOX, $this->meta, 1);
-			$itemNBT = clone $item->getNamedTag();
-			$itemNBT->setTag($t->getNBT()->getTag(Container::TAG_ITEMS));
-			$item->setNamedTag($itemNBT);
-			$this->getLevel()->dropItem($this->asVector3(), $item);
-			$t->getInventory()->clearAll(); // dont drop the items
-		}
-		$this->getLevel()->setBlock($this, Block::get(Block::AIR), true, true);
-
+        $item = Item::get(Item::SHULKER_BOX, $this->meta, 1);
+        $itemNBT = clone $item->getNamedTag();
+        $itemNBT->setTag($t->getNBT()->getTag(Container::TAG_ITEMS));
+        $item->setNamedTag($itemNBT);
+        $this->getLevel()->dropItem($this->asVector3(), $item);
+        $t->getInventory()->clearAll(); // dont drop the items
+		if (!$t instanceof TileShulkerBox) $this->getLevel()->setBlock($this, Block::get(Block::AIR), true, true);
 		return true;
 	}
 
-	public function onActivate(Item $item, Player $player = null): bool{
-		if($player instanceof Player){
-
-			$t = $this->getLevel()->getTile($this);
-			$sb = null;
-			if($t instanceof TileShulkerBox){
-				$sb = $t;
-			}else{
-				$nbt = TileShulkerBox::createNBT($this->asVector3());
-				$nbt->Items = new ListTag("Items", []);
-
-				$sb = Tile::createTile(Tile::SHULKER_BOX, $this->getLevel(), $nbt);
-			}
-
-			if(!($this->getSide(Vector3::SIDE_UP)->isTransparent()) or ($sb->namedtag->hasTag("Lock", StringTag::class) and $sb->namedtag->getString("Lock") !== $item->getCustomName())){
-				return true;
-			}
-
-			if($player->isCreative() and Main::$limitedCreative){
-				return true;
-			}
-
-			$player->addWindow($sb->getInventory());
+    /**
+     * @param Item $item
+     * @param Player|null $player
+     * @return bool
+     */
+	public function onActivate(Item $item, Player $player = null) : bool{
+	    if (!$player instanceof Player) return false;
+		$t = $this->getLevel()->getTile($this);
+		$sb = null;
+		if ($t instanceof TileShulkerBox) {
+			$sb = $t;
+		} else {
+			$nbt = TileShulkerBox::createNBT($this->asVector3());
+			$nbt->Items = new ListTag("Items", []);
+			$sb = Tile::createTile(Tile::SHULKER_BOX, $this->getLevel(), $nbt);
 		}
-
+		if (!($this->getSide(Vector3::SIDE_UP)->isTransparent()) or ($sb->namedtag->hasTag("Lock", StringTag::class) and $sb->namedtag->getString("Lock") !== $item->getCustomName())) {
+			return true;
+		}
+		if ($player->isCreative() and Main::$limitedCreative) {
+			return true;
+		}
+		$player->addWindow($sb->getInventory());
 		return true;
 	}
 
-	public function getDrops(Item $item): array{
+    /**
+     * @param Item $item
+     * @return array
+     */
+	public function getDrops(Item $item) : array{
 		return [];
 	}
 }

@@ -36,9 +36,14 @@ declare(strict_types = 1);
 namespace CortexPE\block;
 
 class StillLava extends Lava {
+
+    /** @var int $id */
 	protected $id = self::STILL_LAVA;
 
-	public function getName(): string{
+    /**
+     * @return string
+     */
+	public function getName() : string{
 		return "Still Lava";
 	}
 }

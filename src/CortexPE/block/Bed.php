@@ -36,6 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\block;
 
 use CortexPE\Utils;
+
 use pocketmine\block\Bed as PMBed;
 use pocketmine\item\Item;
 use pocketmine\level\Explosion;
@@ -44,17 +45,20 @@ use pocketmine\Player;
 
 class Bed extends PMBed {
 
-	public function onActivate(Item $item, Player $player = null): bool{
+    /**
+     * @param Item $item
+     * @param Player|null $player
+     * @return bool
+     */
+	public function onActivate(Item $item, Player $player = null) : bool{
 		$dimension = Utils::getDimension($this->getLevel());
-		if($dimension == DimensionIds::NETHER || $dimension == DimensionIds::THE_END){
+		if ($dimension == DimensionIds::NETHER || $dimension == DimensionIds::THE_END) {
+		    /** @var Explosion $explosion */
 			$explosion = new Explosion($this, 6);
 			$explosion->explodeA();
 			$explosion->explodeB();
-
 			return true;
 		}
-
 		return parent::onActivate($item, $player);
 	}
-
 }

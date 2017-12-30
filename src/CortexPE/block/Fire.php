@@ -35,48 +35,48 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
-use CortexPE\Main;
-use CortexPE\Utils;
-use pocketmine\block\Block;
-use pocketmine\block\BlockFactory;
-use pocketmine\block\Fire as PMFire;
+use CortexPE\{
+    level\weather\Weather, Main, Utils
+};
+
+use pocketmine\block\{
+    Block, BlockFactory, Fire as PMFire
+};
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 
 class Fire extends PMFire {
 
-	public function onUpdate(int $type){
-		if(Main::$weatherEnabled && Utils::getDimension($this->getLevel()) == DimensionIds::OVERWORLD){
-			$weather = Main::$weatherData[$this->getLevel()->getId()];
-			$rainy = $weather->isRainy() || $weather->isRainyThunder();
-			if($rainy){
-				if(Utils::canSeeSky($this->getLevel(), $this->asVector3())){
-					$this->level->setBlock($this, BlockFactory::get(Block::AIR));
-				}
-			}
-		}
+    /**
+     * @param int $type
+     * @return bool|int
+     */
+	public function onUpdate(int $type) {
+        if (Main::$weatherEnabled && Utils::getDimension($this->getLevel()) == DimensionIds::OVERWORLD) {
+            /** @var Weather $weather */
+            $weather = Main::$weatherData[$this->getLevel()->getId()];
+            /** @var Weather $rainy */
+            $rainy = $weather->isRainy() || $weather->isRainyThunder();
+            if (!$rainy) return false;
+            if (Utils::canSeeSky($this->getLevel(), $this->asVector3())) {
+                $this->level->setBlock($this, BlockFactory::get(Block::AIR));
+            }
+        }
 
-		if($type == Level::BLOCK_UPDATE_RANDOM){
-			if($this->getSide(Vector3::SIDE_DOWN)->getId() !== self::NETHERRACK){
-				if($this->meta >= 15){
-					$this->level->setBlock($this, BlockFactory::get(Block::AIR));
-				}else{
-					$this->meta += mt_rand(1, 4);
-					if($this->meta >= 15){
-						$this->level->setBlock($this, BlockFactory::get(Block::AIR));
-					}else{
-						$this->level->setBlock($this, $this);
-					}
-				}
-
-				return $type;
-			}
-
-			//TODO: fire spread
-		}
-
-		return $type;
-	}
-
+        if ($type !== Level::BLOCK_UPDATE_RANDOM) return $type;
+        if ($this->getSide(Vector3::SIDE_DOWN)->getId() == self::NETHERRACK) return $type;
+        if ($this->meta >= 15) {
+            $this->level->setBlock($this, BlockFactory::get(Block::AIR));
+        } else {
+            $this->meta += mt_rand(1, 4);
+            if ($this->meta >= 15) {
+                $this->level->setBlock($this, BlockFactory::get(Block::AIR));
+            } else {
+                $this->level->setBlock($this, $this);
+            }
+        }
+        return $type;
+        //TODO: fire spread
+    }
 }

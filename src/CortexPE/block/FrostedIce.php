@@ -35,22 +35,31 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
-
-use pocketmine\block\Block;
-use pocketmine\block\Ice;
+use pocketmine\block\{
+    Block, Ice
+};
 
 class FrostedIce extends Ice {
+
+    /** @var int $id */
 	protected $id = self::FROSTED_ICE;
 
-	public function getName(): string{
+    /**
+     * @return string
+     */
+	public function getName() : string{
 		return "Frosted Ice";
 	}
 
-	public function onUpdate(int $type){
+    /**
+     * @param int $type
+     * @return bool|int|void
+     */
+	public function onUpdate(int $type) {
 		$this->meta++;
 		$this->getLevel()->setBlock($this->asVector3(), $this, false, false);
-		if($this->meta > 3){
-			foreach($this->getAllSides() as $side){
+		if ($this->meta > 3) {
+			foreach ($this->getAllSides() as $side) {
 				$side->onUpdate($type);
 			}
 			$this->getLevel()->setBlock($this->asVector3(), Block::get(Block::WATER), false, true);
