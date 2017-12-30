@@ -46,12 +46,12 @@ use pocketmine\Player;
 
 class Bow extends PMBow{
 	public function onReleaseUsing(Player $player) : bool{
-		if($player->isSurvival() and !$player->getInventory()->contains(Item::get(Item::ARROW, -1, 1))){
+		if(!$player->getInventory()->contains(Item::get(Item::ARROW, -1, 1))){
 			$player->getInventory()->sendContents($player);
 			return false;
 		}
 
-		$first = $player->getInventory()->first(Item::get(Item::ARROW, -1), false);
+		$first = $player->getInventory()->first(Item::get(Item::ARROW, -1, 1), false);
 		$first = $player->getInventory()->getItem($first);
 
 		$nbt = Entity::createBaseNBT(

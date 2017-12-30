@@ -393,15 +393,19 @@ class Potion extends Item implements Consumable {
 		 *      ]
 		 * ]
 		 */
-		foreach(self::$POTION_EFFECTS[$this->meta] as $effs){ // $effs is an array of effects.
-			if(count($effs ?? []) === 3){ // if effect array is valid
-				if($effs[2] < 256){ // So they can't make potions higher than the limit
-					$effects[] = Effect::getEffect($effs[0])->setDuration($effs[1])->setAmplifier($effs[2]);
+		$effects = [];
+
+		if(is_array(self::$POTION_EFFECTS[$this->meta]) && !empty(self::$POTION_EFFECTS[$this->meta])){
+			foreach(self::$POTION_EFFECTS[$this->meta] as $effs){ // $effs is an array of effects.
+				if(count($effs ?? []) === 3){ // if effect array is valid
+					if($effs[2] < 256){ // So they can't make potions higher than the limit
+						$effects[] = Effect::getEffect($effs[0])->setDuration($effs[1])->setAmplifier($effs[2]);
+					}
 				}
 			}
 		}
 
-		return $effects ?? [];
+		return $effects;
 	}
 
 	public function getResidue(){
