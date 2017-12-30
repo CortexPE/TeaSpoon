@@ -40,6 +40,7 @@ use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\entity\ProjectileLaunchEvent;
 use pocketmine\item\Bow as PMBow;
+use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\Item;
 use pocketmine\level\sound\LaunchSound;
 use pocketmine\Player;
@@ -89,7 +90,15 @@ class Bow extends PMBow{
 				$entity->setMotion($entity->getMotion()->multiply($ev->getForce()));
 				if($player->isSurvival()){
 					$first->count--;
-					$this->applyDamage(1);
+					if($this->hasEnchantments()){
+						if($this->hasEnchantment(Enchantment::UNBREAKING)){
+							$enchantment = $this->getEnchantment(Enchantment::UNBREAKING);
+							$lvl = $enchantment->getLevel() + 1;
+							if(mt_rand(1,100) >= intval(100 / $lvl)){
+								$this->applyDamage(1);
+							}
+						}
+					}
 				}
 
 				if($entity instanceof Projectile){

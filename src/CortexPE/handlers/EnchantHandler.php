@@ -46,7 +46,9 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDeathEvent;
 use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\item\Item;
+use pocketmine\item\Tool;
 use pocketmine\nbt\tag\ShortTag;
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
@@ -71,7 +73,7 @@ class EnchantHandler implements Listener {
 	 * [X] Looting
 	 * [X] Efficiency (Client Side)
 	 * [X] Silk touch
-	 * [ ] Unbreaking
+	 * [X] Unbreaking
 	 * [X] Fortune
 	 * [X] Power
 	 * [X] Punch
@@ -121,8 +123,20 @@ class EnchantHandler implements Listener {
 					foreach($i->getEnchantments() as $ench){
 						if($ench->getLevel() <= 0) continue;
 						switch($ench->getId()){
+							case Enchantment::UNBREAKING:
+								if($i instanceof Tool){
+									$lvl = $ench->getLevel() + 1;
+									if(mt_rand(1, 100) >= intval(100 / $lvl)){
+										$ic = clone $i;
+										if($ic->getDamage() > 0){
+											$ic->setDamage($ic->getDamage() - 1);
+											$d->getInventory()->setItemInHand($ic);
+										}
+									}
+								}
+								break;
 							case Enchantment::FIRE_ASPECT:
-								$e->setOnFire(($ench->getLevel() * 4) * 20); // #BlamePMMP // Fire doesnt last for less than half a second. wtf.
+								$e->setOnFire(($ench->getLevel() * 4) * 20);
 								break;
 							case Enchantment::KNOCKBACK:
 								$ev->setKnockBack(($ev->getKnockBack() + 0.3) * $ench->getLevel());
@@ -452,6 +466,11 @@ class EnchantHandler implements Listener {
 		}
 	}
 
+	/**
+	 * @param EntityDeathEvent $ev
+	 *
+	 * @priority HIGHEST
+	 */
 	public function onEntityDeath(EntityDeathEvent $ev){
 		$ent = $ev->getEntity();
 		if($ent instanceof PMPlayer){
@@ -473,6 +492,33 @@ class EnchantHandler implements Listener {
 							}
 							$ev->setDrops($drops);
 							break;
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * @param PlayerInteractEvent $ev
+	 *
+	 * @priority HIGHEST
+	 */
+	public function onInteract(PlayerInteractEvent $ev){
+		$p = $ev->getPlayer();
+		$item = $ev->getItem();
+		$block = $ev->getBlock();
+
+		if($item->isHoe() && ($block->getId() == Block::GRASS || $block->getId() == Block::DIRT)){
+			if($item->hasEnchantments()){
+				if($item->hasEnchantment(Enchantment::UNBREAKING)){
+					$enchantment = $item->getEnchantment(Enchantment::UNBREAKING);
+					$lvl = $enchantment->getLevel() + 1;
+					if(mt_rand(1, 100) >= intval(100 / $lvl)){
+						$ic = clone $item;
+						if($ic->getDamage() > 0){
+							$ic->setDamage($ic->getDamage() - 1);
+							$p->getInventory()->setItemInHand($ic);
+						}
 					}
 				}
 			}

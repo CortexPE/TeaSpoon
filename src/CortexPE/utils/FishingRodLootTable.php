@@ -35,9 +35,12 @@ declare(strict_types = 1);
 
 namespace CortexPE\utils;
 
+use CortexPE\item\enchantment\Enchantment;
 use CortexPE\item\Potion;
 use CortexPE\Main;
+use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
+use pocketmine\item\Tool;
 
 class FishingRodLootTable {
 	// VALUES BASED FROM: https://minecraft.gamepedia.com/Fishing
@@ -89,9 +92,9 @@ class FishingRodLootTable {
 		self::loopedEntry(self::getItem(Item::CLOWNFISH), 111, $arr);
 
 		// Treasure
-		self::loopedEntry(self::getItem(Item::BOW), 8, $arr); // TODO: ADD ENCHANTS
-		self::loopedEntry(self::getItem(Item::ENCHANTED_BOOK), 8, $arr); // TODO: ADD ENCHANTS
-		self::loopedEntry(self::getItem(Item::FISHING_ROD), 8, $arr); // TODO: ADD ENCHANTS
+		self::loopedEntry(self::getItem(Item::BOW), 8, $arr);
+		self::loopedEntry(self::getItem(Item::ENCHANTED_BOOK), 8, $arr);
+		self::loopedEntry(self::getItem(Item::FISHING_ROD), 8, $arr);
 		self::loopedEntry(self::getItem(Item::NAME_TAG), 8, $arr);
 		self::loopedEntry(self::getItem(Item::SADDLE), 8, $arr);
 		self::loopedEntry(self::getItem(Item::LILY_PAD), 8, $arr);
@@ -112,7 +115,45 @@ class FishingRodLootTable {
 
 	private static function loopedEntry(Item $item, int $count, string $arrayName){
 		for($i = 0; $i <= $count; $i++){
-			self::${$arrayName}[] = $item;
+			switch($item->getId()){
+				case Item::ENCHANTED_BOOK:
+					if(Main::$registerVanillaEnchantments){
+						$enchantment = Enchantment::getEnchantment(mt_rand(0,25));
+						$enchantmentInstance = new EnchantmentInstance($enchantment, 1);
+						$item->addEnchantment($enchantmentInstance);
+					}
+					break;
+				case Item::BOW:
+				case Item::FISHING_ROD:
+					if($item instanceof Tool){
+						if($item->getId() == Item::BOW){
+							$rand = [
+								Enchantment::POWER,
+								Enchantment::PUNCH,
+								Enchantment::FLAME,
+								Enchantment::INFINITY,
+							];
+						}else{
+							$rand = [
+								Enchantment::LUCK_OF_THE_SEA,
+								Enchantment::LURE,
+								Enchantment::UNBREAKING,
+							];
+						}
+
+						$enchantment = Enchantment::getEnchantment($rand[array_rand($rand)]);
+						$enchantmentInstance = new EnchantmentInstance($enchantment, 1);
+						$item->addEnchantment($enchantmentInstance);
+
+						if(is_int($item->getMaxDurability())){
+							$item->setDamage(mt_rand(intval($item->getMaxDurability() / 2), $item->getMaxDurability()));
+						}
+					}
+					break;
+				default:
+					self::${$arrayName}[] = $item;
+					break;
+			}
 		}
 	}
 
@@ -130,9 +171,9 @@ class FishingRodLootTable {
 		self::loopedEntry(self::getItem(Item::CLOWNFISH), 110, $arr);
 
 		// Treasure
-		self::loopedEntry(self::getItem(Item::BOW), 12, $arr); // TODO: ADD ENCHANTS
-		self::loopedEntry(self::getItem(Item::ENCHANTED_BOOK), 12, $arr); // TODO: ADD ENCHANTS
-		self::loopedEntry(self::getItem(Item::FISHING_ROD), 12, $arr); // TODO: ADD ENCHANTS
+		self::loopedEntry(self::getItem(Item::BOW), 12, $arr);
+		self::loopedEntry(self::getItem(Item::ENCHANTED_BOOK), 12, $arr);
+		self::loopedEntry(self::getItem(Item::FISHING_ROD), 12, $arr);
 		self::loopedEntry(self::getItem(Item::NAME_TAG), 12, $arr);
 		self::loopedEntry(self::getItem(Item::SADDLE), 12, $arr);
 		self::loopedEntry(self::getItem(Item::LILY_PAD), 12, $arr);
@@ -161,9 +202,9 @@ class FishingRodLootTable {
 		self::loopedEntry(self::getItem(Item::CLOWNFISH), 110, $arr);
 
 		// Treasure
-		self::loopedEntry(self::getItem(Item::BOW), 15, $arr); // TODO: ADD ENCHANTS
-		self::loopedEntry(self::getItem(Item::ENCHANTED_BOOK), 15, $arr); // TODO: ADD ENCHANTS
-		self::loopedEntry(self::getItem(Item::FISHING_ROD), 15, $arr); // TODO: ADD ENCHANTS
+		self::loopedEntry(self::getItem(Item::BOW), 15, $arr);
+		self::loopedEntry(self::getItem(Item::ENCHANTED_BOOK), 15, $arr);
+		self::loopedEntry(self::getItem(Item::FISHING_ROD), 15, $arr);
 		self::loopedEntry(self::getItem(Item::NAME_TAG), 15, $arr);
 		self::loopedEntry(self::getItem(Item::SADDLE), 15, $arr);
 		self::loopedEntry(self::getItem(Item::LILY_PAD), 15, $arr);
@@ -192,9 +233,9 @@ class FishingRodLootTable {
 		self::loopedEntry(self::getItem(Item::CLOWNFISH), 110, $arr);
 
 		// Treasure
-		self::loopedEntry(self::getItem(Item::BOW), 19, $arr); // TODO: ADD ENCHANTS
-		self::loopedEntry(self::getItem(Item::ENCHANTED_BOOK), 19, $arr); // TODO: ADD ENCHANTS
-		self::loopedEntry(self::getItem(Item::FISHING_ROD), 19, $arr); // TODO: ADD ENCHANTS
+		self::loopedEntry(self::getItem(Item::BOW), 19, $arr);
+		self::loopedEntry(self::getItem(Item::ENCHANTED_BOOK), 19, $arr);
+		self::loopedEntry(self::getItem(Item::FISHING_ROD), 19, $arr);
 		self::loopedEntry(self::getItem(Item::NAME_TAG), 19, $arr);
 		self::loopedEntry(self::getItem(Item::SADDLE), 19, $arr);
 		self::loopedEntry(self::getItem(Item::LILY_PAD), 19, $arr);
