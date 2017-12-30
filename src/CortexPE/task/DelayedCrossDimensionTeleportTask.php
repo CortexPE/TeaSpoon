@@ -47,10 +47,6 @@ use pocketmine\plugin\Plugin;
 use pocketmine\scheduler\PluginTask;
 
 class DelayedCrossDimensionTeleportTask extends PluginTask {
-
-	/** @var Plugin */
-	protected $owner;
-
 	/** @var Player */
 	protected $player;
 

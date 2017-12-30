@@ -42,10 +42,6 @@ use pocketmine\scheduler\PluginTask;
 use pocketmine\Server as PMServer;
 
 class ElytraRocketBoostTrackingTask extends PluginTask {
-
-	/** @var Plugin */
-	protected $owner;
-
 	/** @var Player */
 	protected $player;
 
