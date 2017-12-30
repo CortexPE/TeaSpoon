@@ -49,8 +49,7 @@ class Session {
 		$lastChorusFruitEat = 0,
 		$lastHeldSlot = 0;
 	/** @var bool */
-	public $skipCheck = false,
-		$usingElytra = false,
+	public $usingElytra = false,
 		$allowCheats = false,
 		$fishing = false;
 	/** @var null | FishingHook */

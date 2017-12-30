@@ -110,9 +110,14 @@ class Utils {
 		return $boolean ? "true" : "false";
 	}
 
-	public static function isDelayedTeleportCancellable(PMPlayer $player): bool{
-		if(self::isInsideOfEndPortal($player) === false && self::isInsideOfPortal($player) === false){
-			return true;
+	public static function isDelayedTeleportCancellable(PMPlayer $player, int $destinationDimension): bool{
+		switch($destinationDimension){
+			case DimensionIds::NETHER:
+				return (!self::isInsideOfPortal($player));
+			case DimensionIds::THE_END:
+				return (!self::isInsideOfEndPortal($player));
+			case DimensionIds::OVERWORLD:
+				return (!self::isInsideOfEndPortal($player) && !self::isInsideOfPortal($player));
 		}
 
 		return false;

@@ -56,7 +56,7 @@ class ElytraRocketBoostTrackingTask extends PluginTask {
 	private $internalCount = 1;
 
 	public function __construct(Plugin $owner, Player $player, int $count){
-		$this->owner = $owner;
+		parent::__construct($owner);
 		$this->player = $player;
 		$this->count = $count;
 	}

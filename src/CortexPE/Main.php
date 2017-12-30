@@ -38,22 +38,22 @@ namespace CortexPE;
 use CortexPE\block\BlockManager;
 use CortexPE\commands\CommandManager;
 use CortexPE\entity\EntityManager;
-use CortexPE\handlers\EnchantHandler;
-use CortexPE\handlers\PacketHandler;
+use CortexPE\handlers\{
+	EnchantHandler, PacketHandler
+};
 use CortexPE\item\{
 	enchantment\Enchantment, ItemManager
 };
 use CortexPE\level\weather\Weather;
 use CortexPE\plugin\AllAPILoaderManager;
-use CortexPE\task\CheckPlayersTask;
 use CortexPE\task\TickLevelsTask;
 use CortexPE\tile\Tile;
-use CortexPE\utils\FishingRodLootTable;
-use CortexPE\utils\TextFormat;
-use pocketmine\command\CommandSender;
-use pocketmine\command\defaults\DumpMemoryCommand;
-use pocketmine\command\defaults\GarbageCollectorCommand;
-use pocketmine\command\defaults\StatusCommand;
+use CortexPE\utils\{
+	FishingRodLootTable, TextFormat
+};
+use pocketmine\command\{
+	CommandSender, defaults\DumpMemoryCommand, defaults\GarbageCollectorCommand, defaults\StatusCommand
+};
 use pocketmine\level\Level;
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
@@ -109,6 +109,8 @@ class Main extends PluginBase {
 	private static $instance;
 	/** @var Session[] */
 	private $sessions = [];
+	/** @var int[] */
+	public static $onPortal = [];
 
 	public static function getInstance(): Main{
 		return self::$instance;
@@ -199,7 +201,6 @@ class Main extends PluginBase {
 		// LevelManager::init(); EXECUTED VIA EventListener
 		Tile::init();
 		FishingRodLootTable::init();
-		$this->getServer()->getScheduler()->scheduleRepeatingTask(new CheckPlayersTask($this), 5);
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new PacketHandler($this), $this);
 		if(self::$registerVanillaEnchantments){
@@ -233,21 +234,7 @@ class Main extends PluginBase {
 
 	public function createSession(Player $player): bool{
 		if(!isset($this->sessions[$player->getId()])){
-			$session = $this->sessions[$player->getId()] = new Session($player);
-
-			if(isset(PacketHandler::$cache["LoginPacket"][$player->getName()]) && is_array(PacketHandler::$cache["LoginPacket"][$player->getName()])){
-				$session->clientData = PacketHandler::$cache["LoginPacket"][$player->getName()];
-			} else {
-				$session->clientData = [ // Add all the other clientData values? maybe? Just add them if they would be used... but for now, these are enough.
-					"DeviceOS" => 0, // unknown
-					"DeviceModel" => "unknown",
-					"UIProfile" => 0, // classic UI
-					"GuiScale" => 0, // maximum
-					"CurrentInputMode" => 0, // unknown
-				];
-			}
-
-			unset(PacketHandler::$cache["LoginPacket"][$player->getName()]);
+			$this->sessions[$player->getId()] = new Session($player);
 			$this->getLogger()->debug("Created " . $player->getName() . "'s Session");
 
 			return true;

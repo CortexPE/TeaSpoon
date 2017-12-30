@@ -47,10 +47,10 @@ use pocketmine\event\{
 	block\BlockBreakEvent, level\LevelLoadEvent, Listener, server\RemoteServerCommandEvent, server\ServerCommandEvent
 };
 use pocketmine\event\entity\{
-	EntityDamageEvent, EntityDeathEvent, EntityTeleportEvent
+	EntityDamageEvent, EntityDeathEvent
 };
 use pocketmine\event\player\{
-	PlayerCommandPreprocessEvent, PlayerInteractEvent, PlayerItemHeldEvent, PlayerKickEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
+	cheat\PlayerIllegalMoveEvent, PlayerCommandPreprocessEvent, PlayerInteractEvent, PlayerItemHeldEvent, PlayerKickEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
 };
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
@@ -105,24 +105,6 @@ class EventListener implements Listener {
 	}
 
 	/**
-	 * @param EntityTeleportEvent $ev
-	 * @return bool
-	 *
-	 * @priority HIGHEST
-	 */
-	/*public function onTeleport(EntityTeleportEvent $ev){
-		$p = $ev->getEntity();
-		if($p instanceof Player){
-			$pk = new ChangeDimensionPacket();
-			$pk->dimension = Utils::getDimension($ev->getTo()->getLevel());
-			$pk->position = $ev->getTo();
-			$p->dataPacket($pk);
-		}
-
-		return true;
-	}*/
-
-	/**
 	 * @param EntityDamageEvent $ev
 	 * @return bool
 	 *
@@ -134,46 +116,44 @@ class EventListener implements Listener {
 			$p = $ev->getEntity();
 			if($p instanceof PMPlayer){
 				if($p->getInventory()->getItemInHand()->getId() === Item::TOTEM && $ev->getCause() !== EntityDamageEvent::CAUSE_VOID && $ev->getCause() !== EntityDamageEvent::CAUSE_SUICIDE){
-					$ic = clone $p->getInventory()->getItemInHand();
-					$ic->count--;
-					$p->getInventory()->setItemInHand($ic);
+					$p->getInventory()->setItemInHand(Item::get(Item::AIR)); // this is supposed to be unstackable anyways... right?
 					$ev->setCancelled(true);
 					$p->setHealth(1);
 
 					$p->removeAllEffects();
 
-					$effect1 = Effect::getEffect(Effect::REGENERATION);
-					$effect2 = Effect::getEffect(Effect::ABSORPTION);
-					$effect3 = Effect::getEffect(Effect::FIRE_RESISTANCE);
+					$REGENERATION = Effect::getEffect(Effect::REGENERATION);
+					$REGENERATION->setAmplifier(1);
+					$REGENERATION->setVisible(true);
+					$REGENERATION->setDuration(40 * 20);
 
-					$effect1->setAmplifier(1);
+					$ABSORPTION = Effect::getEffect(Effect::ABSORPTION);
+					$ABSORPTION->setVisible(true);
+					$ABSORPTION->setDuration(5 * 20);
 
-					$effect1->setVisible(true);
-					$effect2->setVisible(true);
-					$effect3->setVisible(true);
+					$FIRE_RESISTANCE = Effect::getEffect(Effect::FIRE_RESISTANCE);
+					$FIRE_RESISTANCE->setVisible(true);
+					$FIRE_RESISTANCE->setDuration(40 * 20);
 
-					$effect1->setDuration(40 * 20);
-					$effect2->setDuration(5 * 20);
-					$effect3->setDuration(40 * 20);
-
-					$p->addEffect($effect1);
-					$p->addEffect($effect2);
-					$p->addEffect($effect3);
+					$p->addEffect($REGENERATION);
+					$p->addEffect($ABSORPTION);
+					$p->addEffect($FIRE_RESISTANCE);
 
 					$pk = new LevelEventPacket();
 					$pk->evid = LevelEventPacket::EVENT_SOUND_TOTEM;
 					$pk->data = 0;
 					$pk->position = new Vector3($p->getX(), $p->getY(), $p->getZ());
-					$p->dataPacket($pk);
+					PMServer::getInstance()->broadcastPacket($p->getViewers(), $pk);
 
 					$pk2 = new EntityEventPacket();
 					$pk2->entityRuntimeId = $p->getId();
 					$pk2->event = EntityEventPacket::CONSUME_TOTEM;
 					$pk2->data = 0;
-					$p->dataPacket($pk2);
+					PMServer::getInstance()->broadcastPacket($p->getViewers(), $pk2);
 				}
 			}
 		}
+
 		////////////////////////////// ARMOR DAMAGE //////////////////////////////////////
 		if($ev->getEntity() instanceof Player){
 			/** @var Player $p */
@@ -266,6 +246,20 @@ class EventListener implements Listener {
 	}
 
 	/**
+	 * @param PlayerIllegalMoveEvent $ev
+	 *
+	 * @priority LOWEST
+	 */
+	public function onCheat(PlayerIllegalMoveEvent $ev){
+		$session = Main::getInstance()->getSessionById($ev->getPlayer()->getId());
+		if($session instanceof Session){
+			if($session->allowCheats){
+				$ev->setCancelled();
+			}
+		}
+	}
+
+	/**
 	 * @param EntityDeathEvent $ev
 	 *
 	 * @priority HIGHEST
@@ -352,30 +346,7 @@ class EventListener implements Listener {
 		// MCPE(BE) does this client-side... we just have to do the same server-side.
 		$item = $ev->getItem();
 		$player = $ev->getPlayer();
-		//$session = Main::getInstance()->getSessionById($player->getId());
-
 		$check = ($ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_BLOCK || $ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_AIR);
-
-		/*if($session instanceof Session){
-			$controls = $session->clientData["CurrentInputMode"];
-
-			// tnx @Matthww :: https://github.com/Matthww/PlayerInfo/blob/master/src/Matthww/PlayerInfo/PlayerInfo.php
-
-			switch($controls){
-				case 1: // Mouse
-					// do not modify since this is the default one...
-					break;
-				case 3: // Controller
-					// do not modify since I'm assuming that it works just like a mouse... (I dont have a controller lol)
-					break;
-				case 0: // Unknown
-					// Let's just ASSUME that its controlled by Mouse...
-					break;
-				case 2: // Touch
-					// Doesn't make any difference AT ALL... rip.
-					break;
-			}
-		}*/
 
 		if($check){
 			if($ev->getItem() instanceof Armor){

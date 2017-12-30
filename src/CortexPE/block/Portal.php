@@ -23,14 +23,21 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
+use CortexPE\Main;
+use CortexPE\task\DelayedCrossDimensionTeleportTask;
 use pocketmine\block\{
 	Air, Block, BlockToolType, Transparent
 };
+use pocketmine\entity\Entity;
+use pocketmine\entity\Living;
 use pocketmine\item\{
 	Item
 };
+use pocketmine\level\Level;
 use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player;
+use pocketmine\Server;
 
 class Portal extends Transparent {
 
@@ -124,5 +131,39 @@ class Portal extends Transparent {
 
 	public function getDrops(Item $item): array{
 		return [];
+	}
+
+	public function onEntityCollide(Entity $entity): void{
+		if(Main::$registerDimensions){
+			if($entity->getLevel()->getSafeSpawn()->distance($entity->asVector3()) <= 0.1){
+				return;
+			}
+
+			if(!isset(Main::$onPortal[$entity->getId()])){
+				Main::$onPortal[$entity->getId()] = true;
+
+				if($entity instanceof Player){
+					if($entity->getLevel() instanceof Level){
+						if($entity->getLevel()->getName() != Main::$netherName){ // OVERWORLD -> NETHER
+							$gm = $entity->getGamemode();
+							if($gm == Player::SURVIVAL || $gm == Player::ADVENTURE){
+								Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::NETHER, Main::$netherLevel->getSafeSpawn()), 20 * 4);
+							} else {
+								Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::NETHER, Main::$netherLevel->getSafeSpawn()), 1);
+							}
+						} else { // NETHER -> OVERWORLD
+							$gm = $entity->getGamemode();
+							if($gm == Player::SURVIVAL || $gm == Player::ADVENTURE){
+								Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::OVERWORLD, Server::getInstance()->getDefaultLevel()->getSafeSpawn()), 20 * 4);
+							} else {
+								Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::OVERWORLD, Server::getInstance()->getDefaultLevel()->getSafeSpawn()), 1);
+							}
+						}
+					}
+				}
+
+				// TODO: Add mob teleportation
+			}
+		}
 	}
 }

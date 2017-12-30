@@ -19,7 +19,7 @@
  *
  */
 
-// Modded by @CortexPE to make it more realistic
+// Modded by @CortexPE to make it more realistic + performance improvements
 
 namespace CortexPE\level\weather;
 
@@ -141,8 +141,8 @@ class Weather {
 					}
 				}
 			}
+			$this->lastUpdate = $currentTick;
 		}
-		$this->lastUpdate = $currentTick;
 	}
 
 	/**
@@ -208,7 +208,6 @@ class Weather {
 		foreach($pks as $pk){
 			$p->dataPacket($pk);
 		}
-		//$p->weatherData = [$this->weatherNow, $this->strength1, $this->strength2];
 	}
 
 	/**

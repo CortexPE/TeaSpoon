@@ -35,11 +35,18 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
+use CortexPE\Main;
+use CortexPE\task\DelayedCrossDimensionTeleportTask;
 use pocketmine\block\{
 	Block, Solid
 };
+use pocketmine\entity\Entity;
 use pocketmine\item\Item;
+use pocketmine\level\Level;
 use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\protocol\types\DimensionIds;
+use pocketmine\Player;
+use pocketmine\Server;
 
 class EndPortal extends Solid {
 
@@ -81,5 +88,30 @@ class EndPortal extends Solid {
 
 	public function hasEntityCollision(): bool{
 		return true;
+	}
+
+
+	public function onEntityCollide(Entity $entity): void{
+		if(Main::$registerDimensions){
+			if($entity->getLevel()->getSafeSpawn()->distance($entity->asVector3()) <= 0.1){
+				return;
+			}
+
+			if(!isset(Main::$onPortal[$entity->getId()])){
+				Main::$onPortal[$entity->getId()] = true;
+
+				if($entity instanceof Player){
+					if($entity->getLevel() instanceof Level){
+						if($entity->getLevel()->getName() != Main::$endName){ // OVERWORLD -> END
+							Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::THE_END, Main::$endLevel->getSafeSpawn()), 1);
+						}else{ // END -> OVERWORLD
+							Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::OVERWORLD, Server::getInstance()->getDefaultLevel()->getSafeSpawn()), 1);
+						}
+					}
+				}
+
+				// TODO: Add mob teleportation
+			}
+		}
 	}
 }

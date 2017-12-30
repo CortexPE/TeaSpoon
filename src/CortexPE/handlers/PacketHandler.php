@@ -41,21 +41,17 @@ use CortexPE\Utils;
 use pocketmine\event\{
 	Listener, server\DataPacketReceiveEvent, server\DataPacketSendEvent
 };
-use pocketmine\network\mcpe\protocol\LoginPacket;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\network\mcpe\protocol\PlayerListPacket;
 use pocketmine\network\mcpe\protocol\StartGamePacket;
-use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
+use pocketmine\Server;
 
 class PacketHandler implements Listener {
 
 	/** @var Plugin */
 	public $plugin;
-
-	/** @var array */
-	public static $cache = [];
 
 	public function __construct(Plugin $plugin){
 		$this->plugin = $plugin;
@@ -98,9 +94,6 @@ class PacketHandler implements Listener {
 					}
 				}
 				break;
-			case ($pk instanceof LoginPacket):
-				self::$cache[$pk->getName()][$pk->username] = $pk->clientData;
-				break;
 		}
 	}
 
@@ -114,18 +107,15 @@ class PacketHandler implements Listener {
 		$p = $ev->getPlayer();
 		switch(true){
 			case ($pk instanceof StartGamePacket):
-				if(Utils::getDimension($p->getLevel()) != DimensionIds::OVERWORLD){
-					$pk->dimension = Utils::getDimension($p->getLevel());
-				}
+				$pk->dimension = Utils::getDimension($p->getLevel());
 				break;
 
 			case ($pk instanceof PlayerListPacket):
-				if($pk->type == PlayerListPacket::TYPE_ADD){
-					foreach($pk->entries as $entry){
-						if($p->getXuid() !== null){ // is xbox logged in but causes errors if xuid is null (BLAME PMMP)
-							if($p->getXuid() != ""){
-								$entry->xboxUserId = $p->getXuid();
-							}
+				foreach($pk->entries as $entry){
+					$player = Server::getInstance()->getPlayer($entry->username);
+					if($player->getXuid() !== null){ // is xbox logged in but causes errors if xuid is null (BLAME PMMP)
+						if($player->getXuid() != ""){
+							$entry->xboxUserId = $player->getXuid();
 						}
 					}
 				}
