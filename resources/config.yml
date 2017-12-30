@@ -10,7 +10,7 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 10
+version: 11
 
 entities:
  # Weather to register Vanilla Entities (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...) or not
@@ -36,6 +36,8 @@ misc:
  loadAllAPIs: false
  # Enable to dis-allow chest and container interactions when in creative
  limitedCreative: true
+ # Enable to generate new Fishing LootTables everyday
+ randomFishingLootTables: false
  
 enderPearl:
  cooldown: 2

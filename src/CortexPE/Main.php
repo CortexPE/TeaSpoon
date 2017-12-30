@@ -61,7 +61,7 @@ use pocketmine\utils\Config;
 
 class Main extends PluginBase {
 
-	const CONFIG_VERSION = 10;
+	const CONFIG_VERSION = 11;
 
 	/** @var Config */
 	public static $config;
@@ -101,6 +101,8 @@ class Main extends PluginBase {
 	public static $enableWeatherLightning = true;
 	/** @var bool */
 	public static $limitedCreative = false;
+	/** @var bool */
+	public static $randomFishingLootTables = false;
 	/** @var bool */
 	public static $debug = false;
 	/** @var Config */
@@ -154,6 +156,7 @@ class Main extends PluginBase {
 		self::$weatherMaxTime = self::$config->getNested("weather.maxDuration", 12000);
 		self::$enableWeatherLightning = self::$config->getNested("weather.lightning", true);
 		self::$limitedCreative = self::$config->getNested("misc.limitedCreative", false);
+		self::$randomFishingLootTables = self::$config->getNested("misc.randomFishingLootTables", false);
 		self::$debug = self::$config->get("debug", false); // intentionally don't add this on the config...
 
 		if(self::$debug && !Utils::isPhared()){
