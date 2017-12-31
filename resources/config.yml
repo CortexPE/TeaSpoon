@@ -10,7 +10,7 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 11
+version: 12
 
 entities:
  # Weather to register Vanilla Entities (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...) or not
@@ -34,8 +34,6 @@ misc:
  # !!!   ONLY ENABLE THIS IF YOU ARE SURE THAT ALL YOUR    !!!
  # !!! PLUGINS ARE COMPATIBLE WITH YOUR CURRENT PMMP BUILD !!!
  loadAllAPIs: false
- # Enable to dis-allow chest and container interactions when in creative
- limitedCreative: true
  # Enable to generate new Fishing LootTables everyday
  randomFishingLootTables: false
  
@@ -54,3 +52,9 @@ weather:
  maxDuration: 12000
  # If lightning should be spawned in stormy weather
  lightning: true
+
+player:
+ # Enable to dis-allow chest and container interactions when in creative
+ limitedCreative: true
+ # Armor Damage toggle
+ armorDamage: true

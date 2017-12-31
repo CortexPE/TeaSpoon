@@ -108,9 +108,10 @@ class EventListener implements Listener {
 	 * @param EntityDamageEvent $ev
 	 * @return bool
 	 *
-	 * @priority LOWEST
+	 * @priority HIGHEST
 	 */
 	public function onDamage(EntityDamageEvent $ev){
+		if($ev->isCancelled())return false;
 		/////////////////////// TOTEM OF UNDYING ///////////////////////////////
 		if($ev->getDamage() >= $ev->getEntity()->getHealth()){
 			$p = $ev->getEntity();
@@ -229,6 +230,7 @@ class EventListener implements Listener {
 	 * @priority HIGHEST
 	 */
 	public function onKick(PlayerKickEvent $ev){
+		if($ev->isCancelled())return;
 		$p = $ev->getPlayer();
 		if(!$p->isOnline()){
 			return;
@@ -277,6 +279,7 @@ class EventListener implements Listener {
 	 * @priority HIGHEST
 	 */
 	public function onBlockBreak(BlockBreakEvent $ev){
+		if($ev->isCancelled())return;
 		$xp = Xp::getXpDropsForBlock($ev->getBlock());
 		if($xp > 0){
 			Xp::spawnXpOrb($ev->getBlock(), $ev->getBlock()->getLevel(), $xp);
@@ -289,6 +292,7 @@ class EventListener implements Listener {
 	 * @priority HIGHEST
 	 */
 	public function onPlayerCommandPreProcess(PlayerCommandPreprocessEvent $ev){
+		if($ev->isCancelled())return;
 		if(in_array(substr($ev->getMessage(), 1), self::VERSION_COMMANDS) && !$ev->isCancelled()){
 			$ev->setCancelled();
 			Main::sendVersion($ev->getPlayer());
@@ -301,6 +305,7 @@ class EventListener implements Listener {
 	 * @priority HIGHEST
 	 */
 	public function onServerCommand(ServerCommandEvent $ev){
+		if($ev->isCancelled())return;
 		if(Utils::in_arrayi($ev->getCommand(), self::VERSION_COMMANDS) && !$ev->isCancelled()){
 			$ev->setCancelled();
 			Main::sendVersion($ev->getSender());
@@ -313,6 +318,7 @@ class EventListener implements Listener {
 	 * @priority HIGHEST
 	 */
 	public function onRemoteServerCommand(RemoteServerCommandEvent $ev){
+		if($ev->isCancelled())return;
 		if(Utils::in_arrayi($ev->getCommand(), self::VERSION_COMMANDS) && !$ev->isCancelled()){
 			$ev->setCancelled();
 			Main::sendVersion($ev->getSender());
@@ -325,6 +331,7 @@ class EventListener implements Listener {
 	 * @priority HIGHEST
 	 */
 	public function onItemHeld(PlayerItemHeldEvent $ev){
+		if($ev->isCancelled())return;
 		$session = Main::getInstance()->getSessionById($ev->getPlayer()->getId());
 		if($session instanceof Session){
 			if($session->fishing){
@@ -343,6 +350,7 @@ class EventListener implements Listener {
 	 * @priority HIGHEST
 	 */
 	public function onInteract(PlayerInteractEvent $ev){
+		if($ev->isCancelled())return;
 		// MCPE(BE) does this client-side... we just have to do the same server-side.
 		$item = $ev->getItem();
 		$player = $ev->getPlayer();

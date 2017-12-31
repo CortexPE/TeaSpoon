@@ -120,7 +120,7 @@ class EnchantHandler implements Listener {
 			if($d instanceof PMPlayer && $e instanceof Living){
 				$i = $d->getInventory()->getItemInHand();
 				if($i->hasEnchantments()){
-					foreach($i->getEnchantments() as $ench){
+					foreach(Utils::getEnchantments($i) as $ench){
 						if($ench->getLevel() <= 0) continue;
 						switch($ench->getId()){
 							case Enchantment::UNBREAKING:
@@ -168,7 +168,7 @@ class EnchantHandler implements Listener {
 				if($e instanceof PMPlayer){
 					foreach($e->getInventory()->getArmorContents() as $armorContent){
 						if($armorContent->hasEnchantments()){
-							foreach($armorContent->getEnchantments() as $enchantment){
+							foreach(Utils::getEnchantments($armorContent) as $enchantment){
 								if($enchantment->getLevel() <= 0) continue;
 								switch($enchantment->getId()){
 									case Enchantment::THORNS:
@@ -330,7 +330,7 @@ class EnchantHandler implements Listener {
 		}
 		$p = $ev->getEntity();
 		if($ev->getBow()->hasEnchantments()){
-			foreach($ev->getBow()->getEnchantments() as $enchantment){
+			foreach(Utils::getEnchantments($ev->getBow()) as $enchantment){
 				switch($enchantment->getId()){
 					case Enchantment::INFINITY:
 						if($p instanceof PMPlayer){
@@ -371,7 +371,7 @@ class EnchantHandler implements Listener {
 		$p = $ev->getPlayer();
 		$block = $ev->getBlock();
 		$item = $p->getInventory()->getItemInHand();
-		foreach($item->getEnchantments() as $enchantment){
+		foreach(Utils::getEnchantments($item) as $enchantment){
 			switch($enchantment->getId()){
 				case Enchantment::FORTUNE:
 					$level = $item->getEnchantment(Enchantment::FORTUNE)->getLevel() + 1;
@@ -481,7 +481,7 @@ class EnchantHandler implements Listener {
 			$damager = $cause->getDamager();
 			if($damager instanceof PMPlayer){
 				$item = $damager->getInventory()->getItemInHand();
-				foreach($item->getEnchantments() as $enchantment){
+				foreach(Utils::getEnchantments($item) as $enchantment){
 					switch($enchantment->getId()){
 						case Enchantment::LOOTING:
 							$drops = [];

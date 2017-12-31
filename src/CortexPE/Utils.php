@@ -38,12 +38,17 @@ namespace CortexPE;
 use CortexPE\block\{
 	EndPortal, Portal
 };
+use pocketmine\item\enchantment\Enchantment;
 use pocketmine\block\BlockFactory;
 use pocketmine\entity\Entity;
+use pocketmine\item\enchantment\EnchantmentInstance;
+use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\level\Level;
 use pocketmine\math\Math;
 use pocketmine\math\Vector3;
+use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\nbt\tag\ListTag;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player as PMPlayer;
 use pocketmine\Server as PMServer;
@@ -239,5 +244,31 @@ class Utils {
 		$time = microtime(true);
 
 		return (abs($time - floor($time) - 0.5) < 0.0001);
+	}
+
+	/**
+	 * @param Item $item
+	 * @return EnchantmentInstance[]
+	 */
+	public static function getEnchantments(Item $item) : array{
+		/** @var EnchantmentInstance[] $enchantments */
+		$enchantments = [];
+
+		$ench = $item->getNamedTagEntry(Item::TAG_ENCH);
+		if($ench instanceof ListTag){
+			/** @var CompoundTag $entry */
+			foreach($ench as $entry){
+				$id = $entry->getShort("id");
+				if($id > 26){
+					continue;
+				}
+				$e = Enchantment::getEnchantment($id);
+				if($e !== null){
+					$enchantments[] = new EnchantmentInstance($e, $entry->getShort("lvl"));
+				}
+			}
+		}
+
+		return $enchantments;
 	}
 }

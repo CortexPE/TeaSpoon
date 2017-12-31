@@ -59,7 +59,9 @@ class Boat extends ItemPM {
 	}
 
 	public function onActivate(Level $level, Player $player, Block $block, Block $target, int $face, Vector3 $facepos): bool{
-		$realPos = $target->getSide($face)->add(0.5, 0.4, 0.5);
+		// TODO
+		return true;
+		/*$realPos = $target->getSide($face)->add(0.5, 0.4, 0.5);
 		$boat = new BoatEntity($player->getLevel(), new CompoundTag("", [
 			new ListTag("Pos", [
 				new DoubleTag("", $realPos->getX()),
@@ -82,7 +84,7 @@ class Boat extends ItemPM {
 			--$this->count;
 		}
 
-		return true;
+		return true;*/
 	}
 
 	public function getFuelTime(): int{

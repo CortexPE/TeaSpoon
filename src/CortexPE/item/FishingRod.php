@@ -39,6 +39,7 @@ use CortexPE\entity\projectile\FishingHook;
 use CortexPE\item\enchantment\Enchantment;
 use CortexPE\Main;
 use CortexPE\Session;
+use CortexPE\Utils;
 use CortexPE\utils\FishingRodLootTable;
 use CortexPE\utils\Xp;
 use pocketmine\block\Block;
@@ -49,7 +50,6 @@ use pocketmine\item\Item;
 use pocketmine\item\ProjectileItem;
 use pocketmine\level\sound\LaunchSound;
 use pocketmine\math\Vector3;
-use pocketmine\network\mcpe\protocol\EntityEventPacket;
 use pocketmine\Player;
 
 class FishingRod extends ProjectileItem {
@@ -95,7 +95,7 @@ class FishingRod extends ProjectileItem {
 				}
 				if($this->hasEnchantments()){
 					$divisor = 0;
-					foreach($this->getEnchantments() as $enchantment){
+					foreach(Utils::getEnchantments($this) as $enchantment){
 						switch($enchantment->getId()){
 							case Enchantment::LURE:
 								$divisor += $enchantment->getLevel() * 0.50;

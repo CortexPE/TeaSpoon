@@ -77,7 +77,7 @@ class FishingRodLootTable {
 				// Load Arrays
 				Main::getInstance()->getLogger()->debug("Loading existing FishingLootTable from cache...");
                 $fishingRodLoots = Main::$cacheFile->get("fishingRodLoots");
-                if (is_null($fishingRodLoots)) return;
+                if (!is_array($fishingRodLoots)) return;
 				self::$UN_ENCHANTED_LOOT = unserialize(base64_decode($fishingRodLoots[0]));
 				self::$LOS1_ENCHANTED_LOOT = unserialize(base64_decode($fishingRodLoots[1]));
 				self::$LOS2_ENCHANTED_LOOT = unserialize(base64_decode($fishingRodLoots[2]));

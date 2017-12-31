@@ -61,7 +61,7 @@ use pocketmine\utils\Config;
 
 class Main extends PluginBase {
 
-	const CONFIG_VERSION = 11;
+	const CONFIG_VERSION = 12;
 
 	/** @var Config */
 	public static $config;
@@ -100,11 +100,13 @@ class Main extends PluginBase {
 	/** @var bool */
 	public static $enableWeatherLightning = true;
 	/** @var bool */
-	public static $limitedCreative = false;
+	public static $limitedCreative = true;
 	/** @var bool */
 	public static $randomFishingLootTables = false;
 	/** @var bool */
 	public static $debug = false;
+	/** @var bool */
+	public static $armorDamage = true;
 	/** @var Config */
 	public static $cacheFile;
 	/** @var Main */
@@ -141,23 +143,24 @@ class Main extends PluginBase {
 		self::$config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
 		self::$cacheFile = new Config($this->getDataFolder() . "cache.json", Config::JSON);
 
-		self::$netherName = self::$config->getNested("dimensions.nether.levelName", "nether");
-		self::$endName = self::$config->getNested("dimensions.end.levelName", "ender");
-		self::$loadAllAPIs = self::$config->getNested("misc.loadAllAPIs", false);
-		self::$lightningFire = self::$config->getNested("entities.lightningFire", false);
-		self::$enderPearlCooldown = self::$config->getNested("enderPearl.cooldown", 2);
-		self::$ePearlDamage = self::$config->getNested("enderPearl.damage", 5);
-		self::$chorusFruitCooldown = self::$config->getNested("chorusFruit.cooldown", 2);
-		self::$registerVanillaEntities = self::$config->getNested("entities.register", true);
-		self::$registerVanillaEnchantments = self::$config->getNested("enchantments.register", true);
-		self::$registerDimensions = self::$config->getNested("dimensions.enable", true);
-		self::$weatherEnabled = self::$config->getNested("weather.enable", true);
-		self::$weatherMinTime = self::$config->getNested("weather.minDuration", 6000);
-		self::$weatherMaxTime = self::$config->getNested("weather.maxDuration", 12000);
-		self::$enableWeatherLightning = self::$config->getNested("weather.lightning", true);
-		self::$limitedCreative = self::$config->getNested("misc.limitedCreative", false);
-		self::$randomFishingLootTables = self::$config->getNested("misc.randomFishingLootTables", false);
-		self::$debug = self::$config->get("debug", false); // intentionally don't add this on the config...
+		self::$netherName = self::$config->getNested("dimensions.nether.levelName", self::$netherName);
+		self::$endName = self::$config->getNested("dimensions.end.levelName", self::$endName);
+		self::$loadAllAPIs = self::$config->getNested("misc.loadAllAPIs", self::$loadAllAPIs);
+		self::$lightningFire = self::$config->getNested("entities.lightningFire", self::$lightningFire);
+		self::$enderPearlCooldown = self::$config->getNested("enderPearl.cooldown", self::$enderPearlCooldown);
+		self::$ePearlDamage = self::$config->getNested("enderPearl.damage", self::$ePearlDamage);
+		self::$chorusFruitCooldown = self::$config->getNested("chorusFruit.cooldown", self::$chorusFruitCooldown);
+		self::$registerVanillaEntities = self::$config->getNested("entities.register", self::$registerVanillaEntities);
+		self::$registerVanillaEnchantments = self::$config->getNested("enchantments.register", self::$registerVanillaEnchantments);
+		self::$registerDimensions = self::$config->getNested("dimensions.enable", self::$registerDimensions);
+		self::$weatherEnabled = self::$config->getNested("weather.enable", self::$weatherEnabled);
+		self::$weatherMinTime = self::$config->getNested("weather.minDuration", self::$weatherMinTime);
+		self::$weatherMaxTime = self::$config->getNested("weather.maxDuration", self::$weatherMaxTime);
+		self::$enableWeatherLightning = self::$config->getNested("weather.lightning", self::$enableWeatherLightning);
+		self::$limitedCreative = self::$config->getNested("player.limitedCreative", self::$limitedCreative);
+		self::$randomFishingLootTables = self::$config->getNested("misc.randomFishingLootTables", self::$randomFishingLootTables);
+		self::$armorDamage = self::$config->getNested("player.armorDamage", self::$armorDamage);
+		self::$debug = self::$config->get("debug", self::$debug); // intentionally don't add this on the config...
 
 		if(self::$debug && !Utils::isPhared()){
 			$this->getLogger()->warning("Debug Mode is enabled!");

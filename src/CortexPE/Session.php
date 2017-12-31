@@ -72,6 +72,7 @@ class Session {
 	}
 
 	public function useArmors(int $damage = 1){
+		if(!Main::$armorDamage)return;
 		if(!$this->player->isAlive() || !$this->player->isSurvival()){
 			return;
 		}
@@ -91,7 +92,7 @@ class Session {
 			}
 
 			if($armor->hasEnchantments()){
-				foreach($armor->getEnchantments() as $ench){
+				foreach(Utils::getEnchantments($armor) as $ench){
 					if($ench->getLevel() <= 0){
 						continue;
 					}
@@ -138,6 +139,7 @@ class Session {
 	}
 
 	public function damageElytra(int $damage = 1){
+		if(!Main::$armorDamage)return;
 		if(!$this->player->isAlive() || !$this->player->isSurvival()){
 			return;
 		}
@@ -148,7 +150,7 @@ class Session {
 			$dura = ArmorDurability::getDurability(Item::ELYTRA);
 
 			if($elytra->hasEnchantments()){
-				foreach($elytra->getEnchantments() as $ench){
+				foreach(Utils::getEnchantments($elytra) as $ench){
 					if($ench->getLevel() <= 0){
 						continue;
 					}
