@@ -73,9 +73,9 @@ class BugReportCommand extends VanillaCommand {
 		}
 		$pstr = substr($pstr, 0, -2);
 		$str .= $pstr . "\n";
-		$str .= "BASE64 Encoded Config: " . $this->encodeFile(Main::getInstance()->getDataFolder() . "config.yml") . "\n";
+		$str .= "Base64 Encoded Config: " . $this->encodeFile(Main::getInstance()->getDataFolder() . "config.yml") . "\n";
 		if(Main::$debug && file_exists(Main::getInstance()->getDataFolder() . "packetlog.txt")){
-			$str .= "BASE64 Encoded PacketLog: " . $this->encodeFile(Main::getInstance()->getDataFolder() . "packetlog.txt") . "\n";
+			$str .= "Base64 Encoded PacketLog: " . $this->encodeFile(Main::getInstance()->getDataFolder() . "packetlog.txt") . "\n";
 		}
 		$str .= "Base64 Encoded PocketMine Configuration: " . $this->encodeFile(PMServer::getInstance()->getDataPath() . "pocketmine.yml") . "\n";
 		$str .= "Base64 Encoded Server Properties: " . $this->encodeFile(PMServer::getInstance()->getDataPath() . "server.properties") . "\n";

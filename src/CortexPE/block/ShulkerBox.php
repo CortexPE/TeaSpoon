@@ -106,9 +106,9 @@ class ShulkerBox extends Transparent {
 		/** @var CompoundTag $nbt */
 		$nbt = TileShulkerBox::createNBT($this->asVector3());
 		$nbt->Items = $item->getNamedTag()->getListTag("Items") ?? new ListTag("Items", []);
-		if (!$item->hasCustomName()) return false;
-		if (!$player instanceof Player) return false;
-		$nbt->CustomName = new StringTag("CustomName", $item->getCustomName());
+		if ($item->hasCustomName()){
+			$nbt->CustomName = new StringTag("CustomName", $item->getCustomName());
+		}
 		/** @var TileShulkerBox $tile */
 		Tile::createTile(Tile::SHULKER_BOX, $this->getLevel(), $nbt);
 		$player->getInventory()->setItemInHand(Item::get(Item::AIR));

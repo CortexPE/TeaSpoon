@@ -42,6 +42,7 @@ use CortexPE\item\enchantment\Enchantment;
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\EntityEventPacket;
 use pocketmine\Player;
+use pocketmine\Server as PMServer;
 
 class Session {
 	/** @var int */
@@ -69,6 +70,10 @@ class Session {
 
 	public function getPlayer(): Player{
 		return $this->player;
+	}
+
+	public function getServer() : PMServer {
+		return $this->player->getServer();
 	}
 
 	public function useArmors(int $damage = 1){

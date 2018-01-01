@@ -39,7 +39,7 @@ class Splash {
 
 	// tbh, I just added splashes for fun... never thought I would be making a completely different class just for splash texts xD
 
-	// THE RANDOM SPLASH Generator!!!!!!
+	// THE RANDOM SPLASH GENERATOR!!!!!!
 
 	// A lot of the Nouns and Verbs are from: http://nonsense.x2d.org/script.js
 	// Some are removed due to how long they are, and some have vulgar / NSFW word(s).
@@ -182,35 +182,22 @@ class Splash {
 		'Low-Calorie blend', // first ever teaspoon splash text... and that's why its in ' not " xd
 		"Don't panic! Have a cup of tea",
 		"In England, Everything stops for tea",
-		"POWERED By Dubstep", "A E S T H E T H I C S",
-		"WHO PUT THAT HERE?",
+		"Fueled by Music and Coffee",
+		"A E S T H E T H I C S",
 		"#BlameShoghi",
+		"#BlameMojang",
+		"#BlamePMMP",
 		"ERMAHGERD",
 		"Written in PHP!",
 		"This is a splash text.",
-		"YOUR NAME",
 		"ONE LOVE",
-		"I KILLED THE SHERIFF... But not the deputy.",
-		"Oops.",
 		"rip.",
-		"Fixed Typo!",
-		"Fixed Typo! 2",
-		"Fixed Typo! 2 FINAL",
-		"Fixed Typo! 2 FINALFINAL",
-		"Fixed Typo! 2 FINALFINALFINAL",
 		"This splash text is a joke.",
-		"How may I help you?",
 		"SUPERCALIFRAGILISTICEXPIALIDOCIOUS!",
 		"Well this exists.",
 		"IE EXISTS TO DOWNLOAD CHROME!",
 		"I'm sorry Dave. I'm afraid I can't do that.",
 		"I might have killed it.",
-		"PUNCHING TREES!",
-		"Bug Fix",
-		"Bug Fix 2",
-		"Bug Fix 2 FINAL",
-		"Bug Fix 2 FINALFINAL",
-		"Bug Fix 2 FINALFINANFINAL",
 		"We have VCS Systems. :P",
 		"We have *crappy* VCS Systems. :P",
 		":shrug:",
@@ -230,15 +217,16 @@ class Splash {
 			return self::$CHRISTMAS_SPLASHES[array_rand(self::$CHRISTMAS_SPLASHES)];
 		}
 		if(self::isCortexsBirthday()){
-			return "Happy birthday Cortex!"; // lolz
+			return (mt_rand(1,2) == 1 ? "Cortex's biological age is now " . strval(intval(date('Y')) - 1999) . "!" : "Happy birthday Cortex!"); // lolz
 		}
 		if(mt_rand(0, 100) <= 50){
-			get_random: // lol
-			$rand = self::getRandomSentence();
-			if(strlen($rand) <= 32){ // max length 32
-				return $rand;
+			while(true){
+				$rand = self::getRandomSentence();
+				$len = strlen($rand);
+				if($len <= 32){ // max length 32
+					return $rand;
+				}
 			}
-			goto get_random;
 		}
 
 		return self::getRandomTSPSplash();
