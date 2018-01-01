@@ -33,8 +33,8 @@ use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\Player;
-use pocketmine\tile\Spawnable;
 use pocketmine\Server as PMServer;
+use pocketmine\tile\Spawnable;
 
 class Beacon extends Spawnable implements InventoryHolder {
 	/**
@@ -173,6 +173,7 @@ class Beacon extends Spawnable implements InventoryHolder {
 				}
 			}
 		}
+
 		return true;
 	}
 

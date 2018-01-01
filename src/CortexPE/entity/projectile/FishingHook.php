@@ -36,7 +36,6 @@ declare(strict_types = 1);
 namespace CortexPE\entity\projectile;
 
 
-use pocketmine\block\Block;
 use pocketmine\block\StillWater;
 use pocketmine\block\Water;
 use pocketmine\entity\Entity;

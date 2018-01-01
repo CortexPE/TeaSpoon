@@ -217,7 +217,7 @@ class Splash {
 			return self::$CHRISTMAS_SPLASHES[array_rand(self::$CHRISTMAS_SPLASHES)];
 		}
 		if(self::isCortexsBirthday()){
-			return (mt_rand(1,2) == 1 ? "Cortex's biological age is now " . strval(intval(date('Y')) - 1999) . "!" : "Happy birthday Cortex!"); // lolz
+			return (mt_rand(1, 2) == 1 ? "Cortex's biological age is now " . strval(intval(date('Y')) - 1999) . "!" : "Happy birthday Cortex!"); // lolz
 		}
 		if(mt_rand(0, 100) <= 50){
 			while(true){

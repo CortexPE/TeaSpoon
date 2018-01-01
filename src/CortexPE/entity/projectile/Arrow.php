@@ -40,11 +40,6 @@ use CortexPE\level\particle\MobSpellParticle;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
 use pocketmine\entity\projectile\Arrow as PMArrow;
-use pocketmine\event\entity\EntityCombustByEntityEvent;
-use pocketmine\event\entity\EntityDamageByChildEntityEvent;
-use pocketmine\event\entity\EntityDamageByEntityEvent;
-use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\event\entity\ProjectileHitEvent;
 use pocketmine\level\Level;
 use pocketmine\nbt\tag\CompoundTag;
 
@@ -63,7 +58,7 @@ class Arrow extends PMArrow {
 				"r" => $col->getR(),
 				"g" => $col->getG(),
 				"b" => $col->getB(),
-				"a" => $col->getA()
+				"a" => $col->getA(),
 			];
 		}
 	}

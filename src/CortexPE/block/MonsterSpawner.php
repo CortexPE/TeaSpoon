@@ -27,14 +27,14 @@ namespace CortexPE\block;
 
 use CortexPE\tile\MobSpawner;
 use pocketmine\block\{
-    Block, MonsterSpawner as SpawnerPM
+	Block, MonsterSpawner as SpawnerPM
 };
 use pocketmine\item\{
-    Item, enchantment\Enchantment
+	enchantment\Enchantment, Item
 };
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\{
-    CompoundTag, IntTag, StringTag
+	CompoundTag, IntTag, StringTag
 };
 use pocketmine\Player;
 use pocketmine\tile\Tile;
@@ -134,77 +134,81 @@ class MonsterSpawner extends SpawnerPM {
 	/** @var int $entityid */
 	private $entityid = 0;
 
-	public function __construct() {
+	public function __construct(){
 	}
 
-    /**
-     * @return bool
-     */
-	public function canBeActivated() : bool{
+	/**
+	 * @return bool
+	 */
+	public function canBeActivated(): bool{
 		return true;
 	}
 
-    /**
-     * @param Item $item
-     * @param Player|null $player
-     * @return bool
-     */
-	public function onActivate(Item $item, Player $player = null) : bool{
-	    if ($this->entityid != 0) return false;
-	    if ($item->getId() !== Item::SPAWN_EGG) return false;
+	/**
+	 * @param Item $item
+	 * @param Player|null $player
+	 * @return bool
+	 */
+	public function onActivate(Item $item, Player $player = null): bool{
+		if($this->entityid != 0) return false;
+		if($item->getId() !== Item::SPAWN_EGG) return false;
 		$tile = $this->getLevel()->getTile($this);
 		$this->entityid = $item->getDamage();
-		if (!$tile instanceof MobSpawner) {
-            /** @var CompoundTag $nbt */
-            $nbt = new CompoundTag("", [
-                new StringTag(Tile::TAG_ID, "MobSpawner"),
-                new IntTag(Tile::TAG_X, (int)$this->x),
-                new IntTag(Tile::TAG_Y, (int)$this->y),
-                new IntTag(Tile::TAG_Z, (int)$this->z),
-            ]);
-            $tile = Tile::createTile('MobSpawner', $this->getLevel(), $nbt);
-            $tile->setEntityId($this->entityid);
-            return true;
-        }
+		if(!$tile instanceof MobSpawner){
+			/** @var CompoundTag $nbt */
+			$nbt = new CompoundTag("", [
+				new StringTag(Tile::TAG_ID, "MobSpawner"),
+				new IntTag(Tile::TAG_X, (int)$this->x),
+				new IntTag(Tile::TAG_Y, (int)$this->y),
+				new IntTag(Tile::TAG_Z, (int)$this->z),
+			]);
+			$tile = Tile::createTile('MobSpawner', $this->getLevel(), $nbt);
+			$tile->setEntityId($this->entityid);
+
+			return true;
+		}
 	}
 
-    /**
-     * @param Item $item
-     * @param Block $block
-     * @param Block $target
-     * @param int $face
-     * @param Vector3 $facePos
-     * @param Player|null $player
-     * @return bool
-     */
-	public function place(Item $item, Block $block, Block $target, int $face, Vector3 $facePos, Player $player = null) : bool{
+	/**
+	 * @param Item $item
+	 * @param Block $block
+	 * @param Block $target
+	 * @param int $face
+	 * @param Vector3 $facePos
+	 * @param Player|null $player
+	 * @return bool
+	 */
+	public function place(Item $item, Block $block, Block $target, int $face, Vector3 $facePos, Player $player = null): bool{
 		$this->getLevel()->setBlock($block, $this, true, true);
+
 		//Tile::createTile('MobSpawner', $this->getLevel(), Tile::createNBT($this));
 		return true;
 	}
 
-    /**
-     * @param Item $item
-     * @return array
-     */
-	public function getDrops(Item $item) : array{
+	/**
+	 * @param Item $item
+	 * @return array
+	 */
+	public function getDrops(Item $item): array{
 		$tile = $this->getLevel()->getTile($this);
-		if (!$tile instanceof MobSpawner) return [];
-		if ($item->hasEnchantment(Enchantment::SILK_TOUCH)) {
+		if(!$tile instanceof MobSpawner) return [];
+		if($item->hasEnchantment(Enchantment::SILK_TOUCH)){
 			return [
 				Item::get($this->getItemId(), (int)$tile->getEntityId(), 1, $this->getLevel()->getTile($this)->namedtag),
 			];
 		}
+
 		return [];
 	}
 
-    /**
-     * @return string
-     */
-	public function getName() : string{
+	/**
+	 * @return string
+	 */
+	public function getName(): string{
 		if($this->entityid === 0) return "Monster Spawner";
-		else {
+		else{
 			$name = ucfirst(self::EID_TO_STR[$this->entityid] ?? 'Monster') . ' Spawner';
+
 			return $name;
 		}
 	}

@@ -38,9 +38,9 @@ namespace CortexPE;
 use CortexPE\block\{
 	EndPortal, Portal
 };
-use pocketmine\item\enchantment\Enchantment;
 use pocketmine\block\BlockFactory;
 use pocketmine\entity\Entity;
+use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
@@ -128,18 +128,18 @@ class Utils {
 		return false;
 	}
 
-	public static function isInsideOfEndPortal(Entity $entity): bool{
-		$block = $entity->getLevel()->getBlock($entity);
-		if($block instanceof EndPortal){
+	public static function isInsideOfPortal(Entity $entity): bool{
+		$block = $block = $entity->getLevel()->getBlockAt(Math::floorFloat($entity->getX()), Math::floorFloat($entity->getY()), Math::floorFloat($entity->getZ()));;
+		if($block instanceof Portal){
 			return true;
 		}
 
 		return false;
 	}
 
-	public static function isInsideOfPortal(Entity $entity): bool{
-		$block = $block = $entity->getLevel()->getBlockAt(Math::floorFloat($entity->getX()), Math::floorFloat($entity->getY()), Math::floorFloat($entity->getZ()));;
-		if($block instanceof Portal){
+	public static function isInsideOfEndPortal(Entity $entity): bool{
+		$block = $entity->getLevel()->getBlock($entity);
+		if($block instanceof EndPortal){
 			return true;
 		}
 
@@ -250,7 +250,7 @@ class Utils {
 	 * @param Item $item
 	 * @return EnchantmentInstance[]
 	 */
-	public static function getEnchantments(Item $item) : array{
+	public static function getEnchantments(Item $item): array{
 		/** @var EnchantmentInstance[] $enchantments */
 		$enchantments = [];
 

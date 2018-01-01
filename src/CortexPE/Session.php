@@ -68,16 +68,30 @@ class Session {
 		$this->unsetFishing();
 	}
 
+	public function unsetFishing(){
+		$this->fishing = false;
+
+		if($this->fishingHook instanceof FishingHook){
+			$pk = new EntityEventPacket();
+			$pk->entityRuntimeId = $this->fishingHook->getId();
+			$pk->event = EntityEventPacket::FISH_HOOK_TEASE;
+			$this->player->getServer()->broadcastPacket($this->player->getLevel()->getPlayers(), $pk);
+
+			$this->fishingHook->close();
+			$this->fishingHook = null;
+		}
+	}
+
 	public function getPlayer(): Player{
 		return $this->player;
 	}
 
-	public function getServer() : PMServer {
+	public function getServer(): PMServer{
 		return $this->player->getServer();
 	}
 
 	public function useArmors(int $damage = 1){
-		if(!Main::$armorDamage)return;
+		if(!Main::$armorDamage) return;
 		if(!$this->player->isAlive() || !$this->player->isSurvival()){
 			return;
 		}
@@ -144,7 +158,7 @@ class Session {
 	}
 
 	public function damageElytra(int $damage = 1){
-		if(!Main::$armorDamage)return;
+		if(!Main::$armorDamage) return;
 		if(!$this->player->isAlive() || !$this->player->isSurvival()){
 			return;
 		}
@@ -207,19 +221,5 @@ class Session {
 		}
 
 		return false;
-	}
-
-	public function unsetFishing(){
-		$this->fishing = false;
-
-		if($this->fishingHook instanceof FishingHook){
-			$pk = new EntityEventPacket();
-			$pk->entityRuntimeId = $this->fishingHook->getId();
-			$pk->event = EntityEventPacket::FISH_HOOK_TEASE;
-			$this->player->getServer()->broadcastPacket($this->player->getLevel()->getPlayers(), $pk);
-
-			$this->fishingHook->close();
-			$this->fishingHook = null;
-		}
 	}
 }

@@ -45,10 +45,11 @@ use pocketmine\item\Item;
 use pocketmine\level\sound\LaunchSound;
 use pocketmine\Player;
 
-class Bow extends PMBow{
-	public function onReleaseUsing(Player $player) : bool{
+class Bow extends PMBow {
+	public function onReleaseUsing(Player $player): bool{
 		if(!$player->getInventory()->contains(Item::get(Item::ARROW, -1, 1))){
 			$player->getInventory()->sendContents($player);
+
 			return false;
 		}
 
@@ -94,7 +95,7 @@ class Bow extends PMBow{
 						if($this->hasEnchantment(Enchantment::UNBREAKING)){
 							$enchantment = $this->getEnchantment(Enchantment::UNBREAKING);
 							$lvl = $enchantment->getLevel() + 1;
-							if(mt_rand(1,100) >= intval(100 / $lvl)){
+							if(mt_rand(1, 100) >= intval(100 / $lvl)){
 								$this->applyDamage(1);
 							}
 						}

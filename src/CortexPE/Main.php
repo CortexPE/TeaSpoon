@@ -109,12 +109,12 @@ class Main extends PluginBase {
 	public static $armorDamage = true;
 	/** @var Config */
 	public static $cacheFile;
+	/** @var int[] */
+	public static $onPortal = [];
 	/** @var Main */
 	private static $instance;
 	/** @var Session[] */
 	private $sessions = [];
-	/** @var int[] */
-	public static $onPortal = [];
 
 	public static function getInstance(): Main{
 		return self::$instance;

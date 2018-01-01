@@ -23,14 +23,10 @@ declare(strict_types = 1);
 
 namespace CortexPE\item;
 
-use CortexPE\entity\Boat as BoatEntity;
 use pocketmine\block\Block;
 use pocketmine\item\Item as ItemPM;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
-use pocketmine\nbt\tag\{
-	CompoundTag, DoubleTag, FloatTag, IntTag, ListTag
-};
 use pocketmine\Player;
 
 class Boat extends ItemPM {

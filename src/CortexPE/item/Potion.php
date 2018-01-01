@@ -30,8 +30,6 @@ use pocketmine\entity\{
 };
 use pocketmine\item\Consumable;
 use pocketmine\item\Item;
-use pocketmine\network\mcpe\protocol\EntityEventPacket;
-use pocketmine\Player;
 use pocketmine\utils\Color;
 
 class Potion extends Item implements Consumable {
@@ -305,7 +303,7 @@ class Potion extends Item implements Consumable {
 		if(!($effect instanceof Effect)){
 			return new Color(46, 82, 153); // Default to Blue
 		}
-		
+
 		$return = $effect->getColor();
 
 		// Only for compatibility with the inconsistency -_-
@@ -376,6 +374,14 @@ class Potion extends Item implements Consumable {
 		return $entity instanceof Human;
 	}
 
+	public function getResidue(){
+		return Item::get(Item::GLASS_BOTTLE);
+	}
+
+	public function getAdditionalEffects(): array{
+		return $this->getEffects();
+	}
+
 	public function getEffects(): array{
 		/*
 		 * Structure:
@@ -406,14 +412,6 @@ class Potion extends Item implements Consumable {
 		}
 
 		return $effects;
-	}
-
-	public function getResidue(){
-		return Item::get(Item::GLASS_BOTTLE);
-	}
-
-	public function getAdditionalEffects() : array{
-		return $this->getEffects();
 	}
 
 	public function onConsume(Living $consumer){
