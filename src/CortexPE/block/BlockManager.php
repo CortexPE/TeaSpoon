@@ -35,46 +35,23 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
-use pocketmine\block\{
-	Block, BlockFactory
-};
+use pocketmine\block\BlockFactory;
 
 class BlockManager {
-
 	public static function init(): void{
-		self::register(Block::PORTAL, new Portal(), true);
-		self::register(Block::END_PORTAL, new EndPortal(), true);
-		self::register(Block::OBSIDIAN, new Obsidian(), true);
-		self::register(Block::DRAGON_EGG, new DragonEgg(), true);
-		self::register(Block::BEACON, new Beacon(), true);
-		self::register(Block::FIRE, new Fire(), true);
-		self::register(Block::BED_BLOCK, new Bed(), true);
-		self::register(Block::SLIME_BLOCK, new SlimeBlock(), true);
-		self::register(Block::END_PORTAL_FRAME, new EndPortalFrame(), true);
-		self::register(Block::LAVA, new Lava(), true);
-		self::register(Block::STILL_LAVA, new StillLava(), true);
-		self::register(Block::MONSTER_SPAWNER, new MonsterSpawner(), true);
-		self::register(Block::FROSTED_ICE, new FrostedIce(), true);
-		self::register(Block::SHULKER_BOX, new ShulkerBox(), true);
-	}
-
-	/**
-	 * @param int $id
-	 * @param Block $block
-	 * @param bool $overwrite
-	 * @return bool
-	 */
-	public static function register(int $id, Block $block, bool $overwrite = false): bool{
-		if(!BlockFactory::isRegistered($id) && !$overwrite){
-			BlockFactory::registerBlock($block);
-
-			return true;
-		}elseif($overwrite){
-			BlockFactory::registerBlock($block, true);
-
-			return true;
-		}
-
-		return false;
+		BlockFactory::registerBlock(new Portal(), true);
+		BlockFactory::registerBlock(new EndPortal(), true);
+		BlockFactory::registerBlock(new Obsidian(), true);
+		BlockFactory::registerBlock(new DragonEgg(), true);
+		BlockFactory::registerBlock(new Beacon(), true);
+		BlockFactory::registerBlock(new Fire(), true);
+		BlockFactory::registerBlock(new Bed(), true);
+		BlockFactory::registerBlock(new SlimeBlock(), true);
+		BlockFactory::registerBlock(new EndPortalFrame(), true);
+		BlockFactory::registerBlock(new Lava(), true);
+		BlockFactory::registerBlock(new StillLava(), true);
+		BlockFactory::registerBlock(new MonsterSpawner(), true);
+		BlockFactory::registerBlock(new FrostedIce(), true);
+		BlockFactory::registerBlock(new ShulkerBox(), true);
 	}
 }

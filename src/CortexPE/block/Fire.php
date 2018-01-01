@@ -58,9 +58,7 @@ class Fire extends PMFire {
 			/** @var Weather $rainy */
 			$rainy = $weather->isRainy() || $weather->isRainyThunder();
 
-			if(!$rainy) return $type;
-
-			if(Utils::canSeeSky($this->getLevel(), $this->asVector3())){
+			if($rainy && Utils::canSeeSky($this->getLevel(), $this->asVector3())){
 				$this->level->setBlock($this, BlockFactory::get(Block::AIR));
 			}
 		}
