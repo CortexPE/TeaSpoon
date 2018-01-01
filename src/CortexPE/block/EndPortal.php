@@ -125,12 +125,14 @@ class EndPortal extends Solid {
 			}
 			if(!isset(Main::$onPortal[$entity->getId()])){
 				Main::$onPortal[$entity->getId()] = true;
-				if(!$entity instanceof Player) return;
-				if($entity->getLevel() instanceof Level) return;
-				if($entity->getLevel()->getName() != Main::$endName){ // OVERWORLD -> END
-					Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::THE_END, Main::$endLevel->getSafeSpawn()), 1);
-				}else{ // END -> OVERWORLD
-					Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::OVERWORLD, Server::getInstance()->getDefaultLevel()->getSafeSpawn()), 1);
+				if($entity instanceof Player){
+					if($entity->getLevel() instanceof Level){
+						if($entity->getLevel()->getName() != Main::$endName){ // OVERWORLD -> END
+							Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::THE_END, Main::$endLevel->getSafeSpawn()), 1);
+						}else{ // END -> OVERWORLD
+							Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::OVERWORLD, Server::getInstance()->getDefaultLevel()->getSafeSpawn()), 1);
+						}
+					}
 				}
 				// TODO: Add mob teleportation
 			}

@@ -150,38 +150,23 @@ class MonsterSpawner extends SpawnerPM {
 	 * @return bool
 	 */
 	public function onActivate(Item $item, Player $player = null): bool{
-		if($this->entityid != 0) return false;
-		if($item->getId() !== Item::SPAWN_EGG) return false;
+		if($this->entityid != 0 || $item->getId() != Item::SPAWN_EGG) return false;
 		$tile = $this->getLevel()->getTile($this);
 		$this->entityid = $item->getDamage();
 		if(!$tile instanceof MobSpawner){
 			/** @var CompoundTag $nbt */
 			$nbt = new CompoundTag("", [
-				new StringTag(Tile::TAG_ID, "MobSpawner"),
+				new StringTag(Tile::TAG_ID, Tile::MOB_SPAWNER),
 				new IntTag(Tile::TAG_X, (int)$this->x),
 				new IntTag(Tile::TAG_Y, (int)$this->y),
 				new IntTag(Tile::TAG_Z, (int)$this->z),
 			]);
-			$tile = Tile::createTile('MobSpawner', $this->getLevel(), $nbt);
+			/** @var MobSpawner $tile */
+			$tile = Tile::createTile(Tile::MOB_SPAWNER, $this->getLevel(), $nbt);
 			$tile->setEntityId($this->entityid);
 
 			return true;
 		}
-	}
-
-	/**
-	 * @param Item $item
-	 * @param Block $block
-	 * @param Block $target
-	 * @param int $face
-	 * @param Vector3 $facePos
-	 * @param Player|null $player
-	 * @return bool
-	 */
-	public function place(Item $item, Block $block, Block $target, int $face, Vector3 $facePos, Player $player = null): bool{
-		$this->getLevel()->setBlock($block, $this, true, true);
-
-		//Tile::createTile('MobSpawner', $this->getLevel(), Tile::createNBT($this));
 		return true;
 	}
 
