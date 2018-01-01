@@ -78,10 +78,6 @@ class ItemManager {
 			Item::addCreativeItem(Item::get(Item::LINGERING_POTION, $i));
 		}
 
-		for($i = 0; $i <= 5; $i++){
-			Item::addCreativeItem(Item::get(Item::BOAT, $i));
-		}
-
 		for($i = 0; $i <= 15; $i++){
 			Item::addCreativeItem(Item::get(Item::SHULKER_BOX, $i, 1));
 		}

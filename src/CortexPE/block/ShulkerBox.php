@@ -123,13 +123,15 @@ class ShulkerBox extends Transparent {
 	public function onBreak(Item $item, Player $player = null): bool{
 		/** @var TileShulkerBox $t */
 		$t = $this->getLevel()->getTile($this);
-		$item = Item::get(Item::SHULKER_BOX, $this->meta, 1);
-		$itemNBT = clone $item->getNamedTag();
-		$itemNBT->setTag($t->getNBT()->getTag(Container::TAG_ITEMS));
-		$item->setNamedTag($itemNBT);
-		$this->getLevel()->dropItem($this->asVector3(), $item);
-		$t->getInventory()->clearAll(); // dont drop the items
-		if(!$t instanceof TileShulkerBox) $this->getLevel()->setBlock($this, Block::get(Block::AIR), true, true);
+		if($t instanceof TileShulkerBox){
+			$item = Item::get(Item::SHULKER_BOX, $this->meta, 1);
+			$itemNBT = clone $item->getNamedTag();
+			$itemNBT->setTag($t->getNBT()->getTag(Container::TAG_ITEMS));
+			$item->setNamedTag($itemNBT);
+			$this->getLevel()->dropItem($this->asVector3(), $item);
+			$t->getInventory()->clearAll(); // dont drop the items
+		}
+		$this->getLevel()->setBlock($this, Block::get(Block::AIR), true, true);
 
 		return true;
 	}
