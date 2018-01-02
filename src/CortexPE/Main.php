@@ -49,7 +49,7 @@ use CortexPE\plugin\AllAPILoaderManager;
 use CortexPE\task\TickLevelsTask;
 use CortexPE\tile\Tile;
 use CortexPE\utils\{
-	FishingRodLootTable, TextFormat
+	FishingLootTable, TextFormat
 };
 use pocketmine\command\{
 	CommandSender, defaults\DumpMemoryCommand, defaults\GarbageCollectorCommand, defaults\StatusCommand
@@ -206,7 +206,7 @@ class Main extends PluginBase {
 		EntityManager::init();
 		// LevelManager::init(); EXECUTED VIA EventListener
 		Tile::init();
-		FishingRodLootTable::init();
+		FishingLootTable::init();
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new PacketHandler($this), $this);
 		if(self::$registerVanillaEnchantments){

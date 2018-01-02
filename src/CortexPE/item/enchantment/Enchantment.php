@@ -63,9 +63,8 @@ class Enchantment extends EnchantmentPM {
 			self::registerEnchantment(new Enchantment(self::INFINITY, "%enchantment.bow.infinity", self::RARITY_UNCOMMON, self::SLOT_BOW, 1));
 			self::registerEnchantment(new Enchantment(self::LUCK_OF_THE_SEA, "%enchantment.fishing.fortune", self::RARITY_UNCOMMON, self::SLOT_FISHING_ROD, 3));
 			self::registerEnchantment(new Enchantment(self::LURE, "%enchantment.fishing.lure", self::RARITY_UNCOMMON, self::SLOT_FISHING_ROD, 3));
-
-			//self::registerEnchantment(new Enchantment(self::MENDING, "%enchantment.mending", self::RARITY_UNCOMMON, self::SLOT_ARMOR, 1)); // TODO: verify name
 			self::registerEnchantment(new Enchantment(self::FROST_WALKER, "%enchantment.waterwalk", self::RARITY_UNCOMMON, self::SLOT_ARMOR, 2)); // TODO: verify name
+			self::registerEnchantment(new Enchantment(self::MENDING, "%enchantment.mending", self::RARITY_UNCOMMON, self::SLOT_ARMOR, 1)); // TODO: verify name
 		}
 	}
 }

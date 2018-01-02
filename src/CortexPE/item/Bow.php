@@ -91,14 +91,18 @@ class Bow extends PMBow {
 				$entity->setMotion($entity->getMotion()->multiply($ev->getForce()));
 				if($player->isSurvival()){
 					$first->count--;
+					$unbreaking = false;
 					if($this->hasEnchantments()){
 						if($this->hasEnchantment(Enchantment::UNBREAKING)){
 							$enchantment = $this->getEnchantment(Enchantment::UNBREAKING);
 							$lvl = $enchantment->getLevel() + 1;
 							if(mt_rand(1, 100) >= intval(100 / $lvl)){
-								$this->applyDamage(1);
+								$unbreaking = true;
 							}
 						}
+					}
+					if(!$unbreaking){
+						$this->applyDamage(1);
 					}
 				}
 

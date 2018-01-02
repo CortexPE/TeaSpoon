@@ -40,7 +40,7 @@ use CortexPE\item\enchantment\Enchantment;
 use CortexPE\Main;
 use CortexPE\Session;
 use CortexPE\Utils;
-use CortexPE\utils\FishingRodLootTable;
+use CortexPE\utils\FishingLootTable;
 use CortexPE\utils\Xp;
 use pocketmine\block\Block;
 use pocketmine\entity\Entity;
@@ -62,7 +62,7 @@ class FishingRod extends ProjectileItem {
 	}
 
 	public function getMaxDurability(){
-		return 65;
+		return 355;
 	}
 
 	public function onClickAir(Player $player, Vector3 $directionVector): bool{
@@ -115,13 +115,25 @@ class FishingRod extends ProjectileItem {
 
 					$session->unsetFishing();
 
+					$unbreaking = false;
 					if($player->isSurvival()){
+						if($this->hasEnchantments()){
+							if($this->hasEnchantment(Enchantment::UNBREAKING)){
+								$enchantment = $this->getEnchantment(Enchantment::UNBREAKING);
+								$lvl = $enchantment->getLevel() + 1;
+								if(mt_rand(1, 100) >= intval(100 / $lvl)){
+									$unbreaking = true;
+								}
+							}
+						}
+					}
+					if(!$unbreaking){
 						if($player->getLevel()->getBlock($projectile->asVector3())->getId() == Block::WATER || $player->getLevel()->getBlock($projectile)->getId() == Block::WATER){
 							$this->meta += 5;
 						}else{
 							$this->meta += mt_rand(10, 15); // TODO: Implement entity / block collision properly
 						}
-						if($this->meta >= 355){ // TODO: Know why tf it gets removed early at 65 (as the wiki says)
+						if($this->meta >= $this->getMaxDurability()){ // TODO: Know why tf it gets removed early at 65 (as the wiki says)
 							$this->setCount(0);
 						}
 					}
@@ -139,7 +151,7 @@ class FishingRod extends ProjectileItem {
 						}else{
 							$lvl = 0;
 						}
-						$item = FishingRodLootTable::getRandom($lvl);
+						$item = FishingLootTable::getRandom($lvl);
 						$player->getInventory()->addItem($item);
 						Xp::addXp($player, mt_rand(1, 6));
 					}
