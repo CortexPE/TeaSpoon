@@ -94,15 +94,14 @@ class FishingRod extends ProjectileItem {
 					$rand = mt_rand(30, 100);
 				}
 				if($this->hasEnchantments()){
-					$divisor = 0;
 					foreach(Utils::getEnchantments($this) as $enchantment){
 						switch($enchantment->getId()){
 							case Enchantment::LURE:
-								$divisor += $enchantment->getLevel() * 0.50;
+								$divisor = $enchantment->getLevel() * 0.50;
+								$rand = intval(round($rand / $divisor)) + 3;
 								break;
 						}
 					}
-					$rand = intval(round($rand / $divisor)) + 3;
 				}
 
 				$projectile->attractTimer = $rand * 20;
