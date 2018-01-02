@@ -136,8 +136,9 @@ class FishingRodLootTable {
 				case Item::ENCHANTED_BOOK:
 					if(Main::$registerVanillaEnchantments){
 						$enchantment = Enchantment::getEnchantment(mt_rand(0, 25));
-						$enchantmentInstance = new EnchantmentInstance($enchantment, 1);
-						$item->addEnchantment($enchantmentInstance);
+						$enchantment = new EnchantmentInstance();
+						//$enchantment->setLevel(1);
+						$item->addEnchantment($enchantment);
 					}
 					break;
 				case Item::BOW:
@@ -159,8 +160,9 @@ class FishingRodLootTable {
 						}
 
 						$enchantment = Enchantment::getEnchantment($rand[array_rand($rand)]);
-						$enchantmentInstance = new EnchantmentInstance($enchantment, 1);
-						$item->addEnchantment($enchantmentInstance);
+						$enchantment = new EnchantmentInstance();
+						//$enchantment->setLevel(1);
+						$item->addEnchantment($enchantment);
 
 						if(is_int($item->getMaxDurability())){
 							$item->setDamage(mt_rand(intval($item->getMaxDurability() / 2), $item->getMaxDurability()));
