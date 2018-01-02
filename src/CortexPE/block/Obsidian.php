@@ -87,7 +87,7 @@ class Obsidian extends Solid {
 	public function getDrops(Item $item): array{
 		if($item->isPickaxe() && $item->getId() == Item::DIAMOND_PICKAXE){
 			return [
-				[Item::OBSIDIAN, 0, 1],
+				Item::get(Block::OBSIDIAN, 0, 1),
 			];
 		}
 
