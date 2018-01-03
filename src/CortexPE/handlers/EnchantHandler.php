@@ -39,17 +39,14 @@ use CortexPE\item\enchantment\Enchantment;
 use CortexPE\Utils;
 use pocketmine\block\Block;
 use pocketmine\entity\Living;
-use pocketmine\entity\projectile\Arrow;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDeathEvent;
-use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\item\Item;
 use pocketmine\item\Tool;
-use pocketmine\nbt\tag\ShortTag;
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
 
@@ -317,42 +314,6 @@ class EnchantHandler implements Listener {
 		}
 
 		return null;
-	}
-
-	/**
-	 * @param EntityShootBowEvent $ev
-	 *
-	 * @priority HIGHEST
-	 */
-	public function onShoot(EntityShootBowEvent $ev){
-		if($ev->isCancelled()){
-			return;
-		}
-		$p = $ev->getEntity();
-		if($ev->getBow()->hasEnchantments()){
-			foreach(Utils::getEnchantments($ev->getBow()) as $enchantment){
-				switch($enchantment->getId()){
-					case Enchantment::INFINITY:
-						if($p instanceof PMPlayer){
-							if($p->isSurvival()){
-								$p->getInventory()->addItem(Item::get(Item::ARROW, 0, 1));
-							}
-						}
-						break;
-					case Enchantment::FLAME:
-						$level = $enchantment->getLevel();
-						/** @var Arrow $arrow */
-						$arrow = $ev->getProjectile();
-
-						$modarrow = clone $arrow;
-						$modarrow->namedtag->Fire = new ShortTag("Fire", $p->isOnFire() ? 80 * 10 * $level : 80 * $level);
-
-						$ev->setProjectile($modarrow);
-						$modarrow->setOnFire(80 * $level / 2);
-						break;
-				}
-			}
-		}
 	}
 
 	/**

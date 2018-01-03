@@ -35,6 +35,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\item;
 
+use CortexPE\entity\projectile\Arrow;
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\entity\EntityShootBowEvent;
@@ -72,6 +73,7 @@ class Bow extends PMBow {
 		$force = min((($p ** 2) + $p * 2) / 3, 1) * 2;
 
 
+		/** @var Arrow $entity */
 		$entity = Entity::createEntity("Arrow", $player->getLevel(), $nbt, $player, $force == 2);
 		if($entity instanceof Projectile){
 			$ev = new EntityShootBowEvent($player, $this, $entity, $force);
@@ -89,9 +91,16 @@ class Bow extends PMBow {
 				$player->getInventory()->sendContents($player);
 			}else{
 				$entity->setMotion($entity->getMotion()->multiply($ev->getForce()));
+				if($this->hasEnchantments()){
+					if($this->hasEnchantment(Enchantment::FLAME)){
+						$enchantment = $this->getEnchantment(Enchantment::FLAME);
+						$lvl = $enchantment->getLevel() + 4;
+						$entity->setOnFire($lvl * 20);
+					}
+				}
 				if($player->isSurvival()){
-					$first->count--;
 					$unbreaking = false;
+					$infinity = false;
 					if($this->hasEnchantments()){
 						if($this->hasEnchantment(Enchantment::UNBREAKING)){
 							$enchantment = $this->getEnchantment(Enchantment::UNBREAKING);
@@ -100,6 +109,12 @@ class Bow extends PMBow {
 								$unbreaking = true;
 							}
 						}
+						if($this->hasEnchantment(Enchantment::INFINITY)){
+							$infinity = true;
+						}
+					}
+					if(!$infinity){
+						$first->count--;
 					}
 					if(!$unbreaking){
 						$this->applyDamage(1);
