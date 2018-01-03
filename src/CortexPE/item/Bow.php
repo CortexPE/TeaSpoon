@@ -91,28 +91,26 @@ class Bow extends PMBow {
 				$player->getInventory()->sendContents($player);
 			}else{
 				$entity->setMotion($entity->getMotion()->multiply($ev->getForce()));
+				$unbreaking = false;
+				$infinity = false;
 				if($this->hasEnchantments()){
 					if($this->hasEnchantment(Enchantment::FLAME)){
 						$enchantment = $this->getEnchantment(Enchantment::FLAME);
 						$lvl = $enchantment->getLevel() + 4;
 						$entity->setOnFire($lvl * 20);
 					}
-				}
-				if($player->isSurvival()){
-					$unbreaking = false;
-					$infinity = false;
-					if($this->hasEnchantments()){
-						if($this->hasEnchantment(Enchantment::UNBREAKING)){
-							$enchantment = $this->getEnchantment(Enchantment::UNBREAKING);
-							$lvl = $enchantment->getLevel() + 1;
-							if(mt_rand(1, 100) >= intval(100 / $lvl)){
-								$unbreaking = true;
-							}
-						}
-						if($this->hasEnchantment(Enchantment::INFINITY)){
-							$infinity = true;
+					if($this->hasEnchantment(Enchantment::UNBREAKING)){
+						$enchantment = $this->getEnchantment(Enchantment::UNBREAKING);
+						$lvl = $enchantment->getLevel() + 1;
+						if(mt_rand(1, 100) >= intval(100 / $lvl)){
+							$unbreaking = true;
 						}
 					}
+					if($this->hasEnchantment(Enchantment::INFINITY)){
+						$infinity = true;
+					}
+				}
+				if($player->isSurvival()){
 					if(!$infinity){
 						$first->count--;
 					}
