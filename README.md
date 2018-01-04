@@ -9,10 +9,7 @@ A/N: If you don't like it / hate it, Then don't even bother using it. It's that 
 
 Contributions are very welcome :smile:<br />You may contribute by opening a Pull Request and if it has been proven to be correct & working, I'll surely merge it.
 
-TeaSpoon-Team respect all players who need help and want developer her server with TeaSpoon!
-With that momment, TeaSpoon-Team invite all to this Discord-Group for Helping, Developing, Questions and Answers!
-
-* __[Discord Group For Informations-Helping-Question-Answers](https://discordapp.com/invite/7y8WM4F)__
+__[Discord Group to 'talk-to-a-human-for-support' and for questions](https://discordapp.com/invite/7y8WM4F)__
  
 # Installation
 Installation is easy, Just download the latest phar from my [Jenkins Build Server](http://cortexpe.xyz:8080/job/TeaSpoon/lastSuccessfulBuild/artifact/TeaSpoon.phar) or from [Poggit](https://poggit.pmmp.io/ci/CortexPE/TeaSpoon/~) then drag and drop it to your ```./plugins/``` folder...
@@ -22,7 +19,7 @@ Installation is easy, Just download the latest phar from my [Jenkins Build Serve
  - Remove any plugins that may interfere with TeaSpoon's current features (if the feature cannot be disabled in the config.yml file)
  - Including the "Steps to Reproduce" in the issue report would be really helpful in fixing bugs.
  - To help me determine why the issue occurs, including the TeaSpoonDump from ```/bugreport``` lets me view all the necessary server information to easily determine incompatibility issues and mis-configuration issues. <sub>Privacy Concerns? You can check the code for yourself <a href="https://github.com/CortexPE/TeaSpoon/blob/master/src/CortexPE/commands/BugReportCommand.php">here</a> ;)</sub>
- 
+ - The only supported branch is PMMP's 'master' branch. Issues regarding other branches will be closed.
 # FAQs
 ### MobAI:
 &nbsp;&nbsp;&nbsp;&nbsp;For now, you can use [PureEntitiesX](https://github.com/RevivalPMMP/PureEntitiesX) while disabling ```entities.register``` in TeaSpoon's Configuration File.

@@ -57,7 +57,7 @@ class ItemManager {
 		ItemFactory::registerItem(new EyeOfEnder(), true);
 		ItemFactory::registerItem(new SpawnEgg(), true);
 		ItemFactory::registerItem(new Bow(), true);
-		// LAGGY ItemFactory::registerItem(new EndCrystal(), true);
+		ItemFactory::registerItem(new EndCrystal(), true);
 
 		Item::addCreativeItem(Item::get(Item::ENDER_PEARL));
 		Item::addCreativeItem(Item::get(Item::ENDER_CHEST));
