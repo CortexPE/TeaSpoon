@@ -58,6 +58,11 @@ Installation is easy, Just download the latest phar from my [Jenkins Build Serve
    - [X] Chorus Fruit (with customizable Delay)
    - [X] FishingRod (Fully working Fishing System)
    - [X] Vanilla-Like "Instant-Armor-Equipment"
+   - [X] CustomPotions API
+   ```php
+   // Example:
+   \CortexPE\item\Potion::registerPotion(101, "TEST", [[Effect::HEALTH_BOOST, 100 * 20, 100], [Effect::STRENGTH, 100 * 20, 100]]);
+   ```
  - Entities & Mobs
    - [X] XP Drops (Drop amounts needs to be improved)
    - [X] Projectiles

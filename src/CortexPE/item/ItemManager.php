@@ -60,7 +60,6 @@ class ItemManager {
 		ItemFactory::registerItem(new EndCrystal(), true);
 
 		Item::addCreativeItem(Item::get(Item::ENDER_PEARL));
-		Item::addCreativeItem(Item::get(Item::ENDER_CHEST));
 		Item::addCreativeItem(Item::get(Item::BOTTLE_O_ENCHANTING));
 		Item::addCreativeItem(Item::get(Item::FIRE_CHARGE));
 		Item::addCreativeItem(Item::get(Item::TOTEM));
@@ -73,7 +72,19 @@ class ItemManager {
 		for($i = 0; $i <= 36; $i++){
 			Item::addCreativeItem(Item::get(Item::SPLASH_POTION, $i));
 		}
-
+		/*
+		 yep. this loop needs to be repeated.
+			   ______
+		  .---<__. \ \
+		  `---._  \ \ \
+		   ,----`- `.))         (Joshua Bell)
+		  / ,--.   )  |
+		 /_/    >     |
+		 |,\__-'      |
+		  \_           \
+			~~-___      )
+				  \      \
+		*/
 		for($i = 0; $i <= 36; $i++){
 			Item::addCreativeItem(Item::get(Item::LINGERING_POTION, $i));
 		}
