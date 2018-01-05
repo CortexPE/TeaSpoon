@@ -76,7 +76,8 @@ class EndCrystal extends Entity {
 	}
 
 	public function attack(EntityDamageEvent $source){
-		if($this->isClosed()){
+		$this->server->getPluginManager()->callEvent($source);
+		if($this->isClosed() || $source->isCancelled()){
 			return;
 		}
 		$pos = clone $this->asPosition();
