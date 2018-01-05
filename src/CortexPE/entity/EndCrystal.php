@@ -44,6 +44,7 @@ use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\DoubleTag;
 use pocketmine\nbt\tag\ListTag;
+use pocketmine\Server;
 
 class EndCrystal extends Entity {
 	const NETWORK_ID = self::ENDER_CRYSTAL;
@@ -76,8 +77,7 @@ class EndCrystal extends Entity {
 	}
 
 	public function attack(EntityDamageEvent $source){
-		$this->server->getPluginManager()->callEvent($source);
-		if($this->isClosed() || $source->isCancelled()){
+		if($this->isClosed()){
 			return;
 		}
 		$pos = clone $this->asPosition();
