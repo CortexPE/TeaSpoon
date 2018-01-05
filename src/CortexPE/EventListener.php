@@ -355,8 +355,11 @@ class EventListener implements Listener {
 		$item = $ev->getItem();
 		$player = $ev->getPlayer();
 		$check = ($ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_BLOCK || $ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_AIR);
+		$isBlocked = (in_array($ev->getBlock()->getId(), [
+			Block::ITEM_FRAME_BLOCK
+		]));
 
-		if($check){
+		if($check && !$isBlocked){
 			if($ev->getItem() instanceof Armor){
 				$inventory = $player->getInventory();
 				$type = ArmorTypes::getType($item);
