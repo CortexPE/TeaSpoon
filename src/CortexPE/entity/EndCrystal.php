@@ -36,6 +36,8 @@ declare(strict_types = 1);
 namespace CortexPE\entity;
 
 use pocketmine\entity\Entity;
+use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\level\Explosion;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\ByteTag;
@@ -45,6 +47,8 @@ use pocketmine\nbt\tag\ListTag;
 
 class EndCrystal extends Entity {
 	const NETWORK_ID = self::ENDER_CRYSTAL;
+	public $height = 1.50;
+	public $width = 0.50;
 
 	public function __construct(Level $level, CompoundTag $nbt){
 		if(!isset($nbt->ShowBottom)){
@@ -71,5 +75,14 @@ class EndCrystal extends Entity {
 		]);
 	}
 
-	// explosions are handled via EventListener...
+	public function attack(EntityDamageEvent $source){
+		if($this->isClosed()){
+			return;
+		}
+		$pos = clone $this->asPosition();
+		$this->close();
+		$explode = new Explosion($pos, 6, $this);
+		$explode->explodeA();
+		$explode->explodeB();
+	}
 }

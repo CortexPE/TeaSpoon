@@ -37,7 +37,6 @@ declare(strict_types = 1);
 
 namespace CortexPE;
 
-use CortexPE\entity\EndCrystal;
 use CortexPE\level\weather\Weather;
 use CortexPE\utils\ArmorTypes;
 use CortexPE\utils\Xp;
@@ -54,7 +53,6 @@ use pocketmine\event\player\{
 };
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
-use pocketmine\level\Explosion;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\{
 	EntityEventPacket, LevelEventPacket
@@ -182,16 +180,6 @@ class EventListener implements Listener {
 					}
 				}
 			}
-		}
-
-		////////////////////// END CRYSTAL //////////////////
-		if($ev->getEntity() instanceof EndCrystal){
-			$e = $ev->getEntity();
-			$pos = clone $e->getPosition();
-			$e->flagForDespawn();
-			$explode = new Explosion($pos, 6);
-			$explode->explodeA();
-			$explode->explodeB();
 		}
 
 		return true;
