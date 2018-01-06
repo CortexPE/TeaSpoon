@@ -41,7 +41,6 @@ use CortexPE\Main;
 use CortexPE\Session;
 use CortexPE\Utils;
 use CortexPE\utils\FishingLootTable;
-use CortexPE\utils\Xp;
 use pocketmine\block\Block;
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Projectile;
@@ -152,7 +151,8 @@ class FishingRod extends ProjectileItem {
 						}
 						$item = FishingLootTable::getRandom($lvl);
 						$player->getInventory()->addItem($item);
-						Xp::addXp($player, mt_rand(1, 6));
+
+						$player->addXp(mt_rand(1, 6));
 					}
 
 					$projectile->flagForDespawn();

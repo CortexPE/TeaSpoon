@@ -36,7 +36,6 @@ declare(strict_types = 1);
 namespace CortexPE\entity\projectile;
 
 use CortexPE\level\particle\SpellParticle;
-use CortexPE\utils\Xp;
 use pocketmine\entity\{
 	Entity, projectile\Throwable
 };
@@ -57,7 +56,7 @@ class EnchantingBottle extends Throwable {
 				$randomY = self::RAND_POS_Y[array_rand(self::RAND_POS_Y)];
 				$randomZ = self::RAND_POS_Z[array_rand(self::RAND_POS_Z)];
 
-				Xp::spawnXpOrb($this->add($randomX, $randomY, $randomZ), $this->getLevel(), mt_rand(1, 4));
+				$this->getLevel()->dropExperience($this->add($randomX, $randomY, $randomZ), mt_rand(1,4));
 			}
 			$this->kill();
 		}

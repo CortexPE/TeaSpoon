@@ -44,7 +44,6 @@ use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\DoubleTag;
 use pocketmine\nbt\tag\ListTag;
-use pocketmine\Server;
 
 class EndCrystal extends Entity {
 	const NETWORK_ID = self::ENDER_CRYSTAL;

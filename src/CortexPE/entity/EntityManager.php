@@ -102,7 +102,6 @@ class EntityManager extends Entity {
 		self::registerEntity(Arrow::class, true, ['Arrow', 'minecraft:arrow']);
 
 		// Other Entities ////
-		self::registerEntity(XPOrb::class, true, ['XPOrb', 'minecraft:xporb']);
 		self::registerEntity(AreaEffectCloud::class, true, ['AreaEffectCloud', 'minecraft:areaeffectcloud']);
 		self::registerEntity(Lightning::class, true, ['Lightning', 'minecraft:lightning']);
 		self::registerEntity(EndCrystal::class, true, ['EnderCrystal', 'minecraft:ender_crystal']);

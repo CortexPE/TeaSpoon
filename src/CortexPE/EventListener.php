@@ -257,7 +257,7 @@ class EventListener implements Listener {
 	public function onEntityDeath(EntityDeathEvent $ev){
 		$xp = Xp::getXpDropsForEntity($ev->getEntity());
 		if($xp > 0){
-			Xp::spawnXpOrb($ev->getEntity()->getPosition(), $ev->getEntity()->getLevel(), $xp);
+			$ev->getEntity()->getLevel()->dropExperience($ev->getEntity()->asVector3(), $xp);
 		}
 	}
 
@@ -270,7 +270,7 @@ class EventListener implements Listener {
 		if($ev->isCancelled()) return;
 		$xp = Xp::getXpDropsForBlock($ev->getBlock());
 		if($xp > 0){
-			Xp::spawnXpOrb($ev->getBlock(), $ev->getBlock()->getLevel(), $xp);
+			$ev->getPlayer()->getLevel()->dropExperience($ev->getBlock()->asVector3(), $xp);
 		}
 	}
 
