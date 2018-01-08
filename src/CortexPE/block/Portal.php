@@ -209,7 +209,9 @@ class Portal extends Transparent {
 										$y = $y2;
 									}
 								}
-
+								if($posNether->distance($entity->asVector3()) <= 0.1){
+									return;
+								}
 								$posNether->setComponents($x, $y, $z);
 							}
 
@@ -245,7 +247,9 @@ class Portal extends Transparent {
 										$y = $y2;
 									}
 								}
-
+								if($posOverworld->distance($entity->asVector3()) <= 0.1){
+									return;
+								}
 								$posOverworld->setComponents($x, $y, $z);
 							}
 
