@@ -61,7 +61,7 @@ use pocketmine\utils\Config;
 
 class Main extends PluginBase {
 
-	const CONFIG_VERSION = 12;
+	const CONFIG_VERSION = 13;
 
 	/** @var Config */
 	public static $config;
@@ -107,6 +107,12 @@ class Main extends PluginBase {
 	public static $debug = false;
 	/** @var bool */
 	public static $armorDamage = true;
+	/** @var bool */
+	public static $vanillaNetherTranfer = false;
+	/** @var string */
+	public static $overworldLevelName = "";
+	/** @var Level */
+	public static $overworldLevel = null;
 	/** @var Config */
 	public static $cacheFile;
 	/** @var int[] */
@@ -160,6 +166,9 @@ class Main extends PluginBase {
 		self::$limitedCreative = self::$config->getNested("player.limitedCreative", self::$limitedCreative);
 		self::$randomFishingLootTables = self::$config->getNested("misc.randomFishingLootTables", self::$randomFishingLootTables);
 		self::$armorDamage = self::$config->getNested("player.armorDamage", self::$armorDamage);
+		self::$vanillaNetherTranfer = self::$config->getNested("dimensions.nether.vanillaNetherTranfer", self::$vanillaNetherTranfer);
+		self::$overworldLevelName = self::$config->getNested("dimensions.overrideOverworldLevel", self::$overworldLevelName);
+
 		self::$debug = self::$config->get("debug", self::$debug); // intentionally don't add this on the config...
 
 		if(self::$debug && !Utils::isPhared()){

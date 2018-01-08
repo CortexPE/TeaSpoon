@@ -323,7 +323,7 @@ class Potion extends Item implements Consumable {
 	 *
 	 * @param int $id
 	 * @param string $name
-	 * @param Effect[] $effects
+	 * @param array[] $effects
 	 *
 	 * @return bool
 	 */
@@ -335,7 +335,7 @@ class Potion extends Item implements Consumable {
 		}else{
 			self::$POTION_NAMES[$id] = $name;
 			self::$POTION_EFFECTS[$id] = $effects;
-			self::$POTION_EFFECT_ID[$id] = $effects[0]->getId();
+			self::$POTION_EFFECT_ID[$id] = $effects[0][0];
 
 			Main::getInstance()->getLogger()->info("Successfully Registered Potion ID: " . $id);
 

@@ -42,6 +42,7 @@ use CortexPE\utils\ArmorTypes;
 use CortexPE\utils\Xp;
 use pocketmine\block\Block;
 use pocketmine\entity\Effect;
+use pocketmine\entity\object\ExperienceOrb;
 use pocketmine\event\{
 	block\BlockBreakEvent, level\LevelLoadEvent, Listener, server\RemoteServerCommandEvent, server\ServerCommandEvent
 };
@@ -53,6 +54,7 @@ use pocketmine\event\player\{
 };
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
+use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\{
 	EntityEventPacket, LevelEventPacket
@@ -80,13 +82,17 @@ class EventListener implements Listener {
 	 * @priority LOWEST
 	 */
 	public function onLevelLoad(LevelLoadEvent $ev){
+		$TEMPORARY_ENTITIES = [
+			ExperienceOrb::NETWORK_ID,
+		];
+
 		if(!Server::$loaded){
 			Server::$loaded = true;
 			LevelManager::init();
 		}
+		$lvl = $ev->getLevel();
 
 		if(Main::$weatherEnabled){
-			$lvl = $ev->getLevel();
 			Main::$weatherData[$lvl->getId()] = new Weather($lvl, 0);
 			if($lvl->getName() != Main::$netherName && $lvl->getName() != Main::$endName){
 				Main::$weatherData[$lvl->getId()]->setCanCalculate(true);
@@ -94,9 +100,16 @@ class EventListener implements Listener {
 				Main::$weatherData[$lvl->getId()]->setCanCalculate(false);
 			}
 		}else{
-			$lvl = $ev->getLevel();
 			Main::$weatherData[$lvl->getId()] = new Weather($lvl, 0);
 			Main::$weatherData[$lvl->getId()]->setCanCalculate(false);
+		}
+
+		foreach($lvl->getEntities() as $entity){
+			if(in_array($entity::NETWORK_ID, $TEMPORARY_ENTITIES)){
+				if(!$entity->isClosed()){
+					$entity->close();
+				}
+			}
 		}
 
 		return true;
@@ -201,6 +214,22 @@ class EventListener implements Listener {
 	 */
 	public function onLogin(PlayerLoginEvent $ev){
 		Main::getInstance()->createSession($ev->getPlayer());
+
+
+		// derpy as fvck but this works...
+		if(!(Main::$overworldLevel instanceof Level) && PMServer::getInstance()->getDefaultLevel() instanceof Level){
+			if(Main::$overworldLevelName != ""){
+				$orLvl = PMServer::getInstance()->getLevelByName(Main::$overworldLevelName);
+				if($orLvl instanceof Level){
+					Main::$overworldLevel = $orLvl;
+				} else {
+					Main::getInstance()->getLogger()->error("Overworld override Level does not exist. Falling back to default.");
+					Main::$overworldLevel = PMServer::getInstance()->getDefaultLevel();
+				}
+			} else {
+				Main::$overworldLevel = PMServer::getInstance()->getDefaultLevel();
+			}
+		}
 	}
 
 	/**

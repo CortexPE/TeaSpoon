@@ -26,7 +26,7 @@ namespace CortexPE\block;
 use CortexPE\Main;
 use CortexPE\task\DelayedCrossDimensionTeleportTask;
 use pocketmine\{
-	event\player\PlayerGameModeChangeEvent, Player, Server
+	Player, Server
 };
 use pocketmine\block\{
 	Air, Block, BlockToolType, Transparent
@@ -183,20 +183,76 @@ class Portal extends Transparent {
 				if($entity instanceof Player){
 					if($entity->getLevel() instanceof Level){
 						if($entity->getLevel()->getName() != Main::$netherName){ // OVERWORLD -> NETHER
-							/** @var PlayerGameModeChangeEvent $gm */
 							$gm = $entity->getGamemode();
+
+							$posNether = Main::$netherLevel->getSafeSpawn();
+							if(Main::$vanillaNetherTranfer){ //imperfect
+								$x = (int)ceil($entity->getX() / 8);
+								$y = (int)ceil($entity->getY() / 8);
+								$z = (int)ceil($entity->getZ() / 8);
+
+								if(!Main::$netherLevel->getBlockAt($x, $y - 1, $z)->isSolid() ||
+									 Main::$netherLevel->getBlockAt($x, $y, $z)->isSolid() ||
+									 Main::$netherLevel->getBlockAt($x, $y + 1, $z)->isSolid()
+								){
+									for($y2 = 125; $y2 >= 0; $y2--){ // 128 - 3
+										if(Main::$netherLevel->getBlockAt($x, $y2 - 1, $z, true, false)->isSolid() &&
+											!Main::$netherLevel->getBlockAt($x, $y2, $z, true, false)->isSolid() &&
+											!Main::$netherLevel->getBlockAt($x, $y2 + 1, $z, true, false)->isSolid()
+										){
+											break; // this leaves us the y value of whatever integer it stopped...
+										}
+									}
+									if($y2 <= 0){ // if the for loop stopped but didnt find a spot this should be zero...
+										$y = mt_rand(10, 125);
+									}else{
+										$y = $y2;
+									}
+								}
+
+								$posNether->setComponents($x, $y, $z);
+							}
+
 							if($gm == Player::SURVIVAL || $gm == Player::ADVENTURE){
-								Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::NETHER, Main::$netherLevel->getSafeSpawn()), 20 * 4);
+								Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::NETHER, $posNether), 20 * 4);
 							}else{
-								Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::NETHER, Main::$netherLevel->getSafeSpawn()), 1);
+								Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::NETHER, $posNether), 1);
 							}
 						}else{ // NETHER -> OVERWORLD
-							/** @var PlayerGameModeChangeEvent $gm */
 							$gm = $entity->getGamemode();
+
+							$posOverworld = Main::$overworldLevel->getSafeSpawn();
+							if(Main::$vanillaNetherTranfer){
+								$x = (int)ceil($entity->getX() * 8);
+								$y = (int)ceil($entity->getY() * 8);
+								$z = (int)ceil($entity->getZ() * 8);
+
+								if(!Main::$overworldLevel->getBlockAt($x, $y - 1, $z)->isSolid() ||
+									Main::$overworldLevel->getBlockAt($x, $y, $z)->isSolid() ||
+									Main::$overworldLevel->getBlockAt($x, $y + 1, $z)->isSolid()
+								){
+									for($y2 = 0; $y2 <= Level::Y_MAX; $y2++){
+										if(Main::$overworldLevel->getBlockAt($x, $y2 - 1, $z, true, false)->isSolid() &&
+											!Main::$overworldLevel->getBlockAt($x, $y2, $z, true, false)->isSolid() &&
+											!Main::$overworldLevel->getBlockAt($x, $y2 + 1, $z, true, false)->isSolid()
+										){
+											break;
+										}
+									}
+									if($y2 >= Level::Y_MAX){
+										$y = mt_rand(10, Level::Y_MAX);
+									}else{
+										$y = $y2;
+									}
+								}
+
+								$posOverworld->setComponents($x, $y, $z);
+							}
+
 							if($gm == Player::SURVIVAL || $gm == Player::ADVENTURE){
-								Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::OVERWORLD, Server::getInstance()->getDefaultLevel()->getSafeSpawn()), 20 * 4);
+								Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::OVERWORLD, $posOverworld), 20 * 4);
 							}else{
-								Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::OVERWORLD, Server::getInstance()->getDefaultLevel()->getSafeSpawn()), 1);
+								Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::OVERWORLD, $posOverworld), 1);
 							}
 						}
 					}
