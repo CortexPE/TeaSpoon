@@ -170,6 +170,29 @@ class MonsterSpawner extends SpawnerPM {
 		return true;
 	}
 
+	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null): bool{
+		parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player);
+
+		if($item->getDamage() <= 0) return false;
+		$tile = $this->getLevel()->getTile($this);
+		$this->entityid = $item->getDamage();
+		if(!$tile instanceof MobSpawner){
+			/** @var CompoundTag $nbt */
+			$nbt = new CompoundTag("", [
+				new StringTag(Tile::TAG_ID, Tile::MOB_SPAWNER),
+				new IntTag(Tile::TAG_X, (int)$this->x),
+				new IntTag(Tile::TAG_Y, (int)$this->y),
+				new IntTag(Tile::TAG_Z, (int)$this->z),
+			]);
+			/** @var MobSpawner $tile */
+			$tile = Tile::createTile(Tile::MOB_SPAWNER, $this->getLevel(), $nbt);
+			$tile->setEntityId($this->entityid);
+
+			return true;
+		}
+		return true;
+	}
+
 	/**
 	 * @param Item $item
 	 * @return array
