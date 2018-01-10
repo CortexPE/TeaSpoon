@@ -66,7 +66,7 @@ class DragonEgg extends Fallable {
 	/**
 	 * @return float
 	 */
-	public function getResistance(): float{
+	public function getBlastResistance(): float{
 		return 45;
 	}
 

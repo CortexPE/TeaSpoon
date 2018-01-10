@@ -53,5 +53,6 @@ class BlockManager {
 		BlockFactory::registerBlock(new MonsterSpawner(), true);
 		BlockFactory::registerBlock(new FrostedIce(), true);
 		BlockFactory::registerBlock(new ShulkerBox(), true);
+		BlockFactory::registerBlock(new Hopper(), true);
 	}
 }

@@ -65,7 +65,7 @@ class Beacon extends Transparent {
 		return 15;
 	}
 
-	public function getResistance(): float{
+	public function getBlastResistance(): float{
 		return 15;
 	}
 

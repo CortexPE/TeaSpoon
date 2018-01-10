@@ -35,16 +35,14 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
-use pocketmine\block\{
-	Air, Block, BlockToolType, Solid
-};
-use pocketmine\item\{
-	Item
-};
+use pocketmine\block\Air;
+use pocketmine\block\Block;
+use pocketmine\block\Obsidian as PMObsidian;
+use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 
-class Obsidian extends Solid {
+class Obsidian extends PMObsidian {
 
 	/** @var int $id */
 	protected $id = self::OBSIDIAN;
@@ -54,51 +52,9 @@ class Obsidian extends Solid {
 
 	public function __construct($meta = 0){
 		$this->meta = $meta;
-		if($this->temporalVector === null){
-			$this->temporalVector = new Vector3(0, 0, 0);
-		}
+		$this->temporalVector = new Vector3(0, 0, 0);
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getName(): string{
-		return "Obsidian";
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getToolType(): int{
-		return BlockToolType::TYPE_PICKAXE;
-	}
-
-	/**
-	 * @return float
-	 */
-	public function getHardness(): float{
-		return 35;
-	}
-
-	/**
-	 * @param Item $item
-	 * @return array
-	 */
-	public function getDrops(Item $item): array{
-		if($item->isPickaxe() && $item->getId() == Item::DIAMOND_PICKAXE){
-			return [
-				Item::get(Block::OBSIDIAN, 0, 1),
-			];
-		}
-
-		return [];
-	}
-
-	/**
-	 * @param Item $item
-	 * @param Player|null $player
-	 * @return bool
-	 */
 	public function onBreak(Item $item, Player $player = null): bool{
 		parent::onBreak($item);
 		for($i = 0; $i <= 6; $i++){
@@ -109,7 +65,6 @@ class Obsidian extends Solid {
 				return false;
 			}
 		}
-		// Please create function for this temportal shit vector. Nukkit have on my PR "Generator"
 		$block = $this->getSide($i);
 		if($this->getLevel()->getBlock($this->temporalVector->setComponents($block->x - 1, $block->y, $block->z))->getId() == Block::PORTAL or
 			$this->getLevel()->getBlock($this->temporalVector->setComponents($block->x + 1, $block->y, $block->z))->getId() == Block::PORTAL

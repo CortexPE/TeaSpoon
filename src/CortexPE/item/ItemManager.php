@@ -58,6 +58,7 @@ class ItemManager {
 		ItemFactory::registerItem(new SpawnEgg(), true);
 		ItemFactory::registerItem(new Bow(), true);
 		ItemFactory::registerItem(new EndCrystal(), true);
+		ItemFactory::registerItem(new Hopper(), true);
 
 		Item::addCreativeItem(Item::get(Item::ENDER_PEARL));
 		Item::addCreativeItem(Item::get(Item::BOTTLE_O_ENCHANTING));
@@ -69,6 +70,7 @@ class ItemManager {
 		Item::addCreativeItem(Item::get(Item::SLIME_BLOCK));
 		Item::addCreativeItem(Item::get(Item::ENDER_EYE));
 		Item::addCreativeItem(Item::get(Item::END_CRYSTAL));
+		Item::addCreativeItem(Item::get(Item::HOPPER));
 
 		for($i = 0; $i <= 36; $i++){
 			Item::addCreativeItem(Item::get(Item::SPLASH_POTION, $i));
