@@ -46,6 +46,7 @@ Installation is easy, Just download the latest phar from my [Jenkins Build Serve
    - [X] SlimeBlock
    - [X] Vanilla-Like MobSpawner (Credits: [XenialDan](https://github.com/thebigsmileXD))
    - [X] Working Shulker Boxes
+   - [X] Hoppers
  - Items
    - [X] Vanilla Enchants (Progress: 98% | Credits to [TheAz928](https://github.com/TheAz928) for some of the values)
    - [X] Armor Damage
