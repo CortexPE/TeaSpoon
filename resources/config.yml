@@ -10,7 +10,7 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 13
+version: 14
 
 entities:
  # Weather to register Vanilla Entities (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...) or not
@@ -62,3 +62,5 @@ player:
  limitedCreative: true
  # Armor Damage toggle
  armorDamage: true
+ # Toggle to replace current armor or not (Vanilla-Way: false) [might cause glitches/bugs on server lag]
+ instantArmorReplace: false

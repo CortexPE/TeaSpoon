@@ -99,7 +99,9 @@ class MobSpawner extends Spawnable {
 					if($target->getId() == Item::AIR){
 						$success++;
 						$entity = Entity::createEntity($this->getEntityId(), $this->getLevel(), Entity::createBaseNBT($target->add(0.5, 0, 0.5), null, lcg_value() * 360, 0));
-						$entity->spawnToAll();
+						if($entity instanceof Entity){
+							$entity->spawnToAll();
+						}
 					}
 				}
 				if($success > 0){

@@ -217,18 +217,16 @@ class EventListener implements Listener {
 
 
 		// derpy as fvck but this works...
-		if(!(Main::$overworldLevel instanceof Level) && PMServer::getInstance()->getDefaultLevel() instanceof Level){
-			if(Main::$overworldLevelName != ""){
-				$orLvl = PMServer::getInstance()->getLevelByName(Main::$overworldLevelName);
-				if($orLvl instanceof Level){
-					Main::$overworldLevel = $orLvl;
-				} else {
-					Main::getInstance()->getLogger()->error("Overworld override Level does not exist. Falling back to default.");
-					Main::$overworldLevel = PMServer::getInstance()->getDefaultLevel();
-				}
-			} else {
+		if(Main::$overworldLevelName != "" && !(Main::$overworldLevel instanceof Level) && PMServer::getInstance()->getDefaultLevel() instanceof Level){
+			$orLvl = PMServer::getInstance()->getLevelByName(Main::$overworldLevelName);
+			if($orLvl instanceof Level){
+				Main::$overworldLevel = $orLvl;
+			}else{
+				Main::getInstance()->getLogger()->error("Overworld override Level does not exist. Falling back to default.");
 				Main::$overworldLevel = PMServer::getInstance()->getDefaultLevel();
 			}
+		}else{
+			Main::$overworldLevel = PMServer::getInstance()->getDefaultLevel();
 		}
 	}
 
@@ -369,34 +367,64 @@ class EventListener implements Listener {
 	public function onInteract(PlayerInteractEvent $ev){
 		if($ev->isCancelled()) return;
 		// MCPE(BE) does this client-side... we just have to do the same server-side.
-		$item = $ev->getItem();
+		$item = clone $ev->getItem();
 		$player = $ev->getPlayer();
 		$check = ($ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_BLOCK || $ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_AIR);
 		$isBlocked = (in_array($ev->getBlock()->getId(), [
-			Block::ITEM_FRAME_BLOCK
+			Block::ITEM_FRAME_BLOCK,
 		]));
 
 		if($check && !$isBlocked){
 			if($ev->getItem() instanceof Armor){
 				$inventory = $player->getInventory();
 				$type = ArmorTypes::getType($item);
+				$old = Item::get(Item::AIR, 0, 1); // just a placeholder
+				$skipReplace = false;
 				if($type !== ArmorTypes::TYPE_NULL){
 					switch($type){
 						case ArmorTypes::TYPE_HELMET:
+							$old = clone $inventory->getHelmet();
+							if(!Main::$instantArmorReplace && !$old->isNull()){
+								$skipReplace = true;
+								break;
+							}
 							$inventory->setHelmet($item);
 							break;
 						case ArmorTypes::TYPE_CHESTPLATE:
+							$old = clone $inventory->getChestplate();
+							if(!Main::$instantArmorReplace && !$old->isNull()){
+								$skipReplace = true;
+								break;
+							}
 							$inventory->setChestplate($item);
 							break;
 						case ArmorTypes::TYPE_LEGGINGS:
+							$old = clone $inventory->getLeggings();
+							if(!Main::$instantArmorReplace && !$old->isNull()){
+								$skipReplace = true;
+								break;
+							}
 							$inventory->setLeggings($item);
 							break;
 						case ArmorTypes::TYPE_BOOTS:
+							$old = clone $inventory->getBoots();
+							if(!Main::$instantArmorReplace && !$old->isNull()){
+								$skipReplace = true;
+								break;
+							}
 							$inventory->setBoots($item);
 							break;
 					}
-					if($player->isSurvival() || $player->isAdventure()){
-						$inventory->setItemInHand(Item::get(Item::AIR, 0, 1));
+					if(!$skipReplace){
+						if(!Main::$instantArmorReplace){
+							if($player->isSurvival() || $player->isAdventure()){
+								$inventory->setItemInHand(Item::get(Item::AIR, 0, 1));
+							}
+						} else {
+							if(!$old->isNull()){
+								$inventory->setItemInHand($old);
+							}
+						}
 					}
 				}
 			}
