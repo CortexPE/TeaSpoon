@@ -423,6 +423,8 @@ class EventListener implements Listener {
 						} else {
 							if(!$old->isNull()){
 								$inventory->setItemInHand($old);
+							} else {
+								$inventory->setItemInHand(Item::get(Item::AIR, 0, 1));
 							}
 						}
 					}
