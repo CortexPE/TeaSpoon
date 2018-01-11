@@ -57,16 +57,21 @@ class Lava extends PMLava {
 			$entity->fallDistance *= 0.5;
 			$ev = new EntityDamageByBlockEvent($this, $entity, EntityDamageEvent::CAUSE_LAVA, 4);
 			$entity->attack($ev); // this should be ignored by EventListener so, we'll just damage armor below.
+			$isPlayer = false;
 			if($entity instanceof Player){
 				$session = Main::getInstance()->getSessionById($entity->getId());
 				if($session instanceof Session){
 					$session->useArmors(1);
 				}
+				$isPlayer = true;
 			}
-			$ev = new EntityCombustByBlockEvent($this, $entity, 15);
-			PMServer::getInstance()->getPluginManager()->callEvent($ev); // wait wot? what happened to $ev->call(); ?
-			if($ev->isCancelled()) return;
-			$entity->setOnFire($ev->getDuration());
+			if($isPlayer && !($entity->isCreative() || $entity->isSpectator())){
+				$ev = new EntityCombustByBlockEvent($this, $entity, 15);
+				PMServer::getInstance()->getPluginManager()->callEvent($ev);
+				if(!$ev->isCancelled()){
+					$entity->setOnFire($ev->getDuration());
+				}
+			}
 			$entity->resetFallDistance();
 		}
 	}
