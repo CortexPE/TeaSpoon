@@ -39,12 +39,12 @@ use CortexPE\{
 	Main, Session, Utils
 };
 use pocketmine\{
-	network\mcpe\protocol\types\DimensionIds, Player, Server as PMServer, Server
+	network\mcpe\protocol\types\DimensionIds, Player, Server, Server as PMServer
 };
 use pocketmine\block\Lava as PMLava;
 use pocketmine\entity\Entity;
 use pocketmine\event\entity\{
-	EntityCombustByBlockEvent, EntityCombustByEntityEvent, EntityDamageByBlockEvent, EntityDamageEvent
+	EntityCombustByBlockEvent, EntityDamageByBlockEvent, EntityDamageEvent
 };
 
 class Lava extends PMLava {
@@ -57,23 +57,19 @@ class Lava extends PMLava {
 			$entity->fallDistance *= 0.5;
 			$ev = new EntityDamageByBlockEvent($this, $entity, EntityDamageEvent::CAUSE_LAVA, 4);
 			$entity->attack($ev); // this should be ignored by EventListener so, we'll just damage armor below.
-			$isPlayer = false;
 			if($entity instanceof Player){
 				$session = Main::getInstance()->getSessionById($entity->getId());
 				if($session instanceof Session){
 					$session->useArmors(1);
 				}
-				$isPlayer = true;
 			}
-			if($isPlayer && !($entity->isCreative() || $entity->isSpectator())){
-				$ev = new EntityCombustByBlockEvent($this, $entity, 15);
-				PMServer::getInstance()->getPluginManager()->callEvent($ev);
-				if(!$ev->isCancelled()){
-					$entity->setOnFire($ev->getDuration());
-				}
-			}
-			$entity->resetFallDistance();
 		}
+		$ev = new EntityCombustByBlockEvent($this, $entity, 15);
+		PMServer::getInstance()->getPluginManager()->callEvent($ev);
+		if(!$ev->isCancelled()){
+			$entity->setOnFire($ev->getDuration());
+		}
+		$entity->resetFallDistance();
 	}
 
 	public function getFlowDecayPerBlock(): int{
