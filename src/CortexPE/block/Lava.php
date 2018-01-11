@@ -36,10 +36,10 @@ declare(strict_types = 1);
 namespace CortexPE\block;
 
 use CortexPE\{
-	Main, Session
+	Main, Session, Utils
 };
 use pocketmine\{
-	Player, Server as PMServer
+	network\mcpe\protocol\types\DimensionIds, Player, Server as PMServer, Server
 };
 use pocketmine\block\Lava as PMLava;
 use pocketmine\entity\Entity;
@@ -53,20 +53,25 @@ class Lava extends PMLava {
 	 * @param Entity $entity
 	 */
 	public function onEntityCollide(Entity $entity): void{
-		$entity->fallDistance *= 0.5;
-		$ev = new EntityDamageByBlockEvent($this, $entity, EntityDamageEvent::CAUSE_LAVA, 4);
-		$entity->attack($ev); // this should be ignored by EventListener so, we'll just damage armor below.
-		if($entity instanceof Player){
-			$session = Main::getInstance()->getSessionById($entity->getId());
-			if($session instanceof Session){
-				$session->useArmors(1);
+		if((Server::getInstance()->getTick() % $this->tickRate()) == 0){
+			$entity->fallDistance *= 0.5;
+			$ev = new EntityDamageByBlockEvent($this, $entity, EntityDamageEvent::CAUSE_LAVA, 4);
+			$entity->attack($ev); // this should be ignored by EventListener so, we'll just damage armor below.
+			if($entity instanceof Player){
+				$session = Main::getInstance()->getSessionById($entity->getId());
+				if($session instanceof Session){
+					$session->useArmors(1);
+				}
 			}
+			$ev = new EntityCombustByBlockEvent($this, $entity, 15);
+			PMServer::getInstance()->getPluginManager()->callEvent($ev); // wait wot? what happened to $ev->call(); ?
+			if($ev->isCancelled()) return;
+			$entity->setOnFire($ev->getDuration());
+			$entity->resetFallDistance();
 		}
-		$ev = new EntityCombustByBlockEvent($this, $entity, 15);
-		PMServer::getInstance()->getPluginManager()->callEvent($ev); // wait wot? what happened to $ev->call(); ?
-		if($ev->isCancelled()) return;
-		$entity->setOnFire($ev->getDuration());
-		$entity->resetFallDistance();
 	}
 
+	public function getFlowDecayPerBlock(): int{
+		return (Utils::getDimension($this->getLevel()) == DimensionIds::NETHER) ? 1 : 2;
+	}
 }
