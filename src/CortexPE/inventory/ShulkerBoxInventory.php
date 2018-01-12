@@ -38,7 +38,6 @@ namespace CortexPE\inventory;
 
 use CortexPE\tile\ShulkerBox;
 use pocketmine\inventory\ContainerInventory;
-use pocketmine\item\Item;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\BlockEventPacket;
@@ -98,4 +97,8 @@ class ShulkerBoxInventory extends ContainerInventory {
 		parent::onClose($who);
 	}
 
+	public function sendContents($target): void{
+		parent::sendContents($target);
+		$this->getHolder()->saveNBT();
+	}
 }
