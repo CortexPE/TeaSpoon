@@ -98,11 +98,4 @@ class ShulkerBoxInventory extends ContainerInventory {
 		parent::onClose($who);
 	}
 
-	public function onSlotChange(int $index, Item $before, bool $send): void{
-		parent::onSlotChange($index, $before, $send);
-		if($this->getHolder() instanceof ShulkerBox){
-			$this->getHolder()->saveNBT(); // save items on update
-		}
-	}
-
 }
