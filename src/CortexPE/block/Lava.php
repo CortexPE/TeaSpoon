@@ -35,11 +35,9 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
-use CortexPE\{
-	Main, Session, Utils
-};
+use CortexPE\Utils;
 use pocketmine\{
-	network\mcpe\protocol\types\DimensionIds, Player, Server, Server as PMServer
+	network\mcpe\protocol\types\DimensionIds, Server, Server as PMServer
 };
 use pocketmine\block\Lava as PMLava;
 use pocketmine\entity\Entity;
@@ -56,13 +54,7 @@ class Lava extends PMLava {
 		if((Server::getInstance()->getTick() % $this->tickRate()) == 0){
 			$entity->fallDistance *= 0.5;
 			$ev = new EntityDamageByBlockEvent($this, $entity, EntityDamageEvent::CAUSE_LAVA, 4);
-			$entity->attack($ev); // this should be ignored by EventListener so, we'll just damage armor below.
-			if($entity instanceof Player){
-				$session = Main::getInstance()->getSessionById($entity->getId());
-				if($session instanceof Session){
-					$session->useArmors(1);
-				}
-			}
+			$entity->attack($ev);
 		}
 		$ev = new EntityCombustByBlockEvent($this, $entity, 15);
 		PMServer::getInstance()->getPluginManager()->callEvent($ev);

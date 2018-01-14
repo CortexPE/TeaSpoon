@@ -27,7 +27,7 @@ dimensions:
  enable: true
  nether:
   levelName: "nether"
-  # Vanilla-Like Nether Tranfer is not perfect and would take more time (possibly lag)... [OVERWORLD -> NETHER only]
+  # Vanilla-Like Nether Tranfer is not perfect and would take more time (possibly lag)...
   vanillaNetherTranfer: false
  end:
   levelName: "ender"

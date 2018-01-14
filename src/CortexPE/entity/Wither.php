@@ -41,9 +41,8 @@ use pocketmine\item\Item;
 class Wither extends Animal {
 	const NETWORK_ID = self::WITHER;
 
-	public $width = 0.72;
-	public $length = 6;
-	public $height = 2;
+	public $width = 0.9;
+	public $height = 3.5;
 
 	public function getName(): string{
 		return "Wither";

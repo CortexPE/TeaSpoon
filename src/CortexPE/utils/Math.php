@@ -33,22 +33,11 @@
 
 declare(strict_types = 1);
 
-namespace CortexPE\entity;
+namespace CortexPE\utils;
 
-use pocketmine\entity\Monster;
 
-class Vex extends Monster {
-	const NETWORK_ID = self::VEX;
-
-	public $width = 0.4;
-	public $height = 0.8;
-
-	public function getName(): string{
-		return "Vex";
-	}
-
-	public function initEntity(){
-		$this->setMaxHealth(14);
-		parent::initEntity();
+class Math {
+	public static function getPercentage($min, $max){
+		return ((min($min, $max) / max($min, $max)) * 100);
 	}
 }

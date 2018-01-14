@@ -43,7 +43,6 @@ class Creeper extends Monster {
 
 	public $height = 1.7;
 	public $width = 0.6;
-	public $length = 0.6;
 
 	public function getName(): string{
 		return "Creeper";

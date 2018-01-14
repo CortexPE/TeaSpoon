@@ -62,4 +62,10 @@ class Horse extends Living {
 			$player->dataPacket($pk);
 		}
 	}
+
+	public function getDrops(): array{
+		return $drops = [
+			Item::get(Item::LEATHER, 0, mt_rand(0, 2)),
+		];
+	}
 }

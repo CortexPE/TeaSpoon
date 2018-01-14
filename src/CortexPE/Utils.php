@@ -81,6 +81,10 @@ class Utils {
 		);
 	}
 
+	public static function vector3XZDistance(Vector3 $pos1, Vector3 $pos2){
+		return (($pos1->x - $pos2->x) + ($pos1->z - $pos2->z));
+	}
+
 	public static function toggleBool(bool $boolean): bool{
 		/*
 		A HISTORY OF HOW I SIMPLIFIED THIS...

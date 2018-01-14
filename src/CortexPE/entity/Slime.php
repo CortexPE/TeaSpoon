@@ -43,9 +43,8 @@ use pocketmine\Player;
 class Slime extends Living {
 	const NETWORK_ID = self::SLIME;
 
-	public $width = 0.3;
-	public $length = 0.9;
-	public $height = 5;
+	public $width = 2.04;
+	public $height = 2.04;
 
 	public function getName(): string{
 		return "Slime";

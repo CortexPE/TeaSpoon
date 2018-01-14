@@ -45,9 +45,8 @@ use pocketmine\Player;
 class Spider extends Monster {
 	const NETWORK_ID = self::SPIDER;
 
-	public $width = 0.3;
-	public $length = 0.9;
-	public $height = 1.9;
+	public $width = 1.4;
+	public $height = 0.9;
 
 	public function getName(): string{
 		return "Spider";

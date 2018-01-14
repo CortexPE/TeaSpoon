@@ -36,6 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\entity;
 
 use pocketmine\entity\Animal;
+use pocketmine\item\Item;
 
 class Ghast extends Animal {
 	const NETWORK_ID = self::GHAST;
@@ -51,5 +52,18 @@ class Ghast extends Animal {
 	public function initEntity(){
 		$this->setMaxHealth(10);
 		parent::initEntity();
+	}
+
+	public function getDrops(): array{
+		if(mt_rand(0,1) == 1){
+			$drops = [
+				Item::get(Item::GUNPOWDER,0, mt_rand(0,1))
+			];
+		} else {
+			$drops = [
+				Item::get(Item::GHAST_TEAR,0, 1)
+			];
+		}
+		return $drops;
 	}
 }

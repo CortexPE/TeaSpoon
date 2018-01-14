@@ -57,13 +57,13 @@ class CommandManager {
 
 		PMServer::getInstance()->getCommandMap()->registerAll("pocketmine", $cmds);
 
-		self::overwrite(new KillCommand("kill"), "kill");
+		self::overwrite(new KillCommand("kill"));
 	}
 
-	public static function overwrite(Command $cmd, string $commandName){
+	public static function overwrite(Command $cmd){
 		// Thank you very much iksaku for leaving this method on the *good o'l* PocketMine Forums. :)
 		$cmdMap = PMServer::getInstance()->getCommandMap();
-		$cmdOverwrite = $cmdMap->getCommand($commandName);
+		$cmdOverwrite = $cmdMap->getCommand($cmd->getName());
 		$cmdOverwrite->setLabel($cmdOverwrite->getLabel() . "__disabled");
 		$cmdMap->unregister($cmdOverwrite);
 

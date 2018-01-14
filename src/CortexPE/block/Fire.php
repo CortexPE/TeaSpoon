@@ -53,25 +53,24 @@ class Fire extends PMFire {
 	 */
 	public function onUpdate(int $type){
 		if(Main::$weatherEnabled && Utils::getDimension($this->getLevel()) == DimensionIds::OVERWORLD){
-			/** @var Weather $weather */
 			$weather = Main::$weatherData[$this->getLevel()->getId()];
-			/** @var Weather $rainy */
-			$rainy = $weather->isRainy() || $weather->isRainyThunder();
+			$rainy = ($weather->isRainy() || $weather->isRainyThunder());
 
 			if($rainy && Utils::canSeeSky($this->getLevel(), $this->asVector3())){
 				$this->level->setBlock($this, BlockFactory::get(Block::AIR));
 			}
 		}
 
-		if($this->getSide(Vector3::SIDE_DOWN)->getId() == self::NETHERRACK) return $type;
-		if($this->meta >= 15){
-			$this->level->setBlock($this, BlockFactory::get(Block::AIR));
-		}else{
-			$this->meta += mt_rand(1, 4);
+		if($this->getSide(Vector3::SIDE_DOWN)->getId() != Block::NETHERRACK){
 			if($this->meta >= 15){
 				$this->level->setBlock($this, BlockFactory::get(Block::AIR));
 			}else{
-				$this->level->setBlock($this, $this);
+				$this->meta += mt_rand(1, 4);
+				if($this->meta >= 15){
+					$this->level->setBlock($this, BlockFactory::get(Block::AIR));
+				}else{
+					$this->level->setBlock($this, $this);
+				}
 			}
 		}
 

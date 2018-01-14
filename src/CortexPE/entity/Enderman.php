@@ -36,6 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\entity;
 
 use pocketmine\entity\Monster;
+use pocketmine\item\Item;
 
 class Enderman extends Monster {
 	const NETWORK_ID = self::ENDERMAN;
@@ -46,5 +47,11 @@ class Enderman extends Monster {
 
 	public function getName(): string{
 		return "Enderman";
+	}
+
+	public function getDrops() : array {
+		return [
+			Item::get(Item::ENDER_PEARL,0, mt_rand(0,1))
+		];
 	}
 }

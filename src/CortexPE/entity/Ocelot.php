@@ -36,7 +36,6 @@ declare(strict_types = 1);
 namespace CortexPE\entity;
 
 use pocketmine\entity\Animal;
-use pocketmine\item\Item;
 
 class Ocelot extends Animal {
 	const NETWORK_ID = self::OCELOT;
@@ -46,19 +45,10 @@ class Ocelot extends Animal {
 	const TYPE_TABBY = 2;
 	const TYPE_SIAMESE = 3;
 
-	public $width = 0.312;
-	public $length = 2.188;
-	public $height = 0.75;
+	public $width = 0.6;
+	public $height = 0.7;
 
 	public function getName(): string{
-		return "Mule";
+		return "Ocelot";
 	}
-
-	public function getDrops(): array{
-		return [
-			Item::get(Item::LEATHER, 0, mt_rand(1, 2)),
-		];
-	}
-
-	// TODO: Cat Types
 }

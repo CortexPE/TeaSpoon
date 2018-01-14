@@ -40,9 +40,8 @@ use pocketmine\item\Item;
 class WitherSkeleton extends Skeleton {
 	const NETWORK_ID = self::WITHER_SKELETON;
 
-	public $width = 0.3;
-	public $length = 0.9;
-	public $height = 0;
+	public $width = 0.7;
+	public $height = 2.4;
 
 	public function getName(): string{
 		return "Wither Skeleton";

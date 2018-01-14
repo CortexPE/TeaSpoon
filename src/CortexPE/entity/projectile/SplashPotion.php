@@ -40,6 +40,8 @@ use CortexPE\level\particle\SpellParticle;
 use pocketmine\entity\{
 	Entity, Living, projectile\Throwable
 };
+use pocketmine\network\mcpe\protocol\PlaySoundPacket;
+use pocketmine\Server;
 
 class SplashPotion extends Throwable {
 
@@ -57,6 +59,13 @@ class SplashPotion extends Throwable {
 					}
 				}
 			}
+
+			$pk = new PlaySoundPacket();
+			$pk->soundName = "random.glass";
+			$pk->volume = 500;
+			$pk->pitch = 1;
+			Server::getInstance()->broadcastPacket($this->getViewers(), $pk);
+
 			$this->flagForDespawn();
 		}
 

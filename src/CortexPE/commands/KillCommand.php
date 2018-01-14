@@ -104,7 +104,7 @@ class KillCommand extends VanillaCommand {
 						foreach($sender->getLevel()->getEntities() as $entity){
 							if($entity instanceof Player){
 								if($entity->getGamemode() === Player::ADVENTURE or $entity->getGamemode() === Player::SURVIVAL){
-									$sender->getServer()->getPluginManager()->callEvent($ev = new EntityDamageEvent($entity, EntityDamageEvent::CAUSE_SUICIDE, 1000));
+									$sender->getServer()->getPluginManager()->callEvent($ev = new EntityDamageEvent($entity, EntityDamageEvent::CAUSE_SUICIDE, $entity->getMaxHealth()));
 
 									if($ev->isCancelled()){
 										return true;
@@ -122,7 +122,7 @@ class KillCommand extends VanillaCommand {
 						foreach($sender->getServer()->getDefaultLevel()->getEntities() as $entity){
 							if($entity instanceof Player){
 								if($entity->getGamemode() === Player::ADVENTURE or $entity->getGamemode() === Player::SURVIVAL){
-									$sender->getServer()->getPluginManager()->callEvent($ev = new EntityDamageEvent($entity, EntityDamageEvent::CAUSE_SUICIDE, 1000));
+									$sender->getServer()->getPluginManager()->callEvent($ev = new EntityDamageEvent($entity, EntityDamageEvent::CAUSE_SUICIDE, $entity->getMaxHealth()));
 
 									if($ev->isCancelled()){
 										return true;
@@ -132,7 +132,7 @@ class KillCommand extends VanillaCommand {
 									$entity->setHealth(0);
 								}
 							}else{
-								$sender->getServer()->getPluginManager()->callEvent($ev = new EntityDamageEvent($entity, EntityDamageEvent::CAUSE_SUICIDE, 1000));
+								$sender->getServer()->getPluginManager()->callEvent($ev = new EntityDamageEvent($entity, EntityDamageEvent::CAUSE_SUICIDE, $entity->getMaxHealth()));
 
 								if($ev->isCancelled()){
 									return true;

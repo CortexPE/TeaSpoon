@@ -36,6 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\entity;
 
 use pocketmine\entity\Animal;
+use pocketmine\item\Item;
 
 class ZombieHorse extends Animal {
 	const NETWORK_ID = self::ZOMBIE_HORSE;
@@ -51,5 +52,11 @@ class ZombieHorse extends Animal {
 	public function initEntity(){
 		$this->setMaxHealth(20);
 		parent::initEntity();
+	}
+
+	public function getDrops(): array{
+		return $drops = [
+			Item::get(Item::ROTTEN_FLESH, 0, mt_rand(0, 2)),
+		];
 	}
 }

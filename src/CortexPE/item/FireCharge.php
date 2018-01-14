@@ -51,9 +51,7 @@ class FireCharge extends Item {
 
 	public function __construct($meta = 0, $count = 1){
 		parent::__construct(self::FIRE_CHARGE, $meta, "Fire Charge");
-		if($this->temporalVector === null){
-			$this->temporalVector = new Vector3(0, 0, 0);
-		}
+		$this->temporalVector = new Vector3(0, 0, 0);
 	}
 
 	public function canBeActivated(): bool{

@@ -65,15 +65,19 @@ Installation is easy, Just download the latest phar from my [Jenkins Build Serve
    \CortexPE\item\Potion::registerPotion(101, "TEST", [[Effect::HEALTH_BOOST, 100 * 20, 100], [Effect::STRENGTH, 100 * 20, 100]]);
    ```
  - Entities & Mobs
-   - [X] XP Drops (Drop amounts needs to be improved)
+   - [X] XP Drops
    - [X] Projectiles
      - [X] EnderPearls
      - [X] Snowballs
      - [X] Eggs
      - [X] Arrows with potion effects
+     - [X] EnchantingBottle
+     - [X] SplashPotion
+     - [X] LingeringPotion
    - [ ] Entities
      - [X] Lightning
-     - [X] XPOrbs
+     - [X] EndCrystal
+   <!--   - [X] XPOrbs -->
    - [X] Mobs
      - [X] Bat
      - [X] Blaze

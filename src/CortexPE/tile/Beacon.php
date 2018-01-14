@@ -165,7 +165,7 @@ class Beacon extends Spawnable implements InventoryHolder {
 	}
 
 	public function onUpdate(): bool{
-		if(PMServer::getInstance()->getTick() % (20 * 4)){
+		if((PMServer::getInstance()->getTick() % (20 * 4)) == 0){
 			if($this->getLevel() instanceof Level){
 				if(!PMServer::getInstance()->isLevelLoaded($this->getLevel()->getName()) || !$this->getLevel()->isChunkLoaded($this->x >> 4, $this->z >> 4)) return false;
 				if(!empty($this->getEffects())){

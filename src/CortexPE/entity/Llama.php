@@ -48,9 +48,8 @@ class Llama extends Animal {
 	const BROWN = 2;
 	const GRAY = 3;
 
-	public $width = 0.3;
-	public $length = 0.9;
-	public $height = 0;
+	public $width = 0.9;
+	public $height = 1.87;
 
 	public function getName(): string{
 		return "Llama";

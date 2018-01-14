@@ -36,13 +36,13 @@ declare(strict_types = 1);
 namespace CortexPE\entity;
 
 use pocketmine\entity\Monster;
+use pocketmine\item\Item;
 
 class Evoker extends Monster {
 	const NETWORK_ID = self::EVOCATION_ILLAGER;
 
 	public $width = 0.6;
-	public $length = 0.6;
-	public $height = 0;
+	public $height = 1.95;
 
 	public function getName(): string{
 		return "Evoker";
@@ -51,5 +51,12 @@ class Evoker extends Monster {
 	public function initEntity(){
 		$this->setMaxHealth(24);
 		parent::initEntity();
+	}
+
+	public function getDrops(): array{
+		return [
+			Item::get(Item::TOTEM, 0, 1),
+			Item::get(Item::EMERALD, 0, mt_rand(0,1)),
+		];
 	}
 }

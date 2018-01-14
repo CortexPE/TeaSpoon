@@ -77,6 +77,7 @@ class Boat extends Vehicle {
 	}
 
 	public function entityBaseTick(int $tickDiff = 1): bool{
+		return false;/* TODO
 		if($this->closed){
 			return false;
 		}
@@ -85,7 +86,7 @@ class Boat extends Vehicle {
 		}
 		$this->lastUpdate = PMServer::getInstance()->getTick();
 		$this->timings->startTiming();
-		$hasUpdate = $this->entityBaseTick($tickDiff);
+		$hasUpdate = parent::entityBaseTick($tickDiff);
 		if(!$this->level->getBlock(new Vector3($this->x, $this->y, $this->z))->getBoundingBox() == null or $this->isInsideOfWater()){
 			$this->motionY = 0.1;
 		}else{
@@ -105,5 +106,6 @@ class Boat extends Vehicle {
 		$this->timings->stopTiming();
 
 		return $hasUpdate or !$this->onGround or abs($this->motionX) > 0.00001 or abs($this->motionY) > 0.00001 or abs($this->motionZ) > 0.00001;
+	*/
 	}
 }

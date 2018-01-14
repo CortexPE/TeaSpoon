@@ -53,14 +53,8 @@ class EndPortal extends Solid {
 	/** @var int $id */
 	protected $id = Block::END_PORTAL;
 
-	/** @var  Vector3 */
-	private $temporalVector = null;
-
 	public function __construct($meta = 0){
 		$this->meta = $meta;
-		if($this->temporalVector === null){
-			$this->temporalVector = new Vector3(0, 0, 0);
-		}
 	}
 
 	/**

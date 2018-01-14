@@ -134,7 +134,8 @@ class MonsterSpawner extends SpawnerPM {
 	/** @var int $entityid */
 	private $entityid = 0;
 
-	public function __construct(){
+	public function __construct(int $meta = 0){
+		$this->meta = $meta;
 	}
 
 	/**
@@ -213,8 +214,9 @@ class MonsterSpawner extends SpawnerPM {
 	 * @return string
 	 */
 	public function getName(): string{
-		if($this->entityid === 0) return "Monster Spawner";
-		else{
+		if($this->entityid === 0){
+			return "Monster Spawner";
+		}else{
 			$name = ucfirst(self::EID_TO_STR[$this->entityid] ?? 'Monster') . ' Spawner';
 
 			return $name;

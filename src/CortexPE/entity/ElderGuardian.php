@@ -41,9 +41,8 @@ use pocketmine\item\Item;
 class ElderGuardian extends Animal {
 	const NETWORK_ID = self::ELDER_GUARDIAN;
 
-	public $width = 1.45;
-	public $length = 1.45;
-	public $height = 0;
+	public $width = 1.9975;
+	public $height = 1.9975;
 
 	public function getName(): string{
 		return "Elder Guardian";

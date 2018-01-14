@@ -25,6 +25,7 @@ namespace CortexPE\block;
 
 use CortexPE\Main;
 use CortexPE\task\DelayedCrossDimensionTeleportTask;
+use CortexPE\Utils;
 use pocketmine\{
 	Player, Server
 };
@@ -49,9 +50,7 @@ class Portal extends Transparent {
 
 	public function __construct($meta = 0){
 		$this->meta = $meta;
-		if($this->temporalVector === null){
-			$this->temporalVector = new Vector3(0, 0, 0);
-		}
+		$this->temporalVector = new Vector3(0, 0, 0);
 	}
 
 	/**
@@ -209,7 +208,7 @@ class Portal extends Transparent {
 										$y = $y2;
 									}
 								}
-								if($posNether->distance($entity->asVector3()) <= 0.1){
+								if(Utils::vector3XZDistance($posNether, $entity->asVector3()) <= 0.1){
 									return;
 								}
 								$posNether->setComponents($x, $y, $z);
@@ -247,7 +246,7 @@ class Portal extends Transparent {
 										$y = $y2;
 									}
 								}
-								if($posOverworld->distance($entity->asVector3()) <= 0.1){
+								if(Utils::vector3XZDistance($posOverworld, $entity->asVector3()) <= 0.1){
 									return;
 								}
 								$posOverworld->setComponents($x, $y, $z);

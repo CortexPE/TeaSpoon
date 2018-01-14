@@ -14,6 +14,8 @@ use pocketmine\level\{
 use pocketmine\nbt\tag\{
 	CompoundTag, DoubleTag, FloatTag, IntTag, ListTag, ShortTag
 };
+use pocketmine\network\mcpe\protocol\PlaySoundPacket;
+use pocketmine\Server;
 
 class LingeringPotion extends Throwable {
 
@@ -79,6 +81,13 @@ class LingeringPotion extends Throwable {
 			if($aec instanceof Entity){
 				$aec->spawnToAll();
 			}
+
+			$pk = new PlaySoundPacket();
+			$pk->soundName = "random.glass";
+			$pk->volume = 500;
+			$pk->pitch = 1;
+			Server::getInstance()->broadcastPacket($this->getViewers(), $pk);
+
 			$this->flagForDespawn();
 		}
 

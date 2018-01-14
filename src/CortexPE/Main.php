@@ -123,6 +123,8 @@ class Main extends PluginBase {
 	private static $instance;
 	/** @var Session[] */
 	private $sessions = [];
+	/** @var bool */
+	private $isSpoon = false;
 
 	public static function getInstance(): Main{
 		return self::$instance;
@@ -138,10 +140,11 @@ class Main extends PluginBase {
 	}
 
 	public function onLoad(){
+		$this->isSpoon = false;
 		if(Utils::checkSpoon()){
 			$this->getLogger()->error("This plugin is for PMMP only. It is meant to extend PMMP's functionality.");
 			$this->getLogger()->error("The plugin will disable itself after being later enabled by the server to prevent any interference with the existing Spoon features.");
-			Server::$isSpoon = true;
+			$this->isSpoon = true;
 		}
 		$this->getLogger()->info("Loading resources...");
 		if(!file_exists($this->getDataFolder())){
@@ -196,7 +199,7 @@ class Main extends PluginBase {
 	}
 
 	public function onEnable(){
-		if(Server::$isSpoon){
+		if($this->isSpoon){
 			$this->setEnabled(false);
 
 			return;

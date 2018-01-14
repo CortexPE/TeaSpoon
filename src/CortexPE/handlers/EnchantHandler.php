@@ -59,7 +59,7 @@ class EnchantHandler implements Listener {
 	 * [X] Blast protection
 	 * [X] Projectile protection
 	 * [X] Thorns
-	 * [X] Respiration (Client Side)
+	 * [X] Respiration (PMMP)
 	 * [X] Depth strider (Client Side)
 	 * [X] Aqua affinity (Client Side)
 	 * [X] Sharpness
@@ -68,7 +68,7 @@ class EnchantHandler implements Listener {
 	 * [X] Knockback
 	 * [X] Fire aspect
 	 * [X] Looting
-	 * [X] Efficiency (Client Side)
+	 * [X] Efficiency (PMMP)
 	 * [X] Silk touch
 	 * [X] Unbreaking
 	 * [X] Fortune

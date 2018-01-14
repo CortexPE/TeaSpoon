@@ -68,10 +68,9 @@ class EnderPearl extends ProjectileItem {
 				return false;
 			}else{
 				$session->lastEnderPearlUse = time();
-
-				return parent::onClickAir($player, $directionVector);
 			}
 		}
+		return parent::onClickAir($player, $directionVector);
 	}
 
 }

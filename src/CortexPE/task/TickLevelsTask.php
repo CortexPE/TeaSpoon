@@ -35,13 +35,13 @@ declare(strict_types = 1);
 
 namespace CortexPE\task;
 
+use CortexPE\LevelManager;
 use CortexPE\Main;
-use CortexPE\Server;
 use pocketmine\scheduler\PluginTask;
 
 class TickLevelsTask extends PluginTask {
 	public function onRun(int $currentTick){
-		if(!Server::$loaded){
+		if(!LevelManager::$loaded){
 			return;
 		}
 		foreach(Main::$weatherData as $weather){

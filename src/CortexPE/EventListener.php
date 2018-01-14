@@ -42,6 +42,7 @@ use CortexPE\utils\ArmorTypes;
 use CortexPE\utils\Xp;
 use pocketmine\block\Block;
 use pocketmine\entity\Effect;
+use pocketmine\entity\Entity;
 use pocketmine\entity\object\ExperienceOrb;
 use pocketmine\event\{
 	block\BlockBreakEvent, level\LevelLoadEvent, Listener, server\RemoteServerCommandEvent, server\ServerCommandEvent
@@ -84,12 +85,13 @@ class EventListener implements Listener {
 	public function onLevelLoad(LevelLoadEvent $ev){
 		$TEMPORARY_ENTITIES = [
 			ExperienceOrb::NETWORK_ID,
+			Entity::MINECART,
+			Entity::LIGHTNING_BOLT,
+			Entity::BOAT,
 		];
 
-		if(!Server::$loaded){
-			Server::$loaded = true;
-			LevelManager::init();
-		}
+		LevelManager::init();
+
 		$lvl = $ev->getLevel();
 
 		if(Main::$weatherEnabled){
@@ -173,9 +175,7 @@ class EventListener implements Listener {
 			$session = Main::getInstance()->getSessionById($p->getId());
 
 			if($session instanceof Session){
-				if($ev->getCause() != EntityDamageEvent::CAUSE_LAVA){ // lava damage is handled on the Lava class.
-					$session->useArmors();
-				}
+				$session->useArmors();
 			}
 		}
 

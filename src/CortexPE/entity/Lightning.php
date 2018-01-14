@@ -81,11 +81,6 @@ class Lightning extends Animal {
 					if($entity instanceof Living){
 						$damage = 5;
 						$ev = new EntityDamageByEntityEvent($this, $entity, 16, $damage); // LIGHTNING
-						/*if($entity->attack($ev) === true){
-							if($entity instanceof Player){
-								$ev->useArmors();
-							}
-						}*/
 						$entity->attack($ev);
 						$entity->setOnFire(mt_rand(3, 8));
 					}

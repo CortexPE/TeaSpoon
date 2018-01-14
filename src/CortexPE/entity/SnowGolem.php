@@ -40,9 +40,8 @@ use pocketmine\entity\Monster;
 class SnowGolem extends Monster {
 	const NETWORK_ID = self::SNOW_GOLEM;
 
-	public $width = 0.3;
-	public $length = 0.9;
-	public $height = 1.8;
+	public $width = 0.7;
+	public $height = 1.9;
 
 	public function getName(): string{
 		return "Snow Golem";

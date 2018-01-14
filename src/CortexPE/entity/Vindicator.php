@@ -44,8 +44,7 @@ class Vindicator extends Monster {
 	const NETWORK_ID = self::VINDICATOR;
 
 	public $width = 0.6;
-	public $length = 0.6;
-	public $height = 0;
+	public $height = 1.95;
 
 	public function getName(): string{
 		return "Vindicator";

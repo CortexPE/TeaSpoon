@@ -58,8 +58,8 @@ class Rabbit extends Animal {
 	const TYPE_GOLD = 4;
 	const TYPE_SALT_PEPPER = 5;
 	const TYPE_KILLER_BUNNY = 99;
-	public $width = 0.5;
-	public $length = 0.5;
+
+	public $width = 0.4;
 	public $height = 0.5;
 
 	public function __construct(Level $level, CompoundTag $nbt){

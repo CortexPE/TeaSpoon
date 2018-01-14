@@ -68,7 +68,6 @@ class PacketHandler implements Listener {
 
 		switch(true){
 			case ($pk instanceof PlayerActionPacket):
-				//Main::getInstance()->getLogger()->debug("Received PlayerActionPacket:" . $pkr->action . " from " . $p->getName());
 				$session = Main::getInstance()->getSessionById($p->getId());
 				if($session instanceof Session){
 					switch($pk->action){
@@ -114,7 +113,7 @@ class PacketHandler implements Listener {
 				foreach($pk->entries as $entry){
 					$player = Server::getInstance()->getPlayer($entry->username);
 					if($player instanceof PMPlayer){
-						if(is_string($player->getXuid())){ // is xbox logged in but causes errors if xuid is null (BLAME PMMP)
+						if(is_string($player->getXuid())){
 							if($player->getXuid() != ""){
 								$entry->xboxUserId = $player->getXuid();
 							}

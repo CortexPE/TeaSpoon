@@ -51,9 +51,7 @@ class FlintSteel extends Tool {
 
 	public function __construct($meta = 0, $count = 1){
 		parent::__construct(self::FLINT_STEEL, $meta, "Flint and Steel");
-		if($this->temporalVector === null){
-			$this->temporalVector = new Vector3(0, 0, 0);
-		}
+		$this->temporalVector = new Vector3(0, 0, 0);
 	}
 
 	public function canBeActivated(): bool{

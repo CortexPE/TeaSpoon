@@ -41,9 +41,8 @@ use pocketmine\item\Item;
 class PolarBear extends Monster {
 	const NETWORK_ID = self::POLAR_BEAR;
 
-	public $width = 0.6;
-	public $length = 0.9;
-	public $height = 0;
+	public $width = 1.3;
+	public $height = 1.4;
 
 	public function getName(): string{
 		return "Polar Bear";

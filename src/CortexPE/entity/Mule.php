@@ -41,9 +41,8 @@ use pocketmine\item\Item;
 class Mule extends Animal {
 	const NETWORK_ID = self::MULE;
 
-	public $width = 0.3;
-	public $length = 0.9;
-	public $height = 0;
+	public $width = 1.3965;
+	public $height = 1.6;
 
 	public function getName(): string{
 		return "Mule";

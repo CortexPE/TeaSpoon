@@ -42,9 +42,14 @@ use pocketmine\level\generator\Generator;
 use pocketmine\Server as PMServer;
 
 class LevelManager {
+	public static $loaded = false;
+
 	public static function init(){
-		self::registerGenerators();
-		self::loadAndGenerateLevels();
+		if(!self::$loaded){
+			self::registerGenerators();
+			self::loadAndGenerateLevels();
+			self::$loaded = true;
+		}
 	}
 
 	public static function registerGenerators(){

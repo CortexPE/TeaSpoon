@@ -53,25 +53,9 @@ class Cow extends Animal {
 	}
 
 	public function getDrops(): array{
-		$cause = $this->lastDamageCause;
-		if($cause instanceof EntityDamageByEntityEvent){
-			$damager = $cause->getDamager();
-			if($damager instanceof Player){
-				$looting = $damager->getInventory()->getItemInHand()->getEnchantment(Enchantment::LOOTING);
-				if($looting !== null){
-					$lootingL = $looting->getLevel();
-				}else{
-					$lootingL = 0;
-				}
-				$drops = [
-					Item::get(Item::RAW_BEEF, 0, mt_rand(1, 3 + $lootingL)),
-					Item::get(Item::LEATHER, 0, mt_rand(0, 2 + $lootingL)),
-				];
-
-				return $drops;
-			}
-		}
-
-		return [];
+		return [
+			Item::get(Item::RAW_BEEF, 0, mt_rand(1, 3)),
+			Item::get(Item::LEATHER, 0, mt_rand(0, 2)),
+		];
 	}
 }

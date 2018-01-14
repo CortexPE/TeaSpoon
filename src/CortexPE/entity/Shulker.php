@@ -43,9 +43,8 @@ use pocketmine\item\Item;
 class Shulker extends Monster {
 	const NETWORK_ID = self::SHULKER;
 
-	public $width = 0.5;
-	public $length = 0.9;
-	public $height = 0;
+	public $width = 1;
+	public $height = 1;
 
 	public function getName(): string{
 		return "Shulker";
@@ -59,5 +58,9 @@ class Shulker extends Monster {
 
 	public function getDrops(): array{
 		return [Item::get(Item::SHULKER_SHELL, 0, mt_rand(0, 1))];
+	}
+
+	public function knockBack(Entity $attacker, float $damage, float $x, float $z, float $base = 0.4){
+		return;
 	}
 }

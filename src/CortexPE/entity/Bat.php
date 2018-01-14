@@ -44,9 +44,8 @@ use pocketmine\nbt\tag\{
 class Bat extends Animal {
 	const NETWORK_ID = self::BAT;
 
-	public $width = 0.6;
-	public $length = 0.6;
-	public $height = 0.6;
+	public $width = 0.5;
+	public $height = 0.9;
 
 	public function __construct(Level $level, CompoundTag $nbt){
 		if(!isset($nbt->isResting)){
@@ -77,6 +76,7 @@ class Bat extends Animal {
 	public function onUpdate(int $currentTick): bool{
 		if($this->age > 1200){
 			// I have reached the lifespan of my species...
+
 			// Existance is pain.
 			// I JUST WANT TO DIE
 			// ~ Mr. Meeseeks

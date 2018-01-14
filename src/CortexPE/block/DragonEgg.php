@@ -100,11 +100,12 @@ class DragonEgg extends Fallable {
 	public function onActivate(Item $item, Player $player = null): bool{
 		$found = false;
 		$level = $this->getLevel();
+		$x = $y = $z = 0;
 		for($c = 0; $c <= 16; $c++){
 			$x = $this->getX() + self::RAND_HORIZONTAL[array_rand(self::RAND_HORIZONTAL)];
 			$y = $this->getY() + self::RAND_VERTICAL[array_rand(self::RAND_VERTICAL)];
 			$z = $this->getZ() + self::RAND_HORIZONTAL[array_rand(self::RAND_HORIZONTAL)];
-			if($level->getBlockIdAt($x, $y, $z) == 0 && $y < Level::Y_MAX){
+			if($level->getBlockIdAt($x, $y, $z) == 0 && $y < Level::Y_MAX && $y > 0){
 				$found = true;
 				break;
 			}
@@ -113,9 +114,6 @@ class DragonEgg extends Fallable {
 		if(!$found)return true;
 		$level->setBlock($this, new Air(), true, true);
 		$oldpos = clone $this;
-		/** @noinspection PhpUndefinedVariableInspection */
-		/** @noinspection PhpUndefinedVariableInspection */
-		/** @noinspection PhpUndefinedVariableInspection */
 		$pos = new Vector3($x, $y, $z);
 		$newpos = clone $pos;
 		$level->setBlock($pos, $this, true, true);
