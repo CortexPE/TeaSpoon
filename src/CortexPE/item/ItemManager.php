@@ -35,6 +35,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\item;
 
+use CortexPE\Main;
 use pocketmine\item\{
 	Item, ItemFactory
 };
@@ -50,8 +51,12 @@ class ItemManager {
 		ItemFactory::registerItem(new FlintSteel(), true);
 		ItemFactory::registerItem(new FireCharge(), true);
 		ItemFactory::registerItem(new TotemOfUndying(), true);
-		ItemFactory::registerItem(new Elytra(), true);
-		ItemFactory::registerItem(new FireworkRocket(), true);
+		if(Main::$elytraEnabled){
+			ItemFactory::registerItem(new Elytra(), true);
+			if(Main::$elytraBoostEnabled){
+				ItemFactory::registerItem(new FireworkRocket(), true); // TODO: Implement proper Fireworks
+			}
+		}
 		ItemFactory::registerItem(new ChorusFruit(), true);
 		ItemFactory::registerItem(new FishingRod(), true);
 		ItemFactory::registerItem(new EyeOfEnder(), true);
@@ -65,8 +70,12 @@ class ItemManager {
 		Item::addCreativeItem(Item::get(Item::BOTTLE_O_ENCHANTING));
 		Item::addCreativeItem(Item::get(Item::FIRE_CHARGE));
 		Item::addCreativeItem(Item::get(Item::TOTEM));
-		Item::addCreativeItem(Item::get(Item::ELYTRA));
-		Item::addCreativeItem(Item::get(Item::FIREWORKS));
+		if(Main::$elytraEnabled){
+			Item::addCreativeItem(Item::get(Item::ELYTRA));
+			if(Main::$elytraBoostEnabled){
+				Item::addCreativeItem(Item::get(Item::FIREWORKS));
+			}
+		}
 		Item::addCreativeItem(Item::get(Item::CHORUS_FRUIT));
 		Item::addCreativeItem(Item::get(Item::SLIME_BLOCK));
 		Item::addCreativeItem(Item::get(Item::ENDER_EYE));

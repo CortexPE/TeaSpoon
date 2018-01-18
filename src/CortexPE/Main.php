@@ -61,7 +61,7 @@ use pocketmine\utils\Config;
 
 class Main extends PluginBase {
 
-	const CONFIG_VERSION = 14;
+	const CONFIG_VERSION = 15;
 
 	/** @var Config */
 	public static $config;
@@ -115,6 +115,10 @@ class Main extends PluginBase {
 	public static $overworldLevel = null;
 	/** @var bool */
 	public static $instantArmorReplace = false;
+	/** @var bool */
+	public static $elytraEnabled = true;
+	/** @var bool */
+	public static $elytraBoostEnabled = true;
 	/** @var Config */
 	public static $cacheFile;
 	/** @var int[] */
@@ -174,6 +178,8 @@ class Main extends PluginBase {
 		self::$vanillaNetherTranfer = self::$config->getNested("dimensions.nether.vanillaNetherTranfer", self::$vanillaNetherTranfer);
 		self::$overworldLevelName = self::$config->getNested("dimensions.overrideOverworldLevel", self::$overworldLevelName);
 		self::$instantArmorReplace = self::$config->getNested("player.instantArmorReplace", self::$instantArmorReplace);
+		self::$elytraEnabled = self::$config->getNested("player.elytra.enable", self::$elytraEnabled);
+		self::$elytraBoostEnabled = self::$config->getNested("player.elytra.enableElytraBoost", self::$elytraBoostEnabled);
 
 		self::$debug = self::$config->get("debug", self::$debug); // intentionally don't add this on the config...
 

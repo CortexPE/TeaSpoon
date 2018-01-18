@@ -10,7 +10,7 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 14
+version: 15
 
 entities:
  # Weather to register Vanilla Entities (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...) or not
@@ -64,3 +64,7 @@ player:
  armorDamage: true
  # Toggle to replace current armor or not (Vanilla-Way: false) [might cause glitches/bugs on server lag]
  instantArmorReplace: false
+ # Elytra configuration
+ elytra:
+  enable: true
+  enableElytraBoost: true

@@ -43,7 +43,6 @@ use CortexPE\utils\Xp;
 use pocketmine\block\Block;
 use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
-use pocketmine\entity\object\ExperienceOrb;
 use pocketmine\event\{
 	block\BlockBreakEvent, level\LevelLoadEvent, Listener, server\RemoteServerCommandEvent, server\ServerCommandEvent
 };
@@ -84,10 +83,8 @@ class EventListener implements Listener {
 	 */
 	public function onLevelLoad(LevelLoadEvent $ev){
 		$TEMPORARY_ENTITIES = [
-			ExperienceOrb::NETWORK_ID,
-			Entity::MINECART,
+			Entity::XP_ORB,
 			Entity::LIGHTNING_BOLT,
-			Entity::BOAT,
 		];
 
 		LevelManager::init();
@@ -237,6 +234,7 @@ class EventListener implements Listener {
 	 */
 	public function onLeave(PlayerQuitEvent $ev){
 		Main::getInstance()->destroySession($ev->getPlayer());
+		unset(Main::$onPortal[$ev->getPlayer()->getId()]);
 	}
 
 	/**

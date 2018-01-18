@@ -49,8 +49,8 @@ class ChorusFruit extends PMChorusFruit {
 				return;
 			}else{
 				$session->lastChorusFruitEat = time();
-				parent::onConsume($consumer);
 			}
 		}
+		parent::onConsume($consumer);
 	}
 }

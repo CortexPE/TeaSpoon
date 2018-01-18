@@ -49,17 +49,19 @@ class FireworkRocket extends Item {
 	}
 
 	public function onClickAir(Player $player, Vector3 $directionVector): bool{
-		$session = Main::getInstance()->getSessionById($player->getId());
-		if($session instanceof Session){
-			if($session->usingElytra && !$player->isOnGround()){
-				if($player->getGamemode() != Player::CREATIVE && $player->getGamemode() != Player::SPECTATOR){
-					$this->count--;
-				}
-				$dir = $player->getDirectionVector();
-				$player->setMotion($dir->multiply(1.25));
-				// TODO: Rocket Sound
-				Server::getInstance()->getScheduler()->scheduleRepeatingTask(new ElytraRocketBoostTrackingTask(Main::getInstance(), $player, 6), 4);
+		if(Main::$elytraEnabled && Main::$elytraBoostEnabled){
+			$session = Main::getInstance()->getSessionById($player->getId());
+			if($session instanceof Session){
+				if($session->usingElytra && !$player->isOnGround()){
+					if($player->getGamemode() != Player::CREATIVE && $player->getGamemode() != Player::SPECTATOR){
+						$this->count--;
+					}
+					$dir = $player->getDirectionVector();
+					$player->setMotion($dir->multiply(1.25));
+					// TODO: Rocket Sound
+					Server::getInstance()->getScheduler()->scheduleRepeatingTask(new ElytraRocketBoostTrackingTask(Main::getInstance(), $player, 6), 4);
 
+				}
 			}
 		}
 
