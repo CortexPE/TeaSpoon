@@ -45,13 +45,13 @@ use pocketmine\block\Block;
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\entity\ProjectileLaunchEvent;
+use pocketmine\item\Durable;
 use pocketmine\item\Item;
-use pocketmine\item\ProjectileItem;
 use pocketmine\level\sound\LaunchSound;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 
-class FishingRod extends ProjectileItem {
+class FishingRod extends Durable {
 	public function __construct($meta = 0, $count = 1){
 		parent::__construct(Item::FISHING_ROD, $meta, "Fishing Rod");
 	}
@@ -60,8 +60,8 @@ class FishingRod extends ProjectileItem {
 		return 1;
 	}
 
-	public function getMaxDurability(){
-		return 355;
+	public function getMaxDurability(): int{
+		return 355; // TODO: Know why it breaks early at 65
 	}
 
 	public function onClickAir(Player $player, Vector3 $directionVector): bool{
@@ -113,28 +113,13 @@ class FishingRod extends ProjectileItem {
 
 					$session->unsetFishing();
 
-					$unbreaking = false;
-					if($player->isSurvival()){
-						if($this->hasEnchantments()){
-							if($this->hasEnchantment(Enchantment::UNBREAKING)){
-								$enchantment = $this->getEnchantment(Enchantment::UNBREAKING);
-								$lvl = $enchantment->getLevel() + 1;
-								if(mt_rand(1, 100) >= intval(100 / $lvl)){
-									$unbreaking = true;
-								}
-							}
-						}
+					if($player->getLevel()->getBlock($projectile->asVector3())->getId() == Block::WATER || $player->getLevel()->getBlock($projectile)->getId() == Block::WATER){
+						$damage = 5;
+					}else{
+						$damage = mt_rand(10, 15); // TODO: Implement entity / block collision properly
 					}
-					if(!$unbreaking){
-						if($player->getLevel()->getBlock($projectile->asVector3())->getId() == Block::WATER || $player->getLevel()->getBlock($projectile)->getId() == Block::WATER){
-							$this->meta += 5;
-						}else{
-							$this->meta += mt_rand(10, 15); // TODO: Implement entity / block collision properly
-						}
-						if($this->meta >= $this->getMaxDurability()){ // TODO: Know why tf it gets removed early at 65 (as the wiki says)
-							$this->setCount(0);
-						}
-					}
+
+					$this->applyDamage($damage);
 
 					if($projectile->coughtTimer > 0){
 						$weather = Main::$weatherData[$player->getLevel()->getId()];

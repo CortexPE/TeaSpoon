@@ -46,7 +46,6 @@ use pocketmine\event\entity\EntityDeathEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\item\Item;
-use pocketmine\item\Tool;
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
 
@@ -70,7 +69,7 @@ class EnchantHandler implements Listener {
 	 * [X] Looting
 	 * [X] Efficiency (PMMP)
 	 * [X] Silk touch
-	 * [X] Unbreaking
+	 * [X] Unbreaking (Partially handled by PMMP)
 	 * [X] Fortune
 	 * [X] Power
 	 * [X] Punch
@@ -120,18 +119,6 @@ class EnchantHandler implements Listener {
 					foreach(Utils::getEnchantments($i) as $ench){
 						if($ench->getLevel() <= 0) continue;
 						switch($ench->getId()){
-							case Enchantment::UNBREAKING:
-								if($i instanceof Tool){
-									$lvl = $ench->getLevel() + 1;
-									if(mt_rand(1, 100) >= intval(100 / $lvl)){
-										$ic = clone $i;
-										if($ic->getDamage() > 0){
-											$ic->setDamage($ic->getDamage() - 1);
-											$d->getInventory()->setItemInHand($ic);
-										}
-									}
-								}
-								break;
 							case Enchantment::FIRE_ASPECT:
 								$e->setOnFire(($ench->getLevel() * 4) * 20);
 								break;

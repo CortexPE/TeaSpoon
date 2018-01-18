@@ -55,7 +55,7 @@ class Enchantment extends EnchantmentPM {
 			self::registerEnchantment(new Enchantment(self::LOOTING, "%enchantment.weapon.looting", self::RARITY_UNCOMMON, self::SLOT_SWORD, 3));
 			// Registered by PMMP self::registerEnchantment(new Enchantment(self::EFFICIENCY, "%enchantment.mining.efficiency", self::RARITY_UNCOMMON, self::SLOT_TOOL, 5));
 			self::registerEnchantment(new Enchantment(self::SILK_TOUCH, "%enchantment.mining.silktouch", self::RARITY_UNCOMMON, self::SLOT_TOOL, 1));
-			self::registerEnchantment(new Enchantment(self::UNBREAKING, "%enchantment.mining.durability", self::RARITY_UNCOMMON, self::SLOT_TOOL, 3));
+			// Registered by PMMP self::registerEnchantment(new Enchantment(self::UNBREAKING, "%enchantment.mining.durability", self::RARITY_UNCOMMON, self::SLOT_TOOL, 3));
 			self::registerEnchantment(new Enchantment(self::FORTUNE, "%enchantment.mining.fortune", self::RARITY_UNCOMMON, self::SLOT_TOOL, 3));
 			self::registerEnchantment(new Enchantment(self::POWER, "%enchantment.bow.power", self::RARITY_UNCOMMON, self::SLOT_BOW, 5));
 			self::registerEnchantment(new Enchantment(self::PUNCH, "%enchantment.bow.knockback", self::RARITY_UNCOMMON, self::SLOT_BOW, 2));

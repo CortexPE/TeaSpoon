@@ -36,14 +36,13 @@ declare(strict_types = 1);
 namespace CortexPE\block;
 
 use CortexPE\{
-	level\weather\Weather, Main, Utils
+	Main, Utils
 };
 use pocketmine\block\{
 	Block, BlockFactory, Fire as PMFire
 };
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
-use pocketmine\network\mcpe\protocol\types\DimensionIds;
 
 class Fire extends PMFire {
 
@@ -52,24 +51,34 @@ class Fire extends PMFire {
 	 * @return bool|int
 	 */
 	public function onUpdate(int $type){
-		if(Main::$weatherEnabled && Utils::getDimension($this->getLevel()) == DimensionIds::OVERWORLD){
+		if($type == Level::BLOCK_UPDATE_RANDOM || $type == Level::BLOCK_UPDATE_SCHEDULED || $type == Level::BLOCK_UPDATE_NORMAL){
 			$weather = Main::$weatherData[$this->getLevel()->getId()];
-			$rainy = ($weather->isRainy() || $weather->isRainyThunder());
+			$forever = ($this->getSide(Vector3::SIDE_DOWN)->getId() == Block::NETHERRACK);
+			if(!$forever){
+				if($weather->canCalculate()){
+					$rainy = ($weather->isRainy() || $weather->isRainyThunder());
 
-			if($rainy && Utils::canSeeSky($this->getLevel(), $this->asVector3())){
-				$this->level->setBlock($this, BlockFactory::get(Block::AIR));
-			}
-		}
+					if($rainy &&
+						(
+							Utils::canSeeSky($this->getLevel(), $this->asVector3()) ||
+							Utils::canSeeSky($this->getLevel(), $this->getSide(Vector3::SIDE_NORTH)) ||
+							Utils::canSeeSky($this->getLevel(), $this->getSide(Vector3::SIDE_SOUTH)) ||
+							Utils::canSeeSky($this->getLevel(), $this->getSide(Vector3::SIDE_EAST)) ||
+							Utils::canSeeSky($this->getLevel(), $this->getSide(Vector3::SIDE_WEST))
+						)
+					){
+						$this->level->setBlock($this, BlockFactory::get(Block::AIR));
+						return $type;
+					}
+				}
 
-		if($this->getSide(Vector3::SIDE_DOWN)->getId() != Block::NETHERRACK){
-			if($this->meta >= 15){
-				$this->level->setBlock($this, BlockFactory::get(Block::AIR));
-			}else{
-				$this->meta += mt_rand(1, 4);
-				if($this->meta >= 15){
-					$this->level->setBlock($this, BlockFactory::get(Block::AIR));
-				}else{
-					$this->level->setBlock($this, $this);
+				if($type != Level::BLOCK_UPDATE_NORMAL){ // delayed
+					if($this->meta >= 15){
+						$this->level->setBlock($this, BlockFactory::get(Block::AIR));
+					}else{
+						$this->meta += mt_rand(1, 4);
+						$this->level->setBlock($this, $this);
+					}
 				}
 			}
 		}

@@ -36,34 +36,27 @@ declare(strict_types = 1);
 namespace CortexPE\item;
 
 use CortexPE\block\Portal;
-use pocketmine\block\{
-	Block, BlockFactory, Solid
-};
-use pocketmine\item\Tool;
+use pocketmine\block\Block;
+use pocketmine\item\FlintSteel as PMFlintSteel;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
-use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\Player;
 
-class FlintSteel extends Tool {
+class FlintSteel extends PMFlintSteel {
 	/** @var Vector3 */
 	private $temporalVector = null;
 
-	public function __construct($meta = 0, $count = 1){
+	public function __construct($meta = 0){
 		parent::__construct(self::FLINT_STEEL, $meta, "Flint and Steel");
 		$this->temporalVector = new Vector3(0, 0, 0);
 	}
 
-	public function canBeActivated(): bool{
-		return true;
-	}
-
 	public function onActivate(Level $level, Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $facePos): bool{
-		$target = $blockClicked;
-		if($target->getId() === Block::OBSIDIAN){
-			$tx = $target->getX();
-			$ty = $target->getY();
-			$tz = $target->getZ();
+		parent::onActivate($level, $player, $blockReplace, $blockClicked, $face, $facePos);
+		if($blockClicked->getId() === Block::OBSIDIAN){
+			$tx = $blockClicked->getX();
+			$ty = $blockClicked->getY();
+			$tz = $blockClicked->getZ();
 			$x_max = $tx;
 			$x_min = $tx;
 			for($x = $tx + 1; $level->getBlock($this->temporalVector->setComponents($x, $ty, $tz))->getId() == Block::OBSIDIAN; $x++){
@@ -145,15 +138,6 @@ class FlintSteel extends Tool {
 			}
 		}
 
-		if($blockReplace->getId() === self::AIR and ($blockClicked instanceof Solid)){
-			$level->setBlock($blockReplace, BlockFactory::get(Block::FIRE), true);
-			$level->broadcastLevelSoundEvent($blockReplace->add(0.5, 0.5, 0.5), LevelSoundEventPacket::SOUND_IGNITE);
-
-			$this->applyDamage(1);
-
-			return true;
-		}
-
-		return false;
+		return true;
 	}
 }
