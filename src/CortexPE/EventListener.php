@@ -60,7 +60,6 @@ use pocketmine\network\mcpe\protocol\{
 	EntityEventPacket, LevelEventPacket
 };
 use pocketmine\Player as PMPlayer;
-use pocketmine\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\Server as PMServer;
 
@@ -167,7 +166,7 @@ class EventListener implements Listener {
 
 		////////////////////////////// ARMOR DAMAGE //////////////////////////////////////
 		$p = $ev->getEntity();
-		if($p instanceof Player){
+		if($p instanceof PMPlayer){
 			$session = Main::getInstance()->getSessionById($p->getId());
 
 			if($session instanceof Session){
