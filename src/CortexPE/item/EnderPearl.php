@@ -45,7 +45,7 @@ use pocketmine\Player;
 
 class EnderPearl extends ProjectileItem {
 
-	public function __construct($meta = 0, $count = 1){
+	public function __construct($meta = 0){
 		parent::__construct(Item::ENDER_PEARL, $meta, "Ender Pearl");
 	}
 

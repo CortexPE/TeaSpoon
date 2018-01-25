@@ -52,7 +52,7 @@ use pocketmine\math\Vector3;
 use pocketmine\Player;
 
 class FishingRod extends Durable {
-	public function __construct($meta = 0, $count = 1){
+	public function __construct($meta = 0){
 		parent::__construct(Item::FISHING_ROD, $meta, "Fishing Rod");
 	}
 

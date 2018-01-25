@@ -36,7 +36,7 @@ use pocketmine\Player;
 
 class LingeringPotion extends ProjectileItem {
 
-	public function __construct($meta = 0, $count = 1){
+	public function __construct($meta = 0){
 		parent::__construct(Item::LINGERING_POTION, $meta, $this->getNameByMeta($meta));
 	}
 

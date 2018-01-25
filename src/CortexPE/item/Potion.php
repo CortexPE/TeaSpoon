@@ -290,7 +290,7 @@ class Potion extends Item implements Consumable {
 		self::REGENERATION_TWO  => Effect::REGENERATION,
 	];
 
-	public function __construct($meta = 0, $count = 1){
+	public function __construct($meta = 0){
 		parent::__construct(self::POTION, $meta, self::getNameByMeta($meta));
 	}
 

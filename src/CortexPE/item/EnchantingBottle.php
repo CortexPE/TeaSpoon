@@ -41,7 +41,7 @@ use pocketmine\item\{
 
 class EnchantingBottle extends ProjectileItem {
 
-	public function __construct($meta = 0, $count = 1){
+	public function __construct($meta = 0){
 		parent::__construct(Item::BOTTLE_O_ENCHANTING, $meta, "Bottle o' Enchanting");
 	}
 

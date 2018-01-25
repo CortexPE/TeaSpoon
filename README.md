@@ -49,7 +49,7 @@ Installation is easy, Just download the latest phar from my [Jenkins Build Serve
    - [X] Hoppers
  - Items
    - [X] Vanilla Enchants (Progress: 98% | Credits to [TheAz928](https://github.com/TheAz928) for some of the values)
-   - [X] Armor Damage
+   - [X] Armor Damage (Currently Broken #BlamePMMP :joy:) // TODO
    - [X] Splash Potions
    - [X] FireCharge
    - [X] Totem of Undying

@@ -49,7 +49,7 @@ use pocketmine\Player;
 
 class SplashPotion extends ProjectileItem {
 
-	public function __construct($meta = 0, $count = 1){
+	public function __construct($meta = 0){
 		parent::__construct(Item::SPLASH_POTION, $meta, $this->getNameByMeta($meta));
 	}
 

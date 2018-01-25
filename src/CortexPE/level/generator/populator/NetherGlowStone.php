@@ -23,7 +23,6 @@ declare(strict_types = 1);
 
 namespace CortexPE\level\generator\populator;
 
-//use pocketmine\block\Glowstone;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\{
 	object\Ore as ObjectOre, populator\Populator
@@ -32,8 +31,6 @@ use pocketmine\utils\Random;
 
 class NetherGlowStone extends Populator {
 
-	/** @var ChunkManager */
-	//private $level;
 	private $oreTypes = [];
 
 	/**
@@ -57,22 +54,4 @@ class NetherGlowStone extends Populator {
 			}
 		}
 	}
-
-	/**
-	 * @param $x
-	 * @param $z
-	 *
-	 * @return int
-
-	private function getHighestWorkableBlock($x, $z){
-	 * for($y = 127; $y >= 0; --$y){
-	 * $b = $this->level->getBlockIdAt($x, $y, $z);
-	 * if($b == 0){
-	 * break;
-	 * }
-	 * }
-	 *
-	 * return $y === 0 ? -1 : ++$y;
-	 * }*/
-
 }

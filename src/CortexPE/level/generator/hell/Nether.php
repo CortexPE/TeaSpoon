@@ -59,6 +59,7 @@ class Nether extends \pocketmine\level\generator\hell\Nether {
 	private $generationPopulators = [];
 	/** @var Simplex */
 	private $noiseBase;
+	private $bedrockDepth = 5;
 
 	/**
 	 * Nether constructor.
@@ -137,7 +138,7 @@ class Nether extends \pocketmine\level\generator\hell\Nether {
 		$this->populators[] = $groundFire;
 		$lava = new NetherLava();
 		$lava->setBaseAmount(0);
-		$lava->setRandomAmount(0);
+		$lava->setRandomAmount(2);
 		$this->populators[] = $lava;
 	}
 
@@ -160,11 +161,10 @@ class Nether extends \pocketmine\level\generator\hell\Nether {
 				$biome = Biome::getBiome(Biome::HELL);
 				$chunk->setBiomeId($x, $z, $biome->getId());
 
+				$chunk->setBlockId($x, 0, $z, Block::BEDROCK);
+				$chunk->setBlockId($x, 127, $z, Block::BEDROCK);
+
 				for($y = 0; $y < 128; ++$y){
-					if($y === 0 or $y === 127){
-						$chunk->setBlockId($x, $y, $z, Block::BEDROCK);
-						continue;
-					}
 					$noiseValue = (abs($this->emptyHeight - $y) / $this->emptyHeight) * $this->emptyAmplitude - $noise[$x][$z][$y];
 					$noiseValue -= 1 - $this->density;
 
@@ -172,7 +172,14 @@ class Nether extends \pocketmine\level\generator\hell\Nether {
 						$chunk->setBlockId($x, $y, $z, Block::NETHERRACK);
 					}elseif($y <= $this->waterHeight){
 						$chunk->setBlockId($x, $y, $z, Block::STILL_LAVA);
-						$chunk->setBlockLight($x, $y + 1, $z, 15);
+						$chunk->setBlockLight($x, $y, $z, Block::get(Block::STILL_LAVA)->getLightLevel());
+					}
+
+					if($y <= $this->bedrockDepth){
+						if($this->random->nextRange(1,5) == 1){
+							$chunk->setBlockId($x, $y, $z, Block::BEDROCK);
+							$chunk->setBlockId($x, 127 - $y, $z, Block::BEDROCK);
+						}
 					}
 				}
 			}

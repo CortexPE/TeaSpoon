@@ -35,7 +35,6 @@ declare(strict_types = 1);
 
 namespace CortexPE\item;
 
-use CortexPE\Main;
 use pocketmine\item\{
 	Item, ItemFactory
 };
@@ -51,12 +50,8 @@ class ItemManager {
 		ItemFactory::registerItem(new FlintSteel(), true);
 		ItemFactory::registerItem(new FireCharge(), true);
 		ItemFactory::registerItem(new TotemOfUndying(), true);
-		if(Main::$elytraEnabled){
-			ItemFactory::registerItem(new Elytra(), true);
-			if(Main::$elytraBoostEnabled){
-				ItemFactory::registerItem(new FireworkRocket(), true); // TODO: Implement proper Fireworks
-			}
-		}
+		ItemFactory::registerItem(new Elytra(), true);
+		ItemFactory::registerItem(new Fireworks(), true); // TODO: Implement proper Fireworks
 		ItemFactory::registerItem(new ChorusFruit(), true);
 		ItemFactory::registerItem(new FishingRod(), true);
 		ItemFactory::registerItem(new EyeOfEnder(), true);
@@ -66,44 +61,6 @@ class ItemManager {
 		ItemFactory::registerItem(new Hopper(), true);
 		ItemFactory::registerItem(new Bucket(), true);
 
-		Item::addCreativeItem(Item::get(Item::ENDER_PEARL));
-		Item::addCreativeItem(Item::get(Item::BOTTLE_O_ENCHANTING));
-		Item::addCreativeItem(Item::get(Item::FIRE_CHARGE));
-		Item::addCreativeItem(Item::get(Item::TOTEM));
-		if(Main::$elytraEnabled){
-			Item::addCreativeItem(Item::get(Item::ELYTRA));
-			if(Main::$elytraBoostEnabled){
-				Item::addCreativeItem(Item::get(Item::FIREWORKS));
-			}
-		}
-		Item::addCreativeItem(Item::get(Item::CHORUS_FRUIT));
-		Item::addCreativeItem(Item::get(Item::SLIME_BLOCK));
-		Item::addCreativeItem(Item::get(Item::ENDER_EYE));
-		Item::addCreativeItem(Item::get(Item::END_CRYSTAL));
-		Item::addCreativeItem(Item::get(Item::HOPPER));
-
-		for($i = 0; $i <= 36; $i++){
-			Item::addCreativeItem(Item::get(Item::SPLASH_POTION, $i));
-		}
-		/*
-		 yep. this loop needs to be repeated.
-			   ______
-		  .---<__. \ \
-		  `---._  \ \ \
-		   ,----`- `.))         (Joshua Bell)
-		  / ,--.   )  |
-		 /_/    >     |
-		 |,\__-'      |
-		  \_           \
-			~~-___      )
-				  \      \
-		*/
-		for($i = 0; $i <= 36; $i++){
-			Item::addCreativeItem(Item::get(Item::LINGERING_POTION, $i));
-		}
-
-		for($i = 0; $i <= 15; $i++){
-			Item::addCreativeItem(Item::get(Item::SHULKER_BOX, $i, 1));
-		}
+		Item::initCreativeItems();
 	}
 }

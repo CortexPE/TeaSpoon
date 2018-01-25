@@ -40,7 +40,7 @@ use pocketmine\item\{
 };
 
 class Elytra extends Armor {
-	public function __construct($meta = 0, $count = 1){
+	public function __construct($meta = 0){
 		parent::__construct(Item::ELYTRA, $meta, "Elytra Wings");
 	}
 }

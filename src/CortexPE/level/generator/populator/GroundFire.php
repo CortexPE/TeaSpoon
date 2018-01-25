@@ -61,13 +61,11 @@ class GroundFire extends Populator {
 		$this->level = $level;
 		$amount = $random->nextRange(0, $this->randomAmount + 1) + $this->baseAmount;
 		for($i = 0; $i < $amount; ++$i){
-			$x = $random->nextRange($chunkX * 16, $chunkX * 16 + 15);
-			$z = $random->nextRange($chunkZ * 16, $chunkZ * 16 + 15);
+			$x = $random->nextRange(0, 15);
+			$z = $random->nextRange(0, 15);
 			$y = $this->getHighestWorkableBlock($x, $z);
-			//echo "Fire to $x, $y, $z\n";
 			if($y !== -1 and $this->canGroundFireStay($x, $y, $z)){
 				$this->level->setBlockIdAt($x, $y, $z, Block::FIRE);
-				// OLD $this->level->updateBlockLight($x, $y, $z);
 				$this->level->setBlockLightAt($x, $y, $z, Block::get(Block::FIRE)->getLightLevel());
 			}
 		}
@@ -99,7 +97,6 @@ class GroundFire extends Populator {
 	 */
 	private function canGroundFireStay($x, $y, $z){
 		$b = $this->level->getBlockIdAt($x, $y, $z);
-
-		return ($b === Block::AIR or $b === Block::SNOW_LAYER) and $this->level->getBlockIdAt($x, $y - 1, $z) === 87;
+		return ($b == Block::AIR) and $this->level->getBlockIdAt($x, $y - 1, $z) == Block::NETHERRACK;
 	}
 }

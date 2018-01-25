@@ -54,7 +54,7 @@ class EndCrystal extends Item {
 	public function onActivate(Level $level, Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector): bool{
 		$nbt = Entity::createBaseNBT($blockClicked);
 		$crystal = Entity::createEntity("EnderCrystal", $player->getLevel(), $nbt);
-		if($crystal instanceof \CortexPE\entity\EndCrystal){
+		if($crystal instanceof \CortexPE\entity\object\EndCrystal){
 			$crystal->spawnToAll();
 			if($player->isSurvival()){
 				--$this->count;

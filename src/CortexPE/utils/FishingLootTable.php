@@ -37,6 +37,7 @@ namespace CortexPE\utils;
 
 use CortexPE\item\Potion;
 use CortexPE\Main;
+use pocketmine\item\Durable;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
@@ -180,8 +181,10 @@ class FishingLootTable {
 							}
 						}
 					}
-					if(is_int($item->getMaxDurability())){
-						$item->setDamage(mt_rand(intval($item->getMaxDurability() / 2), $item->getMaxDurability()));
+					if($item instanceof Durable){
+						if(is_int($item->getMaxDurability())){
+							$item->setDamage(mt_rand(intval($item->getMaxDurability() / 2), $item->getMaxDurability()));
+						}
 					}
 					break;
 				default:

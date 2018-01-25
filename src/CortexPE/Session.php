@@ -39,6 +39,7 @@ use CortexPE\entity\projectile\FishingHook;
 use CortexPE\item\ArmorDurability;
 use CortexPE\item\Elytra;
 use CortexPE\item\enchantment\Enchantment;
+use pocketmine\inventory\ArmorInventory;
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\EntityEventPacket;
 use pocketmine\Player;
@@ -95,12 +96,9 @@ class Session {
 		if(!$this->player->isAlive() || !$this->player->isSurvival()){
 			return;
 		}
-		$inv = $this->player->getInventory();
-		$size = $inv->getSize();
+		$inv = $this->player->getArmorInventory();
 		$noDamage = false;
-		for($i = $size; $i < $size + 4; $i++){
-			$armor = $inv->getItem($i);
-
+		foreach($inv->getContents() as $armor){
 			if($armor->getId() == Item::ELYTRA){
 				continue;
 			}
@@ -145,14 +143,13 @@ class Session {
 
 			if(!$noDamage){
 				$ac = clone $armor;
-				$ac->setDamage($ac->getDamage() + $damage);
 				if($ac->getDamage() >= $dura){
-					$inv->setItem($i, Item::get(Item::AIR, 0, 1));
+					$armor->setCount(0);
 				}else{
-					$inv->setItem($i, $ac);
+					$armor->setDamage($ac->getDamage() + $damage);
 				}
 
-				$inv->sendArmorContents($inv->getViewers());
+				$inv->sendContents($inv->getViewers());
 			}
 		}
 	}
@@ -162,7 +159,7 @@ class Session {
 		if(!$this->player->isAlive() || !$this->player->isSurvival()){
 			return;
 		}
-		$inv = $this->player->getInventory();
+		$inv = $this->player->getArmorInventory();
 		$elytra = $inv->getChestplate();
 		$noDamage = false;
 		if($elytra instanceof Elytra){
@@ -210,16 +207,12 @@ class Session {
 					$inv->setChestplate($ec);
 				}
 
-				$inv->sendArmorContents($inv->getViewers());
+				$inv->sendSlot(ArmorInventory::SLOT_CHEST, $inv->getViewers());
 			}
 		}
 	}
 
 	public function isUsingElytra(): bool{
-		if($this->player->getInventory()->getChestplate() instanceof Elytra){
-			return true;
-		}
-
-		return false;
+		return ($this->player->getArmorInventory()->getChestplate() instanceof Elytra);
 	}
 }

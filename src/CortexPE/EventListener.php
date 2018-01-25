@@ -59,8 +59,8 @@ use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\{
 	EntityEventPacket, LevelEventPacket
 };
-use pocketmine\Player;
 use pocketmine\Player as PMPlayer;
+use pocketmine\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\Server as PMServer;
 
@@ -166,13 +166,12 @@ class EventListener implements Listener {
 		}
 
 		////////////////////////////// ARMOR DAMAGE //////////////////////////////////////
-		if($ev->getEntity() instanceof Player){
-			/** @var Player $p */
-			$p = $ev->getEntity();
+		$p = $ev->getEntity();
+		if($p instanceof Player){
 			$session = Main::getInstance()->getSessionById($p->getId());
 
 			if($session instanceof Session){
-				$session->useArmors();
+				$session->useArmors(); // TODO: PMMP broke it. :cry:
 			}
 		}
 
@@ -182,10 +181,7 @@ class EventListener implements Listener {
 			if($p instanceof PMPlayer){
 				$session = Main::getInstance()->getSessionById($p->getId());
 				if($session instanceof Session){
-					if($session->usingElytra){
-						$ev->setCancelled(true);
-					}
-					if($p->getLevel()->getBlock($p->subtract(0, 1, 0))->getId() == Block::SLIME_BLOCK){
+					if($session->usingElytra || $p->getLevel()->getBlock($p->subtract(0, 1, 0))->getId() == Block::SLIME_BLOCK){
 						$ev->setCancelled(true);
 					}
 				}
@@ -374,7 +370,7 @@ class EventListener implements Listener {
 
 		if($check && !$isBlocked){
 			if($ev->getItem() instanceof Armor){
-				$inventory = $player->getInventory();
+				$inventory = $player->getArmorInventory();
 				$type = ArmorTypes::getType($item);
 				$old = Item::get(Item::AIR, 0, 1); // just a placeholder
 				$skipReplace = false;
@@ -416,13 +412,13 @@ class EventListener implements Listener {
 					if(!$skipReplace){
 						if(!Main::$instantArmorReplace){
 							if($player->isSurvival() || $player->isAdventure()){
-								$inventory->setItemInHand(Item::get(Item::AIR, 0, 1));
+								$player->getInventory()->setItemInHand(Item::get(Item::AIR, 0, 1));
 							}
 						} else {
 							if(!$old->isNull()){
-								$inventory->setItemInHand($old);
+								$player->getInventory()->setItemInHand($old);
 							} else {
-								$inventory->setItemInHand(Item::get(Item::AIR, 0, 1));
+								$player->getInventory()->setItemInHand(Item::get(Item::AIR, 0, 1));
 							}
 						}
 					}

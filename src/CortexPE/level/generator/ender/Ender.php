@@ -39,7 +39,7 @@ use pocketmine\utils\Random;
 class Ender extends Generator {
 
 	private static $GAUSSIAN_KERNEL = null;
-	private static $SMOOTH_SIZE = 2;
+	private static $SMOOTH_SIZE = 1;
 	/** @var Populator[] */
 	private $populators = [];
 	/** @var ChunkManager */
@@ -47,9 +47,9 @@ class Ender extends Generator {
 	/** @var Random */
 	private $random;
 	private $waterHeight = 0;
-	private $emptyHeight = 32;
-	private $emptyAmplitude = 1;
-	private $density = 0.6;
+	private $emptyHeight = 24;
+	private $emptyAmplitude = 2;
+	private $density = 0;
 	/** @var Populator[] */
 	private $generationPopulators = [];
 	/** @var Simplex */

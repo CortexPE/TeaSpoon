@@ -35,13 +35,10 @@ declare(strict_types = 1);
 
 namespace CortexPE\utils;
 
-use CortexPE\entity\Lightning;
 use CortexPE\Utils;
 use pocketmine\block\Block;
-use pocketmine\entity\Animal;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Human;
-use pocketmine\entity\Monster;
 
 class Xp extends Utils {
 	public static function getXpDropsForEntity(Entity $e): int{

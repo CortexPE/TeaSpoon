@@ -79,16 +79,20 @@ class PacketHandler implements Listener {
 							break;
 
 						case PlayerActionPacket::ACTION_START_GLIDE:
-							$p->setDataFlag(PMPlayer::DATA_FLAGS, PMPlayer::DATA_FLAG_GLIDING, true, PMPlayer::DATA_TYPE_BYTE);
+							if(Main::$elytraEnabled){
+								$p->setGenericFlag(PMPlayer::DATA_FLAG_GLIDING, true); // Why isn't the datatype a byte?
 
-							$session->usingElytra = $session->allowCheats = true;
+								$session->usingElytra = $session->allowCheats = true;
+							}
 							break;
 						case PlayerActionPacket::ACTION_STOP_GLIDE:
-							$p->setDataFlag(PMPlayer::DATA_FLAGS, PMPlayer::DATA_FLAG_GLIDING, false, PMPlayer::DATA_TYPE_BYTE);
+							if(Main::$elytraEnabled){
+								$p->setGenericFlag(PMPlayer::DATA_FLAG_GLIDING, false);
 
-							$session->usingElytra = $session->allowCheats = false;
+								$session->usingElytra = $session->allowCheats = false;
 
-							$session->damageElytra();
+								$session->damageElytra();
+							}
 							break;
 					}
 				}

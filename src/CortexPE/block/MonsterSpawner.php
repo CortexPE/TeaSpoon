@@ -29,9 +29,7 @@ use CortexPE\tile\MobSpawner;
 use pocketmine\block\{
 	Block, MonsterSpawner as SpawnerPM
 };
-use pocketmine\item\{
-	enchantment\Enchantment, Item
-};
+use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\{
 	CompoundTag, IntTag, StringTag
@@ -174,22 +172,23 @@ class MonsterSpawner extends SpawnerPM {
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null): bool{
 		parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player);
 
-		if($item->getDamage() <= 0) return false;
-		$tile = $this->getLevel()->getTile($this);
-		$this->entityid = $item->getDamage();
-		if(!$tile instanceof MobSpawner){
-			/** @var CompoundTag $nbt */
-			$nbt = new CompoundTag("", [
-				new StringTag(Tile::TAG_ID, Tile::MOB_SPAWNER),
-				new IntTag(Tile::TAG_X, (int)$this->x),
-				new IntTag(Tile::TAG_Y, (int)$this->y),
-				new IntTag(Tile::TAG_Z, (int)$this->z),
-			]);
-			/** @var MobSpawner $tile */
-			$tile = Tile::createTile(Tile::MOB_SPAWNER, $this->getLevel(), $nbt);
-			$tile->setEntityId($this->entityid);
+		if($item->getDamage() > 9){
+			$tile = $this->getLevel()->getTile($this);
+			$this->entityid = $item->getDamage();
+			if(!$tile instanceof MobSpawner){
+				/** @var CompoundTag $nbt */
+				$nbt = new CompoundTag("", [
+					new StringTag(Tile::TAG_ID, Tile::MOB_SPAWNER),
+					new IntTag(Tile::TAG_X, (int)$this->x),
+					new IntTag(Tile::TAG_Y, (int)$this->y),
+					new IntTag(Tile::TAG_Z, (int)$this->z),
+				]);
+				/** @var MobSpawner $tile */
+				$tile = Tile::createTile(Tile::MOB_SPAWNER, $this->getLevel(), $nbt);
+				$tile->setEntityId($this->entityid);
 
-			return true;
+				return true;
+			}
 		}
 		return true;
 	}
@@ -199,14 +198,10 @@ class MonsterSpawner extends SpawnerPM {
 	 * @return array
 	 */
 	public function getDrops(Item $item): array{
-		$tile = $this->getLevel()->getTile($this);
-		if(!$tile instanceof MobSpawner) return [];
-		if($item->hasEnchantment(Enchantment::SILK_TOUCH)){
-			return [
-				Item::get($this->getItemId(), (int)$tile->getEntityId(), 1, $this->getLevel()->getTile($this)->namedtag),
-			];
-		}
+		return [];
+	}
 
+	public function getSilkTouchDrops(Item $item): array{
 		return [];
 	}
 

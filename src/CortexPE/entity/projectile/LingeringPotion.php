@@ -34,8 +34,7 @@ class LingeringPotion extends Throwable {
 			$nbt->PotionId = new ShortTag("PotionId", Potion::AWKWARD);
 		}
 		parent::__construct($level, $nbt, $shootingEntity);
-		unset($this->dataProperties[self::DATA_SHOOTER_ID]);
-		$this->setDataProperty(self::DATA_VARIANT, self::DATA_TYPE_SHORT, $this->getPotionId());
+		$this->getDataPropertyManager()->setShort(self::DATA_VARIANT, $this->getPotionId());
 		$this->setDataFlag(self::DATA_FLAGS, self::DATA_FLAG_LINGER);
 	}
 

@@ -35,9 +35,16 @@ declare(strict_types = 1);
 
 namespace CortexPE\entity;
 
+use CortexPE\entity\mob\{
+	Bat, Blaze, CaveSpider, Chicken, Cow, Creeper, Donkey, ElderGuardian, EnderDragon, Enderman, Endermite, Evoker, Ghast, Guardian, Horse, Husk, IronGolem, Llama, MagmaCube, Mooshroom, Mule, Ocelot, Parrot, Pig, PigZombie, PolarBear, Rabbit, Sheep, Shulker, Silverfish, Skeleton, Slime, SnowGolem, Spider, Stray, Vex, Vindicator, Witch, Wither, WitherSkeleton, Wolf, ZombieHorse, ZombieVillager
+};
+use CortexPE\entity\object\{
+	AreaEffectCloud, EndCrystal, Lightning
+};
 use CortexPE\entity\projectile\{
 	Arrow, Egg, EnchantingBottle, EnderPearl, FishingHook, LingeringPotion, Snowball, SplashPotion
 };
+use CortexPE\entity\vehicle\Boat;
 use CortexPE\Main;
 use pocketmine\entity\Entity;
 
@@ -45,7 +52,6 @@ class EntityManager extends Entity {
 	public static function init(): void{
 		if(Main::$registerVanillaEntities){
 			self::registerEntity(Bat::class, true, ['Bat', 'minecraft:bat']);
-			self::registerEntity(Boat::class, true, ['Boat', 'minecraft:boat']);
 			self::registerEntity(Blaze::class, true, ['Blaze', 'minecraft:blaze']);
 			self::registerEntity(CaveSpider::class, true, ['CaveSpider', 'minecraft:cavespider']);
 			self::registerEntity(Chicken::class, true, ['Chicken', 'minecraft:chicken']);
@@ -76,7 +82,6 @@ class EntityManager extends Entity {
 			self::registerEntity(Shulker::class, true, ['Shulker', 'minecraft:shulker']);
 			self::registerEntity(Silverfish::class, true, ['Silverfish', 'minecraft:silverfish']);
 			self::registerEntity(Skeleton::class, true, ['Skeleton', 'minecraft:skeleton']);
-			self::registerEntity(Skeleton::class, true, ['Skeleton', 'minecraft:skeleton']);
 			self::registerEntity(Slime::class, true, ['Slime', 'minecraft:slime']);
 			self::registerEntity(SnowGolem::class, true, ['SnowGolem', 'minecraft:snowgolem']);
 			self::registerEntity(Spider::class, true, ['Spider', 'minecraft:spider']);
@@ -105,5 +110,6 @@ class EntityManager extends Entity {
 		self::registerEntity(AreaEffectCloud::class, true, ['AreaEffectCloud', 'minecraft:areaeffectcloud']);
 		self::registerEntity(Lightning::class, true, ['Lightning', 'minecraft:lightning']);
 		self::registerEntity(EndCrystal::class, true, ['EnderCrystal', 'minecraft:ender_crystal']);
+		self::registerEntity(Boat::class, true, ['Boat', 'minecraft:boat']);
 	}
 }

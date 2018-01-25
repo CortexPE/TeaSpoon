@@ -44,7 +44,6 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDeathEvent;
 use pocketmine\event\Listener;
-use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\item\Item;
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
@@ -52,11 +51,11 @@ use pocketmine\plugin\Plugin;
 class EnchantHandler implements Listener {
 	/**
 	 * TO-DO:
-	 * [X] Protection
-	 * [X] Fire Protection
-	 * [X] Feather Falling
-	 * [X] Blast protection
-	 * [X] Projectile protection
+	 * [X] Protection (PMMP)
+	 * [X] Fire Protection (PMMP)
+	 * [X] Feather Falling (PMMP)
+	 * [X] Blast protection (PMMP)
+	 * [X] Projectile protection (PMMP)
 	 * [X] Thorns
 	 * [X] Respiration (PMMP)
 	 * [X] Depth strider (Client Side)
@@ -68,8 +67,8 @@ class EnchantHandler implements Listener {
 	 * [X] Fire aspect
 	 * [X] Looting
 	 * [X] Efficiency (PMMP)
-	 * [X] Silk touch
-	 * [X] Unbreaking (Partially handled by PMMP)
+	 * [X] Silk touch (PMMP)
+	 * [X] Unbreaking (PMMP)
 	 * [X] Fortune
 	 * [X] Power
 	 * [X] Punch
@@ -150,14 +149,14 @@ class EnchantHandler implements Listener {
 					}
 				}
 				if($e instanceof PMPlayer){
-					foreach($e->getInventory()->getArmorContents() as $armorContent){
+					foreach($e->getArmorInventory()->getContents() as $armorContent){
 						if($armorContent->hasEnchantments()){
 							foreach(Utils::getEnchantments($armorContent) as $enchantment){
 								if($enchantment->getLevel() <= 0) continue;
 								switch($enchantment->getId()){
 									case Enchantment::THORNS:
 										if($d instanceof PMPlayer){
-											$armor = $d->getInventory()->getHelmet();
+											$armor = $d->getArmorInventory()->getHelmet();
 											if(mt_rand(1, 2) == 1 && $armor->getId() !== Block::AIR){
 												$armorClone = clone $armor;
 												if($armorClone->getDamage() - 3 > 0){
@@ -165,9 +164,9 @@ class EnchantHandler implements Listener {
 												}else{
 													$armorClone->setDamage(0);
 												}
-												$d->getInventory()->setHelmet($armorClone);
+												$d->getArmorInventory()->setHelmet($armorClone);
 											}
-											$armor = $d->getInventory()->getChestplate();
+											$armor = $d->getArmorInventory()->getChestplate();
 											if(mt_rand(1, 2) == 1 && $armor->getId() !== Block::AIR){
 												$armorClone = clone $armor;
 												if($armorClone->getDamage() - 3 > 0){
@@ -175,9 +174,9 @@ class EnchantHandler implements Listener {
 												}else{
 													$armorClone->setDamage(0);
 												}
-												$d->getInventory()->setChestplate($armorClone);
+												$d->getArmorInventory()->setChestplate($armorClone);
 											}
-											$armor = $d->getInventory()->getLeggings();
+											$armor = $d->getArmorInventory()->getLeggings();
 											if(mt_rand(1, 2) == 1 && $armor->getId() !== Block::AIR){
 												$armorClone = clone $armor;
 												if($armorClone->getDamage() - 3 > 0){
@@ -185,9 +184,9 @@ class EnchantHandler implements Listener {
 												}else{
 													$armorClone->setDamage(0);
 												}
-												$d->getInventory()->setLeggings($armorClone);
+												$d->getArmorInventory()->setLeggings($armorClone);
 											}
-											$armor = $d->getInventory()->getBoots();
+											$armor = $d->getArmorInventory()->getBoots();
 											if(mt_rand(1, 2) == 1 && $armor->getId() !== Block::AIR){
 												$armorClone = clone $armor;
 												if($armorClone->getDamage() - 3 > 0){
@@ -195,7 +194,7 @@ class EnchantHandler implements Listener {
 												}else{
 													$armorClone->setDamage(0);
 												}
-												$d->getInventory()->setBoots($armorClone);
+												$d->getArmorInventory()->setBoots($armorClone);
 											}
 											$d->attack(new EntityDamageEvent($e, EntityDamageEvent::CAUSE_CUSTOM, mt_rand($enchantment->getLevel(), 4 + $enchantment->getLevel())));
 										}
@@ -207,100 +206,6 @@ class EnchantHandler implements Listener {
 				}
 			}
 		}
-		if($e instanceof PMPlayer){
-			switch($ev->getCause()){
-				case EntityDamageEvent::CAUSE_BLOCK_EXPLOSION:
-				case EntityDamageEvent::CAUSE_ENTITY_EXPLOSION:
-					foreach($e->getInventory()->getArmorContents() as $armor){
-						if($armor->hasEnchantments()){
-							if(($ench = $this->isEnchantedWith($armor, Enchantment::BLAST_PROTECTION))){
-								if($ench === null){
-									break 2;
-								}
-								$ev->setDamage($ev->getDamage() - ((0.04 * $ench->getLevel()) * $ev->getDamage()));
-								break 2;
-							}
-						}
-					}
-					break;
-
-				case EntityDamageEvent::CAUSE_FALL:
-					foreach($e->getInventory()->getArmorContents() as $armor){
-						if($armor->hasEnchantments()){
-							if(($ench = $this->isEnchantedWith($armor, Enchantment::FEATHER_FALLING))){
-								if($ench === null){
-									break 2;
-								}
-								$ev->setDamage($ev->getDamage() - ((0.06 * $ench->getLevel()) * $ev->getDamage()));
-								break 2;
-							}
-						}
-					}
-					break;
-
-				case EntityDamageEvent::CAUSE_FIRE:
-				case EntityDamageEvent::CAUSE_FIRE_TICK:
-				case EntityDamageEvent::CAUSE_LAVA:
-					foreach($e->getInventory()->getArmorContents() as $armor){
-						if($armor->hasEnchantments()){
-							if(($ench = $this->isEnchantedWith($armor, Enchantment::FIRE_PROTECTION))){
-								if($ench === null){
-									break 2;
-								}
-								$ev->setDamage($ev->getDamage() - ((0.02 * $ench->getLevel()) * $ev->getDamage()));
-								break 2;
-							}
-						}
-					}
-					break;
-
-				case EntityDamageEvent::CAUSE_STARVATION:
-				case EntityDamageEvent::CAUSE_MAGIC:
-					foreach($e->getInventory()->getArmorContents() as $armor){
-						if($armor->hasEnchantments()){
-							if(($ench = $this->isEnchantedWith($armor, Enchantment::PROTECTION))){
-								if($ench === null){
-									break 2;
-								}
-								$ev->setDamage($ev->getDamage() - ((0.03 * $ench->getLevel()) * $ev->getDamage()));
-								break 2;
-							}
-						}
-					}
-					break;
-
-				case EntityDamageEvent::CAUSE_PROJECTILE:
-					foreach($e->getInventory()->getArmorContents() as $armor){
-						if($armor->hasEnchantments()){
-							if(($ench = $this->isEnchantedWith($armor, Enchantment::PROJECTILE_PROTECTION))){
-								if($ench === null){
-									break 2;
-								}
-								$ev->setDamage($ev->getDamage() - ((0.04 * $ench->getLevel()) * $ev->getDamage()));
-								break 2;
-							}
-						}
-					}
-					break;
-			}
-		}
-	}
-
-	/**
-	 * Checks if the Item is enchanted with a specific enchant ID
-	 *
-	 * @param Item $i
-	 * @param int $enchantId
-	 * @return \pocketmine\item\enchantment\EnchantmentInstance | null
-	 */
-	private function isEnchantedWith(Item $i, int $enchantId){
-		if($i->getEnchantment($enchantId) !== null){
-			if($i->getEnchantment($enchantId)->getLevel() > 0){
-				return $i->getEnchantment($enchantId);
-			}
-		}
-
-		return null;
 	}
 
 	/**
@@ -396,20 +301,6 @@ class EnchantHandler implements Listener {
 							break;
 					}
 					break;
-				case Enchantment::SILK_TOUCH:
-					if($block->getId() !== Block::MOB_SPAWNER){
-						$drops = [];
-						foreach($ev->getDrops() as $drop){
-							if($drop->getId() == $block->getId() and $drop->getDamage() == $block->getDamage()){
-								$drops[] = $drop;
-							}else{
-								$it = Item::get($block->getId(), $block->getDamage(), 1);
-								$drops[] = $it;
-							}
-						}
-						$ev->setDrops($drops);
-					}
-					break;
 			}
 		}
 	}
@@ -440,33 +331,6 @@ class EnchantHandler implements Listener {
 							}
 							$ev->setDrops($drops);
 							break;
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * @param PlayerInteractEvent $ev
-	 *
-	 * @priority HIGHEST
-	 */
-	public function onInteract(PlayerInteractEvent $ev){
-		$p = $ev->getPlayer();
-		$item = $ev->getItem();
-		$block = $ev->getBlock();
-
-		if($item->isHoe() && ($block->getId() == Block::GRASS || $block->getId() == Block::DIRT)){
-			if($item->hasEnchantments()){
-				if($item->hasEnchantment(Enchantment::UNBREAKING)){
-					$enchantment = $item->getEnchantment(Enchantment::UNBREAKING);
-					$lvl = $enchantment->getLevel() + 1;
-					if(mt_rand(1, 100) >= intval(100 / $lvl)){
-						$ic = clone $item;
-						if($ic->getDamage() > 0){
-							$ic->setDamage($ic->getDamage() - 1);
-							$p->getInventory()->setItemInHand($ic);
-						}
 					}
 				}
 			}

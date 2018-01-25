@@ -38,7 +38,7 @@ namespace CortexPE\item;
 use pocketmine\item\Item;
 
 class EyeOfEnder extends Item {
-	public function __construct($meta = 0, $count = 1){
+	public function __construct($meta = 0){
 		parent::__construct(self::ENDER_EYE, $meta, "Eye Of Ender");
 	}
 }
