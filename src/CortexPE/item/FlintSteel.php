@@ -38,7 +38,6 @@ namespace CortexPE\item;
 use CortexPE\block\Portal;
 use pocketmine\block\Block;
 use pocketmine\item\FlintSteel as PMFlintSteel;
-use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 
@@ -47,8 +46,9 @@ class FlintSteel extends PMFlintSteel {
 		parent::__construct($meta);
 	}
 
-	public function onActivate(Level $level, Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $facePos): bool{
-		parent::onActivate($level, $player, $blockReplace, $blockClicked, $face, $facePos);
+	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $facePos): bool{
+		parent::onActivate($player, $blockReplace, $blockClicked, $face, $facePos);
+		$level = $player->getLevel();
 		if($blockClicked->getId() === Block::OBSIDIAN){
 			$temporalVector = new Vector3(0,0,0);
 			$tx = $blockClicked->getX();

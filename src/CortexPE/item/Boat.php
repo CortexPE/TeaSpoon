@@ -25,7 +25,6 @@ namespace CortexPE\item;
 
 use pocketmine\block\Block;
 use pocketmine\item\Item as ItemPM;
-use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 
@@ -54,7 +53,7 @@ class Boat extends ItemPM {
 		return true;
 	}
 
-	public function onActivate(Level $level, Player $player, Block $block, Block $target, int $face, Vector3 $facepos): bool{
+	public function onActivate(Player $player, Block $block, Block $target, int $face, Vector3 $facepos): bool{
 		// TODO
 		return true;
 		/*$realPos = $target->getSide($face)->add(0.5, 0.4, 0.5);

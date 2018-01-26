@@ -38,16 +38,15 @@ namespace CortexPE\item;
 use CortexPE\Utils;
 use pocketmine\block\Block;
 use pocketmine\item\Bucket as PMBucket;
-use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player;
 
 class Bucket extends PMBucket {
-	public function onActivate(Level $level, Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector): bool{
-		if(Utils::getDimension($level) == DimensionIds::NETHER && ($this->meta + 1) == Block::WATER){
+	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector): bool{
+		if(Utils::getDimension($player->getLevel()) == DimensionIds::NETHER && ($this->meta + 1) == Block::WATER){
 			return false;
 		}
-		return parent::onActivate($level, $player, $blockReplace, $blockClicked, $face, $clickVector);
+		return parent::onActivate($player, $blockReplace, $blockClicked, $face, $clickVector);
 	}
 }

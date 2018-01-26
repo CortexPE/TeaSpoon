@@ -40,7 +40,6 @@ use pocketmine\block\{
 	Block, BlockFactory, Solid
 };
 use pocketmine\item\Item;
-use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\Player;
@@ -54,8 +53,9 @@ class FireCharge extends Item {
 		return true;
 	}
 
-	public function onActivate(Level $level, Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $facePos): bool{
+	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $facePos): bool{
 		$target = $blockClicked;
+		$level = $player->getLevel();
 		if($target->getId() === Block::OBSIDIAN){
 			$tx = $target->getX();
 			$ty = $target->getY();
