@@ -1,7 +1,7 @@
 <h1>TeaSpoon<img src="https://raw.githubusercontent.com/CortexPE/stuff/master/TeaSpoonLogo.png" height="64" width="64" align="left"></img></h1>
 <br />
 
-[![Build Status](http://cortexpe.xyz:8080/job/TeaSpoon/badge/icon)](http://cortexpe.xyz:8080/job/TeaSpoon/) [![Poggit](https://poggit.pmmp.io/ci.shield/CortexPE/TeaSpoon/~)](https://poggit.pmmp.io/ci/CortexPE/TeaSpoon/~) [![Donate](https://img.shields.io/badge/donate-PayPal-yellow.svg?style=flat-square)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MABFZPDR8F5UG) [![HitCount](http://hits.dwyl.io/CortexPE/TeaSpoon.svg)](http://hits.dwyl.io/CortexPE/TeaSpoon) [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/CortexPE/TeaSpoon/pulls) [![License](https://img.shields.io/badge/license-GNU%20AGPL%20v3-brightgreen.svg?style=flat-square)](https://github.com/CortexPE/TeaSpoon/blob/master/LICENSE) [![Discord](https://img.shields.io/discord/350333413737365522.svg?style=flat-square&label=discord%20chat)](https://discord.gg/QA3eSjw)
+[![Poggit](https://poggit.pmmp.io/ci.shield/CortexPE/TeaSpoon/~)](https://poggit.pmmp.io/ci/CortexPE/TeaSpoon/~) [![Donate](https://img.shields.io/badge/donate-PayPal-yellow.svg?style=flat-square)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MABFZPDR8F5UG) [![HitCount](http://hits.dwyl.io/CortexPE/TeaSpoon.svg)](http://hits.dwyl.io/CortexPE/TeaSpoon) [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/CortexPE/TeaSpoon/pulls) [![License](https://img.shields.io/badge/license-GNU%20AGPL%20v3-brightgreen.svg?style=flat-square)](https://github.com/CortexPE/TeaSpoon/blob/master/LICENSE) [![Discord](https://img.shields.io/discord/350333413737365522.svg?style=flat-square&label=discord%20chat)](https://discord.gg/QA3eSjw)
 
 A Massive PocketMine-MP plugin designed and is aiming to extend PMMP's functionalities (Without completely changing it) to Make it more Vanilla-Like.
 
@@ -12,7 +12,7 @@ Contributions are very welcome :smile:<br />You may contribute by opening a Pull
 __[Discord Group to 'talk-to-a-human-for-support' and for questions](https://discordapp.com/invite/7y8WM4F)__
  
 # Installation
-Installation is easy, Just download the latest phar from my [Jenkins Build Server](http://cortexpe.xyz:8080/job/TeaSpoon/lastSuccessfulBuild/artifact/TeaSpoon.phar) or from [Poggit](https://poggit.pmmp.io/ci/CortexPE/TeaSpoon/~) then drag and drop it to your ```./plugins/``` folder...
+Installation is easy, Just download the latest phar from [Poggit](https://poggit.pmmp.io/ci/CortexPE/TeaSpoon/~) then put it to your ```./plugins/``` folder. Restart your server. And you're basically done.
 
 # Issue Reporting
  - ALWAYS use the [LATEST PocketMine-MP Build](https://jenkins.pmmp.io/job/PocketMine-MP/lastSuccessfulBuild/artifact/) to use this plugin
@@ -20,6 +20,7 @@ Installation is easy, Just download the latest phar from my [Jenkins Build Serve
  - Including the "Steps to Reproduce" in the issue report would be really helpful in fixing bugs.
  - To help me determine why the issue occurs, including the TeaSpoonDump from ```/bugreport``` lets me view all the necessary server information to easily determine incompatibility issues and mis-configuration issues. <sub>Privacy Concerns? You can check the code for yourself <a href="https://github.com/CortexPE/TeaSpoon/blob/master/src/CortexPE/commands/BugReportCommand.php">here</a> ;)</sub>
  - The only supported branch is PMMP's 'master' branch. Issues regarding other branches will be closed.
+
 # FAQs
 ### MobAI:
 &nbsp;&nbsp;&nbsp;&nbsp;For now, you can use [PureEntitiesX](https://github.com/RevivalPMMP/PureEntitiesX) while disabling ```entities.register``` in TeaSpoon's Configuration File.

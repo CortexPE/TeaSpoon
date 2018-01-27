@@ -57,15 +57,26 @@ class Utils {
 
 	/** @var bool */
 	private static $phared = null;
+	/** @var bool */
+	private static $serverPhared = null;
 
 	public static function isPhared(): bool{
 		if(self::$phared == null){
 			self::$phared = strlen(\Phar::running()) > 0 ? true : false;
 
 			return self::$phared;
-		}else{
-			return self::$phared;
 		}
+		return self::$phared;
+	}
+
+	public static function isServerPhared() : bool {
+		if(self::$serverPhared == null){
+			$ref = new \ReflectionClass(PMServer::class);
+			self::$serverPhared = ((strpos($ref->getFileName(), "phar://") !== false) ? true : false);
+
+			return self::$serverPhared;
+		}
+		return self::$serverPhared;
 	}
 
 	public static function canSeeSky(Level $lvl, Vector3 $pos){
@@ -238,7 +249,7 @@ class Utils {
 	public static function stringToASCIIHex(string $string): string{
 		$return = "";
 		for($i = 0; $i < strlen($string); $i++){
-			$return .= "\x" . str_pad(dechex(ord($string[$i])), 2, '0', STR_PAD_LEFT);
+			$return .= "\x" . bin2hex($string[$i]);
 		}
 
 		return $return;
@@ -263,12 +274,13 @@ class Utils {
 			/** @var CompoundTag $entry */
 			foreach($ench as $entry){
 				$id = $entry->getShort("id");
-				if($id > 26){
+				$lvl = $entry->getShort("lvl");
+				if($id > 26 || $lvl <= 0){
 					continue;
 				}
 				$e = Enchantment::getEnchantment($id);
 				if($e !== null){
-					$enchantments[] = new EnchantmentInstance($e, $entry->getShort("lvl"));
+					$enchantments[] = new EnchantmentInstance($e, $lvl);
 				}
 			}
 		}

@@ -10,7 +10,7 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 15
+version: 16
 
 entities:
  # Weather to register Vanilla Entities (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...) or not
@@ -68,3 +68,7 @@ player:
  elytra:
   enable: true
   enableElytraBoost: true
+
+blockMechanics:
+ # Drop spawners on silk touch
+ silkTouchSpawners: false

@@ -36,6 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\commands;
 
 use CortexPE\Main;
+use CortexPE\Utils;
 use pocketmine\command\Command;
 use pocketmine\Server as PMServer;
 
@@ -48,7 +49,7 @@ class CommandManager {
 			new BugReportCommand("bugreport"),
 		];
 
-		if(Main::$debug){
+		if(!Utils::isPhared()){
 			$cmds[] = new TestCommand("test");
 		}
 		if(Main::$weatherEnabled){

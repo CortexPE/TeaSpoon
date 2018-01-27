@@ -38,13 +38,17 @@ namespace CortexPE\handlers;
 use CortexPE\item\enchantment\Enchantment;
 use CortexPE\Utils;
 use pocketmine\block\Block;
+use pocketmine\entity\Entity;
+use pocketmine\entity\Human;
 use pocketmine\entity\Living;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDeathEvent;
 use pocketmine\event\Listener;
+use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
+use pocketmine\item\TieredTool;
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
 
@@ -109,98 +113,93 @@ class EnchantHandler implements Listener {
 		}
 		if($ev instanceof EntityDamageByEntityEvent){
 			$d = $ev->getDamager();
-			if($d === null){
+			if(!($d instanceof Entity) || !$d->isAlive()){
 				return;
 			}
 			if($d instanceof PMPlayer && $e instanceof Living){
 				$i = $d->getInventory()->getItemInHand();
-				if($i->hasEnchantments()){
-					foreach(Utils::getEnchantments($i) as $ench){
-						if($ench->getLevel() <= 0) continue;
-						switch($ench->getId()){
-							case Enchantment::FIRE_ASPECT:
-								$e->setOnFire(($ench->getLevel() * 4) * 20);
-								break;
-							case Enchantment::KNOCKBACK:
-								$ev->setKnockBack(($ev->getKnockBack() + 0.3) * $ench->getLevel());
-								break;
-							case Enchantment::PUNCH:
-								if($d->getInventory()->getItemInHand()->getId() == Item::BOW){
-									$ev->setKnockBack(($ev->getKnockBack() + 0.2) * $ench->getLevel());
-								}
-								break;
-							case Enchantment::BANE_OF_ARTHROPODS:
-								if(Utils::in_arrayi($e->getName(), self::BANE_OF_ARTHROPODS_AFFECTED_ENTITIES)){
-									$ev->setDamage($ev->getDamage() + ($ench->getLevel() * 2.5));
-								}
-								break;
-							case Enchantment::POWER:
-								if($d->getInventory()->getItemInHand()->getId() == Item::BOW){
-									$ev->setDamage($ev->getDamage() + ((($ev->getDamage() * 0.25) * $ench->getLevel()) + 1));
-								}
-								break;
-							case Enchantment::SMITE:
-								$ev->setDamage($ev->getDamage() + ($ench->getLevel() * 2.5));
-								break;
-							case Enchantment::SHARPNESS:
-								$ev->setDamage($ev->getDamage() + (($ench->getLevel() * 0.4) + 1));
-								break;
-						}
+				$damage = $ev->getDamage();
+				$knockback = $ev->getKnockBack();
+				foreach(Utils::getEnchantments($i) as $ench){
+					$lvl = $ench->getLevel();
+					switch($ench->getId()){
+						case Enchantment::FIRE_ASPECT:
+							$e->setOnFire(($lvl * 4) * 20);
+							break;
+						case Enchantment::KNOCKBACK:
+							$ev->setKnockBack(($knockback + 0.3) * $lvl);
+							break;
+						case Enchantment::PUNCH:
+							if($d->getInventory()->getItemInHand()->getId() == Item::BOW){
+								$ev->setKnockBack(($knockback + 0.2) * $lvl);
+							}
+							break;
+						case Enchantment::BANE_OF_ARTHROPODS:
+							if(Utils::in_arrayi($e->getName(), self::BANE_OF_ARTHROPODS_AFFECTED_ENTITIES)){
+								$ev->setDamage($damage + ($lvl * 2.5));
+							}
+							break;
+						case Enchantment::POWER:
+							if($i->getId() == Item::BOW){
+								$ev->setDamage($damage + ((($damage * 0.25) * $lvl) + 1));
+							}
+							break;
+						case Enchantment::SMITE:
+							$ev->setDamage($damage + ($lvl * 2.5));
+							break;
+						case Enchantment::SHARPNESS:
+							$ev->setDamage($damage + (($lvl * 0.4) + 1));
+							break;
 					}
 				}
 				if($e instanceof PMPlayer){
 					foreach($e->getArmorInventory()->getContents() as $armorContent){
-						if($armorContent->hasEnchantments()){
-							foreach(Utils::getEnchantments($armorContent) as $enchantment){
-								if($enchantment->getLevel() <= 0) continue;
-								switch($enchantment->getId()){
-									case Enchantment::THORNS:
-										if($d instanceof PMPlayer){
-											$armor = $d->getArmorInventory()->getHelmet();
-											if(mt_rand(1, 2) == 1 && $armor->getId() !== Block::AIR){
-												$armorClone = clone $armor;
-												if($armorClone->getDamage() - 3 > 0){
-													$armorClone->setDamage($armorClone->getDamage() - 3);
-												}else{
-													$armorClone->setDamage(0);
-												}
-												$d->getArmorInventory()->setHelmet($armorClone);
-											}
-											$armor = $d->getArmorInventory()->getChestplate();
-											if(mt_rand(1, 2) == 1 && $armor->getId() !== Block::AIR){
-												$armorClone = clone $armor;
-												if($armorClone->getDamage() - 3 > 0){
-													$armorClone->setDamage($armorClone->getDamage() - 3);
-												}else{
-													$armorClone->setDamage(0);
-												}
-												$d->getArmorInventory()->setChestplate($armorClone);
-											}
-											$armor = $d->getArmorInventory()->getLeggings();
-											if(mt_rand(1, 2) == 1 && $armor->getId() !== Block::AIR){
-												$armorClone = clone $armor;
-												if($armorClone->getDamage() - 3 > 0){
-													$armorClone->setDamage($armorClone->getDamage() - 3);
-												}else{
-													$armorClone->setDamage(0);
-												}
-												$d->getArmorInventory()->setLeggings($armorClone);
-											}
-											$armor = $d->getArmorInventory()->getBoots();
-											if(mt_rand(1, 2) == 1 && $armor->getId() !== Block::AIR){
-												$armorClone = clone $armor;
-												if($armorClone->getDamage() - 3 > 0){
-													$armorClone->setDamage($armorClone->getDamage() - 3);
-												}else{
-													$armorClone->setDamage(0);
-												}
-												$d->getArmorInventory()->setBoots($armorClone);
-											}
-											$d->attack(new EntityDamageEvent($e, EntityDamageEvent::CAUSE_CUSTOM, mt_rand($enchantment->getLevel(), 4 + $enchantment->getLevel())));
-										}
-										break;
+						if($armorContent->hasEnchantment(Enchantment::THORNS)){
+							$enchantment = $armorContent->getEnchantment(Enchantment::THORNS);
+							if($d instanceof PMPlayer){
+								$armor = $d->getArmorInventory()->getHelmet();
+								if(mt_rand(1, 2) == 1 && $armor->getId() !== Block::AIR){
+									$armorClone = clone $armor;
+									if($armorClone->getDamage() - 3 > 0){
+										$armorClone->setDamage($armorClone->getDamage() - 3);
+									}else{
+										$armorClone->setDamage(0);
+									}
+									$d->getArmorInventory()->setHelmet($armorClone);
 								}
+								$armor = $d->getArmorInventory()->getChestplate();
+								if(mt_rand(1, 2) == 1 && $armor->getId() !== Block::AIR){
+									$armorClone = clone $armor;
+									if($armorClone->getDamage() - 3 > 0){
+										$armorClone->setDamage($armorClone->getDamage() - 3);
+									}else{
+										$armorClone->setDamage(0);
+									}
+									$d->getArmorInventory()->setChestplate($armorClone);
+								}
+								$armor = $d->getArmorInventory()->getLeggings();
+								if(mt_rand(1, 2) == 1 && $armor->getId() !== Block::AIR){
+									$armorClone = clone $armor;
+									if($armorClone->getDamage() - 3 > 0){
+										$armorClone->setDamage($armorClone->getDamage() - 3);
+									}else{
+										$armorClone->setDamage(0);
+									}
+									$d->getArmorInventory()->setLeggings($armorClone);
+								}
+								$armor = $d->getArmorInventory()->getBoots();
+								if(mt_rand(1, 2) == 1 && $armor->getId() !== Block::AIR){
+									$armorClone = clone $armor;
+									if($armorClone->getDamage() - 3 > 0){
+										$armorClone->setDamage($armorClone->getDamage() - 3);
+									}else{
+										$armorClone->setDamage(0);
+									}
+									$d->getArmorInventory()->setBoots($armorClone);
+								}
+								$d->attack(new EntityDamageEvent($e, EntityDamageEvent::CAUSE_CUSTOM, mt_rand($enchantment->getLevel(), 4 + $enchantment->getLevel())));
 							}
+							break; // do this only once...
 						}
 					}
 				}
@@ -213,7 +212,7 @@ class EnchantHandler implements Listener {
 	 *
 	 * Attribution:
 	 *  - Big thanks to @TheAz928 for the values... It really helped a lot! :D
-	 *  - The onBreak function below is a refactored, bare-bones and more-human friendly version of his Fortune & SilkTouch enchant handler...
+	 *  - The onBreak function below is a refactored, bare-bones and more-human friendly version of his Fortune enchant handler...
 	 *
 	 * @priority HIGHEST
 	 */
@@ -221,84 +220,83 @@ class EnchantHandler implements Listener {
 		if($ev->isCancelled()){
 			return;
 		}
-		$p = $ev->getPlayer();
 		$block = $ev->getBlock();
-		$item = $p->getInventory()->getItemInHand();
-		foreach(Utils::getEnchantments($item) as $enchantment){
-			switch($enchantment->getId()){
-				case Enchantment::FORTUNE:
-					$level = $item->getEnchantment(Enchantment::FORTUNE)->getLevel() + 1;
-					$rand = rand(1, $item->getEnchantment(Enchantment::FORTUNE)->getLevel() + 1);
-					switch($block->getId()){
-						case Block::COAL_ORE:
-							if($item->isPickaxe()){
-								$ev->setDrops([Item::get(Item::COAL, 0, 1 + $rand)]);
-							}
-							break;
-						case Block::LAPIS_ORE:
-							if($item->isPickaxe() && $item->getId() !== Item::WOODEN_PICKAXE){
-								$ev->setDrops([Item::get(Item::DYE, 4, rand(1, 4) + $rand)]);
-							}
-							break;
-						case Block::GLOWING_REDSTONE_ORE:
-						case Block::REDSTONE_ORE:
-							if($item->isPickaxe() && $item->getId() !== Item::WOODEN_PICKAXE){
-								$ev->setDrops([Item::get(Item::REDSTONE, 0, rand(2, 3) + $rand)]);
-							}
-							break;
-						case Block::NETHER_QUARTZ_ORE:
-							if($item->isPickaxe() && $item->getId() !== Item::WOODEN_PICKAXE){
-								$ev->setDrops([Item::get(Item::QUARTZ, 0, rand(1, 2) + $rand)]);
-							}
-							break;
-						case Block::DIAMOND_ORE:
-							if($item->isPickaxe() && !in_array($item->getId(), [Item::WOODEN_PICKAXE, Item::STONE_PICKAXE, Item::GOLDEN_PICKAXE])){
-								$ev->setDrops([Item::get(Item::DIAMOND, 0, 1 + $rand)]);
-							}
-							break;
-						case Block::EMERALD_ORE:
-							if($item->isPickaxe() && !in_array($item->getId(), [Item::WOODEN_PICKAXE, Item::STONE_PICKAXE, Item::GOLDEN_PICKAXE])){
-								$ev->setDrops([Item::get(Item::EMERALD, 0, 1 + $rand)]);
-							}
-							break;
-						case Block::POTATO_BLOCK:
-							if($item->isAxe() or $item->isPickaxe()){
-								if($block->getDamage() >= 7){
-									$ev->setDrops([Item::get(Item::POTATO, 0, rand(1, 3) + $rand)]);
-								}
-							}
-							break;
-						case Block::CARROT_BLOCK:
-							if($item->isAxe() or $item->isPickaxe()){
-								if($block->getDamage() >= 7){
-									$ev->setDrops([Item::get(Item::CARROT, 0, rand(1, 3) + $rand)]);
-								}
-							}
-							break;
-						case Block::BEETROOT_BLOCK:
-							if($item->isAxe() or $item->isPickaxe()){
-								if($block->getDamage() >= 7){
-									$ev->setDrops([Item::get(Item::BEETROOT, 0, rand(1, 3) + $rand), Item::get(457, 0, 1)]);
-								}
-							}
-							break;
-						case Block::WHEAT_BLOCK:
-							if($item->isAxe() or $item->isPickaxe()){
-								if($block->getDamage() >= 7){
-									$ev->setDrops([Item::get(Item::SEEDS, 0, rand(1, 3) + $rand), Item::get(Item::WHEAT, 0, 1)]);
-								}
-							}
-							break;
-						case Block::MELON_BLOCK:
-							if($item->isAxe() or $item->isPickaxe()){
-								$ev->setDrops([Item::get(Item::MELON, 0, rand(3, 9) + $rand)]);
-							}
-							break;
-						case Block::LEAVES:
-							if(rand(1, 100) <= 10 + $level * 2){
-								$ev->setDrops([Item::get(Item::APPLE, 0, 1)]);
-							}
-							break;
+		$item = $ev->getItem();
+		$fortuneEnchantment = $item->getEnchantment(Enchantment::FORTUNE);
+		if(!($fortuneEnchantment instanceof EnchantmentInstance)){ // all this method handles is the fortune enchant
+			return;
+		}
+		$level = $fortuneEnchantment->getLevel() + 1;
+		$rand = rand(1, $level);
+		if($item instanceof TieredTool){
+			switch($block->getId()){
+				case Block::COAL_ORE:
+					if($item->isPickaxe()){
+						$ev->setDrops([Item::get(Item::COAL, 0, 1 + $rand)]);
+					}
+					break;
+				case Block::LAPIS_ORE:
+					if($item->isPickaxe() && $item->getTier() > TieredTool::TIER_WOODEN){
+						$ev->setDrops([Item::get(Item::DYE, 4, rand(1, 4) + $rand)]);
+					}
+					break;
+				case Block::GLOWING_REDSTONE_ORE:
+				case Block::REDSTONE_ORE:
+					if($item->isPickaxe() && $item->getTier() > TieredTool::TIER_WOODEN){
+						$ev->setDrops([Item::get(Item::REDSTONE, 0, rand(2, 3) + $rand)]);
+					}
+					break;
+				case Block::NETHER_QUARTZ_ORE:
+					if($item->isPickaxe() && $item->getTier() > TieredTool::TIER_WOODEN){
+						$ev->setDrops([Item::get(Item::QUARTZ, 0, rand(1, 2) + $rand)]);
+					}
+					break;
+				case Block::DIAMOND_ORE:
+					if($item->isPickaxe() && $item->getTier() == TieredTool::TIER_IRON){
+						$ev->setDrops([Item::get(Item::DIAMOND, 0, 1 + $rand)]);
+					}
+					break;
+				case Block::EMERALD_ORE:
+					if($item->isPickaxe() && $item->getTier() == TieredTool::TIER_IRON){
+						$ev->setDrops([Item::get(Item::EMERALD, 0, 1 + $rand)]);
+					}
+					break;
+				case Block::POTATO_BLOCK:
+					if($item->isAxe() || $item->isPickaxe()){
+						if($block->getDamage() >= 7){
+							$ev->setDrops([Item::get(Item::POTATO, 0, rand(1, 3) + $rand)]);
+						}
+					}
+					break;
+				case Block::CARROT_BLOCK:
+					if($item->isAxe() || $item->isPickaxe()){
+						if($block->getDamage() >= 7){
+							$ev->setDrops([Item::get(Item::CARROT, 0, rand(1, 3) + $rand)]);
+						}
+					}
+					break;
+				case Block::BEETROOT_BLOCK:
+					if($item->isAxe() || $item->isPickaxe()){
+						if($block->getDamage() >= 7){
+							$ev->setDrops([Item::get(Item::BEETROOT, 0, rand(1, 3) + $rand)]);
+						}
+					}
+					break;
+				case Block::WHEAT_BLOCK:
+					if($item->isAxe() || $item->isPickaxe()){
+						if($block->getDamage() >= 7){
+							$ev->setDrops([Item::get(Item::SEEDS, 0, rand(1, 3) + $rand), Item::get(Item::WHEAT, 0, 1)]);
+						}
+					}
+					break;
+				case Block::MELON_BLOCK:
+					if($item->isAxe() || $item->isPickaxe()){
+						$ev->setDrops([Item::get(Item::MELON, 0, rand(3, 9) + $rand)]);
+					}
+					break;
+				case Block::LEAVES:
+					if(rand(1, 100) <= 10 + $level * 2){
+						$ev->setDrops([Item::get(Item::APPLE, 0, 1)]);
 					}
 					break;
 			}
@@ -312,7 +310,7 @@ class EnchantHandler implements Listener {
 	 */
 	public function onEntityDeath(EntityDeathEvent $ev){
 		$ent = $ev->getEntity();
-		if($ent instanceof PMPlayer){
+		if($ent instanceof Human){
 			return;
 		}
 		$cause = $ent->getLastDamageCause();
@@ -320,18 +318,15 @@ class EnchantHandler implements Listener {
 			$damager = $cause->getDamager();
 			if($damager instanceof PMPlayer){
 				$item = $damager->getInventory()->getItemInHand();
-				foreach(Utils::getEnchantments($item) as $enchantment){
-					switch($enchantment->getId()){
-						case Enchantment::LOOTING:
-							$drops = [];
-							foreach($ev->getDrops() as $drop){
-								$rand = rand(1, $enchantment->getLevel() + 1);
-								$drop->setCount($drop->getCount() + $rand);
-								$drops[] = $drop;
-							}
-							$ev->setDrops($drops);
-							break;
+				$enchantment = $item->getEnchantment(Enchantment::LOOTING);
+				if($enchantment instanceof EnchantmentInstance){
+					$drops = [];
+					foreach($ev->getDrops() as $drop){
+						$rand = rand(1, $enchantment->getLevel() + 1);
+						$drop->setCount($drop->getCount() + $rand);
+						$drops[] = $drop;
 					}
+					$ev->setDrops($drops);
 				}
 			}
 		}

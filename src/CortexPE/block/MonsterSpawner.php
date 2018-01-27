@@ -25,6 +25,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
+use CortexPE\Main;
 use CortexPE\tile\MobSpawner;
 use pocketmine\block\{
 	Block, MonsterSpawner as SpawnerPM
@@ -166,6 +167,7 @@ class MonsterSpawner extends SpawnerPM {
 
 			return true;
 		}
+
 		return true;
 	}
 
@@ -190,6 +192,7 @@ class MonsterSpawner extends SpawnerPM {
 				return true;
 			}
 		}
+
 		return true;
 	}
 
@@ -202,7 +205,16 @@ class MonsterSpawner extends SpawnerPM {
 	}
 
 	public function getSilkTouchDrops(Item $item): array{
-		return [];
+		$drops = [];
+
+		if(Main::$silkSpawners){
+			$tile = $this->getLevel()->getTile($this->asVector3());
+			if($tile instanceof MobSpawner){
+				$drops[] = Item::get(Item::MOB_SPAWNER, $tile->getEntityId(), 1);
+			}
+		}
+
+		return $drops;
 	}
 
 	/**
