@@ -33,7 +33,7 @@
 
 declare(strict_types = 1);
 
-// FYI: Event Priorities work this way: LOWEST -> LOW -> NORMAL -> HIGH -> HIGHEST -> MONITOR -> EXECUTE
+// FYI: Event Priorities work this way: LOWEST -> LOW -> NORMAL -> HIGH -> HIGHEST -> MONITOR
 
 namespace CortexPE;
 
@@ -50,7 +50,7 @@ use pocketmine\event\entity\{
 	EntityDamageEvent, EntityDeathEvent
 };
 use pocketmine\event\player\{
-	cheat\PlayerIllegalMoveEvent, PlayerCommandPreprocessEvent, PlayerInteractEvent, PlayerItemHeldEvent, PlayerKickEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
+	cheat\PlayerIllegalMoveEvent, PlayerCommandPreprocessEvent, PlayerGameModeChangeEvent, PlayerInteractEvent, PlayerItemHeldEvent, PlayerKickEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
 };
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
@@ -122,44 +122,46 @@ class EventListener implements Listener {
 	public function onDamage(EntityDamageEvent $ev){
 		if($ev->isCancelled()) return false;
 		/////////////////////// TOTEM OF UNDYING ///////////////////////////////
-		if($ev->getDamage() >= $ev->getEntity()->getHealth()){
-			$p = $ev->getEntity();
-			if($p instanceof PMPlayer){
-				if($p->getInventory()->getItemInHand()->getId() === Item::TOTEM && $ev->getCause() !== EntityDamageEvent::CAUSE_VOID && $ev->getCause() !== EntityDamageEvent::CAUSE_SUICIDE){
-					$p->getInventory()->setItemInHand(Item::get(Item::AIR)); // this is supposed to be unstackable anyways... right?
-					$ev->setCancelled(true);
-					$p->setHealth(1);
+		if(Main::$totemEnabled){
+			if($ev->getDamage() >= $ev->getEntity()->getHealth()){
+				$p = $ev->getEntity();
+				if($p instanceof PMPlayer){
+					if($p->getInventory()->getItemInHand()->getId() === Item::TOTEM && $ev->getCause() !== EntityDamageEvent::CAUSE_VOID && $ev->getCause() !== EntityDamageEvent::CAUSE_SUICIDE){
+						$p->getInventory()->setItemInHand(Item::get(Item::AIR)); // this is supposed to be unstackable anyways... right?
+						$ev->setCancelled(true);
+						$p->setHealth(1);
 
-					$p->removeAllEffects();
+						$p->removeAllEffects();
 
-					$REGENERATION = Effect::getEffect(Effect::REGENERATION);
-					$REGENERATION->setAmplifier(1);
-					$REGENERATION->setVisible(true);
-					$REGENERATION->setDuration(40 * 20);
+						$REGENERATION = Effect::getEffect(Effect::REGENERATION);
+						$REGENERATION->setAmplifier(1);
+						$REGENERATION->setVisible(true);
+						$REGENERATION->setDuration(40 * 20);
 
-					$ABSORPTION = Effect::getEffect(Effect::ABSORPTION);
-					$ABSORPTION->setVisible(true);
-					$ABSORPTION->setDuration(5 * 20);
+						$ABSORPTION = Effect::getEffect(Effect::ABSORPTION);
+						$ABSORPTION->setVisible(true);
+						$ABSORPTION->setDuration(5 * 20);
 
-					$FIRE_RESISTANCE = Effect::getEffect(Effect::FIRE_RESISTANCE);
-					$FIRE_RESISTANCE->setVisible(true);
-					$FIRE_RESISTANCE->setDuration(40 * 20);
+						$FIRE_RESISTANCE = Effect::getEffect(Effect::FIRE_RESISTANCE);
+						$FIRE_RESISTANCE->setVisible(true);
+						$FIRE_RESISTANCE->setDuration(40 * 20);
 
-					$p->addEffect($REGENERATION);
-					$p->addEffect($ABSORPTION);
-					$p->addEffect($FIRE_RESISTANCE);
+						$p->addEffect($REGENERATION);
+						$p->addEffect($ABSORPTION);
+						$p->addEffect($FIRE_RESISTANCE);
 
-					$pk = new LevelEventPacket();
-					$pk->evid = LevelEventPacket::EVENT_SOUND_TOTEM;
-					$pk->data = 0;
-					$pk->position = new Vector3($p->getX(), $p->getY(), $p->getZ());
-					PMServer::getInstance()->broadcastPacket($p->getViewers(), $pk);
+						$pk = new LevelEventPacket();
+						$pk->evid = LevelEventPacket::EVENT_SOUND_TOTEM;
+						$pk->data = 0;
+						$pk->position = new Vector3($p->getX(), $p->getY(), $p->getZ());
+						PMServer::getInstance()->broadcastPacket($p->getViewers(), $pk);
 
-					$pk2 = new EntityEventPacket();
-					$pk2->entityRuntimeId = $p->getId();
-					$pk2->event = EntityEventPacket::CONSUME_TOTEM;
-					$pk2->data = 0;
-					PMServer::getInstance()->broadcastPacket($p->getViewers(), $pk2);
+						$pk2 = new EntityEventPacket();
+						$pk2->entityRuntimeId = $p->getId();
+						$pk2->event = EntityEventPacket::CONSUME_TOTEM;
+						$pk2->data = 0;
+						PMServer::getInstance()->broadcastPacket($p->getViewers(), $pk2);
+					}
 				}
 			}
 		}
@@ -180,7 +182,7 @@ class EventListener implements Listener {
 			if($p instanceof PMPlayer){
 				$session = Main::getInstance()->getSessionById($p->getId());
 				if($session instanceof Session){
-					if($session->usingElytra || $p->getLevel()->getBlock($p->subtract(0, 1, 0))->getId() == Block::SLIME_BLOCK){
+					if($session->isUsingElytra() || $p->getLevel()->getBlock($p->subtract(0, 1, 0))->getId() == Block::SLIME_BLOCK){
 						$ev->setCancelled(true);
 					}
 				}
@@ -275,9 +277,11 @@ class EventListener implements Listener {
 	 * @priority HIGHEST
 	 */
 	public function onEntityDeath(EntityDeathEvent $ev){
-		$xp = Xp::getXpDropsForEntity($ev->getEntity());
-		if($xp > 0){
-			$ev->getEntity()->getLevel()->dropExperience($ev->getEntity()->asVector3(), $xp);
+		if(Main::$dropMobExperience){
+			$xp = Xp::getXpDropsForEntity($ev->getEntity());
+			if($xp > 0){
+				$ev->getEntity()->getLevel()->dropExperience($ev->getEntity()->asVector3(), $xp);
+			}
 		}
 	}
 
@@ -288,9 +292,11 @@ class EventListener implements Listener {
 	 */
 	public function onBlockBreak(BlockBreakEvent $ev){
 		if($ev->isCancelled()) return;
-		$xp = Xp::getXpDropsForBlock($ev->getBlock());
-		if($xp > 0){
-			$ev->getPlayer()->getLevel()->dropExperience($ev->getBlock()->asVector3(), $xp);
+		if(Main::$dropBlockExperience){
+			$xp = Xp::getXpDropsForBlock($ev->getBlock());
+			if($xp > 0){
+				$ev->getPlayer()->getLevel()->dropExperience($ev->getBlock()->asVector3(), $xp);
+			}
 		}
 	}
 
@@ -359,69 +365,84 @@ class EventListener implements Listener {
 	 */
 	public function onInteract(PlayerInteractEvent $ev){
 		if($ev->isCancelled()) return;
-		// MCPE(BE) does this client-side... we just have to do the same server-side.
-		$item = clone $ev->getItem();
-		$player = $ev->getPlayer();
-		$check = ($ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_BLOCK || $ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_AIR);
-		$isBlocked = (in_array($ev->getBlock()->getId(), [
-			Block::ITEM_FRAME_BLOCK,
-		]));
+		if(Main::$instantArmorEnabled){
+			// MCPE(BE) does this client-side... we just have to do the same server-side.
+			$item = clone $ev->getItem();
+			$player = $ev->getPlayer();
+			$check = ($ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_BLOCK || $ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_AIR);
+			$isBlocked = (in_array($ev->getBlock()->getId(), [
+				Block::ITEM_FRAME_BLOCK,
+			]));
 
-		if($check && !$isBlocked){
-			if($ev->getItem() instanceof Armor){
-				$inventory = $player->getArmorInventory();
-				$type = ArmorTypes::getType($item);
-				$old = Item::get(Item::AIR, 0, 1); // just a placeholder
-				$skipReplace = false;
-				if($type !== ArmorTypes::TYPE_NULL){
-					switch($type){
-						case ArmorTypes::TYPE_HELMET:
-							$old = clone $inventory->getHelmet();
-							if(!Main::$instantArmorReplace && !$old->isNull()){
-								$skipReplace = true;
+			if($check && !$isBlocked){
+				if($ev->getItem() instanceof Armor){
+					$inventory = $player->getArmorInventory();
+					$type = ArmorTypes::getType($item);
+					$old = Item::get(Item::AIR, 0, 1); // just a placeholder
+					$skipReplace = false;
+					if($type !== ArmorTypes::TYPE_NULL){
+						switch($type){
+							case ArmorTypes::TYPE_HELMET:
+								$old = clone $inventory->getHelmet();
+								if(!Main::$instantArmorReplace && !$old->isNull()){
+									$skipReplace = true;
+									break;
+								}
+								$inventory->setHelmet($item);
 								break;
-							}
-							$inventory->setHelmet($item);
-							break;
-						case ArmorTypes::TYPE_CHESTPLATE:
-							$old = clone $inventory->getChestplate();
-							if(!Main::$instantArmorReplace && !$old->isNull()){
-								$skipReplace = true;
+							case ArmorTypes::TYPE_CHESTPLATE:
+								$old = clone $inventory->getChestplate();
+								if(!Main::$instantArmorReplace && !$old->isNull()){
+									$skipReplace = true;
+									break;
+								}
+								$inventory->setChestplate($item);
 								break;
-							}
-							$inventory->setChestplate($item);
-							break;
-						case ArmorTypes::TYPE_LEGGINGS:
-							$old = clone $inventory->getLeggings();
-							if(!Main::$instantArmorReplace && !$old->isNull()){
-								$skipReplace = true;
+							case ArmorTypes::TYPE_LEGGINGS:
+								$old = clone $inventory->getLeggings();
+								if(!Main::$instantArmorReplace && !$old->isNull()){
+									$skipReplace = true;
+									break;
+								}
+								$inventory->setLeggings($item);
 								break;
-							}
-							$inventory->setLeggings($item);
-							break;
-						case ArmorTypes::TYPE_BOOTS:
-							$old = clone $inventory->getBoots();
-							if(!Main::$instantArmorReplace && !$old->isNull()){
-								$skipReplace = true;
+							case ArmorTypes::TYPE_BOOTS:
+								$old = clone $inventory->getBoots();
+								if(!Main::$instantArmorReplace && !$old->isNull()){
+									$skipReplace = true;
+									break;
+								}
+								$inventory->setBoots($item);
 								break;
-							}
-							$inventory->setBoots($item);
-							break;
-					}
-					if(!$skipReplace){
-						if(!Main::$instantArmorReplace){
-							if($player->isSurvival() || $player->isAdventure()){
-								$player->getInventory()->setItemInHand(Item::get(Item::AIR, 0, 1));
-							}
-						} else {
-							if(!$old->isNull()){
-								$player->getInventory()->setItemInHand($old);
-							} else {
-								$player->getInventory()->setItemInHand(Item::get(Item::AIR, 0, 1));
+						}
+						if(!$skipReplace){
+							if(!Main::$instantArmorReplace){
+								if($player->isSurvival() || $player->isAdventure()){
+									$player->getInventory()->setItemInHand(Item::get(Item::AIR, 0, 1));
+								}
+							}else{
+								if(!$old->isNull()){
+									$player->getInventory()->setItemInHand($old);
+								}else{
+									$player->getInventory()->setItemInHand(Item::get(Item::AIR, 0, 1));
+								}
 							}
 						}
 					}
 				}
+			}
+		}
+	}
+
+	/**
+	 * @param PlayerGameModeChangeEvent $ev
+	 *
+	 * @priority HIGHEST
+	 */
+	public function onGameModeChange(PlayerGameModeChangeEvent $ev){
+		if(!$ev->isCancelled()){
+			if(Main::$clearInventoryOnGMChange){
+				$ev->getPlayer()->getInventory()->clearAll();
 			}
 		}
 	}

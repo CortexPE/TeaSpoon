@@ -213,6 +213,9 @@ class Session {
 	}
 
 	public function isUsingElytra(): bool{
+		if(!Main::$elytraEnabled){
+			return false;
+		}
 		return ($this->player->getArmorInventory()->getChestplate() instanceof Elytra);
 	}
 }

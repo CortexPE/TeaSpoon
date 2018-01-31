@@ -37,6 +37,7 @@ namespace CortexPE\tile;
 
 use CortexPE\block\Hopper as HopperBlock;
 use CortexPE\inventory\HopperInventory;
+use CortexPE\Main;
 use pocketmine\entity\Item as ItemEntity;
 use pocketmine\inventory\InventoryHolder;
 use pocketmine\item\Item;
@@ -103,7 +104,7 @@ class Hopper extends Spawnable implements InventoryHolder, Container, Nameable {
 	}
 
 	public function onUpdate(): bool{
-		if((Server::getInstance()->getTick() % 8) == 0){
+		if((Server::getInstance()->getTick() % 8) == 0 && Main::$hoppersEnabled){
 			if(!($this->getBlock() instanceof HopperBlock)){
 				return false;
 			}

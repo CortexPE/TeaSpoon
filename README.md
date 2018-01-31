@@ -55,7 +55,7 @@ Installation is easy, Just download the latest phar from [Poggit](https://poggit
    - [X] FireCharge
    - [X] Totem of Undying
    - [X] Fully Functional Elytra Wings
-   - [X] Firework Rocket (as Elytra Booster)
+   - [X] Fully Functional Fireworks (Credits to [XenialDan](https://github.com/thebigsmileXD) for 45% of it)
    - [X] Lingering Potions (Credits: [ClearSkyTeam](https://github.com/ClearSkyTeam))
    - [X] Chorus Fruit (with customizable Delay)
    - [X] FishingRod (Fully working Fishing System)

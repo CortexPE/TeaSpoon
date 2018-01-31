@@ -108,33 +108,35 @@ class Beacon extends Transparent {
 	 * @return bool
 	 */
 	public function onActivate(Item $item, Player $player = null): bool{
-		if(!$player instanceof Player) return false;
-		/** @var Tile $t */
-		$t = $this->getLevel()->getTile($this);
-		/** @var BeaconInventory $beacon */
-		$beacon = null;
-		if($t instanceof TileBeacon){
-			/** @var TileBeacon $beacon */
-			$beacon = $t;
-		}else{
-			/** @var CompoundTag $nbt */
-			$nbt = new CompoundTag("", [
-				new StringTag("id", Tile::BEACON),
-				new ByteTag("isMovable", 0),
-				new IntTag("primary", 0),
-				new IntTag("secondary", 0),
-				new IntTag("x", $this->x),
-				new IntTag("y", $this->y),
-				new IntTag("z", $this->z),
-			]);
-			$beacon = Tile::createTile(Tile::BEACON, $this->getLevel(), $nbt);
-		}
-		if($player->isCreative() && Main::$limitedCreative){
-			return true;
-		}
-		$inv = $beacon->getInventory();
-		if($inv instanceof BeaconInventory){
-			$player->addWindow($beacon->getInventory());
+		if(Main::$beaconEnabled){
+			if(!$player instanceof Player) return false;
+			/** @var Tile $t */
+			$t = $this->getLevel()->getTile($this);
+			/** @var BeaconInventory $beacon */
+			$beacon = null;
+			if($t instanceof TileBeacon){
+				/** @var TileBeacon $beacon */
+				$beacon = $t;
+			}else{
+				/** @var CompoundTag $nbt */
+				$nbt = new CompoundTag("", [
+					new StringTag("id", Tile::BEACON),
+					new ByteTag("isMovable", 0),
+					new IntTag("primary", 0),
+					new IntTag("secondary", 0),
+					new IntTag("x", $this->x),
+					new IntTag("y", $this->y),
+					new IntTag("z", $this->z),
+				]);
+				$beacon = Tile::createTile(Tile::BEACON, $this->getLevel(), $nbt);
+			}
+			if($player->isCreative() && Main::$limitedCreative){
+				return true;
+			}
+			$inv = $beacon->getInventory();
+			if($inv instanceof BeaconInventory){
+				$player->addWindow($beacon->getInventory());
+			}
 		}
 
 		return true;

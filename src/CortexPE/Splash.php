@@ -179,6 +179,8 @@ class Splash {
 		"always strikes for the heart.",
 	];
 
+	public const VALENTINES_SPLASH = "Cortex loves J****e <3";
+
 	private static $TEASPOON_SPLASHES = [
 		'Low-Calorie blend', // first ever teaspoon splash text... and that's why its in ' not " xd
 		"Don't panic! Have a cup of tea",
@@ -203,7 +205,7 @@ class Splash {
 		"We have *crappy* VCS Systems. :P",
 		":shrug:",
 		"Fukkit!",
-		"Cortex loves J***** <3",
+		self::VALENTINES_SPLASH,
 		"§4R§cA§6I§eN§2B§aO§bW§3 T§1E§9X§dT§5!",
 		"@TheAz928 is notorious for HardCoding values!",
 
@@ -295,8 +297,14 @@ class Splash {
 	];
 
 	public static function getRandomSplash(): string{
+		if(self::isWednesday()){
+			return "It's WEDNESDAY my dudes.";
+		}
 		if(self::isChristmastide()){
 			return self::$CHRISTMAS_SPLASHES[array_rand(self::$CHRISTMAS_SPLASHES)];
+		}
+		if(self::isValentines()){
+			return self::VALENTINES_SPLASH;
 		}
 		if(self::isCortexsBirthday()){
 			return (mt_rand(1, 2) == 1 ? "Cortex's biological age is now " . strval(intval(date('Y')) - 1999) . "!" : "Happy birthday Cortex!"); // lolz
@@ -314,18 +322,26 @@ class Splash {
 		return self::getRandomTSPSplash();
 	}
 
-	private static function isChristmastide(){
+	public static function isChristmastide() : bool {
 		$month = date('n');
 		$day = date('j');
 
 		return ($month == 12 && $day >= 25) || ($month == 1 && $day <= 6);
 	}
 
-	private static function isCortexsBirthday(){
+	public static function isCortexsBirthday() : bool {
 		$month = date('n');
 		$day = date('j');
 
 		return ($month == 10 && $day == 10);
+	}
+
+	public static function isValentines() : bool {
+		return (date('n') == 2);
+	}
+
+	public static function isWednesday() : bool {
+		return (date('w') == 3);
 	}
 
 	public static function getRandomSentence(): string{

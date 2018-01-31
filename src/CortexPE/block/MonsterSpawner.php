@@ -150,22 +150,24 @@ class MonsterSpawner extends SpawnerPM {
 	 * @return bool
 	 */
 	public function onActivate(Item $item, Player $player = null): bool{
-		if($this->entityid != 0 || $item->getId() != Item::SPAWN_EGG) return false;
-		$tile = $this->getLevel()->getTile($this);
-		$this->entityid = $item->getDamage();
-		if(!$tile instanceof MobSpawner){
-			/** @var CompoundTag $nbt */
-			$nbt = new CompoundTag("", [
-				new StringTag(Tile::TAG_ID, Tile::MOB_SPAWNER),
-				new IntTag(Tile::TAG_X, (int)$this->x),
-				new IntTag(Tile::TAG_Y, (int)$this->y),
-				new IntTag(Tile::TAG_Z, (int)$this->z),
-			]);
-			/** @var MobSpawner $tile */
-			$tile = Tile::createTile(Tile::MOB_SPAWNER, $this->getLevel(), $nbt);
-			$tile->setEntityId($this->entityid);
+		if(Main::$mobSpawnerEnable){
+			if($this->entityid != 0 || $item->getId() != Item::SPAWN_EGG) return false;
+			$tile = $this->getLevel()->getTile($this);
+			$this->entityid = $item->getDamage();
+			if(!$tile instanceof MobSpawner){
+				/** @var CompoundTag $nbt */
+				$nbt = new CompoundTag("", [
+					new StringTag(Tile::TAG_ID, Tile::MOB_SPAWNER),
+					new IntTag(Tile::TAG_X, (int)$this->x),
+					new IntTag(Tile::TAG_Y, (int)$this->y),
+					new IntTag(Tile::TAG_Z, (int)$this->z),
+				]);
+				/** @var MobSpawner $tile */
+				$tile = Tile::createTile(Tile::MOB_SPAWNER, $this->getLevel(), $nbt);
+				$tile->setEntityId($this->entityid);
 
-			return true;
+				return true;
+			}
 		}
 
 		return true;
@@ -174,7 +176,7 @@ class MonsterSpawner extends SpawnerPM {
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null): bool{
 		parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player);
 
-		if($item->getDamage() > 9){
+		if($item->getDamage() > 9 && Main::$mobSpawnerEnable && Main::$mobSpawnerDamageAsEID){
 			$tile = $this->getLevel()->getTile($this);
 			$this->entityid = $item->getDamage();
 			if(!$tile instanceof MobSpawner){

@@ -62,9 +62,9 @@ use pocketmine\utils\Config;
 class Main extends PluginBase {
 
 	// self explanatory constants
-	public const CONFIG_VERSION = 16;
+	public const CONFIG_VERSION = 17;
 	public const TESTED_MIN_POCKETMINE_VERSION = "1.7dev-657"; // The minimum build this was tested working
-	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-659"; // The current build this was actually tested
+	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-667"; // The current build this was actually tested
 
 	///////////////////////////////// START OF INSTANCE VARIABLES /////////////////////////////////
 	/** @var Config */
@@ -80,7 +80,7 @@ class Main extends PluginBase {
 	/** @var bool */
 	private $disable = false;
 	/** @var string */
-	public static $sixCharCommitHash = "";
+	private static $sixCharCommitHash = "";
 	////////////////////////////////// END OF INSTANCE VARIABLES //////////////////////////////////
 
 	///////////////////////////////// START OF CONFIGS VARIABLES /////////////////////////////////
@@ -138,6 +138,40 @@ class Main extends PluginBase {
 	public static $elytraBoostEnabled = true;
 	/** @var bool */
 	public static $silkSpawners = false;
+	/** @var bool */
+	public static $fireworksEnabled = true;
+	/** @var bool */
+	public static $totemEnabled = true;
+	/** @var bool */
+	public static $ePearlEnabled = true;
+	/** @var bool */
+	public static $chorusFruitEnabled = true;
+	/** @var bool */
+	public static $instantArmorEnabled = true;
+	/** @var bool */
+	public static $dropMobExperience = true;
+	/** @var bool */
+	public static $dropBlockExperience = true;
+	/** @var bool */
+	public static $fishingEnabled = true;
+	/** @var bool */
+	public static $clearInventoryOnGMChange = false;
+	/** @var bool */
+	public static $mobSpawnerEnable = true;
+	/** @var bool */
+	public static $mobSpawnerDamageAsEID = false;
+	/** @var bool */
+	public static $hoppersEnabled = true;
+	/** @var bool */
+	public static $beaconEnabled = true;
+	/** @var bool */
+	public static $beaconEffectsEnabled = true;
+	/** @var bool */
+	public static $shulkerBoxEnabled = true;
+	/** @var bool */
+	public static $elytraBoostParticles = true;
+	/** @var bool */
+	public static $XBLIcons = true;
 	////////////////////////////////// END OF CONFIGS VARIABLES //////////////////////////////////
 
 	public static function getInstance(): Main{
@@ -180,10 +214,27 @@ class Main extends PluginBase {
 		self::$armorDamage = self::$config->getNested("player.armorDamage", self::$armorDamage);
 		self::$vanillaNetherTranfer = self::$config->getNested("dimensions.nether.vanillaNetherTranfer", self::$vanillaNetherTranfer);
 		self::$overworldLevelName = self::$config->getNested("dimensions.overrideOverworldLevel", self::$overworldLevelName);
-		self::$instantArmorReplace = self::$config->getNested("player.instantArmorReplace", self::$instantArmorReplace);
+		self::$instantArmorReplace = self::$config->getNested("player.instantArmor.replace", self::$instantArmorReplace);
 		self::$elytraEnabled = self::$config->getNested("player.elytra.enable", self::$elytraEnabled);
 		self::$elytraBoostEnabled = self::$config->getNested("player.elytra.enableElytraBoost", self::$elytraBoostEnabled);
-		self::$silkSpawners = self::$config->getNested("blockMechanics.silkTouchSpawners", self::$silkSpawners);
+		self::$silkSpawners = self::$config->getNested("mobSpawner.silkTouchSpawners", self::$silkSpawners);
+		self::$fireworksEnabled = self::$config->getNested("fireworks.enable", self::$fireworksEnabled);
+		self::$totemEnabled = self::$config->getNested("player.totemOfUndying", self::$totemEnabled);
+		self::$ePearlEnabled = self::$config->getNested("enderPearl.enable", self::$ePearlEnabled);
+		self::$chorusFruitEnabled = self::$config->getNested("chorusFruit.enable", self::$chorusFruitEnabled);
+		self::$instantArmorEnabled = self::$config->getNested("player.instantArmor.enable", self::$instantArmorEnabled);
+		self::$dropMobExperience = self::$config->getNested("Xp.dropMobExperience", self::$dropMobExperience);
+		self::$dropBlockExperience = self::$config->getNested("blocks.dropExperience", self::$dropBlockExperience);
+		self::$fishingEnabled = self::$config->getNested("player.fishing", self::$fishingEnabled);
+		self::$clearInventoryOnGMChange = self::$config->getNested("player.clearInventoryOnGameModeChange", self::$clearInventoryOnGMChange);
+		self::$mobSpawnerEnable = self::$config->getNested("mobSpawner.enable", self::$mobSpawnerEnable);
+		self::$mobSpawnerDamageAsEID = self::$config->getNested("mobSpawner.enable", self::$mobSpawnerDamageAsEID);
+		self::$hoppersEnabled = self::$config->getNested("hopper.enable", self::$hoppersEnabled);
+		self::$beaconEnabled = self::$config->getNested("beacon.enable", self::$beaconEnabled);
+		self::$beaconEffectsEnabled = self::$config->getNested("beacon.effectsEnabled", self::$beaconEffectsEnabled);
+		self::$shulkerBoxEnabled = self::$config->getNested("shulkerBox.enable", self::$shulkerBoxEnabled);
+		self::$elytraBoostParticles = self::$config->getNested("player.elytra.elytraBoostParticles", self::$elytraBoostParticles);
+		self::$XBLIcons = self::$config->getNested("player.XBLIcons", self::$XBLIcons);
 
 		// Pre-Enable Checks //
 
@@ -230,6 +281,11 @@ class Main extends PluginBase {
 
 		$yr = 2017 . ((2017 != date('Y')) ? '-' . date('Y') : '');
 		$stms = TextFormat::DARK_GREEN . "\n\nMMP\"\"MM\"\"YMM              " . TextFormat::GREEN . " .M\"\"\"bgd                                        " . TextFormat::DARK_GREEN . "\nP'   MM   `7             " . TextFormat::GREEN . " ,MI    \"Y                                        " . TextFormat::DARK_GREEN . "\n     MM  .gP\"Ya   ,6\"Yb.  " . TextFormat::GREEN . "`MMb.   `7MMpdMAo.  ,pW\"Wq.   ,pW\"Wq.`7MMpMMMb.  " . TextFormat::DARK_GREEN . "\n     MM ,M'   Yb 8)   MM" . TextFormat::GREEN . "    `YMMNq. MM   `Wb 6W'   `Wb 6W'   `Wb MM    MM  " . TextFormat::DARK_GREEN . "\n     MM 8M\"\"\"\"\"\"  ,pm9MM " . TextFormat::GREEN . " .     `MM MM    M8 8M     M8 8M     M8 MM    MM  " . TextFormat::DARK_GREEN . "\n     MM YM.    , 8M   MM  " . TextFormat::GREEN . "Mb     dM MM   ,AP YA.   ,A9 YA.   ,A9 MM    MM  " . TextFormat::DARK_GREEN . "\n   .JMML.`Mbmmd' `Moo9^Yo." . TextFormat::GREEN . "P\"Ybmmd\"  MMbmmd'   `Ybmd9'   `Ybmd9'.JMML  JMML." . TextFormat::GREEN . "\n                                    MM                                     \n                                  .JMML.  " . TextFormat::YELLOW . Splash::getRandomSplash() . TextFormat::RESET . "\nCopyright (C) CortexPE " . $yr . "\n";
+		switch(true){ // todo: add more events?
+			case (Splash::isValentines()):
+				$stms = TextFormat::RED . "\n\n   .-.                                        " . TextFormat::DARK_RED . "       .-.                    " . TextFormat::RESET . "\n" . TextFormat::RED . "  (_) )-.                                  /  " . TextFormat::DARK_RED . " .--.-'                       " . TextFormat::RESET . "\n" . TextFormat::RED . "     /   \    .-.  .    .    .-.  ).--.---/---" . TextFormat::DARK_RED . "(  (_).-.  .-._..-._..  .-.   " . TextFormat::RESET . "\n" . TextFormat::RED . "    /     \ ./.-'_/ \  / \ ./.-'_/       /    " . TextFormat::DARK_RED . " `-.  /  )(   )(   )  )/   )  " . TextFormat::RESET . "\n" . TextFormat::RED . " .-/.      )(__.'/ ._)/ ._)(__.'/       /    " . TextFormat::DARK_RED . "_    )/`-'  `-'  `-'  '/   (   " . TextFormat::RESET . "\n" . TextFormat::RED . "(_/  `----'     /    /                      " . TextFormat::DARK_RED . "(_.--'/                      `- " . TextFormat::RESET . "\n                                              " . TextFormat::YELLOW . Splash::VALENTINES_SPLASH . TextFormat::RESET . "\nCopyright (C) CortexPE " . $yr . "\n";
+				break;
+		}
 		$this->getLogger()->info("Loading..." . $stms);
 
 		if(!$this->checkServer()){
@@ -350,9 +406,14 @@ class Main extends PluginBase {
 	public static function sendVersion(CommandSender $sender){
 		$sender->getServer()->dispatchCommand($sender, "ver");
 		$sender->sendMessage("\x2d\x2d\x2d\x20\x2b\x20\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x20\x2b\x20\x2d\x2d\x2d");
-		$sender->sendMessage("\x54\x68\x69\x73\x20\x73\x65\x72\x76\x65\x72\x20\x69\x73\x20\x72\x75\x6e\x6e\x69\x6e\x67\x20" . TextFormat::DARK_GREEN . "\x54\x65\x61" . TextFormat::GREEN . "\x53\x70\x6f\x6f\x6e" . TextFormat::WHITE . "\x20\x76" . self::$instance->getDescription()->getVersion() . (Utils::isPhared() ? "" : "-dev") . "\x20\x66\x6f\x72\x20\x50\x6f\x63\x6b\x65\x74\x4d\x69\x6e\x65\x2d\x4d\x50\x20" . self::TESTED_MIN_POCKETMINE_VERSION . "\x20\x2d\x20" . self::TESTED_MAX_POCKETMINE_VERSION);
+		$logo = TextFormat::DARK_GREEN . "\x54\x65\x61" . TextFormat::GREEN . "\x53\x70\x6f\x6f\x6e";
+		if(Splash::isValentines()){
+			$logo = TextFormat::RED . "\x44\x65\x73\x73\x65\x72\x74" . TextFormat::DARK_RED . "\x53\x70\x6f\x6f\x6e";
+		}
+		$sender->sendMessage("\x54\x68\x69\x73\x20\x73\x65\x72\x76\x65\x72\x20\x69\x73\x20\x72\x75\x6e\x6e\x69\x6e\x67\x20" . $logo . TextFormat::WHITE . "\x20\x76" . self::$instance->getDescription()->getVersion() . (Utils::isPhared() ? "" : "-dev") . "\x20\x66\x6f\x72\x20\x50\x6f\x63\x6b\x65\x74\x4d\x69\x6e\x65\x2d\x4d\x50\x20" . self::TESTED_MIN_POCKETMINE_VERSION . "\x20\x2d\x20" . self::TESTED_MAX_POCKETMINE_VERSION);
+
 		if(self::$sixCharCommitHash != ""){
-			$sender->sendMessage("Commit: " . self::$sixCharCommitHash);
+			$sender->sendMessage("\x43\x6f\x6d\x6d\x69\x74\x3a\x20" . self::$sixCharCommitHash);
 		}
 		$sender->sendMessage("\x52\x65\x70\x6f\x73\x69\x74\x6f\x72\x79\x3a\x20\x68\x74\x74\x70\x73\x3a\x2f\x2f\x67\x69\x74\x68\x75\x62\x2e\x63\x6f\x6d\x2f\x43\x6f\x72\x74\x65\x78\x50\x45\x2f\x54\x65\x61\x53\x70\x6f\x6f\x6e");
 		$sender->sendMessage("\x57\x65\x62\x73\x69\x74\x65\x3a\x20\x68\x74\x74\x70\x73\x3a\x2f\x2f\x43\x6f\x72\x74\x65\x78\x50\x45\x2e\x78\x79\x7a");

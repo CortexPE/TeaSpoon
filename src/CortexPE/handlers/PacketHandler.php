@@ -41,9 +41,9 @@ use CortexPE\Utils;
 use pocketmine\event\{
 	Listener, server\DataPacketReceiveEvent, server\DataPacketSendEvent
 };
-use pocketmine\network\mcpe\protocol\PlayerActionPacket;
-use pocketmine\network\mcpe\protocol\PlayerListPacket;
-use pocketmine\network\mcpe\protocol\StartGamePacket;
+use pocketmine\network\mcpe\protocol\{
+	PlayerActionPacket, PlayerListPacket, StartGamePacket
+};
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
 use pocketmine\Server;
@@ -72,8 +72,6 @@ class PacketHandler implements Listener {
 				if($session instanceof Session){
 					switch($pk->action){
 						case PlayerActionPacket::ACTION_DIMENSION_CHANGE_ACK:
-							break;
-
 						case PlayerActionPacket::ACTION_DIMENSION_CHANGE_REQUEST:
 							$pk->action = PlayerActionPacket::ACTION_RESPAWN; // redirect to respawn action so that PMMP would handle it as a respawn
 							break;
@@ -110,16 +108,20 @@ class PacketHandler implements Listener {
 		$p = $ev->getPlayer();
 		switch(true){
 			case ($pk instanceof StartGamePacket):
-				$pk->dimension = Utils::getDimension($p->getLevel());
+				if(Main::$registerDimensions){
+					$pk->dimension = Utils::getDimension($p->getLevel());
+				}
 				break;
 
 			case ($pk instanceof PlayerListPacket):
-				foreach($pk->entries as $entry){
-					$player = Server::getInstance()->getPlayer($entry->username);
-					if($player instanceof PMPlayer){
-						if(is_string($player->getXuid())){
-							if($player->getXuid() != ""){
-								$entry->xboxUserId = $player->getXuid();
+				if(Main::$XBLIcons){
+					foreach($pk->entries as $entry){
+						$player = Server::getInstance()->getPlayer($entry->username);
+						if($player instanceof PMPlayer){
+							if(is_string($player->getXuid())){
+								if($player->getXuid() != ""){
+									$entry->xboxUserId = $player->getXuid();
+								}
 							}
 						}
 					}

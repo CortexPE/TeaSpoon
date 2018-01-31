@@ -42,7 +42,7 @@ use CortexPE\entity\object\{
 	AreaEffectCloud, EndCrystal, Lightning
 };
 use CortexPE\entity\projectile\{
-	Arrow, Egg, EnchantingBottle, EnderPearl, FishingHook, LingeringPotion, Snowball, SplashPotion
+	Arrow, Egg, EnchantingBottle, EnderPearl, FireworkRocket, FishingHook, LingeringPotion, Snowball, SplashPotion
 };
 use CortexPE\entity\vehicle\Boat;
 use CortexPE\Main;
@@ -105,6 +105,7 @@ class EntityManager extends Entity {
 		self::registerEntity(LingeringPotion::class, true, ['LingeringPotion', 'minecraft:lingeringpotion']);
 		self::registerEntity(FishingHook::class, true, ['FishingHook', 'minecraft:fishinghook']);
 		self::registerEntity(Arrow::class, true, ['Arrow', 'minecraft:arrow']);
+		self::registerEntity(FireworkRocket::class, true, ['Firework', 'minecraft:firework']);
 
 		// Other Entities ////
 		self::registerEntity(AreaEffectCloud::class, true, ['AreaEffectCloud', 'minecraft:areaeffectcloud']);

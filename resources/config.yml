@@ -10,7 +10,7 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 16
+version: 17
 
 entities:
  # Weather to register Vanilla Entities (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...) or not
@@ -31,7 +31,7 @@ dimensions:
   vanillaNetherTranfer: false
  end:
   levelName: "ender"
-  # SET TO BLANK ("") TO DISABLE
+ # SET TO BLANK ("") TO DISABLE
  overrideOverworldLevel: ""
 
 misc:
@@ -42,10 +42,12 @@ misc:
  randomFishingLootTables: false
  
 enderPearl:
+ enable: true
  cooldown: 2
  damage: 5
 
 chorusFruit:
+ enable: true
  cooldown: 2
 
 weather: 
@@ -60,15 +62,47 @@ weather:
 player:
  # Enable to dis-allow chest and container interactions when in creative
  limitedCreative: true
+ # In vanilla, this is false... In Genisys, its true
+ clearInventoryOnGameModeChange: false
  # Armor Damage toggle
  armorDamage: true
+ instantArmor:
+  enable: true
  # Toggle to replace current armor or not (Vanilla-Way: false) [might cause glitches/bugs on server lag]
- instantArmorReplace: false
+  replace: false
  # Elytra configuration
  elytra:
   enable: true
   enableElytraBoost: true
+  elytraBoostParticles: true
+ totemOfUndying: true
+ fishing: true
+ # Load Players' XBox Live Icons
+ XBLIcons: true
 
-blockMechanics:
+mobSpawner:
+ enable: true
  # Drop spawners on silk touch
  silkTouchSpawners: false
+ # Use MonsterSpawner Damage Value as the Entity ID -- False in vanilla minecraft
+ damageAsEID: false
+
+fireworks:
+ enable: true
+
+Xp:
+ dropMobExperience: true
+
+blocks:
+ dropExperience: true
+
+hopper:
+ itemTransferEnable: true
+
+beacon:
+ # You can only disable effects (if it has any effect at all) because beacons are rendered client-side
+ enable: true
+ effectsEnabled: true
+
+shulkerBox:
+ enable: true

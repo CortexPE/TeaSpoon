@@ -70,13 +70,15 @@ class Hopper extends Transparent {
 	}
 
 	public function onActivate(Item $item, Player $player = null) : bool{
-		if($player instanceof Player){
-			$t = $this->getLevel()->getTile($this);
-			if($t instanceof HopperTile){
-				if($player->isCreative() and Main::$limitedCreative){
-					return true;
+		if(Main::$hoppersEnabled){
+			if($player instanceof Player){
+				$t = $this->getLevel()->getTile($this);
+				if($t instanceof HopperTile){
+					if($player->isCreative() and Main::$limitedCreative){
+						return true;
+					}
+					$player->addWindow($t->getInventory());
 				}
-				$player->addWindow($t->getInventory());
 			}
 		}
 

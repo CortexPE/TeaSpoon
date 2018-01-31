@@ -65,82 +65,84 @@ class FishingRod extends Durable {
 	}
 
 	public function onClickAir(Player $player, Vector3 $directionVector): bool{
-		$session = Main::getInstance()->getSessionById($player->getId());
-		if($session instanceof Session){
-			if(!$session->fishing){
-				$nbt = Entity::createBaseNBT($player->add(0, $player->getEyeHeight(), 0), $directionVector, $player->yaw, $player->pitch);
+		if(Main::$fishingEnabled){
+			$session = Main::getInstance()->getSessionById($player->getId());
+			if($session instanceof Session){
+				if(!$session->fishing){
+					$nbt = Entity::createBaseNBT($player->add(0, $player->getEyeHeight(), 0), $directionVector, $player->yaw, $player->pitch);
 
-				/** @var FishingHook $projectile */
-				$projectile = Entity::createEntity($this->getProjectileEntityType(), $player->getLevel(), $nbt, $player);
-				if($projectile !== null){
-					$projectile->setMotion($projectile->getMotion()->multiply($this->getThrowForce()));
-				}
-
-				if($projectile instanceof Projectile){
-					$player->getServer()->getPluginManager()->callEvent($projectileEv = new ProjectileLaunchEvent($projectile));
-					if($projectileEv->isCancelled()){
-						$projectile->flagForDespawn();
-					}else{
-						$projectile->spawnToAll();
-						$player->getLevel()->addSound(new LaunchSound($player), $player->getViewers());
+					/** @var FishingHook $projectile */
+					$projectile = Entity::createEntity($this->getProjectileEntityType(), $player->getLevel(), $nbt, $player);
+					if($projectile !== null){
+						$projectile->setMotion($projectile->getMotion()->multiply($this->getThrowForce()));
 					}
-				}
 
-				$weather = Main::$weatherData[$player->getLevel()->getId()];
-				if(($weather->isRainy() || $weather->isRainyThunder())){
-					$rand = mt_rand(15, 50);
-				}else{
-					$rand = mt_rand(30, 100);
-				}
-				if($this->hasEnchantments()){
-					foreach(Utils::getEnchantments($this) as $enchantment){
-						switch($enchantment->getId()){
-							case Enchantment::LURE:
-								$divisor = $enchantment->getLevel() * 0.50;
-								$rand = intval(round($rand / $divisor)) + 3;
-								break;
+					if($projectile instanceof Projectile){
+						$player->getServer()->getPluginManager()->callEvent($projectileEv = new ProjectileLaunchEvent($projectile));
+						if($projectileEv->isCancelled()){
+							$projectile->flagForDespawn();
+						}else{
+							$projectile->spawnToAll();
+							$player->getLevel()->addSound(new LaunchSound($player), $player->getViewers());
 						}
 					}
-				}
 
-				$projectile->attractTimer = $rand * 20;
-
-				$session->fishingHook = $projectile;
-				$session->fishing = true;
-			}else{
-				$projectile = $session->fishingHook;
-				if($projectile instanceof FishingHook){
-
-					$session->unsetFishing();
-
-					if($player->getLevel()->getBlock($projectile->asVector3())->getId() == Block::WATER || $player->getLevel()->getBlock($projectile)->getId() == Block::WATER){
-						$damage = 5;
+					$weather = Main::$weatherData[$player->getLevel()->getId()];
+					if(($weather->isRainy() || $weather->isRainyThunder())){
+						$rand = mt_rand(15, 50);
 					}else{
-						$damage = mt_rand(10, 15); // TODO: Implement entity / block collision properly
+						$rand = mt_rand(30, 100);
 					}
-
-					$this->applyDamage($damage);
-
-					if($projectile->coughtTimer > 0){
-						$weather = Main::$weatherData[$player->getLevel()->getId()];
-						$lvl = 0;
-						if($this->hasEnchantments()){
-							if($this->hasEnchantment(Enchantment::LUCK_OF_THE_SEA)){
-								$lvl = $this->getEnchantment(Enchantment::LUCK_OF_THE_SEA)->getLevel();
+					if($this->hasEnchantments()){
+						foreach(Utils::getEnchantments($this) as $enchantment){
+							switch($enchantment->getId()){
+								case Enchantment::LURE:
+									$divisor = $enchantment->getLevel() * 0.50;
+									$rand = intval(round($rand / $divisor)) + 3;
+									break;
 							}
 						}
-						if(($weather->isRainy() || $weather->isRainyThunder()) && $lvl == 0){
-							$lvl = 2;
-						}else{
-							$lvl = 0;
-						}
-						$item = FishingLootTable::getRandom($lvl);
-						$player->getInventory()->addItem($item);
-
-						$player->addXp(mt_rand(1, 6));
 					}
 
-					$projectile->flagForDespawn();
+					$projectile->attractTimer = $rand * 20;
+
+					$session->fishingHook = $projectile;
+					$session->fishing = true;
+				}else{
+					$projectile = $session->fishingHook;
+					if($projectile instanceof FishingHook){
+
+						$session->unsetFishing();
+
+						if($player->getLevel()->getBlock($projectile->asVector3())->getId() == Block::WATER || $player->getLevel()->getBlock($projectile)->getId() == Block::WATER){
+							$damage = 5;
+						}else{
+							$damage = mt_rand(10, 15); // TODO: Implement entity / block collision properly
+						}
+
+						$this->applyDamage($damage);
+
+						if($projectile->coughtTimer > 0){
+							$weather = Main::$weatherData[$player->getLevel()->getId()];
+							$lvl = 0;
+							if($this->hasEnchantments()){
+								if($this->hasEnchantment(Enchantment::LUCK_OF_THE_SEA)){
+									$lvl = $this->getEnchantment(Enchantment::LUCK_OF_THE_SEA)->getLevel();
+								}
+							}
+							if(($weather->isRainy() || $weather->isRainyThunder()) && $lvl == 0){
+								$lvl = 2;
+							}else{
+								$lvl = 0;
+							}
+							$item = FishingLootTable::getRandom($lvl);
+							$player->getInventory()->addItem($item);
+
+							$player->addXp(mt_rand(1, 6));
+						}
+
+						$projectile->flagForDespawn();
+					}
 				}
 			}
 		}

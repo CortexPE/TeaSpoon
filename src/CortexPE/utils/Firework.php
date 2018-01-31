@@ -33,26 +33,37 @@
 
 declare(strict_types = 1);
 
-namespace CortexPE\item;
+namespace CortexPE\utils;
 
-use CortexPE\Main;
-use pocketmine\entity\Living;
-use pocketmine\item\ChorusFruit as PMChorusFruit;
-use pocketmine\Player;
 
-class ChorusFruit extends PMChorusFruit {
+use CortexPE\item\utils\FireworksData;
+use CortexPE\Utils;
+use pocketmine\nbt\NBT;
+use pocketmine\nbt\tag\ByteTag;
+use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\nbt\tag\ListTag;
 
-	public function onConsume(Living $consumer){
-		if(Main::$chorusFruitEnabled){
-			if($consumer instanceof Player){
-				$session = Main::getInstance()->getSessionById($consumer->getId());
-				if(floor(microtime(true) - $session->lastChorusFruitEat) < Main::$chorusFruitCooldown){
-					return;
-				}else{
-					$session->lastChorusFruitEat = time();
-				}
-			}
-			parent::onConsume($consumer);
+class Firework extends Utils {
+	public static function fireworkData2NBT(FireworksData $data){
+		// https://github.com/thebigsmileXD/fireworks/blob/master/src/xenialdan/fireworks/item/Fireworks.php#L54-L74
+		$value = [];
+		$root = new CompoundTag();
+		foreach ($data->explosions as $explosion){
+			$tag = new CompoundTag();
+			$tag->setByteArray("FireworkColor", (string)$explosion->fireworkColor[0]);
+			$tag->setByteArray("FireworkFade", (string)$explosion->fireworkFade[0]);
+			$tag->setByte("FireworkFlicker", ($explosion->fireworkFlicker ? 1 : 0));
+			$tag->setByte("FireworkTrail", ($explosion->fireworkTrail ? 1 : 0));
+			$tag->setByte("FireworkType", $explosion->fireworkType);
+			$value[] = $tag;
 		}
+		$explosions = new ListTag("Explosions", $value, NBT::TAG_Compound);
+		$root->setTag(new CompoundTag("Fireworks",
+				[
+					$explosions,
+					new ByteTag("Flight", $data->flight)
+				])
+		);
+		return $root;
 	}
 }

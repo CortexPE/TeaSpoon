@@ -77,9 +77,13 @@ class Lightning extends Animal {
 
 				if(isset($v3)) $this->getLevel()->setBlock($v3, $fire);
 
-				foreach($this->level->getNearbyEntities($this->boundingBox->grow(4, 3, 4), $this) as $entity){
+				foreach($this->level->getNearbyEntities($this->boundingBox->grow(6, 6, 6), $this) as $entity){
 					if($entity instanceof Living){
-						$damage = 5;
+						$distance = $this->distance($entity);
+
+						$k = 5;
+						$damage = $k / $distance;
+
 						$ev = new EntityDamageByEntityEvent($this, $entity, 16, $damage); // LIGHTNING
 						$entity->attack($ev);
 						$entity->setOnFire(mt_rand(3, 8));

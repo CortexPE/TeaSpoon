@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace CortexPE\tile;
 
 use CortexPE\block\MonsterSpawner;
+use CortexPE\Main;
 use pocketmine\entity\Entity;
 use pocketmine\item\Item;
 use pocketmine\level\format\Chunk;
@@ -90,7 +91,7 @@ class MobSpawner extends Spawnable {
 		if(!($this->chunk instanceof Chunk)){
 			return false;
 		}
-		if($this->canUpdate()){
+		if($this->canUpdate() && Main::$mobSpawnerEnable){
 			if($this->getDelay() <= 0){
 				$success = 0;
 				for($i = 0; $i < $this->getSpawnCount(); $i++){

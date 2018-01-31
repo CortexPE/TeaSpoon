@@ -132,14 +132,7 @@ class KillCommand extends VanillaCommand {
 									$entity->setHealth(0);
 								}
 							}else{
-								$sender->getServer()->getPluginManager()->callEvent($ev = new EntityDamageEvent($entity, EntityDamageEvent::CAUSE_SUICIDE, $entity->getMaxHealth()));
-
-								if($ev->isCancelled()){
-									return true;
-								}
-
-								$entity->setLastDamageCause($ev);
-								$entity->setHealth(0);
+								$entity->close();
 							}
 							$count++;
 						}
