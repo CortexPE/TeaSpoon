@@ -453,7 +453,7 @@ class EventListener implements Listener {
 	 * @priority HIGHEST
 	 */
 	public function onPlayerDropItem(PlayerDropItemEvent $ev){
-		if(Main::$limitedCreative && $ev->getPlayer()->isCreative()){
+		if(!$ev->isCancelled() && Main::$limitedCreative && $ev->getPlayer()->isCreative()){
 			$ev->setCancelled();
 		}
 	}
