@@ -10,7 +10,7 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 17
+version: 18
 
 entities:
  # Weather to register Vanilla Entities (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...) or not
@@ -60,7 +60,7 @@ weather:
  lightning: true
 
 player:
- # Enable to dis-allow chest and container interactions when in creative
+ # Enable to dis-allow container interactions & item dropping when in creative
  limitedCreative: true
  # In vanilla, this is false... In Genisys, its true
  clearInventoryOnGameModeChange: false

@@ -50,7 +50,7 @@ use pocketmine\event\entity\{
 	EntityDamageEvent, EntityDeathEvent
 };
 use pocketmine\event\player\{
-	cheat\PlayerIllegalMoveEvent, PlayerCommandPreprocessEvent, PlayerGameModeChangeEvent, PlayerInteractEvent, PlayerItemHeldEvent, PlayerKickEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
+	cheat\PlayerIllegalMoveEvent, PlayerCommandPreprocessEvent, PlayerDropItemEvent, PlayerGameModeChangeEvent, PlayerInteractEvent, PlayerItemHeldEvent, PlayerKickEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
 };
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
@@ -444,6 +444,17 @@ class EventListener implements Listener {
 			if(Main::$clearInventoryOnGMChange){
 				$ev->getPlayer()->getInventory()->clearAll();
 			}
+		}
+	}
+
+	/**
+	 * @param PlayerDropItemEvent $ev
+	 *
+	 * @priority HIGHEST
+	 */
+	public function onPlayerDropItem(PlayerDropItemEvent $ev){
+		if(Main::$limitedCreative && $ev->getPlayer()->isCreative()){
+			$ev->setCancelled();
 		}
 	}
 }

@@ -289,6 +289,13 @@ class Splash {
 		"DO NOT BRING FOOD OR DRINK IN LAB - STOP - NO - FOOD OR DRINK - ALLOWED - IN LAB",
 		"PAIN REGRET COURAGE RICE",
 		"I Give Up",
+
+		// Base64 Encoded strings
+		"R09UIEVNIQ==",
+		"R0VUIFBSQU5LRUQgQlJPISEh",
+		"b09vIEJhc2U2NCBvT28=",
+		"cnVubmluZyBvdXR0YSBpZGVhcyBsb2w=",
+		"b2ggbWFoIGdhaA==",
 	];
 
 	private static $CHRISTMAS_SPLASHES = [
@@ -297,13 +304,13 @@ class Splash {
 	];
 
 	public static function getRandomSplash(): string{
-		if(self::isWednesday()){
+		if(self::isWednesday() && mt_rand(1,2) == 1){
 			return "It's WEDNESDAY my dudes.";
 		}
 		if(self::isChristmastide()){
 			return self::$CHRISTMAS_SPLASHES[array_rand(self::$CHRISTMAS_SPLASHES)];
 		}
-		if(self::isValentines()){
+		if(self::isValentines() && mt_rand(1,2) == 2){
 			return self::VALENTINES_SPLASH;
 		}
 		if(self::isCortexsBirthday()){
