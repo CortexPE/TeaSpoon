@@ -112,7 +112,8 @@ class Bow extends PMBow {
 				}
 				if($player->isSurvival()){
 					if(!$infinity){
-						$first->count--;
+						$first->setCount(1);
+						$player->getInventory()->removeItem($first);
 					}
 					if(!$unbreaking){
 						$this->applyDamage(1);
