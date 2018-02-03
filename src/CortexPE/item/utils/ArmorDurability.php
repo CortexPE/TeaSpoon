@@ -33,7 +33,7 @@
 
 declare(strict_types = 1);
 
-namespace CortexPE\item;
+namespace CortexPE\item\utils;
 
 use pocketmine\item\Item;
 

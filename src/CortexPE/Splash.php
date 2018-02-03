@@ -177,6 +177,7 @@ class Splash {
 		"is not all that great.",
 		"shakes beliefs widely held.",
 		"always strikes for the heart.",
+		"crawls the interwebs",
 	];
 
 	public const VALENTINES_SPLASH = "Cortex loves J****e <3";

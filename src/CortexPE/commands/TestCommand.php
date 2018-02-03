@@ -17,7 +17,7 @@ class TestCommand extends VanillaCommand {
 	public function __construct($name){
 		parent::__construct(
 			$name,
-			"CortexPE's Command to test stuff before using it",
+			"CortexPE's Command to test stuff",
 			"/test"
 		);
 	}

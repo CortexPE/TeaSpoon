@@ -80,8 +80,6 @@ class SplashPotion extends ProjectileItem {
 				$projectile->spawnToAll();
 				$player->getLevel()->addSound(new LaunchSound($player), $player->getViewers());
 			}
-		}else{
-			$projectile->spawnToAll();
 		}
 
 		return true;
