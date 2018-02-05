@@ -34,4 +34,4 @@ namespace CortexPE\entity\mob;
 
 use pocketmine\entity\Creature;
 
-public dktapps extends Creature {}
+class dktapps extends Creature {}
