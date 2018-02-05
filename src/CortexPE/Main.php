@@ -64,7 +64,7 @@ class Main extends PluginBase {
 	// self explanatory constants
 	public const CONFIG_VERSION = 18;
 	public const TESTED_MIN_POCKETMINE_VERSION = "1.7dev-657"; // The minimum build this was tested working
-	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-673"; // The current build this was actually tested
+	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-679"; // The current build this was actually tested
 
 	///////////////////////////////// START OF INSTANCE VARIABLES /////////////////////////////////
 	/** @var Config */
