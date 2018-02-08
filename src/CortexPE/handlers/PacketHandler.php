@@ -42,11 +42,10 @@ use pocketmine\event\{
 	Listener, server\DataPacketReceiveEvent, server\DataPacketSendEvent
 };
 use pocketmine\network\mcpe\protocol\{
-	PlayerActionPacket, PlayerListPacket, StartGamePacket
+	PlayerActionPacket, StartGamePacket
 };
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
-use pocketmine\Server;
 
 class PacketHandler implements Listener {
 
@@ -110,21 +109,6 @@ class PacketHandler implements Listener {
 			case ($pk instanceof StartGamePacket):
 				if(Main::$registerDimensions){
 					$pk->dimension = Utils::getDimension($p->getLevel());
-				}
-				break;
-
-			case ($pk instanceof PlayerListPacket):
-				if(Main::$XBLIcons){
-					foreach($pk->entries as $entry){
-						$player = Server::getInstance()->getPlayer($entry->username);
-						if($player instanceof PMPlayer){
-							if(is_string($player->getXuid())){
-								if($player->getXuid() != ""){
-									$entry->xboxUserId = $player->getXuid();
-								}
-							}
-						}
-					}
 				}
 				break;
 		}

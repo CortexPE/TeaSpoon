@@ -172,7 +172,7 @@ class EventListener implements Listener {
 			$session = Main::getInstance()->getSessionById($p->getId());
 
 			if($session instanceof Session){
-				$session->useArmors(); // TODO: PMMP broke it. :cry:
+				$session->useArmors();
 			}
 		}
 

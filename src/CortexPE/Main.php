@@ -62,9 +62,9 @@ use pocketmine\utils\Config;
 class Main extends PluginBase {
 
 	// self explanatory constants
-	public const CONFIG_VERSION = 18;
-	public const TESTED_MIN_POCKETMINE_VERSION = "1.7dev-657"; // The minimum build this was tested working
-	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-679"; // The current build this was actually tested
+	public const CONFIG_VERSION = 19;
+	public const TESTED_MIN_POCKETMINE_VERSION = "1.7dev-699"; // The minimum build this was tested working
+	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-699"; // The current build this was actually tested
 
 	///////////////////////////////// START OF INSTANCE VARIABLES /////////////////////////////////
 	/** @var Config */
@@ -171,7 +171,13 @@ class Main extends PluginBase {
 	/** @var bool */
 	public static $elytraBoostParticles = true;
 	/** @var bool */
-	public static $XBLIcons = true;
+	public static $XPOrbOverride = false;
+	/** @var bool */
+	public static $XPPickupDelay = true;
+	/** @var bool */
+	public static $endCrystalExplode = true;
+	/** @var int */
+	public static $XPTicksTillDespawn = 6000;
 	////////////////////////////////// END OF CONFIGS VARIABLES //////////////////////////////////
 
 	public static function getInstance(): Main{
@@ -234,7 +240,10 @@ class Main extends PluginBase {
 		self::$beaconEffectsEnabled = self::$config->getNested("beacon.effectsEnabled", self::$beaconEffectsEnabled);
 		self::$shulkerBoxEnabled = self::$config->getNested("shulkerBox.enable", self::$shulkerBoxEnabled);
 		self::$elytraBoostParticles = self::$config->getNested("player.elytra.elytraBoostParticles", self::$elytraBoostParticles);
-		self::$XBLIcons = self::$config->getNested("player.XBLIcons", self::$XBLIcons);
+		self::$XPOrbOverride = self::$config->getNested("Xp.override", self::$XPOrbOverride);
+		self::$XPPickupDelay = self::$config->getNested("Xp.pickupDelay", self::$XPPickupDelay);
+		self::$endCrystalExplode = self::$config->getNested("entities.endCrystalExplosion", self::$endCrystalExplode);
+		self::$XPTicksTillDespawn = self::$config->getNested("Xp.ticksTillDespawn", self::$XPTicksTillDespawn);
 
 		// Pre-Enable Checks //
 
@@ -410,7 +419,7 @@ class Main extends PluginBase {
 		if(Splash::isValentines()){
 			$logo = TextFormat::RED . "\x44\x65\x73\x73\x65\x72\x74" . TextFormat::DARK_RED . "\x53\x70\x6f\x6f\x6e";
 		}
-		$sender->sendMessage("\x54\x68\x69\x73\x20\x73\x65\x72\x76\x65\x72\x20\x69\x73\x20\x72\x75\x6e\x6e\x69\x6e\x67\x20" . $logo . TextFormat::WHITE . "\x20\x76" . self::$instance->getDescription()->getVersion() . (Utils::isPhared() ? "" : "-dev") . "\x20\x66\x6f\x72\x20\x50\x6f\x63\x6b\x65\x74\x4d\x69\x6e\x65\x2d\x4d\x50\x20" . self::TESTED_MIN_POCKETMINE_VERSION . "\x20\x2d\x20" . self::TESTED_MAX_POCKETMINE_VERSION);
+		$sender->sendMessage("\x54\x68\x69\x73\x20\x73\x65\x72\x76\x65\x72\x20\x69\x73\x20\x72\x75\x6e\x6e\x69\x6e\x67\x20" . $logo . TextFormat::WHITE . "\x20\x76" . self::$instance->getDescription()->getVersion() . (Utils::isPhared() ? "" : "-dev") . "\x20\x66\x6f\x72\x20\x50\x6f\x63\x6b\x65\x74\x4d\x69\x6e\x65\x2d\x4d\x50\x20" . (self::TESTED_MIN_POCKETMINE_VERSION != self::TESTED_MAX_POCKETMINE_VERSION ? self::TESTED_MIN_POCKETMINE_VERSION . "\x20\x2d\x20" . self::TESTED_MAX_POCKETMINE_VERSION : self::TESTED_MAX_POCKETMINE_VERSION));
 
 		if(self::$sixCharCommitHash != ""){
 			$sender->sendMessage("\x43\x6f\x6d\x6d\x69\x74\x3a\x20" . self::$sixCharCommitHash);

@@ -35,6 +35,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
+use CortexPE\Utils;
 use pocketmine\block\BlockFactory;
 
 class BlockManager {
@@ -54,5 +55,9 @@ class BlockManager {
 		BlockFactory::registerBlock(new FrostedIce(), true);
 		BlockFactory::registerBlock(new ShulkerBox(), true);
 		BlockFactory::registerBlock(new Hopper(), true);
+
+		if(!Utils::isPhared()){ // beta
+			BlockFactory::registerBlock(new Jukebox(), true);
+		}
 	}
 }

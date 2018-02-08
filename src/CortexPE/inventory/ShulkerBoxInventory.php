@@ -70,7 +70,7 @@ class ShulkerBoxInventory extends ContainerInventory {
 		parent::onOpen($who);
 		if(count($this->getViewers()) === 1 && ($level = $this->getHolder()->getLevel()) instanceof Level){
 			$this->broadcastBlockEventPacket($this->getHolder(), true);
-			$level->broadcastLevelSoundEvent($this->getHolder()->add(0.5, 0.5, 0.5), LevelSoundEventPacket::SOUND_SHULKER_OPEN);
+			$level->broadcastLevelSoundEvent($this->getHolder()->add(0.5, 0.5, 0.5), LevelSoundEventPacket::SOUND_SHULKERBOX_OPEN);
 		}
 	}
 
@@ -91,7 +91,7 @@ class ShulkerBoxInventory extends ContainerInventory {
 	public function onClose(Player $who): void{
 		if(count($this->getViewers()) === 1 && ($level = $this->getHolder()->getLevel()) instanceof Level){
 			$this->broadcastBlockEventPacket($this->getHolder(), false);
-			$level->broadcastLevelSoundEvent($this->getHolder()->add(0.5, 0.5, 0.5), LevelSoundEventPacket::SOUND_SHULKER_CLOSE);
+			$level->broadcastLevelSoundEvent($this->getHolder()->add(0.5, 0.5, 0.5), LevelSoundEventPacket::SOUND_SHULKERBOX_CLOSED);
 		}
 		$this->getHolder()->saveNBT();
 		parent::onClose($who);

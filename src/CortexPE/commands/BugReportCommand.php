@@ -37,6 +37,7 @@ namespace CortexPE\commands;
 
 
 use CortexPE\Main;
+use CortexPE\Utils;
 use pocketmine\command\CommandSender;
 use pocketmine\command\defaults\VanillaCommand;
 use pocketmine\network\mcpe\protocol\ProtocolInfo;
@@ -74,9 +75,6 @@ class BugReportCommand extends VanillaCommand {
 		$pstr = substr($pstr, 0, -2);
 		$str .= $pstr . "\n";
 		$str .= "Base64 Encoded Config: " . $this->encodeFile(Main::getInstance()->getDataFolder() . "config.yml") . "\n";
-		if(Main::$debug && file_exists(Main::getInstance()->getDataFolder() . "packetlog.txt")){
-			$str .= "Base64 Encoded PacketLog: " . $this->encodeFile(Main::getInstance()->getDataFolder() . "packetlog.txt") . "\n";
-		}
 		$str .= "Base64 Encoded PocketMine Configuration: " . $this->encodeFile(PMServer::getInstance()->getDataPath() . "pocketmine.yml") . "\n";
 		$str .= "Base64 Encoded Server Properties: " . $this->encodeFile(PMServer::getInstance()->getDataPath() . "server.properties") . "\n";
 

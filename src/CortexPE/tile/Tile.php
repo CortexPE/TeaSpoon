@@ -35,6 +35,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\tile;
 
+use CortexPE\Utils;
 use pocketmine\tile\Tile as PMTile;
 
 class Tile extends PMTile {
@@ -42,11 +43,16 @@ class Tile extends PMTile {
 	const MOB_SPAWNER = "MobSpawner";
 	const SHULKER_BOX = "ShulkerBox";
 	const HOPPER = "Hopper";
+	const JUKEBOX = "Jukebox";
 
 	public static function init(){
 		self::registerTile(Beacon::class);
 		self::registerTile(MobSpawner::class);
 		self::registerTile(ShulkerBox::class);
 		self::registerTile(Hopper::class);
+
+		if(!Utils::isPhared()){ // beta
+			self::registerTile(Jukebox::class);
+		}
 	}
 }
