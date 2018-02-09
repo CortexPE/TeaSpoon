@@ -25,7 +25,7 @@ use CortexPE\level\weather\Weather;
 use CortexPE\Main;
 use pocketmine\command\CommandSender;
 use pocketmine\command\defaults\VanillaCommand;
-use pocketmine\event\TranslationContainer;
+use pocketmine\lang\TranslationContainer;
 use pocketmine\level\Level;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;

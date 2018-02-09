@@ -38,7 +38,7 @@ namespace CortexPE\commands;
 use pocketmine\command\{
 	CommandSender, defaults\VanillaCommand
 };
-use pocketmine\event\TranslationContainer;
+use pocketmine\lang\TranslationContainer;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\Player;
 use pocketmine\Server;

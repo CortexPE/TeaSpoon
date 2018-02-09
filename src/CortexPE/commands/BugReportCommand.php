@@ -37,7 +37,6 @@ namespace CortexPE\commands;
 
 
 use CortexPE\Main;
-use CortexPE\Utils;
 use pocketmine\command\CommandSender;
 use pocketmine\command\defaults\VanillaCommand;
 use pocketmine\network\mcpe\protocol\ProtocolInfo;

@@ -26,9 +26,8 @@ use CortexPE\utils\TextFormat;
 use pocketmine\command\{
 	Command, CommandSender, defaults\VanillaCommand
 };
-use pocketmine\event\{
-	entity\EntityDamageEvent, TranslationContainer
-};
+use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\lang\TranslationContainer;
 use pocketmine\Player;
 
 class KillCommand extends VanillaCommand {
