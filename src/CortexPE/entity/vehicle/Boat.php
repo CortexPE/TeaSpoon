@@ -33,6 +33,8 @@ use pocketmine\Server as PMServer;
 
 class Boat extends Vehicle {
 
+	public const TAG_WOOD_ID = "WoodID";
+
 	const NETWORK_ID = self::BOAT;
 
 	public $height = 0.7;
@@ -44,8 +46,8 @@ class Boat extends Vehicle {
 	public $linkedEntity = null;
 
 	public function __construct(Level $level, CompoundTag $nbt){
-		if(!isset($nbt->WoodID)){
-			$nbt->WoodID = new ByteTag("WoodID", 0);
+		if(!$nbt->hasTag(self::TAG_WOOD_ID, ByteTag::class)){
+			$nbt->setByte(self::TAG_WOOD_ID, 0);
 		}
 		parent::__construct($level, $nbt);
 	}
@@ -62,7 +64,7 @@ class Boat extends Vehicle {
 	}
 
 	public function getWoodID(){
-		return $this->namedtag["WoodID"];
+		return $this->namedtag->getByte(self::TAG_WOOD_ID);
 	}
 
 	public function attack(EntityDamageEvent $source){

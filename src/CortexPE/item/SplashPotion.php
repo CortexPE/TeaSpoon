@@ -49,6 +49,8 @@ use pocketmine\Player;
 
 class SplashPotion extends ProjectileItem {
 
+	public const TAG_POTION_ID = "PotionId";
+
 	public function __construct($meta = 0){
 		parent::__construct(Item::SPLASH_POTION, $meta, $this->getNameByMeta($meta));
 	}
@@ -63,7 +65,7 @@ class SplashPotion extends ProjectileItem {
 
 	public function onClickAir(Player $player, Vector3 $directionVector): bool{
 		$nbt = Entity::createBaseNBT($player->add(0, $player->getEyeHeight(), 0), $directionVector, $player->yaw, $player->pitch);
-		$nbt["PotionId"] = new ShortTag("PotionId", $this->meta);
+		$nbt->setShort(self::TAG_POTION_ID, $this->meta);
 
 		$projectile = Entity::createEntity($this->getProjectileEntityType(), $player->getLevel(), $nbt, $player);
 		if($projectile !== null){

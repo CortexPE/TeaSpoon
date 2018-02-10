@@ -50,58 +50,70 @@ class AreaEffectCloud extends Entity {
 	private $Duration = 600;
 	private $DurationOnUse = 0;
 
+	public const TAG_POTION_ID = "PotionId";
+	public const TAG_AGE = "Age";
+	public const TAG_RADIUS = "Radius";
+	public const TAG_RADIUS_ON_USE = "RadiusOnUse";
+	public const TAG_RADIUS_PER_TICK = "RadiusPerTick";
+	public const TAG_WAIT_TIME = "WaitTime";
+	public const TAG_TILE_X = "TileX";
+	public const TAG_TILE_Y = "TileY";
+	public const TAG_TILE_Z = "TileZ";
+	public const TAG_DURATION = "Duration";
+	public const TAG_DURATION_ON_USE = "DurationOnUse";
+
 	public function initEntity(){
 		parent::initEntity();
 
-		if(!isset($this->namedtag->PotionId) or !($this->namedtag->PotionId instanceof ShortTag)){
-			$this->namedtag->PotionId = new ShortTag("PotionId", $this->PotionId);
+		if(!$this->namedtag->hasTag(self::TAG_POTION_ID, ShortTag::class)){
+			$this->namedtag->setShort(self::TAG_POTION_ID, $this->PotionId);
 		}
-		$this->PotionId = $this->namedtag->PotionId->getValue();
+		$this->PotionId = $this->namedtag->getShort(self::TAG_POTION_ID);
 
-		if(!isset($this->namedtag->Radius) or !($this->namedtag->Radius instanceof FloatTag)){
-			$this->namedtag->Radius = new FloatTag("Radius", $this->Radius);
+		if(!$this->namedtag->hasTag(self::TAG_RADIUS, FloatTag::class)){
+			$this->namedtag->setFloat(self::TAG_RADIUS, $this->Radius);
 		}
-		$this->Radius = $this->namedtag->Radius->getValue();
+		$this->Radius = $this->namedtag->getFloat(self::TAG_RADIUS);
 
-		if(!isset($this->namedtag->RadiusOnUse) or !($this->namedtag->RadiusOnUse instanceof FloatTag)){
-			$this->namedtag->RadiusOnUse = new FloatTag("RadiusOnUse", $this->RadiusOnUse);
+		if(!$this->namedtag->hasTag(self::TAG_RADIUS_ON_USE, FloatTag::class)){
+			$this->namedtag->setFloat(self::TAG_RADIUS_ON_USE, $this->RadiusOnUse);
 		}
-		$this->RadiusOnUse = $this->namedtag->RadiusOnUse->getValue();
+		$this->RadiusOnUse = $this->namedtag->getFloat(self::TAG_RADIUS_ON_USE);
 
-		if(!isset($this->namedtag->RadiusPerTick) or !($this->namedtag->RadiusPerTick instanceof FloatTag)){
-			$this->namedtag->RadiusPerTick = new FloatTag("RadiusPerTick", $this->RadiusPerTick);
+		if(!$this->namedtag->hasTag(self::TAG_RADIUS_PER_TICK, FloatTag::class)){
+			$this->namedtag->setFloat(self::TAG_RADIUS_PER_TICK, $this->RadiusPerTick);
 		}
-		$this->RadiusPerTick = $this->namedtag->RadiusPerTick->getValue();
+		$this->RadiusPerTick = $this->namedtag->getFloat(self::TAG_RADIUS_PER_TICK);
 
-		if(!isset($this->namedtag->WaitTime) or !($this->namedtag->WaitTime instanceof IntTag)){
-			$this->namedtag->WaitTime = new IntTag("WaitTime", $this->WaitTime);
+		if(!$this->namedtag->hasTag(self::TAG_WAIT_TIME, IntTag::class)){
+			$this->namedtag->setInt(self::TAG_WAIT_TIME, $this->WaitTime);
 		}
-		$this->WaitTime = $this->namedtag->WaitTime->getValue();
+		$this->WaitTime = $this->namedtag->getInt(self::TAG_WAIT_TIME);
 
-		if(!isset($this->namedtag->TileX) or !($this->namedtag->TileX instanceof IntTag)){
-			$this->namedtag->TileX = new IntTag("TileX", (int)round($this->getX()));
+		if(!$this->namedtag->hasTag(self::TAG_TILE_X, IntTag::class)){
+			$this->namedtag->setInt(self::TAG_TILE_X, intval(round($this->getX())));
 		}
-		$this->TileX = $this->namedtag->TileX->getValue();
+		$this->TileX = $this->namedtag->getInt(self::TAG_TILE_X);
 
-		if(!isset($this->namedtag->TileY) or !($this->namedtag->TileY instanceof IntTag)){
-			$this->namedtag->TileY = new IntTag("TileY", (int)round($this->getY()));
+		if(!$this->namedtag->hasTag(self::TAG_TILE_Y, IntTag::class)){
+			$this->namedtag->setInt(self::TAG_TILE_Y, intval(round($this->getY())));
 		}
-		$this->TileY = $this->namedtag->TileY->getValue();
+		$this->TileY = $this->namedtag->getInt(self::TAG_TILE_Y);
 
-		if(!isset($this->namedtag->TileZ) or !($this->namedtag->TileZ instanceof IntTag)){
-			$this->namedtag->TileZ = new IntTag("TileZ", (int)round($this->getZ()));
+		if(!$this->namedtag->hasTag(self::TAG_TILE_Z, IntTag::class)){
+			$this->namedtag->setInt(self::TAG_TILE_Z, intval(round($this->getZ())));
 		}
-		$this->TileZ = $this->namedtag->TileZ->getValue();
+		$this->TileZ = $this->namedtag->getInt(self::TAG_TILE_Z);
 
-		if(!isset($this->namedtag->Duration) or !($this->namedtag->Duration instanceof IntTag)){
-			$this->namedtag->Duration = new IntTag("Duration", $this->Duration);
+		if(!$this->namedtag->hasTag(self::TAG_DURATION, IntTag::class)){
+			$this->namedtag->setInt(self::TAG_DURATION, $this->Duration);
 		}
-		$this->Duration = $this->namedtag->Duration->getValue();
+		$this->Duration = $this->namedtag->getInt(self::TAG_DURATION);
 
-		if(!isset($this->namedtag->DurationOnUse) or !($this->namedtag->DurationOnUse instanceof IntTag)){
-			$this->namedtag->DurationOnUse = new IntTag("DurationOnUse", $this->DurationOnUse);
+		if(!$this->namedtag->hasTag(self::TAG_DURATION_ON_USE, IntTag::class)){
+			$this->namedtag->setInt(self::TAG_DURATION_ON_USE, $this->DurationOnUse);
 		}
-		$this->DurationOnUse = $this->namedtag->DurationOnUse->getValue();
+		$this->DurationOnUse = $this->namedtag->getInt(self::TAG_DURATION_ON_USE);
 
 		$this->getDataPropertyManager()->setInt(self::DATA_AREA_EFFECT_CLOUD_PARTICLE_ID, Particle::TYPE_MOB_SPELL);//todo
 		$this->getDataPropertyManager()->setFloat(self::DATA_AREA_EFFECT_CLOUD_RADIUS, $this->Radius);

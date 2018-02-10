@@ -42,22 +42,25 @@ use pocketmine\nbt\tag\{
 };
 
 class Bat extends Animal {
+
+	public const TAG_IS_RESTING = "isResting";
+
 	const NETWORK_ID = self::BAT;
 
 	public $width = 0.5;
 	public $height = 0.9;
 
 	public function __construct(Level $level, CompoundTag $nbt){
-		if(!isset($nbt->isResting)){
-			$nbt->isResting = new ByteTag("isResting", 0);
+		if(!$nbt->hasTag(self::TAG_IS_RESTING, ByteTag::class)){
+			$nbt->setByte(self::TAG_IS_RESTING, 0);
 		}
 		parent::__construct($level, $nbt);
 
-		$this->setDataFlag(self::DATA_FLAGS, self::DATA_FLAG_RESTING, $this->isResting());
+		$this->setDataFlag(self::DATA_FLAGS, self::DATA_FLAG_RESTING, boolval($nbt->getByte(self::TAG_IS_RESTING)));
 	}
 
 	public function isResting(): bool{
-		return boolval($this->namedtag["isResting"]);
+		return boolval($this->namedtag->getByte(self::TAG_IS_RESTING));
 	}
 
 	public function getName(): string{
@@ -70,7 +73,7 @@ class Bat extends Animal {
 	}
 
 	public function setResting(bool $resting){
-		$this->namedtag->isResting = new ByteTag("isResting", $resting ? 1 : 0);
+		$this->namedtag->setByte(self::TAG_IS_RESTING, intval($resting));
 	}
 
 	public function onUpdate(int $currentTick): bool{

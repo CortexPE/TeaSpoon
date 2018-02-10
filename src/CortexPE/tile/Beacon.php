@@ -43,12 +43,15 @@ class Beacon extends Spawnable implements InventoryHolder {
 	 */
 	private $inventory;
 
+	public const TAG_PRIMARY = "primary";
+	public const TAG_SECONDARY = "secondary";
+
 	public function __construct(Level $level, CompoundTag $nbt){
-		if(!isset($nbt->primary)){
-			$nbt->primary = new IntTag("primary", 0);
+		if(!$nbt->hasTag(self::TAG_PRIMARY, IntTag::class)){
+			$nbt->setInt(self::TAG_PRIMARY, 0);
 		}
-		if(!isset($nbt->secondary)){
-			$nbt->secondary = new IntTag("secondary", 0);
+		if(!$nbt->hasTag(self::TAG_SECONDARY, IntTag::class)){
+			$nbt->setInt(self::TAG_SECONDARY, 0);
 		}
 		$this->inventory = new BeaconInventory($this);
 		parent::__construct($level, $nbt);
@@ -60,24 +63,24 @@ class Beacon extends Spawnable implements InventoryHolder {
 	}
 
 	public function addAdditionalSpawnData(CompoundTag $nbt): void{
-		$nbt->primary = $this->namedtag->primary;
-		$nbt->secondary = $this->namedtag->secondary;
+		$nbt->setInt(self::TAG_PRIMARY, $this->namedtag->getInt(self::TAG_PRIMARY));
+		$nbt->setInt(self::TAG_SECONDARY, $this->namedtag->getInt(self::TAG_SECONDARY));
 		//TODO: isMovable
 	}
 
 	public function updateCompoundTag(CompoundTag $nbt, Player $player): bool{
-		$this->setPrimaryEffect($nbt->primary->getValue());
-		$this->setSecondaryEffect($nbt->secondary->getValue());
+		$this->setPrimaryEffect($nbt->getInt(self::TAG_PRIMARY));
+		$this->setSecondaryEffect($nbt->getInt(self::TAG_SECONDARY));
 
 		return true;
 	}
 
 	public function setPrimaryEffect(int $effectId){
-		$this->namedtag->primary->setValue($effectId);
+		$this->namedtag->setInt(self::TAG_PRIMARY, $effectId);
 	}
 
 	public function setSecondaryEffect(int $effectId){
-		$this->namedtag->secondary->setValue($effectId);
+		$this->namedtag->setInt(self::TAG_SECONDARY, $effectId);
 	}
 
 	public function isPaymentItem(Item $item){//TODO: When FloatingInv implemented, remove item
@@ -85,15 +88,11 @@ class Beacon extends Spawnable implements InventoryHolder {
 	}
 
 	public function getPrimaryEffect(){
-		return $this->namedtag->primary->getValue();
-	}
-
-	public function getBeaconData(){
-		return $this->namedtag;
+		return $this->namedtag->getInt(self::TAG_PRIMARY);
 	}
 
 	public function isSecondaryAvailable(){
-		return $this->isEffectAvailable(Effect::REGENERATION);//What a hack xD
+		return $this->getLayers() >= 4 && !$this->solidAbove();
 	}
 
 	public function isEffectAvailable(int $effectId){
@@ -156,7 +155,7 @@ class Beacon extends Spawnable implements InventoryHolder {
 	}
 
 	public function getEffects(){
-		return [$this->namedtag->primary->getValue(), $this->namedtag->secondary->getValue()];
+		return [$this->getPrimaryEffect(), $this->getSecondaryEffect()];
 	}
 
 	public function getTierEffects(){
@@ -195,7 +194,7 @@ class Beacon extends Spawnable implements InventoryHolder {
 	}
 
 	public function getSecondaryEffect(){
-		return $this->namedtag->secondary->getValue();
+		return $this->namedtag->getInt(self::TAG_SECONDARY);
 	}
 
 	/**

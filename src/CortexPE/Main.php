@@ -63,6 +63,7 @@ class Main extends PluginBase {
 
 	// self explanatory constants
 	public const CONFIG_VERSION = 19;
+	public const BASE_POCKETMINE_VERSION = "1.7dev"; // The PocketMine version before Jenkins builds it... (Can be found on PocketMine.php as the 'VERSION' constant)
 	public const TESTED_MIN_POCKETMINE_VERSION = "1.7dev-699"; // The minimum build this was tested working
 	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-699"; // The current build this was actually tested
 
@@ -274,8 +275,8 @@ class Main extends PluginBase {
 			$this->getLogger()->warning("You're using a developer's build of TeaSpoon. For better performance and stability, please get a pre-packaged version here: https://poggit.pmmp.io/ci/CortexPE/TeaSpoon/~");
 		}
 
-		if(!Utils::isServerPhared()){
-			$this->getLogger()->warning("Non-Packaged PocketMine installation detected. Some of TeaSpoon's protective functions are now disabled.");
+		if(!Utils::isServerPhared() || $this->getServer()->getPocketMineVersion() == self::BASE_POCKETMINE_VERSION){
+			$this->getLogger()->warning("Non-Packaged / Unsupported PocketMine installation detected. Some of TeaSpoon's protective functions are now disabled.");
 		}
 
 		self::$instance = $this;
@@ -352,8 +353,9 @@ class Main extends PluginBase {
 
 	private function checkServer() : bool {
 		if(Utils::isServerPhared()){
-			$versionMinComp = version_compare($this->getServer()->getPocketMineVersion(), self::TESTED_MIN_POCKETMINE_VERSION);
-			$versionMaxComp = version_compare($this->getServer()->getPocketMineVersion(), self::TESTED_MAX_POCKETMINE_VERSION);
+			$serverVersion = $this->getServer()->getPocketMineVersion();
+			$versionMinComp = version_compare($serverVersion, self::TESTED_MIN_POCKETMINE_VERSION);
+			$versionMaxComp = version_compare($serverVersion, self::TESTED_MAX_POCKETMINE_VERSION);
 
 			if($versionMinComp < 0){
 				// PocketMine version is older than minimum tested version

@@ -152,7 +152,7 @@ class FishingHook extends Projectile {
 		$entity->setMotion($this->getOwningEntity()->getDirectionVector()->multiply(-0.3)->add(0, 0.3, 0));
 
 		$this->hadCollision = true;
-		$this->flagForDespawn();
+		$this->close();
 	}
 
 	public function getResultDamage(): int{

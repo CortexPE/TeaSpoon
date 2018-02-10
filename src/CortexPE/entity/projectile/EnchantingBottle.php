@@ -67,7 +67,7 @@ class EnchantingBottle extends Throwable {
 			$pk->pitch = 1;
 			Server::getInstance()->broadcastPacket($this->getViewers(), $pk);
 
-			$this->flagForDespawn();
+			$this->close();
 		}
 
 		return parent::onUpdate($currentTick);

@@ -62,9 +62,11 @@ class Rabbit extends Animal {
 	public $width = 0.4;
 	public $height = 0.5;
 
+	public const TAG_RABBIT_TYPE = "RabbitType";
+
 	public function __construct(Level $level, CompoundTag $nbt){
-		if(!isset($nbt->RabbitType)){
-			$nbt->RabbitType = new ByteTag("RabbitType", $this->getRandomRabbitType());
+		if(!$nbt->hasTag(self::TAG_RABBIT_TYPE, ByteTag::class)){
+			$nbt->setByte(self::TAG_RABBIT_TYPE, $this->getRandomRabbitType());
 		}
 		parent::__construct($level, $nbt);
 
@@ -78,7 +80,7 @@ class Rabbit extends Animal {
 	}
 
 	public function getRabbitType(): int{
-		return (int)$this->namedtag["RabbitType"];
+		return $this->namedtag->getByte(self::TAG_RABBIT_TYPE);
 	}
 
 	public function getName(): string{
@@ -91,7 +93,7 @@ class Rabbit extends Animal {
 	}
 
 	public function setRabbitType(int $type){
-		$this->namedtag->RabbitType = new ByteTag("RabbitType", $type);
+		$this->namedtag->setByte(self::TAG_RABBIT_TYPE, $type);
 	}
 
 	public function getDrops(): array{

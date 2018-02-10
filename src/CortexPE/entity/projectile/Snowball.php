@@ -36,7 +36,7 @@ class Snowball extends Throwable {
 		if($this->isCollided || $this->age > 1200){
 			$this->getLevel()->addParticle(new ItemBreakParticle($this->asVector3(), Item::get(Item::SNOWBALL)));
 			$this->getLevel()->addParticle(new DestroyBlockParticle($this->asVector3(), Block::get(Block::SNOW))); // Realistic aye?
-			$this->flagForDespawn();
+			$this->close();
 		}
 
 		return parent::onUpdate($currentTick);

@@ -40,96 +40,6 @@ use pocketmine\tile\Tile;
 
 class MonsterSpawner extends SpawnerPM {
 
-	const EID_TO_STR = [
-		10  => "Chicken",
-		11  => "Cow",
-		12  => "Pig",
-		13  => "Sheep",
-		14  => "Wolf",
-		15  => "Villager",
-		16  => "Mooshroom",
-		17  => "Squid",
-		18  => "Rabbit",
-		19  => "Bat",
-		20  => "Iron Golem",
-		21  => "Snow Golem",
-		22  => "Ocelot",
-		23  => "Horse",
-		24  => "Donkey",
-		25  => "Mule",
-		26  => "Skeleton Horse",
-		27  => "Zombie Horse",
-		28  => "Polar Bear",
-		29  => "Llama",
-		30  => "Parrot",
-		32  => "Zombie",
-		33  => "Creeper",
-		34  => "Skeleton",
-		35  => "Spider",
-		36  => "Zombie Pigman",
-		37  => "Slime",
-		38  => "Enderman",
-		39  => "Silverfish",
-		40  => "Cave Spider",
-		41  => "Ghast",
-		42  => "Magma Cube",
-		43  => "Blaze",
-		44  => "Zombie Villager",
-		45  => "Witch",
-		46  => "Stray",
-		47  => "Husk",
-		48  => "Wither Skeleton",
-		49  => "Guardian",
-		50  => "Elder Guardian",
-		51  => "NPC",
-		52  => "Wither",
-		53  => "Ender Dragon",
-		54  => "Shulker",
-		55  => "Endermite",
-		56  => "Agent",
-		57  => "Vindicator",
-		61  => "Armor Stand",
-		62  => "Tripod Camera",
-		63  => "Player",
-		64  => "Item",
-		65  => "TNT",
-		66  => "Falling Block",
-		67  => "Moving Block",
-		68  => "XP Bottle",
-		69  => "XP Orb",
-		70  => "Eye of Ender signal",
-		71  => "Endercrystal",
-		72  => "Fireworks Rocket",
-		76  => "Shulker Bullet",
-		77  => "Fishing Hook",
-		78  => "Chalkboard",
-		79  => "Dragon Fireball",
-		80  => "Arrow",
-		81  => "Snowball",
-		82  => "Egg",
-		83  => "Painting",
-		84  => "Minecart",
-		85  => "Large Fireball",
-		86  => "Splash Potion",
-		87  => "Ender Pearl",
-		88  => "Leash Knot",
-		89  => "Wither Skull",
-		90  => "Boat",
-		91  => "Wither Skull Dangerous",
-		93  => "Lightning Bolt",
-		94  => "Small Fireball",
-		95  => "Area Effect Cloud",
-		96  => "Hopper Minecart",
-		97  => "TNT Minecart",
-		98  => "Chest Minecart",
-		100 => "Command Block Minecart",
-		101 => "Lingering Potion",
-		102 => "Llama Spit",
-		103 => "evocation Fang",
-		104 => "Evocation Illager",
-		105 => "Vex",
-	];
-
 	/** @var int $entityid */
 	private $entityid = 0;
 
@@ -223,12 +133,6 @@ class MonsterSpawner extends SpawnerPM {
 	 * @return string
 	 */
 	public function getName(): string{
-		if($this->entityid === 0){
 			return "Monster Spawner";
-		}else{
-			$name = ucfirst(self::EID_TO_STR[$this->entityid] ?? 'Monster') . ' Spawner';
-
-			return $name;
-		}
 	}
 }

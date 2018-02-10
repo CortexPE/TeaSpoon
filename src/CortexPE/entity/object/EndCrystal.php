@@ -47,13 +47,16 @@ use pocketmine\nbt\tag\DoubleTag;
 use pocketmine\nbt\tag\ListTag;
 
 class EndCrystal extends Entity {
+
+	public const TAG_SHOW_BOTTOM = "ShowBottom";
+
 	const NETWORK_ID = self::ENDER_CRYSTAL;
 	public $height = 1.50;
 	public $width = 0.50;
 
 	public function __construct(Level $level, CompoundTag $nbt){
-		if(!isset($nbt->ShowBottom)){
-			$nbt->ShowBottom = new ByteTag("ShowBottom", 0);
+		if(!$nbt->hasTag(self::TAG_SHOW_BOTTOM, ByteTag::class)){
+			$nbt->setByte(self::TAG_SHOW_BOTTOM, 0);
 		}
 		parent::__construct($level, $nbt);
 
@@ -61,19 +64,19 @@ class EndCrystal extends Entity {
 	}
 
 	public function isShowingBottom(): bool{
-		return boolval($this->namedtag["ShowBottom"]);
+		return boolval($this->namedtag->getByte(self::TAG_SHOW_BOTTOM));
 	}
 
 	public function setShowingBottom(bool $value){
-		$this->namedtag->ShowBottom = new ByteTag("ShowBottom", $value ? 1 : 0);
+		$this->namedtag->setByte(self::TAG_SHOW_BOTTOM, intval($value));
 	}
 
 	public function setBeamTarget(Vector3 $pos){
-		$this->namedtag->BeamTarget = new ListTag("BeamTarget", [
+		$this->namedtag->setTag(new ListTag("BeamTarget", [
 			new DoubleTag("", $pos->getX()),
 			new DoubleTag("", $pos->getY()),
 			new DoubleTag("", $pos->getZ()),
-		]);
+		]));
 	}
 
 	public function attack(EntityDamageEvent $source){

@@ -45,6 +45,8 @@ use pocketmine\Server;
 
 class SplashPotion extends Throwable {
 
+	public const TAG_POTION_ID = "PotionId";
+
 	const NETWORK_ID = self::SPLASH_POTION;
 
 	public function onUpdate(int $currentTick): bool{
@@ -66,14 +68,14 @@ class SplashPotion extends Throwable {
 			$pk->pitch = 1;
 			Server::getInstance()->broadcastPacket($this->getViewers(), $pk);
 
-			$this->flagForDespawn();
+			$this->close();
 		}
 
 		return parent::onUpdate($currentTick);
 	}
 
 	public function getPotionId(): int{
-		return (int)$this->namedtag["PotionId"];
+		return $this->namedtag->getShort(self::TAG_POTION_ID);
 	}
 
 	public function onCollideWithEntity(Entity $entity){
