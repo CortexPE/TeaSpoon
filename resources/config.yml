@@ -10,7 +10,7 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 19
+version: 20
 
 entities:
  # Weather to register Vanilla Entities (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...) or not
@@ -23,6 +23,7 @@ entities:
 enchantments:
  # Weather to enable & register Vanilla Enchantments (Set to false if you're going to use VanillaEnchantments plugin etc...) or not
  register: true
+ enchantingTableEnabled: true
 
 dimensions:
  # Enable / Disable Dimensions
@@ -111,4 +112,7 @@ beacon:
  effectsEnabled: true
 
 shulkerBox:
+ enable: true
+
+anvil:
  enable: true

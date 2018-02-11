@@ -55,6 +55,8 @@ class BlockManager {
 		BlockFactory::registerBlock(new FrostedIce(), true);
 		BlockFactory::registerBlock(new ShulkerBox(), true);
 		BlockFactory::registerBlock(new Hopper(), true);
+		BlockFactory::registerBlock(new EnchantingTable(), true);
+		BlockFactory::registerBlock(new Anvil(), true);
 
 		if(!Utils::isPhared()){ // beta
 			BlockFactory::registerBlock(new Jukebox(), true);

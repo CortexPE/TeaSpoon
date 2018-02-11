@@ -45,6 +45,7 @@ use CortexPE\item\{
 	enchantment\Enchantment, ItemManager
 };
 use CortexPE\level\weather\Weather;
+use CortexPE\network\PacketManager;
 use CortexPE\plugin\AllAPILoaderManager;
 use CortexPE\task\TickLevelsTask;
 use CortexPE\tile\Tile;
@@ -62,7 +63,7 @@ use pocketmine\utils\Config;
 class Main extends PluginBase {
 
 	// self explanatory constants
-	public const CONFIG_VERSION = 19;
+	public const CONFIG_VERSION = 20;
 	public const BASE_POCKETMINE_VERSION = "1.7dev"; // The PocketMine version before Jenkins builds it... (Can be found on PocketMine.php as the 'VERSION' constant)
 	public const TESTED_MIN_POCKETMINE_VERSION = "1.7dev-699"; // The minimum build this was tested working
 	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-699"; // The current build this was actually tested
@@ -179,6 +180,10 @@ class Main extends PluginBase {
 	public static $endCrystalExplode = true;
 	/** @var int */
 	public static $XPTicksTillDespawn = 6000;
+	/** @var bool */
+	public static $EnchantingTableEnabled = true;
+	/** @var bool */
+	public static $AnvilEnabled = true;
 	////////////////////////////////// END OF CONFIGS VARIABLES //////////////////////////////////
 
 	public static function getInstance(): Main{
@@ -245,6 +250,8 @@ class Main extends PluginBase {
 		self::$XPPickupDelay = self::$config->getNested("Xp.pickupDelay", self::$XPPickupDelay);
 		self::$endCrystalExplode = self::$config->getNested("entities.endCrystalExplosion", self::$endCrystalExplode);
 		self::$XPTicksTillDespawn = self::$config->getNested("Xp.ticksTillDespawn", self::$XPTicksTillDespawn);
+		self::$EnchantingTableEnabled = self::$config->getNested("enchantments.enchantingTableEnabled", self::$EnchantingTableEnabled);
+		self::$AnvilEnabled = self::$config->getNested("anvil.enable", self::$AnvilEnabled);
 
 		// Pre-Enable Checks //
 
@@ -318,6 +325,7 @@ class Main extends PluginBase {
 		// LevelManager::init(); EXECUTED VIA EventListener
 		Tile::init();
 		FishingLootTable::init();
+		PacketManager::init();
 
 		// Register Listeners
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
