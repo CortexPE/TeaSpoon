@@ -104,10 +104,9 @@ class Hopper extends Transparent {
 			new IntTag("y", $this->y),
 			new IntTag("z", $this->z),
 		]);
-		$nbt->Items->setTagType(NBT::TAG_Compound);
 
 		if($item->hasCustomName()){
-			$nbt->CustomName = new StringTag("CustomName", $item->getCustomName());
+			$nbt->setString("CustomName", $item->getCustomName());
 		}
 
 		if($item->hasCustomBlockData()){

@@ -106,7 +106,6 @@ class ShulkerBox extends Transparent {
 		$nbt = TileShulkerBox::createNBT($this->asVector3());
 		if($item->getNamedTag()->hasTag("Items", ListTag::class)){
 			$nbt->setTag($item->getNamedTag()->getListTag("Items"));
-			//var_dump($nbt->getListTag("Items")->getValue());
 		} else {
 			$nbt->setTag(new ListTag("Items", []));
 		}
