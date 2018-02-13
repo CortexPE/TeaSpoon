@@ -39,6 +39,23 @@ use pocketmine\utils\TextFormat as PMTextFormat;
 
 class TextFormat extends PMTextFormat {
 
+	public const RGB_BLACK = [0,0,0];
+	public const RGB_DARK_BLUE = [0,0,42];
+	public const RGB_DARK_GREEN = [0,42,0];
+	public const RGB_DARK_AQUA = [0,42,42];
+	public const RGB_DARK_RED = [42,0,0];
+	public const RGB_DARK_PURPLE = [42,0,42];
+	public const RGB_GOLD = [42,42,0];
+	public const RGB_GRAY = [42,42,42];
+	public const RGB_DARK_GRAY = [21,21,21];
+	public const RGB_BLUE = [21,21,63];
+	public const RGB_GREEN = [21,63,21];
+	public const RGB_AQUA = [21,63,63];
+	public const RGB_RED = [63,21,21];
+	public const RGB_LIGHT_PURPLE = [63,21,63];
+	public const RGB_YELLOW = [63,63,21];
+	public const RGB_WHITE = [63,63,63];
+
 	public static function center($input){
 		$clear = TextFormat::clean($input);
 		$lines = explode("\n", $clear);

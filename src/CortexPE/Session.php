@@ -36,23 +36,27 @@ declare(strict_types = 1);
 namespace CortexPE;
 
 use CortexPE\entity\projectile\FishingHook;
-use CortexPE\item\ArmorDurability;
+use CortexPE\item\utils\ArmorDurability;
 use CortexPE\item\Elytra;
 use CortexPE\item\enchantment\Enchantment;
 use pocketmine\item\Item;
+use pocketmine\network\mcpe\protocol\EntityEventPacket;
 use pocketmine\Player;
+use pocketmine\Server as PMServer;
 
 class Session {
 	/** @var int */
 	public $lastEnderPearlUse = 0,
-		$lastChorusFruitEat = 0;
+		$lastChorusFruitEat = 0,
+		$lastHeldSlot = 0;
 	/** @var bool */
-	public $skipCheck = false,
-		$usingElytra = false,
+	public $usingElytra = false,
 		$allowCheats = false,
 		$fishing = false;
 	/** @var null | FishingHook */
 	public $fishingHook = null;
+	/** @var array */
+	public $clientData = [];
 	/** @var Player */
 	private $player;
 
@@ -61,8 +65,20 @@ class Session {
 	}
 
 	public function __destruct(){
-		if($this->fishingHook !== null){
-			$this->fishingHook->flagForDespawn();
+		$this->unsetFishing();
+	}
+
+	public function unsetFishing(){
+		$this->fishing = false;
+
+		if($this->fishingHook instanceof FishingHook){
+			$pk = new EntityEventPacket();
+			$pk->entityRuntimeId = $this->fishingHook->getId();
+			$pk->event = EntityEventPacket::FISH_HOOK_TEASE;
+			$this->player->getServer()->broadcastPacket($this->player->getLevel()->getPlayers(), $pk);
+
+			$this->fishingHook->close();
+			$this->fishingHook = null;
 		}
 	}
 
@@ -70,135 +86,121 @@ class Session {
 		return $this->player;
 	}
 
+	public function getServer(): PMServer{
+		return $this->player->getServer();
+	}
+
 	public function useArmors(int $damage = 1){
+		if(!Main::$armorDamage) return;
 		if(!$this->player->isAlive() || !$this->player->isSurvival()){
 			return;
 		}
-		$inv = $this->player->getInventory();
+		$inv = $this->player->getArmorInventory();
 		$size = $inv->getSize();
-		$noDamage = false;
-		for($i = $size; $i < $size + 4; $i++){
-			$armor = $inv->getItem($i);
-
-			if($armor->getId() == Item::ELYTRA){
+		for($i = 0; $i < $size; $i++){
+			$item = $inv->getItem($i);
+			if($item->getId() == Item::ELYTRA || $item->isNull()){
 				continue;
 			}
+			$unbreaking = false;
 
-			$dura = ArmorDurability::getDurability($armor->getId());
-			if($dura == -1){
-				continue;
-			}
-
-			if($armor->hasEnchantments()){
-				foreach($armor->getEnchantments() as $ench){
-					if($ench->getLevel() <= 0){
-						continue;
-					}
-					switch($ench->getId()){
-						case Enchantment::UNBREAKING:
-							$rand = mt_rand(1, 100);
-							$level = $ench->getLevel();
-							switch($level){
-								case 1:
-									if($rand >= 80){
-										$noDamage = true;
-									}
-									break;
-								case 2:
-									if($rand >= 73){
-										$noDamage = true;
-									}
-									break;
-								case 3:
-									if($rand >= 70){
-										$noDamage = true;
-									}
-									break;
-								case 0:
-									break;
-							}
-							break;
+			if($item->hasEnchantments()){
+				if($item->hasEnchantment(Enchantment::UNBREAKING)){
+					$unbreakingEnch = $item->getEnchantment(Enchantment::UNBREAKING);
+					if($unbreakingEnch->getLevel() > 0){
+						$rand = mt_rand(1, 100);
+						$level = $unbreakingEnch->getLevel();
+						switch($level){
+							case 1:
+								if($rand >= 80){
+									$unbreaking = true;
+								}
+								break;
+							case 2:
+								if($rand >= 73){
+									$unbreaking = true;
+								}
+								break;
+							case 3:
+								if($rand >= 70){
+									$unbreaking = true;
+								}
+								break;
+						}
 					}
 				}
 			}
 
-			if(!$noDamage){
-				$ac = clone $armor;
-				$ac->setDamage($ac->getDamage() + $damage);
-				if($ac->getDamage() >= $dura){
-					$inv->setItem($i, Item::get(Item::AIR, 0, 1));
-				}else{
-					$inv->setItem($i, $ac);
-				}
+			$maxDurability = ArmorDurability::getDurability($item->getId());
 
-				$inv->sendArmorContents($inv->getViewers());
+			if(!$unbreaking){
+				$iClone = clone $item; // introducing, The iClone :joy:
+				$iClone->setDamage($iClone->getDamage() + $damage);
+				if($iClone->getDamage() < $maxDurability){
+					$inv->setItem($i, $iClone);
+				} else {
+					$inv->setItem($i, Item::get(Item::AIR));
+				}
 			}
 		}
+		$inv->sendContents($inv->getViewers());
 	}
 
 	public function damageElytra(int $damage = 1){
+		if(!Main::$armorDamage) return;
 		if(!$this->player->isAlive() || !$this->player->isSurvival()){
 			return;
 		}
-		$inv = $this->player->getInventory();
+		$inv = $this->player->getArmorInventory();
 		$elytra = $inv->getChestplate();
-		$noDamage = false;
+		$unbreaking = false;
 		if($elytra instanceof Elytra){
 			$dura = ArmorDurability::getDurability(Item::ELYTRA);
 
 			if($elytra->hasEnchantments()){
-				foreach($elytra->getEnchantments() as $ench){
-					if($ench->getLevel() <= 0){
-						continue;
-					}
-					switch($ench->getId()){
-						case Enchantment::UNBREAKING:
-							$rand = mt_rand(1, 100);
-							$level = $ench->getLevel();
-							switch($level){
-								case 1:
-									if($rand >= 80){
-										$noDamage = true;
-									}
-									break;
-								case 2:
-									if($rand >= 73){
-										$noDamage = true;
-									}
-									break;
-								case 3:
-									if($rand >= 70){
-										$noDamage = true;
-									}
-									break;
-								case 0:
-									break;
-							}
-							break;
+				if($elytra->hasEnchantment(Enchantment::UNBREAKING)){
+					$unbreakingEnch = $elytra->getEnchantment(Enchantment::UNBREAKING);
+					if($unbreakingEnch->getLevel() > 0){
+						$rand = mt_rand(1, 100);
+						$level = $unbreakingEnch->getLevel();
+						switch($level){
+							case 1:
+								if($rand >= 80){
+									$unbreaking = true;
+								}
+								break;
+							case 2:
+								if($rand >= 73){
+									$unbreaking = true;
+								}
+								break;
+							case 3:
+								if($rand >= 70){
+									$unbreaking = true;
+								}
+								break;
+						}
 					}
 				}
 			}
 
-			if(!$noDamage){
-				$ec = clone $elytra;
-				$ec->setDamage($ec->getDamage() + $damage);
-				if($ec->getDamage() >= $dura){
-					$inv->setChestplate(Item::get(Item::AIR, 0, 1));
-				}else{
-					$inv->setChestplate($ec);
+			if(!$unbreaking){
+				$iClone = clone $elytra; // introducing, The iClone :joy:
+				$iClone->setDamage($iClone->getDamage() + $damage);
+				if($iClone->getDamage() < $dura){
+					$inv->setChestplate($iClone);
+				} else {
+					$inv->setChestplate(Item::get(Item::AIR));
 				}
-
-				$inv->sendArmorContents($inv->getViewers());
 			}
 		}
+		$inv->sendContents($inv->getViewers());
 	}
 
-
 	public function isUsingElytra(): bool{
-		if($this->player->getInventory()->getChestplate() instanceof Elytra){
-			return true;
+		if(!Main::$elytraEnabled){
+			return false;
 		}
-
-		return false;
+		return ($this->player->getArmorInventory()->getChestplate() instanceof Elytra);
 	}
 }

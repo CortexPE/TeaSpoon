@@ -35,35 +35,36 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
-use CortexPE\Main;
+use CortexPE\Utils;
+use pocketmine\{
+	network\mcpe\protocol\types\DimensionIds, Server, Server as PMServer
+};
 use pocketmine\block\Lava as PMLava;
 use pocketmine\entity\Entity;
-use pocketmine\event\entity\EntityCombustByBlockEvent;
-use pocketmine\event\entity\EntityDamageByBlockEvent;
-use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\Player;
-use pocketmine\Server as PMServer;
+use pocketmine\event\entity\{
+	EntityCombustByBlockEvent, EntityDamageByBlockEvent, EntityDamageEvent
+};
 
 class Lava extends PMLava {
 
-	public function onEntityCollide(Entity $entity) : void{
-		$entity->fallDistance *= 0.5;
-
-		$ev = new EntityDamageByBlockEvent($this, $entity, EntityDamageEvent::CAUSE_LAVA, 4);
-		$entity->attack($ev);
-
-		if($entity instanceof Player){
-			$session = Main::getInstance()->getSessionById($entity->getId());
-			$session->useArmors(1);
+	/**
+	 * @param Entity $entity
+	 */
+	public function onEntityCollide(Entity $entity): void{
+		if((Server::getInstance()->getTick() % $this->tickRate()) == 0){
+			$entity->fallDistance *= 0.5;
+			$ev = new EntityDamageByBlockEvent($this, $entity, EntityDamageEvent::CAUSE_LAVA, 4);
+			$entity->attack($ev);
 		}
-
 		$ev = new EntityCombustByBlockEvent($this, $entity, 15);
-		PMServer::getInstance()->getPluginManager()->callEvent($ev); // wait wot? what happened to $ev->call(); ?
+		PMServer::getInstance()->getPluginManager()->callEvent($ev);
 		if(!$ev->isCancelled()){
 			$entity->setOnFire($ev->getDuration());
 		}
-
 		$entity->resetFallDistance();
 	}
 
+	public function getFlowDecayPerBlock(): int{
+		return (Utils::getDimension($this->getLevel()) == DimensionIds::NETHER) ? 1 : 2;
+	}
 }

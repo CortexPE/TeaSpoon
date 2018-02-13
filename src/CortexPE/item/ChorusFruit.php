@@ -36,71 +36,23 @@ declare(strict_types = 1);
 namespace CortexPE\item;
 
 use CortexPE\Main;
-use pocketmine\block\Lava;
-use pocketmine\block\Solid;
-use pocketmine\entity\Entity;
-use pocketmine\entity\Human;
-use pocketmine\item\Food;
-use pocketmine\item\Item;
-use pocketmine\level\sound\EndermanTeleportSound;
+use pocketmine\entity\Living;
+use pocketmine\item\ChorusFruit as PMChorusFruit;
 use pocketmine\Player;
 
-class ChorusFruit extends Food {
+class ChorusFruit extends PMChorusFruit {
 
-	const RAND_POS_X = [-8, -7.5, -7, -6.5, -6, -5.5, -5, -4.5, -4, -3.5, -3, -2, -1, 0, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8];
-	const RAND_POS_Y = [-8, -7.5, -7, -6.5, -6, -5.5, -5, -4.5, -4, -3.5, -3, -2, -1, 0, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8];
-	const RAND_POS_Z = [-8, -7.5, -7, -6.5, -6, -5.5, -5, -4.5, -4, -3.5, -3, -2, -1, 0, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8];
-
-	public function __construct($meta = 0, $count = 1){
-		parent::__construct(Item::CHORUS_FRUIT, $meta, "Chorus Fruit");
-	}
-
-	public function getMaxStackSize(): int{
-		return 64;
-	}
-
-	public function canBeConsumedBy(Entity $entity): bool{
-		return $entity instanceof Human;
-	}
-
-	public function getFoodRestore(): int{
-		return 4;
-	}
-
-	public function getSaturationRestore(): float{
-		return 0; // todo: check
-	}
-
-	public function onConsume(Entity $human){
-		parent::onConsume($human);
-
-		if($human instanceof Player){
-			$session = Main::getInstance()->getSessionById($human->getId());
-			if(floor(microtime(true) - $session->lastChorusFruitEat) < Main::$chorusFruitCooldown){
-				return;
-			}else{
-				$session->lastChorusFruitEat = time();
-			}
-
-			$tries = 0;
-			$pos = $human->getPosition();
-			while($tries < 100){
-				$tries++;
-
-				$randpos = $pos->add(
-					self::RAND_POS_X[array_rand(self::RAND_POS_X)],
-					self::RAND_POS_Y[array_rand(self::RAND_POS_Y)],
-					self::RAND_POS_Z[array_rand(self::RAND_POS_Z)]
-				);
-				$b = $human->getLevel()->getBlock($randpos);
-				$below = $human->getLevel()->getBlock($randpos->subtract(0, 1, 0));
-				if(!($b instanceof Solid) && !($b instanceof Lava) && !($below instanceof Lava) && $below instanceof Solid){
-					$human->teleport($randpos, $human->getYaw(), $human->getPitch());
-
-					$human->getLevel()->addSound(new EndermanTeleportSound($randpos), $human->getLevel()->getPlayers());
-					break;
+	public function onConsume(Living $consumer){
+		if(Main::$chorusFruitEnabled){
+			if($consumer instanceof Player){
+				$session = Main::getInstance()->getSessionById($consumer->getId());
+				if(floor(microtime(true) - $session->lastChorusFruitEat) < Main::$chorusFruitCooldown){
+					return;
+				}else{
+					$session->lastChorusFruitEat = time();
 				}
 			}
+			parent::onConsume($consumer);
 		}
 	}
 }

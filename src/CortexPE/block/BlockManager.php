@@ -35,28 +35,35 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
-use pocketmine\block\{
-	Block, BlockFactory
-};
+use CortexPE\Utils;
+use pocketmine\block\BlockFactory;
 
 class BlockManager {
-	public static function init(){
-		self::register(Block::PORTAL, new Portal());
-		self::register(Block::END_PORTAL, new EndPortal());
-		self::register(Block::OBSIDIAN, new Obsidian(), true);
-		self::register(Block::DRAGON_EGG, new DragonEgg());
-		self::register(Block::BEACON, new Beacon());
-		self::register(Block::FIRE, new Fire(), true);
-		self::register(Block::BED_BLOCK, new Bed(), true);
-		self::register(Block::SLIME_BLOCK, new SlimeBlock());
-		self::register(Block::END_PORTAL_FRAME, new EndPortalFrame(), true);
-		self::register(Block::LAVA, new Lava(), true);
-		self::register(Block::STILL_LAVA, new StillLava(), true);
-		self::register(Block::MONSTER_SPAWNER, new MonsterSpawner(), true);
-		self::register(Block::FROSTED_ICE, new FrostedIce());
-		self::register(Block::SHULKER_BOX, new ShulkerBox());
 
-		// Redstone
+	public static function register(int $id, Block $block, bool $overwrite = false): bool{
+		if(!BlockFactory::isRegistered($id) && !$overwrite){
+			BlockFactory::registerBlock($block);
+    }
+  }
+	public static function init(): void{
+		BlockFactory::registerBlock(new Portal(), true);
+		BlockFactory::registerBlock(new EndPortal(), true);
+		BlockFactory::registerBlock(new Obsidian(), true);
+		BlockFactory::registerBlock(new DragonEgg(), true);
+		BlockFactory::registerBlock(new Beacon(), true);
+		BlockFactory::registerBlock(new Fire(), true);
+		BlockFactory::registerBlock(new Bed(), true);
+		BlockFactory::registerBlock(new SlimeBlock(), true);
+		BlockFactory::registerBlock(new EndPortalFrame(), true);
+		BlockFactory::registerBlock(new Lava(), true);
+		BlockFactory::registerBlock(new StillLava(), true);
+		BlockFactory::registerBlock(new MonsterSpawner(), true);
+		BlockFactory::registerBlock(new FrostedIce(), true);
+		BlockFactory::registerBlock(new ShulkerBox(), true);
+		BlockFactory::registerBlock(new Hopper(), true);
+		BlockFactory::registerBlock(new EnchantingTable(), true);
+		BlockFactory::registerBlock(new Anvil(), true);
+    		// Redstone
 		self::register(Block::ACTIVATOR_RAIL, new redstone\ActivatorRail(), true);
 		self::register(Block::LIT_REDSTONE_LAMP, new redstone\ActiveRedstoneLamp(), true);
 		self::register(Block::DAYLIGHT_DETECTOR, new redstone\DaylightDetector(), true);
@@ -87,19 +94,9 @@ class BlockManager {
 		self::register(Block::TRIPWIRE_HOOK, new redstone\TripwireHook(), true);
 		self::register(Block::WOODEN_BUTTON, new redstone\WoodenButton(), true);
 		self::register(Block::WOODEN_PRESSURE_PLATE, new redstone\WoodenPressurePlate(), true);
-	}
 
-	public static function register(int $id, Block $block, bool $overwrite = false): bool{
-		if(!BlockFactory::isRegistered($id) && !$overwrite){
-			BlockFactory::registerBlock($block);
-
-			return true;
-		}elseif($overwrite){
-			BlockFactory::registerBlock($block, true);
-
-			return true;
+		if(!Utils::isPhared()){ // beta
+			BlockFactory::registerBlock(new Jukebox(), true);
 		}
-
-		return false;
 	}
 }

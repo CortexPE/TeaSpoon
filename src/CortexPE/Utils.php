@@ -40,10 +40,15 @@ use CortexPE\block\{
 };
 use pocketmine\block\BlockFactory;
 use pocketmine\entity\Entity;
+use pocketmine\item\enchantment\Enchantment;
+use pocketmine\item\enchantment\EnchantmentInstance;
+use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\level\Level;
 use pocketmine\math\Math;
 use pocketmine\math\Vector3;
+use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\nbt\tag\ListTag;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player as PMPlayer;
 use pocketmine\Server as PMServer;
@@ -52,15 +57,26 @@ class Utils {
 
 	/** @var bool */
 	private static $phared = null;
+	/** @var bool */
+	private static $serverPhared = null;
 
 	public static function isPhared(): bool{
 		if(self::$phared == null){
 			self::$phared = strlen(\Phar::running()) > 0 ? true : false;
 
 			return self::$phared;
-		}else{
-			return self::$phared;
 		}
+		return self::$phared;
+	}
+
+	public static function isServerPhared() : bool {
+		if(self::$serverPhared == null){
+			$ref = new \ReflectionClass(PMServer::class);
+			self::$serverPhared = ((strpos($ref->getFileName(), "phar://") !== false) ? true : false);
+
+			return self::$serverPhared;
+		}
+		return self::$serverPhared;
 	}
 
 	public static function canSeeSky(Level $lvl, Vector3 $pos){
@@ -74,6 +90,10 @@ class Utils {
 			!class_exists(ItemFactory::class) ||
 			class_exists("pocketmine\\network\\protocol\\Info")
 		);
+	}
+
+	public static function vector3XZDistance(Vector3 $pos1, Vector3 $pos2){
+		return (($pos1->x - $pos2->x) + ($pos1->z - $pos2->z));
 	}
 
 	public static function toggleBool(bool $boolean): bool{
@@ -110,8 +130,22 @@ class Utils {
 		return $boolean ? "true" : "false";
 	}
 
-	public static function isDelayedTeleportCancellable(PMPlayer $player): bool{
-		if(self::isInsideOfEndPortal($player) === false && self::isInsideOfPortal($player) === false){
+	public static function isDelayedTeleportCancellable(PMPlayer $player, int $destinationDimension): bool{
+		switch($destinationDimension){
+			case DimensionIds::NETHER:
+				return (!self::isInsideOfPortal($player));
+			case DimensionIds::THE_END:
+				return (!self::isInsideOfEndPortal($player));
+			case DimensionIds::OVERWORLD:
+				return (!self::isInsideOfEndPortal($player) && !self::isInsideOfPortal($player));
+		}
+
+		return false;
+	}
+
+	public static function isInsideOfPortal(Entity $entity): bool{
+		$block = $block = $entity->getLevel()->getBlockAt(Math::floorFloat($entity->getX()), Math::floorFloat($entity->getY()), Math::floorFloat($entity->getZ()));;
+		if($block instanceof Portal){
 			return true;
 		}
 
@@ -121,15 +155,6 @@ class Utils {
 	public static function isInsideOfEndPortal(Entity $entity): bool{
 		$block = $entity->getLevel()->getBlock($entity);
 		if($block instanceof EndPortal){
-			return true;
-		}
-
-		return false;
-	}
-
-	public static function isInsideOfPortal(Entity $entity): bool{
-		$block = $block = $entity->getLevel()->getBlockAt(Math::floorFloat($entity->getX()), Math::floorFloat($entity->getY()), Math::floorFloat($entity->getZ()));;
-		if($block instanceof Portal){
 			return true;
 		}
 
@@ -183,11 +208,11 @@ class Utils {
 
 	public static function getTotalXpRequirement(int $level): int{
 		if($level <= 16){
-			return ($level ** 2) + (6 * $level);
+			return intval(($level ** 2) + (6 * $level));
 		}elseif($level <= 31){
-			return (2.5 * ($level ** 2)) - (40.5 * $level) + 360;
+			return intval((2.5 * ($level ** 2)) - (40.5 * $level) + 360);
 		}elseif($level <= 21863){
-			return (4.5 * ($level ** 2)) - (162.5 * $level) + 2220;
+			return intval((4.5 * ($level ** 2)) - (162.5 * $level) + 2220);
 		}
 
 		return PHP_INT_MAX; //prevent float returns for invalid levels on 32-bit systems
@@ -224,7 +249,7 @@ class Utils {
 	public static function stringToASCIIHex(string $string): string{
 		$return = "";
 		for($i = 0; $i < strlen($string); $i++){
-			$return .= "\x" . str_pad(dechex(ord($string[$i])), 2, '0', STR_PAD_LEFT);
+			$return .= "\x" . bin2hex($string[$i]);
 		}
 
 		return $return;
@@ -234,5 +259,32 @@ class Utils {
 		$time = microtime(true);
 
 		return (abs($time - floor($time) - 0.5) < 0.0001);
+	}
+
+	/**
+	 * @param Item $item
+	 * @return EnchantmentInstance[]
+	 */
+	public static function getEnchantments(Item $item): array{
+		/** @var EnchantmentInstance[] $enchantments */
+		$enchantments = [];
+
+		$ench = $item->getNamedTagEntry(Item::TAG_ENCH);
+		if($ench instanceof ListTag){
+			/** @var CompoundTag $entry */
+			foreach($ench as $entry){
+				$id = $entry->getShort("id");
+				$lvl = $entry->getShort("lvl");
+				if($id > 26 || $lvl <= 0){
+					continue;
+				}
+				$e = Enchantment::getEnchantment($id);
+				if($e !== null){
+					$enchantments[] = new EnchantmentInstance($e, $lvl);
+				}
+			}
+		}
+
+		return $enchantments;
 	}
 }

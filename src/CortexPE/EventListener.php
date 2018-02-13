@@ -33,31 +33,32 @@
 
 declare(strict_types = 1);
 
-// FYI: Event Priorities work this way: LOWEST -> LOW -> NORMAL -> HIGH -> HIGHEST -> MONITOR -> EXECUTE
+// FYI: Event Priorities work this way: LOWEST -> LOW -> NORMAL -> HIGH -> HIGHEST -> MONITOR
 
 namespace CortexPE;
 
-use CortexPE\entity\EndCrystal;
 use CortexPE\level\weather\Weather;
+use CortexPE\utils\ArmorTypes;
 use CortexPE\utils\Xp;
 use pocketmine\block\Block;
 use pocketmine\entity\Effect;
+use pocketmine\entity\Entity;
 use pocketmine\event\{
 	block\BlockBreakEvent, level\LevelLoadEvent, Listener, server\RemoteServerCommandEvent, server\ServerCommandEvent
 };
 use pocketmine\event\entity\{
-	EntityDamageEvent, EntityDeathEvent, EntityTeleportEvent
+	EntityDamageEvent, EntityDeathEvent
 };
 use pocketmine\event\player\{
-	PlayerCommandPreprocessEvent, PlayerJoinEvent, PlayerKickEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
+	cheat\PlayerIllegalMoveEvent, PlayerCommandPreprocessEvent, PlayerDropItemEvent, PlayerGameModeChangeEvent, PlayerInteractEvent, PlayerItemHeldEvent, PlayerKickEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
 };
+use pocketmine\item\Armor;
 use pocketmine\item\Item;
-use pocketmine\level\Explosion;
+use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\{
 	EntityEventPacket, LevelEventPacket
 };
-use pocketmine\Player;
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
 use pocketmine\Server as PMServer;
@@ -80,18 +81,32 @@ class EventListener implements Listener {
 	 * @priority LOWEST
 	 */
 	public function onLevelLoad(LevelLoadEvent $ev){
-		if(!Server::$loaded){
-			Server::$loaded = true;
-			LevelManager::init();
-		}
+		$TEMPORARY_ENTITIES = [
+			Entity::XP_ORB,
+			Entity::LIGHTNING_BOLT,
+		];
+
+		LevelManager::init();
+
+		$lvl = $ev->getLevel();
 
 		if(Main::$weatherEnabled){
-			$lvl = $ev->getLevel();
 			Main::$weatherData[$lvl->getId()] = new Weather($lvl, 0);
 			if($lvl->getName() != Main::$netherName && $lvl->getName() != Main::$endName){
 				Main::$weatherData[$lvl->getId()]->setCanCalculate(true);
 			}else{
 				Main::$weatherData[$lvl->getId()]->setCanCalculate(false);
+			}
+		}else{
+			Main::$weatherData[$lvl->getId()] = new Weather($lvl, 0);
+			Main::$weatherData[$lvl->getId()]->setCanCalculate(false);
+		}
+
+		foreach($lvl->getEntities() as $entity){
+			if(in_array($entity::NETWORK_ID, $TEMPORARY_ENTITIES)){
+				if(!$entity->isClosed()){
+					$entity->close();
+				}
 			}
 		}
 
@@ -99,110 +114,64 @@ class EventListener implements Listener {
 	}
 
 	/**
-	 * @param PlayerJoinEvent $ev
-	 * @return bool
-	 *
-	 * @priority HIGHEST
-	 */
-	/*public function onJoin(PlayerJoinEvent $ev){ TODO: Fix this.
-		$p = $ev->getPlayer();
-		if($p->getLevel()->getName() === Main::$netherLevel->getName()){
-			$pk = new ChangeDimensionPacket();
-			$pk->dimension = DimensionIds::NETHER;
-			$pk->position = new Position($p->getX(), $p->getY(), $p->getZ(), $p->getLevel());
-			$p->dataPacket($pk);
-			$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
-			//$p->teleport($ev->getPlayer()->getPosition());
-			//$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
-		}
-		if($p->getLevel()->getName() === Main::$endLevel->getName()){
-			$pk = new ChangeDimensionPacket();
-			$pk->dimension = DimensionIds::THE_END;
-			$pk->position = new Position($p->getX(), $p->getY(), $p->getZ(), $p->getLevel());
-			$p->dataPacket($pk);
-			$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
-			//$p->teleport($ev->getPlayer()->getPosition());
-			//$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
-		}
-		return true;
-	}*/
-
-	/**
-	 * @param EntityTeleportEvent $ev
-	 * @return bool
-	 *
-	 * @priority HIGHEST
-	 */
-	/*public function onTeleport(EntityTeleportEvent $ev){
-		$p = $ev->getEntity();
-		if($p instanceof Player){
-			$pk = new ChangeDimensionPacket();
-			$pk->dimension = Utils::getDimension($ev->getTo()->getLevel());
-			$pk->position = $ev->getTo();
-			$p->dataPacket($pk);
-		}
-
-		return true;
-	}*/
-
-	/**
 	 * @param EntityDamageEvent $ev
 	 * @return bool
 	 *
-	 * @priority LOWEST
+	 * @priority HIGHEST
 	 */
 	public function onDamage(EntityDamageEvent $ev){
+		if($ev->isCancelled()) return false;
 		/////////////////////// TOTEM OF UNDYING ///////////////////////////////
-		if($ev->getDamage() >= $ev->getEntity()->getHealth()){
-			$p = $ev->getEntity();
-			if($p instanceof PMPlayer){
-				if($p->getInventory()->getItemInHand()->getId() === Item::TOTEM && $ev->getCause() !== EntityDamageEvent::CAUSE_VOID && $ev->getCause() !== EntityDamageEvent::CAUSE_SUICIDE){
-					$ic = clone $p->getInventory()->getItemInHand();
-					$ic->count--;
-					$p->getInventory()->setItemInHand($ic);
-					$ev->setCancelled(true);
-					$p->setHealth(1);
+		if(Main::$totemEnabled){
+			if($ev->getDamage() >= $ev->getEntity()->getHealth()){
+				$p = $ev->getEntity();
+				if($p instanceof PMPlayer){
+					if($p->getInventory()->getItemInHand()->getId() === Item::TOTEM && $ev->getCause() !== EntityDamageEvent::CAUSE_VOID && $ev->getCause() !== EntityDamageEvent::CAUSE_SUICIDE){
+						$p->getInventory()->setItemInHand(Item::get(Item::AIR)); // this is supposed to be unstackable anyways... right?
+						$ev->setCancelled(true);
+						$p->setHealth(1);
 
-					$p->removeAllEffects();
+						$p->removeAllEffects();
 
-					$effect1 = Effect::getEffect(Effect::REGENERATION);
-					$effect2 = Effect::getEffect(Effect::ABSORPTION);
-					$effect3 = Effect::getEffect(Effect::FIRE_RESISTANCE);
+						$REGENERATION = Effect::getEffect(Effect::REGENERATION);
+						$REGENERATION->setAmplifier(1);
+						$REGENERATION->setVisible(true);
+						$REGENERATION->setDuration(40 * 20);
 
-					$effect1->setAmplifier(1);
+						$ABSORPTION = Effect::getEffect(Effect::ABSORPTION);
+						$ABSORPTION->setVisible(true);
+						$ABSORPTION->setDuration(5 * 20);
 
-					$effect1->setVisible(true);
-					$effect2->setVisible(true);
-					$effect3->setVisible(true);
+						$FIRE_RESISTANCE = Effect::getEffect(Effect::FIRE_RESISTANCE);
+						$FIRE_RESISTANCE->setVisible(true);
+						$FIRE_RESISTANCE->setDuration(40 * 20);
 
-					$effect1->setDuration(40 * 20);
-					$effect2->setDuration(5 * 20);
-					$effect3->setDuration(40 * 20);
+						$p->addEffect($REGENERATION);
+						$p->addEffect($ABSORPTION);
+						$p->addEffect($FIRE_RESISTANCE);
 
-					$p->addEffect($effect1);
-					$p->addEffect($effect2);
-					$p->addEffect($effect3);
+						$pk = new LevelEventPacket();
+						$pk->evid = LevelEventPacket::EVENT_SOUND_TOTEM;
+						$pk->data = 0;
+						$pk->position = new Vector3($p->getX(), $p->getY(), $p->getZ());
+						PMServer::getInstance()->broadcastPacket($p->getViewers(), $pk);
 
-					$pk = new LevelEventPacket();
-					$pk->evid = LevelEventPacket::EVENT_SOUND_TOTEM;
-					$pk->data = 0;
-					$pk->position = new Vector3($p->getX(), $p->getY(), $p->getZ());
-					$p->dataPacket($pk);
-
-					$pk2 = new EntityEventPacket();
-					$pk2->entityRuntimeId = $p->getId();
-					$pk2->event = EntityEventPacket::CONSUME_TOTEM;
-					$pk2->data = 0;
-					$p->dataPacket($pk2);
+						$pk2 = new EntityEventPacket();
+						$pk2->entityRuntimeId = $p->getId();
+						$pk2->event = EntityEventPacket::CONSUME_TOTEM;
+						$pk2->data = 0;
+						PMServer::getInstance()->broadcastPacket($p->getViewers(), $pk2);
+					}
 				}
 			}
 		}
+
 		////////////////////////////// ARMOR DAMAGE //////////////////////////////////////
-		if($ev->getEntity() instanceof Player){
-			/** @var Player $p */
-			$p = $ev->getEntity();
+		$p = $ev->getEntity();
+		if($p instanceof PMPlayer){
 			$session = Main::getInstance()->getSessionById($p->getId());
-			if($session !== null && $ev->getCause() != EntityDamageEvent::CAUSE_LAVA){ // lava damage is handled on the Lava class.
+
+			if($session instanceof Session){
 				$session->useArmors();
 			}
 		}
@@ -212,23 +181,12 @@ class EventListener implements Listener {
 			$p = $ev->getEntity();
 			if($p instanceof PMPlayer){
 				$session = Main::getInstance()->getSessionById($p->getId());
-				if($session->usingElytra){
-					$ev->setCancelled(true);
-				}
-				if($p->getLevel()->getBlock($p->subtract(0, 1, 0))->getId() == Block::SLIME_BLOCK){
-					$ev->setCancelled(true);
+				if($session instanceof Session){
+					if($session->isUsingElytra() || $p->getLevel()->getBlock($p->subtract(0, 1, 0))->getId() == Block::SLIME_BLOCK){
+						$ev->setCancelled(true);
+					}
 				}
 			}
-		}
-
-		////////////////////// END CRYSTAL //////////////////
-		if($ev->getEntity() instanceof EndCrystal){
-			$e = $ev->getEntity();
-			$pos = clone $e->getPosition();
-			$e->flagForDespawn();
-			$explode = new Explosion($pos, 6);
-			$explode->explodeA();
-			$explode->explodeB();
 		}
 
 		return true;
@@ -250,6 +208,20 @@ class EventListener implements Listener {
 	 */
 	public function onLogin(PlayerLoginEvent $ev){
 		Main::getInstance()->createSession($ev->getPlayer());
+
+
+		// derpy as fvck but this works...
+		if(Main::$overworldLevelName != "" && !(Main::$overworldLevel instanceof Level) && PMServer::getInstance()->getDefaultLevel() instanceof Level){
+			$orLvl = PMServer::getInstance()->getLevelByName(Main::$overworldLevelName);
+			if($orLvl instanceof Level){
+				Main::$overworldLevel = $orLvl;
+			}else{
+				Main::getInstance()->getLogger()->error("Overworld override Level does not exist. Falling back to default.");
+				Main::$overworldLevel = PMServer::getInstance()->getDefaultLevel();
+			}
+		}else{
+			Main::$overworldLevel = PMServer::getInstance()->getDefaultLevel();
+		}
 	}
 
 	/**
@@ -259,6 +231,7 @@ class EventListener implements Listener {
 	 */
 	public function onLeave(PlayerQuitEvent $ev){
 		Main::getInstance()->destroySession($ev->getPlayer());
+		unset(Main::$onPortal[$ev->getPlayer()->getId()]);
 	}
 
 	/**
@@ -267,18 +240,33 @@ class EventListener implements Listener {
 	 * @priority HIGHEST
 	 */
 	public function onKick(PlayerKickEvent $ev){
+		if($ev->isCancelled()) return;
 		$p = $ev->getPlayer();
 		if(!$p->isOnline()){
 			return;
 		}
 		$pid = $p->getId();
 		if($pid === null){
- 			return;
- 		}
+			return;
+		}
 		$session = Main::getInstance()->getSessionById($pid);
-		if($session !== null){
+		if($session instanceof Session){
 			if($session->isUsingElytra() && $ev->getReason() == PMServer::getInstance()->getLanguage()->translateString("kick.reason.cheat", ["%ability.flight"])){
 				$ev->setCancelled(true);
+			}
+		}
+	}
+
+	/**
+	 * @param PlayerIllegalMoveEvent $ev
+	 *
+	 * @priority LOWEST
+	 */
+	public function onCheat(PlayerIllegalMoveEvent $ev){
+		$session = Main::getInstance()->getSessionById($ev->getPlayer()->getId());
+		if($session instanceof Session){
+			if($session->allowCheats){
+				$ev->setCancelled();
 			}
 		}
 	}
@@ -289,9 +277,11 @@ class EventListener implements Listener {
 	 * @priority HIGHEST
 	 */
 	public function onEntityDeath(EntityDeathEvent $ev){
-		$xp = Xp::getXpDropsForEntity($ev->getEntity());
-		if($xp > 0){
-			Xp::spawnXpOrb($ev->getEntity()->getPosition(), $ev->getEntity()->getLevel(), $xp);
+		if(Main::$dropMobExperience){
+			$xp = Xp::getXpDropsForEntity($ev->getEntity());
+			if($xp > 0){
+				$ev->getEntity()->getLevel()->dropExperience($ev->getEntity()->asVector3(), $xp);
+			}
 		}
 	}
 
@@ -301,9 +291,12 @@ class EventListener implements Listener {
 	 * @priority HIGHEST
 	 */
 	public function onBlockBreak(BlockBreakEvent $ev){
-		$xp = Xp::getXpDropsForBlock($ev->getBlock());
-		if($xp > 0){
-			Xp::spawnXpOrb($ev->getBlock(), $ev->getBlock()->getLevel(), $xp);
+		if($ev->isCancelled()) return;
+		if(Main::$dropBlockExperience){
+			$xp = Xp::getXpDropsForBlock($ev->getBlock());
+			if($xp > 0){
+				$ev->getPlayer()->getLevel()->dropExperience($ev->getBlock()->asVector3(), $xp);
+			}
 		}
 	}
 
@@ -313,6 +306,7 @@ class EventListener implements Listener {
 	 * @priority HIGHEST
 	 */
 	public function onPlayerCommandPreProcess(PlayerCommandPreprocessEvent $ev){
+		if($ev->isCancelled()) return;
 		if(in_array(substr($ev->getMessage(), 1), self::VERSION_COMMANDS) && !$ev->isCancelled()){
 			$ev->setCancelled();
 			Main::sendVersion($ev->getPlayer());
@@ -325,6 +319,7 @@ class EventListener implements Listener {
 	 * @priority HIGHEST
 	 */
 	public function onServerCommand(ServerCommandEvent $ev){
+		if($ev->isCancelled()) return;
 		if(Utils::in_arrayi($ev->getCommand(), self::VERSION_COMMANDS) && !$ev->isCancelled()){
 			$ev->setCancelled();
 			Main::sendVersion($ev->getSender());
@@ -337,9 +332,129 @@ class EventListener implements Listener {
 	 * @priority HIGHEST
 	 */
 	public function onRemoteServerCommand(RemoteServerCommandEvent $ev){
+		if($ev->isCancelled()) return;
 		if(Utils::in_arrayi($ev->getCommand(), self::VERSION_COMMANDS) && !$ev->isCancelled()){
 			$ev->setCancelled();
 			Main::sendVersion($ev->getSender());
+		}
+	}
+
+	/**
+	 * @param PlayerItemHeldEvent $ev
+	 *
+	 * @priority HIGHEST
+	 */
+	public function onItemHeld(PlayerItemHeldEvent $ev){
+		if($ev->isCancelled()) return;
+		$session = Main::getInstance()->getSessionById($ev->getPlayer()->getId());
+		if($session instanceof Session){
+			if($session->fishing){
+				if($ev->getSlot() != $session->lastHeldSlot){
+					$session->unsetFishing();
+				}
+			}
+
+			$session->lastHeldSlot = $ev->getSlot();
+		}
+	}
+
+	/**
+	 * @param PlayerInteractEvent $ev
+	 *
+	 * @priority HIGHEST
+	 */
+	public function onInteract(PlayerInteractEvent $ev){
+		if($ev->isCancelled()) return;
+		if(Main::$instantArmorEnabled){
+			// MCPE(BE) does this client-side... we just have to do the same server-side.
+			$item = clone $ev->getItem();
+			$player = $ev->getPlayer();
+			$check = ($ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_BLOCK || $ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_AIR);
+			$isBlocked = (in_array($ev->getBlock()->getId(), [
+				Block::ITEM_FRAME_BLOCK,
+			]));
+
+			if($check && !$isBlocked){
+				if($ev->getItem() instanceof Armor){
+					$inventory = $player->getArmorInventory();
+					$type = ArmorTypes::getType($item);
+					$old = Item::get(Item::AIR, 0, 1); // just a placeholder
+					$skipReplace = false;
+					if($type !== ArmorTypes::TYPE_NULL){
+						switch($type){
+							case ArmorTypes::TYPE_HELMET:
+								$old = clone $inventory->getHelmet();
+								if(!Main::$instantArmorReplace && !$old->isNull()){
+									$skipReplace = true;
+									break;
+								}
+								$inventory->setHelmet($item);
+								break;
+							case ArmorTypes::TYPE_CHESTPLATE:
+								$old = clone $inventory->getChestplate();
+								if(!Main::$instantArmorReplace && !$old->isNull()){
+									$skipReplace = true;
+									break;
+								}
+								$inventory->setChestplate($item);
+								break;
+							case ArmorTypes::TYPE_LEGGINGS:
+								$old = clone $inventory->getLeggings();
+								if(!Main::$instantArmorReplace && !$old->isNull()){
+									$skipReplace = true;
+									break;
+								}
+								$inventory->setLeggings($item);
+								break;
+							case ArmorTypes::TYPE_BOOTS:
+								$old = clone $inventory->getBoots();
+								if(!Main::$instantArmorReplace && !$old->isNull()){
+									$skipReplace = true;
+									break;
+								}
+								$inventory->setBoots($item);
+								break;
+						}
+						if(!$skipReplace){
+							if(!Main::$instantArmorReplace){
+								if($player->isSurvival() || $player->isAdventure()){
+									$player->getInventory()->setItemInHand(Item::get(Item::AIR, 0, 1));
+								}
+							}else{
+								if(!$old->isNull()){
+									$player->getInventory()->setItemInHand($old);
+								}else{
+									$player->getInventory()->setItemInHand(Item::get(Item::AIR, 0, 1));
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * @param PlayerGameModeChangeEvent $ev
+	 *
+	 * @priority HIGHEST
+	 */
+	public function onGameModeChange(PlayerGameModeChangeEvent $ev){
+		if(!$ev->isCancelled()){
+			if(Main::$clearInventoryOnGMChange){
+				$ev->getPlayer()->getInventory()->clearAll();
+			}
+		}
+	}
+
+	/**
+	 * @param PlayerDropItemEvent $ev
+	 *
+	 * @priority HIGHEST
+	 */
+	public function onPlayerDropItem(PlayerDropItemEvent $ev){
+		if(!$ev->isCancelled() && Main::$limitedCreative && $ev->getPlayer()->isCreative()){
+			$ev->setCancelled();
 		}
 	}
 }

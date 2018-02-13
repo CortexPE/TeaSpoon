@@ -38,7 +38,7 @@ namespace CortexPE\commands;
 use pocketmine\command\{
 	CommandSender, defaults\VanillaCommand
 };
-use pocketmine\event\TranslationContainer;
+use pocketmine\lang\TranslationContainer;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\Player;
 use pocketmine\Server;
@@ -99,16 +99,5 @@ class PlaySoundCommand extends VanillaCommand {
 		$sender->sendMessage("Playing " . $sound . " to " . $player->getName());
 
 		return true;
-	}
-
-	private function clearTarget(Player $p): int{
-		$count = 0;
-		$inv = $p->getInventory();
-		foreach($inv->getContents() as $item){
-			$count += $item->getCount();
-		}
-		$inv->clearAll();
-
-		return $count;
 	}
 }

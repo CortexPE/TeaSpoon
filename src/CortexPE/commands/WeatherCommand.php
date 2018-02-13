@@ -25,7 +25,7 @@ use CortexPE\level\weather\Weather;
 use CortexPE\Main;
 use pocketmine\command\CommandSender;
 use pocketmine\command\defaults\VanillaCommand;
-use pocketmine\event\TranslationContainer;
+use pocketmine\lang\TranslationContainer;
 use pocketmine\level\Level;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
@@ -95,14 +95,6 @@ class WeatherCommand extends VanillaCommand {
 				$sender->sendMessage("Weather Successfully changed on " . $sender->getLevel()->getName());
 
 				return true;
-				/*if(WeatherManager::isRegistered($sender->getLevel())){
-					$sender->getLevel()->getWeather()->setWeather($wea, $duration);
-					$sender->sendMessage(new TranslationContainer("pocketmine.command.weather.changed", [$sender->getLevel()->getFolderName()]));
-					return true;
-				}else{
-					$sender->sendMessage(new TranslationContainer("pocketmine.command.weather.noregistered", [$sender->getLevel()->getFolderName()]));
-					return false;
-				}*/
 			}else{
 				$sender->sendMessage(TextFormat::RED . "Invalid Weather");
 
@@ -153,14 +145,6 @@ class WeatherCommand extends VanillaCommand {
 			$sender->sendMessage("Weather Successfully changed on " . $level->getName());
 
 			return true;
-			/*if(WeatherManager::isRegistered($level)){
-				$level->getWeather()->setWeather($wea, $duration);
-				$sender->sendMessage(new TranslationContainer("pocketmine.command.weather.changed", [$level->getFolderName()]));
-				return true;
-			}else{
-				$sender->sendMessage(new TranslationContainer("pocketmine.command.weather.noregistered", [$level->getFolderName()]));
-				return false;
-			}*/
 		}else{
 			$sender->sendMessage(TextFormat::RED . "Invalid Weather");
 

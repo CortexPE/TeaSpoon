@@ -36,10 +36,11 @@ declare(strict_types = 1);
 namespace CortexPE\entity\projectile;
 
 use CortexPE\level\particle\SpellParticle;
-use CortexPE\utils\Xp;
 use pocketmine\entity\{
 	Entity, projectile\Throwable
 };
+use pocketmine\network\mcpe\protocol\PlaySoundPacket;
+use pocketmine\Server;
 
 class EnchantingBottle extends Throwable {
 	const NETWORK_ID = self::XP_BOTTLE;
@@ -57,9 +58,16 @@ class EnchantingBottle extends Throwable {
 				$randomY = self::RAND_POS_Y[array_rand(self::RAND_POS_Y)];
 				$randomZ = self::RAND_POS_Z[array_rand(self::RAND_POS_Z)];
 
-				Xp::spawnXpOrb($this->add($randomX, $randomY, $randomZ), $this->getLevel(), mt_rand(1, 4));
+				$this->getLevel()->dropExperience($this->add($randomX, $randomY, $randomZ), mt_rand(1,4));
 			}
-			$this->kill();
+
+			$pk = new PlaySoundPacket();
+			$pk->soundName = "random.glass";
+			$pk->volume = 500;
+			$pk->pitch = 1;
+			Server::getInstance()->broadcastPacket($this->getViewers(), $pk);
+
+			$this->close();
 		}
 
 		return parent::onUpdate($currentTick);

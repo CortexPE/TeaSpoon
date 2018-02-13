@@ -37,6 +37,7 @@ class EnderPilar extends Populator {
 	private $level;
 	private $randomAmount;
 	private $baseAmount;
+	private const radii = [3,4,3,5,3,4,3,3,5,4,5,3,5,4,4,5,5,4,4,4,5];
 
 	public function setRandomAmount($amount){
 		$this->randomAmount = $amount;
@@ -47,37 +48,43 @@ class EnderPilar extends Populator {
 	}
 
 	public function populate(ChunkManager $level, $chunkX, $chunkZ, Random $random){
-		if(mt_rand(0, 100) <= 10){
+		// todo: only spawn within 50 blocks from spawn point at a circle (Usual Amount: 10-15 [in my pov])
+		if(mt_rand(0, 100) <= 50){
 			$this->level = $level;
-			$amount = $random->nextRange(0, $this->randomAmount + 1) + $this->baseAmount;
-			for($i = 0; $i < $amount; ++$i){
-				$x = $random->nextRange($chunkX * 16, $chunkX * 16 + 15);
-				$z = $random->nextRange($chunkZ * 16, $chunkZ * 16 + 15);
-				$y = $this->getHighestWorkableBlock($x, $z);
-				if($this->level->getBlockIdAt($x, $y, $z) == Block::END_STONE){
-					$height = mt_rand(28, 50);
-					for($ny = $y; $ny < $y + $height; $ny++){
-						for($r = 0.5; $r < 5; $r += 0.5){
-							$nd = 360 / (2 * pi() * $r);
-							for($d = 0; $d < 360; $d += $nd){
-								$level->setBlockIdAt(intval($x + (cos(deg2rad($d)) * $r)),intval($ny),intval($z + (sin(deg2rad($d)) * $r)), Block::OBSIDIAN);
+			$x = $random->nextRange(0, 15);
+			$z = $random->nextRange(0, 15);
+			$height = mt_rand(76, 103);
+			$radius = self::radii[array_rand(self::radii)];
+			for($ny = 0; $ny < $height; $ny++){
+				for($r = ($radius / 10); $r < $radius; $r += ($radius / 10)){
+					$nd = 360 / (2 * pi() * $r);
+					for($d = 0; $d < 360; $d += $nd){
+						$level->setBlockIdAt(intval($x + (cos(deg2rad($d)) * $r)), intval($ny), intval($z + (sin(deg2rad($d)) * $r)), Block::OBSIDIAN);
+					}
+				}
+			}
+			if(mt_rand(1,2) == 1){
+				if($radius == 3){
+					$bradius = 1;
+				} else {
+					$bradius = 2;
+				}
+				for($bx = -$bradius; $bx <= $bradius; $bx++){
+					for($by = -$bradius; $by <= $bradius; $by++){
+						for($bz = -$bradius; $bz <= $bradius; $bz++){
+							$edge = (
+								($bx == $bradius || $bx == -$bradius) &&
+								($bz == $bradius || $bz == -$bradius)
+							) || ($by == $bradius || $by == -$bradius);
+							if($edge){
+								$level->setBlockIdAt($x + $bx, ($height + 1) + $by, $z + $bz, Block::IRON_BARS);
 							}
 						}
 					}
 				}
 			}
+			$level->setBlockIdAt($x, $height, $z, Block::BEDROCK);
+			$level->setBlockIdAt($x, $height + 1, $z, Block::AIR);
 		}
-	}
-
-
-	private function getHighestWorkableBlock($x, $z){
-		for($y = 127; $y >= 0; --$y){
-			$b = $this->level->getBlockIdAt($x, $y, $z);
-			if($b == Block::END_STONE){
-				break;
-			}
-		}
-
-		return $y === 0 ? -1 : $y;
 	}
 }

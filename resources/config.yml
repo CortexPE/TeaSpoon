@@ -10,38 +10,47 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 11
+version: 20
 
 entities:
  # Weather to register Vanilla Entities (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...) or not
  register: true
  # Enable Lightning Fire & Damage
  lightningFire: true
+ # Enable EndCrystal Explosion
+ endCrystalExplosion: true
 
 enchantments:
  # Weather to enable & register Vanilla Enchantments (Set to false if you're going to use VanillaEnchantments plugin etc...) or not
  register: true
+ enchantingTableEnabled: true
 
 dimensions:
  # Enable / Disable Dimensions
  enable: true
  nether:
   levelName: "nether"
+  # Vanilla-Like Nether Tranfer is not perfect and would take more time (possibly lag)...
+  vanillaNetherTranfer: false
  end:
   levelName: "ender"
+ # SET TO BLANK ("") TO DISABLE
+ overrideOverworldLevel: ""
 
 misc:
  # !!!   ONLY ENABLE THIS IF YOU ARE SURE THAT ALL YOUR    !!!
  # !!! PLUGINS ARE COMPATIBLE WITH YOUR CURRENT PMMP BUILD !!!
  loadAllAPIs: false
- # Enable to dis-allow chest and container interactions when in creative
- limitedCreative: true
+ # Enable to generate new Fishing LootTables everyday
+ randomFishingLootTables: false
  
 enderPearl:
+ enable: true
  cooldown: 2
  damage: 5
 
 chorusFruit:
+ enable: true
  cooldown: 2
 
 weather: 
@@ -55,4 +64,58 @@ weather:
 
 # Redstone System
 redstone:
+=======
+player:
+ # Enable to dis-allow container interactions & item dropping when in creative
+ limitedCreative: true
+ # In vanilla, this is false... In Genisys, its true
+ clearInventoryOnGameModeChange: false
+ # Armor Damage toggle
+ armorDamage: true
+ instantArmor:
+  enable: true
+ # Toggle to replace current armor or not (Vanilla-Way: false) [might cause glitches/bugs on server lag]
+  replace: false
+ # Elytra configuration
+ elytra:
+  enable: true
+  enableElytraBoost: true
+  elytraBoostParticles: true
+ totemOfUndying: true
+ fishing: true
+
+mobSpawner:
+ enable: true
+ # Drop spawners on silk touch
+ silkTouchSpawners: false
+ # Use MonsterSpawner Damage Value as the Entity ID -- False in vanilla minecraft
+ damageAsEID: false
+
+fireworks:
+ enable: true
+
+Xp:
+ # ExperienceOrb Override -- Enabling this will override PMMP's ExperienceOrb entity
+ override: false
+ dropMobExperience: true
+ # Toggle to enable/disable pickup delay when picking up XPOrbs (true in Vanilla-MineCraft) [NEEDS OVERRIDE TO BE ENABLED]
+ pickupDelay: true
+ # Ticks till despawn -- 1 Second = 20 Ticks [NEEDS OVERRIDE TO BE ENABLED]
+ ticksTillDespawn: 6000
+
+blocks:
+ dropExperience: true
+
+hopper:
+ itemTransferEnable: true
+
+beacon:
+ # You can only disable effects (if it has any effect at all) because beacons are rendered client-side
+ enable: true
+ effectsEnabled: true
+
+shulkerBox:
+ enable: true
+
+anvil:
  enable: true

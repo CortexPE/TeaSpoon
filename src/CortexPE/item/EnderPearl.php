@@ -36,6 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\item;
 
 use CortexPE\Main;
+use CortexPE\Session;
 use pocketmine\item\{
 	Item, ProjectileItem
 };
@@ -44,7 +45,7 @@ use pocketmine\Player;
 
 class EnderPearl extends ProjectileItem {
 
-	public function __construct($meta = 0, $count = 1){
+	public function __construct($meta = 0){
 		parent::__construct(Item::ENDER_PEARL, $meta, "Ender Pearl");
 	}
 
@@ -61,14 +62,18 @@ class EnderPearl extends ProjectileItem {
 	}
 
 	public function onClickAir(Player $player, Vector3 $directionVector): bool{
-		$session = Main::getInstance()->getSessionById($player->getId());
-		if(floor(microtime(true) - $session->lastEnderPearlUse) < Main::$enderPearlCooldown){
-			return false;
-		}else{
-			$session->lastEnderPearlUse = time();
-
+		if(Main::$ePearlEnabled){
+			$session = Main::getInstance()->getSessionById($player->getId());
+			if($session instanceof Session){
+				if(floor(microtime(true) - $session->lastEnderPearlUse) < Main::$enderPearlCooldown){
+					return false;
+				}else{
+					$session->lastEnderPearlUse = time();
+				}
+			}
 			return parent::onClickAir($player, $directionVector);
 		}
+		return false;
 	}
 
 }

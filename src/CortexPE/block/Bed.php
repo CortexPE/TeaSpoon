@@ -44,9 +44,15 @@ use pocketmine\Player;
 
 class Bed extends PMBed {
 
+	/**
+	 * @param Item $item
+	 * @param Player|null $player
+	 * @return bool
+	 */
 	public function onActivate(Item $item, Player $player = null): bool{
 		$dimension = Utils::getDimension($this->getLevel());
 		if($dimension == DimensionIds::NETHER || $dimension == DimensionIds::THE_END){
+			/** @var Explosion $explosion */
 			$explosion = new Explosion($this, 6);
 			$explosion->explodeA();
 			$explosion->explodeB();
@@ -56,5 +62,4 @@ class Bed extends PMBed {
 
 		return parent::onActivate($item, $player);
 	}
-
 }

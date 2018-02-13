@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\entity\projectile;
 
+use CortexPE\entity\object\AreaEffectCloud;
 use CortexPE\item\Potion;
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Throwable;
@@ -14,6 +15,8 @@ use pocketmine\level\{
 use pocketmine\nbt\tag\{
 	CompoundTag, DoubleTag, FloatTag, IntTag, ListTag, ShortTag
 };
+use pocketmine\network\mcpe\protocol\PlaySoundPacket;
+use pocketmine\Server;
 
 class LingeringPotion extends Throwable {
 
@@ -27,18 +30,19 @@ class LingeringPotion extends Throwable {
 	protected $gravity = 0.1;
 	protected $drag = 0.05;
 
+	public const TAG_POTION_ID = "PotionId";
+
 	public function __construct(Level $level, CompoundTag $nbt, Entity $shootingEntity = null){
-		if(!isset($nbt->PotionId)){
-			$nbt->PotionId = new ShortTag("PotionId", Potion::AWKWARD);
+		if(!$nbt->hasTag(self::TAG_POTION_ID, ShortTag::class)){
+			$nbt->setShort(self::TAG_POTION_ID, Potion::AWKWARD);
 		}
 		parent::__construct($level, $nbt, $shootingEntity);
-		unset($this->dataProperties[self::DATA_SHOOTER_ID]);
-		$this->setDataProperty(self::DATA_VARIANT, self::DATA_TYPE_SHORT, $this->getPotionId());
+		$this->getDataPropertyManager()->setShort(self::DATA_VARIANT, $this->getPotionId());
 		$this->setDataFlag(self::DATA_FLAGS, self::DATA_FLAG_LINGER);
 	}
 
 	public function getPotionId(){
-		return (int)$this->namedtag["PotionId"];
+		return $this->namedtag->getShort(self::TAG_POTION_ID);
 	}
 
 	public function onUpdate(int $currentTick): bool{
@@ -63,22 +67,29 @@ class LingeringPotion extends Throwable {
 					new FloatTag("", 0),
 				]),
 			]);
-			$nbt->Age = new IntTag("Age", 0);
-			$nbt->PotionId = new ShortTag("PotionId", $this->getPotionId());
-			$nbt->Radius = new FloatTag("Radius", 3);
-			$nbt->RadiusOnUse = new FloatTag("RadiusOnUse", -0.5);
-			$nbt->RadiusPerTick = new FloatTag("RadiusPerTick", -0.005);
-			$nbt->WaitTime = new IntTag("WaitTime", 10);
-			$nbt->TileX = new IntTag("TileX", (int)round($this->getX()));
-			$nbt->TileY = new IntTag("TileY", (int)round($this->getY()));
-			$nbt->TileZ = new IntTag("TileZ", (int)round($this->getZ()));
-			$nbt->Duration = new IntTag("Duration", 600);
-			$nbt->DurationOnUse = new IntTag("DurationOnUse", 0);
+			$nbt->setInt(AreaEffectCloud::TAG_AGE,0);
+			$nbt->setShort(AreaEffectCloud::TAG_POTION_ID, $this->getPotionId());
+			$nbt->setFloat(AreaEffectCloud::TAG_RADIUS, 3);
+			$nbt->setFloat(AreaEffectCloud::TAG_RADIUS_ON_USE, -0.5);
+			$nbt->setFloat(AreaEffectCloud::TAG_RADIUS_PER_TICK, -0.005);
+			$nbt->setInt(AreaEffectCloud::TAG_WAIT_TIME, 10);
+			$nbt->setInt(AreaEffectCloud::TAG_TILE_X, intval(round($this->getX())));
+			$nbt->setInt(AreaEffectCloud::TAG_TILE_Y, intval(round($this->getY())));
+			$nbt->setInt(AreaEffectCloud::TAG_TILE_Z, intval(round($this->getZ())));
+			$nbt->setInt(AreaEffectCloud::TAG_DURATION, 600);
+			$nbt->setInt(AreaEffectCloud::TAG_DURATION_ON_USE, 0);
 
 			$aec = Entity::createEntity("AreaEffectCloud", $this->getLevel(), $nbt);
 			if($aec instanceof Entity){
 				$aec->spawnToAll();
 			}
+
+			$pk = new PlaySoundPacket();
+			$pk->soundName = "random.glass";
+			$pk->volume = 500;
+			$pk->pitch = 1;
+			Server::getInstance()->broadcastPacket($this->getViewers(), $pk);
+
 			$this->flagForDespawn();
 		}
 
@@ -88,5 +99,4 @@ class LingeringPotion extends Throwable {
 	public function onCollideWithEntity(Entity $entity){
 		return;
 	}
-
 }

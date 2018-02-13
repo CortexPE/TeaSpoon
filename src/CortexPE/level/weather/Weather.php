@@ -19,7 +19,7 @@
  *
  */
 
-// Modded by @CortexPE to make it more realistic
+// Modded by @CortexPE to make it more realistic + performance improvements
 
 namespace CortexPE\level\weather;
 
@@ -141,8 +141,8 @@ class Weather {
 					}
 				}
 			}
+			$this->lastUpdate = $currentTick;
 		}
-		$this->lastUpdate = $currentTick;
 	}
 
 	/**
@@ -208,7 +208,6 @@ class Weather {
 		foreach($pks as $pk){
 			$p->dataPacket($pk);
 		}
-		//$p->weatherData = [$this->weatherNow, $this->strength1, $this->strength2];
 	}
 
 	/**
@@ -229,6 +228,10 @@ class Weather {
 	 * @return bool
 	 */
 	public function isSunny(): bool{
+		if(!$this->canCalculate){
+			return false;
+		}
+
 		return $this->getWeather() === self::SUNNY;
 	}
 
@@ -236,6 +239,10 @@ class Weather {
 	 * @return int
 	 */
 	public function getWeather(): int{
+		if(!$this->canCalculate){
+			return self::SUNNY;
+		}
+
 		return $this->weatherNow;
 	}
 
@@ -243,6 +250,10 @@ class Weather {
 	 * @return bool
 	 */
 	public function isRainy(): bool{
+		if(!$this->canCalculate){
+			return false;
+		}
+
 		return $this->getWeather() === self::RAINY;
 	}
 
@@ -250,6 +261,10 @@ class Weather {
 	 * @return bool
 	 */
 	public function isRainyThunder(): bool{
+		if(!$this->canCalculate){
+			return false;
+		}
+
 		return $this->getWeather() === self::RAINY_THUNDER;
 	}
 
@@ -257,6 +272,10 @@ class Weather {
 	 * @return bool
 	 */
 	public function isThunder(): bool{
+		if(!$this->canCalculate){
+			return false;
+		}
+
 		return $this->getWeather() === self::THUNDER;
 	}
 

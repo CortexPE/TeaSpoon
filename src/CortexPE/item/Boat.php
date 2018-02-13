@@ -23,14 +23,9 @@ declare(strict_types = 1);
 
 namespace CortexPE\item;
 
-use CortexPE\entity\Boat as BoatEntity;
 use pocketmine\block\Block;
 use pocketmine\item\Item as ItemPM;
-use pocketmine\level\Level;
 use pocketmine\math\Vector3;
-use pocketmine\nbt\tag\{
-	CompoundTag, DoubleTag, FloatTag, IntTag, ListTag
-};
 use pocketmine\Player;
 
 class Boat extends ItemPM {
@@ -58,8 +53,10 @@ class Boat extends ItemPM {
 		return true;
 	}
 
-	public function onActivate(Level $level, Player $player, Block $block, Block $target, int $face, Vector3 $facepos): bool{
-		$realPos = $target->getSide($face)->add(0.5, 0.4, 0.5);
+	public function onActivate(Player $player, Block $block, Block $target, int $face, Vector3 $facepos): bool{
+		// TODO
+		return true;
+		/*$realPos = $target->getSide($face)->add(0.5, 0.4, 0.5);
 		$boat = new BoatEntity($player->getLevel(), new CompoundTag("", [
 			new ListTag("Pos", [
 				new DoubleTag("", $realPos->getX()),
@@ -82,7 +79,7 @@ class Boat extends ItemPM {
 			--$this->count;
 		}
 
-		return true;
+		return true;*/
 	}
 
 	public function getFuelTime(): int{

@@ -26,9 +26,8 @@ use CortexPE\utils\TextFormat;
 use pocketmine\command\{
 	Command, CommandSender, defaults\VanillaCommand
 };
-use pocketmine\event\{
-	entity\EntityDamageEvent, TranslationContainer
-};
+use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\lang\TranslationContainer;
 use pocketmine\Player;
 
 class KillCommand extends VanillaCommand {
@@ -104,44 +103,35 @@ class KillCommand extends VanillaCommand {
 						foreach($sender->getLevel()->getEntities() as $entity){
 							if($entity instanceof Player){
 								if($entity->getGamemode() === Player::ADVENTURE or $entity->getGamemode() === Player::SURVIVAL){
-									$sender->getServer()->getPluginManager()->callEvent($ev = new EntityDamageEvent($entity, EntityDamageEvent::CAUSE_SUICIDE, 1000));
+									$sender->getServer()->getPluginManager()->callEvent($ev = new EntityDamageEvent($entity, EntityDamageEvent::CAUSE_SUICIDE, $entity->getMaxHealth()));
 
-									if($ev->isCancelled()){
-										return true;
+									if(!$ev->isCancelled()){
+										$entity->setLastDamageCause($ev);
+										$entity->setHealth(0);
+										$count++;
 									}
-
-									$entity->setLastDamageCause($ev);
-									$entity->setHealth(0);
 								}
 							}else{
 								$entity->close();
+								$count++;
 							}
-							$count++;
 						}
 					}else{
 						foreach($sender->getServer()->getDefaultLevel()->getEntities() as $entity){
 							if($entity instanceof Player){
 								if($entity->getGamemode() === Player::ADVENTURE or $entity->getGamemode() === Player::SURVIVAL){
-									$sender->getServer()->getPluginManager()->callEvent($ev = new EntityDamageEvent($entity, EntityDamageEvent::CAUSE_SUICIDE, 1000));
+									$sender->getServer()->getPluginManager()->callEvent($ev = new EntityDamageEvent($entity, EntityDamageEvent::CAUSE_SUICIDE, $entity->getMaxHealth()));
 
-									if($ev->isCancelled()){
-										return true;
+									if(!$ev->isCancelled()){
+										$entity->setLastDamageCause($ev);
+										$entity->setHealth(0);
+										$count++;
 									}
-
-									$entity->setLastDamageCause($ev);
-									$entity->setHealth(0);
 								}
 							}else{
-								$sender->getServer()->getPluginManager()->callEvent($ev = new EntityDamageEvent($entity, EntityDamageEvent::CAUSE_SUICIDE, 1000));
-
-								if($ev->isCancelled()){
-									return true;
-								}
-
-								$entity->setLastDamageCause($ev);
-								$entity->setHealth(0);
+								$entity->close();
+								$count++;
 							}
-							$count++;
 						}
 					}
 					$sender->sendMessage("Killed " . $count . " Entities");

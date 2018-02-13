@@ -39,7 +39,7 @@ class Splash {
 
 	// tbh, I just added splashes for fun... never thought I would be making a completely different class just for splash texts xD
 
-	// THE RANDOM SPLASH Generator!!!!!!
+	// THE RANDOM SPLASH GENERATOR!!!!!!
 
 	// A lot of the Nouns and Verbs are from: http://nonsense.x2d.org/script.js
 	// Some are removed due to how long they are, and some have vulgar / NSFW word(s).
@@ -116,6 +116,7 @@ class Splash {
 		"The legend of the raven's roar",
 		"Enqoyism",
 		"The Audacity",
+		"da wae",
 	];
 
 	private static $RANDOM_VERB = [
@@ -176,48 +177,126 @@ class Splash {
 		"is not all that great.",
 		"shakes beliefs widely held.",
 		"always strikes for the heart.",
+		"crawls the interwebs",
 	];
+
+	public const VALENTINES_SPLASH = "Cortex loves J****e <3";
 
 	private static $TEASPOON_SPLASHES = [
 		'Low-Calorie blend', // first ever teaspoon splash text... and that's why its in ' not " xd
 		"Don't panic! Have a cup of tea",
 		"In England, Everything stops for tea",
-		"POWERED By Dubstep", "A E S T H E T H I C S",
-		"WHO PUT THAT HERE?",
+		"Fueled by Music and Coffee",
+		"A E S T H E T H I C S",
 		"#BlameShoghi",
+		"#BlameMojang",
+		"#BlamePMMP",
 		"ERMAHGERD",
 		"Written in PHP!",
 		"This is a splash text.",
-		"YOUR NAME",
 		"ONE LOVE",
-		"I KILLED THE SHERIFF... But not the deputy.",
-		"Oops.",
 		"rip.",
-		"Fixed Typo!",
-		"Fixed Typo! 2",
-		"Fixed Typo! 2 FINAL",
-		"Fixed Typo! 2 FINALFINAL",
-		"Fixed Typo! 2 FINALFINALFINAL",
 		"This splash text is a joke.",
-		"How may I help you?",
 		"SUPERCALIFRAGILISTICEXPIALIDOCIOUS!",
 		"Well this exists.",
 		"IE EXISTS TO DOWNLOAD CHROME!",
 		"I'm sorry Dave. I'm afraid I can't do that.",
 		"I might have killed it.",
-		"PUNCHING TREES!",
-		"Bug Fix",
-		"Bug Fix 2",
-		"Bug Fix 2 FINAL",
-		"Bug Fix 2 FINALFINAL",
-		"Bug Fix 2 FINALFINANFINAL",
 		"We have VCS Systems. :P",
 		"We have *crappy* VCS Systems. :P",
 		":shrug:",
 		"Fukkit!",
-		"Cortex loves J***** <3",
+		self::VALENTINES_SPLASH,
 		"§4R§cA§6I§eN§2B§aO§bW§3 T§1E§9X§dT§5!",
 		"@TheAz928 is notorious for HardCoding values!",
+
+
+		// SoftwareGore from: Best of r/SoftwareGore -- https://www.youtube.com/watch?v=kekn2HhE-qI  *I'M DYING*
+		"DAMMIT STEVE",
+		"Best of r/SoftwareGore",
+		"*Music Plays*",
+		"Installing Dragon Center Update 147%",
+		"The Power Saver app may drain the battery.",
+		"YO BRO THAT'S A Cool Sign!!! TOTES LIT AF RELATABLE :joy: AMIRITE???",
+		":( Your PC ran and We're jus... For more anforma... If you call suppor... DRI",
+		"Could not complete your request because Brendan's an idiot.",
+		"CONGRATULATIONS YOU GOT THEM ALL WRONG!!!",
+		"SHAKESPEARE QUOTE OF THE DAY: An SSL error has occured and a secure connection to the server cannot be made.",
+		"It is a very chilly -3602°F, I wouldn't recommend going outside because you may actually freeze to death.",
+		"Rest In Peace Me, Goodbye World.",
+		"Russia is located in Russia",
+		"Do you want to change your default web browser to \"Chrome\" or keep using \"Chrome\"?",
+		"What do you identify as? Correct Answer: Female",
+		":( Your PC ra We're (0% Complete)",
+		"If you would like to k KMODE_EXCEPTION_NOT_HANDLED",
+		"You need to be logged in to log out. Please log in to log out.",
+		"We all know there are nine genders.",
+		"F",
+		"M",
+		"Male",
+		"Female",
+		"Famale",
+		"Felmale",
+		"High School visit on March 17",
+		"Gender",
+		"International High School Visit at Ho Chi Minh City at March 19",
+		"Do you really want to exist without saving?",
+		"Something Happened. SOMETHING HAPPENED!!!!!",
+		"??? ???",
+		"OK",
+		"This Driver can't",
+		"Great! That's what we're all about here at the ZPD!",
+		"please don't",
+		"Amazing Russian Bombshells Want To Date You!",
+		":( Your P",
+		"Tip of the Day: Chc xnt j mnv ---",
+		"ok",
+		"Java Update???? Java??????????????????????",
+		"Seriously I get to have my own undefined? THIS IS THE BEST DAY EVER",
+		"IUWFHIURGREIOGHERIGUIORGHELGTHEKJFGHIKDFGIU",
+		"Please wait while OneNote inserts the d...",
+		":( Yo",
+		"His code is weak",
+		"OS Unsteady",
+		"Garbage in his collector already",
+		"CD-ROM Spagetti",
+		"Which direction is North? It's Rob Reiner.",
+		"Windows will shut dosistant will reboot yote",
+		"Fufufu fufufu fufufu fufufu fufufu",
+		"Task Manager (Not Responding)",
+
+		// Best of r/CrappyDesign https://www.youtube.com/watch?v=QeXs5NyX5WI
+		"VICIOUS INCEST 2015",
+		"HEAL THY BUR GERS",
+		"NOTHING IS POSSIBLE",
+		"SASA LELE",
+		"baby needs beers & wines",
+		"PLEASE NO SMOKING FOOD RADIOS WITHOUT HEADPHONES BICYCLES",
+		"BOY & MOM SAMPSON",
+		"QUIEF ZONE",
+		" - Cyborg Babies -",
+		"SO MA UL TE",
+		"DEFORMED CAR",
+		"First comes... LOVE Then comes... MORRIAGE Then comes a... BOBY",
+		"Non ACTION and Stop EXCITEMENT",
+		"Nesquick from the Nesdi**!",
+		"THE CUMMY",
+		"NOW HIRING NOW RIGHT NOW WE'RE HIRING NOW",
+		"BLONK",
+		"Stairs & Elevators & Terminal & Stairs & Elevators & Terminal & Stairs",
+		"COTTON CHICKEN CANDY NUGGETS",
+		"FIND A COLON NEAR YOU",
+		"It's NOT Its ME YOU",
+		"DO NOT BRING FOOD OR DRINK IN LAB - STOP - NO - FOOD OR DRINK - ALLOWED - IN LAB",
+		"PAIN REGRET COURAGE RICE",
+		"I Give Up",
+
+		// Base64 Encoded strings
+		"R09UIEVNIQ==",
+		"R0VUIFBSQU5LRUQgQlJPISEh",
+		"b09vIEJhc2U2NCBvT28=",
+		"cnVubmluZyBvdXR0YSBpZGVhcyBsb2w=",
+		"b2ggbWFoIGdhaA==",
 	];
 
 	private static $CHRISTMAS_SPLASHES = [
@@ -225,31 +304,56 @@ class Splash {
 		"Merry Christmas",
 	];
 
-	public static function getRandomSentence(): string{
-		return self::getRandomNoun() . " " . self::getRandomVerb();
-	}
-
 	public static function getRandomSplash(): string{
+		if(self::isWednesday() && mt_rand(1,2) == 1){
+			return "It's WEDNESDAY my dudes.";
+		}
 		if(self::isChristmastide()){
 			return self::$CHRISTMAS_SPLASHES[array_rand(self::$CHRISTMAS_SPLASHES)];
 		}
-		if(self::isCortexsBirthday()){
-			return "Happy birthday Cortex!"; // lolz
+		if(self::isValentines() && mt_rand(1,2) == 2){
+			return self::VALENTINES_SPLASH;
 		}
-		if(mt_rand(0, 100) <= 50){
-			get_random: // lol
-			$rand = self::getRandomSentence();
-			if(strlen($rand) <= 32){ // max length 32
-				return $rand;
+		if(self::isCortexsBirthday()){
+			return (mt_rand(1, 2) == 1 ? "Cortex's biological age is now " . strval(intval(date('Y')) - 1999) . "!" : "Happy birthday Cortex!"); // lolz
+		}
+		if(mt_rand(0, 100) <= mt_rand(75, 100)){
+			while(true){
+				$rand = self::getRandomSentence();
+				$len = strlen($rand);
+				if($len <= 32){ // max length 32
+					return $rand;
+				}
 			}
-			goto get_random;
 		}
 
 		return self::getRandomTSPSplash();
 	}
 
-	public static function getRandomTSPSplash(): string{
-		return self::$TEASPOON_SPLASHES[array_rand(self::$TEASPOON_SPLASHES)];
+	public static function isChristmastide() : bool {
+		$month = date('n');
+		$day = date('j');
+
+		return ($month == 12 && $day >= 25) || ($month == 1 && $day <= 6);
+	}
+
+	public static function isCortexsBirthday() : bool {
+		$month = date('n');
+		$day = date('j');
+
+		return ($month == 10 && $day == 10);
+	}
+
+	public static function isValentines() : bool {
+		return (date('n') == 2);
+	}
+
+	public static function isWednesday() : bool {
+		return (date('w') == 3);
+	}
+
+	public static function getRandomSentence(): string{
+		return self::getRandomNoun() . " " . self::getRandomVerb();
 	}
 
 	public static function getRandomNoun(): string{
@@ -260,18 +364,7 @@ class Splash {
 		return self::$RANDOM_VERB[array_rand(self::$RANDOM_VERB)];
 	}
 
-	// eastereggs?
-	private static function isChristmastide(){
-		$month = date('n');
-		$day = date('j');
-
-		return ($month == 12 && $day >= 25) || ($month == 1 && $day <= 6);
-	}
-
-	private static function isCortexsBirthday(){
-		$month = date('n');
-		$day = date('j');
-
-		return ($month == 10 && $day == 10);
+	public static function getRandomTSPSplash(): string{
+		return self::$TEASPOON_SPLASHES[array_rand(self::$TEASPOON_SPLASHES)];
 	}
 }

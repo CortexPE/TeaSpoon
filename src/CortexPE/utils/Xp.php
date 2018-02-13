@@ -35,84 +35,78 @@ declare(strict_types = 1);
 
 namespace CortexPE\utils;
 
-use CortexPE\entity\Lightning;
-use CortexPE\entity\XPOrb;
 use CortexPE\Utils;
 use pocketmine\block\Block;
-use pocketmine\entity\Animal;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Human;
-use pocketmine\entity\Monster;
-use pocketmine\level\Level;
-use pocketmine\math\Vector3;
-use pocketmine\nbt\tag\FloatTag;
-use pocketmine\nbt\tag\IntTag;
-use pocketmine\Player;
 
 class Xp extends Utils {
-	// [ROT13 Encoded and is pretty Explicit] Jul gur shpx unfa'g CZZC Vzcyrzragrq n CEBCRE KC Flfgrz Lrg? Guvf vf Shpxvat fghcvq naq vf bar bs gur znal ernfbaf jul Crbcyr ybir fcbbaf -_-
-	// hacky code to *SOMEHOW* get it working...
-
-	// TODO: Base it all from this list: https://minecraft.gamepedia.com/Experience#Experience_amounts_by_source
-
-	public static function addXp(Player $player, int $amount){
-		$add = self::getLevelFromXp($player->getTotalXp() + $amount);
-		$player->setXpProgress($add[1]);
-		$player->setXpLevel(intval($player->getXpLevel() + round($player->getXpProgress())));
-		self::saveData($player);
-	}
-
-	private static function saveData(Player $player){
-		if(!isset($player->namedtag->XpLevel) or !($player->namedtag->XpLevel instanceof IntTag)){
-			$player->namedtag->XpLevel = new IntTag("XpLevel", $player->getXpLevel());
-		}else{
-			$player->namedtag["XpLevel"] = $player->getXpLevel();
-		}
-
-		if(!isset($player->namedtag->XpP) or !($player->namedtag->XpP instanceof FloatTag)){
-			$player->namedtag->XpP = new FloatTag("XpP", $player->getXpProgress());
-		}else{
-			$player->namedtag["XpP"] = $player->getXpProgress();
-		}
-
-		if(!isset($player->namedtag->XpTotal) or !($player->namedtag->XpTotal instanceof IntTag)){
-			$player->namedtag->XpTotal = new IntTag("XpTotal", $player->getTotalXp());
-		}else{
-			$player->namedtag["XpTotal"] = $player->getTotalXp();
-		}
-		$player->getServer()->saveOfflinePlayerData($player->getName(), $player->namedtag, true);
-	}
-
-	public static function takeXp(Player $player, int $amount){
-		if(($player->getTotalXp() - $amount) >= 0){
-			$add = self::getLevelFromXp($player->getTotalXp() - $amount);
-			$player->setXpProgress($add[1]);
-			$player->setXpLevel(intval($player->getXpLevel() + round($player->getXpProgress())));
-			self::saveData($player);
-		}
-	}
-
 	public static function getXpDropsForEntity(Entity $e): int{
 		switch($e::NETWORK_ID){
-			case Lightning::NETWORK_ID:
+			// animals //
+			case Entity::CHICKEN:
+			case Entity::COW:
+			case Entity::HORSE:
+			case Entity::DONKEY:
+			case Entity::MULE:
+			case Entity::SKELETON_HORSE:
+			case Entity::ZOMBIE_HORSE:
+			case Entity::MOOSHROOM:
+			case Entity::LLAMA:
+			case Entity::OCELOT:
+			case Entity::PARROT:
+			case Entity::PIG:
+			case Entity::POLAR_BEAR:
+			case Entity::SHEEP:
+			case Entity::SQUID:
+			case Entity::RABBIT:
+			case Entity::WOLF:
+				return mt_rand(1,3);
+			case Entity::BAT:
 				return 0;
-			default:
-				if($e instanceof Monster){
-					switch($e->getName()){
-						default:
-							return 5;
-					}
-				}elseif($e instanceof Animal){
-					switch($e->getName()){
-						default:
-							return mt_rand(1, 3);
-					}
-				}elseif($e instanceof Human){
-					return 7;
-				}
-
+			// golems //
+			case Entity::IRON_GOLEM:
+			case Entity::SNOW_GOLEM:
+				return 0;
+			// monsters //
+			case Entity::CAVE_SPIDER:
+			case Entity::CREEPER:
+			case Entity::ENDERMAN:
+			case Entity::GHAST:
+			case Entity::HUSK:
+			case Entity::SHULKER:
+			case Entity::SILVERFISH:
+			case Entity::SKELETON:
+			case Entity::SPIDER:
+			case Entity::STRAY:
+			case Entity::VINDICATOR:
+			case Entity::WITCH:
+			case Entity::WITHER_SKELETON:
+			case Entity::ZOMBIE:
+			case Entity::ZOMBIE_PIGMAN:
+				return 5;
+			case Entity::ENDERMITE:
+			case Entity::VEX:
+				return 3;
+			case Entity::SLIME:
+			case Entity::MAGMA_CUBE:
+				return mt_rand(1,4);
+			case Entity::BLAZE:
+			case Entity::GUARDIAN:
+			case Entity::ELDER_GUARDIAN:
+			case Entity::EVOCATION_ILLAGER:
+				return 10;
+			case Human::NETWORK_ID: // Handled by PMMP ;)
+			case Entity::VILLAGER:
+				return 0;
+			case Entity::ENDER_DRAGON:
+				return (mt_rand(1,2) == 1 ? 12000 : 500);
+			case Entity::WITHER:
+				return 50;
+			case Entity::LIGHTNING_BOLT:
 				return 0;
 		}
+		return 0;
 	}
 
 	public static function getXpDropsForBlock(Block $b): int{
@@ -137,15 +131,5 @@ class Xp extends Utils {
 			default:
 				return 0;
 		}
-	}
-
-	public static function spawnXpOrb(Vector3 $pos, Level $lvl, int $exp): XPOrb{
-		$nbt = XPOrb::createBaseNBT($pos);
-		$nbt->setLong("Experience", $exp);
-		/** @var XPOrb $entity */
-		$entity = Entity::createEntity("XPOrb", $lvl, $nbt);
-		$entity->spawnToAll();
-
-		return $entity;
 	}
 }

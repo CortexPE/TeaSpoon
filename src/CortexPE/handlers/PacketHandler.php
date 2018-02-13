@@ -36,18 +36,16 @@ declare(strict_types = 1);
 namespace CortexPE\handlers;
 
 use CortexPE\Main;
+use CortexPE\Session;
 use CortexPE\Utils;
 use pocketmine\event\{
 	Listener, server\DataPacketReceiveEvent, server\DataPacketSendEvent
 };
-use pocketmine\network\mcpe\protocol\BatchPacket;
-use pocketmine\network\mcpe\protocol\PlayerActionPacket;
-use pocketmine\network\mcpe\protocol\PlayerListPacket;
-use pocketmine\network\mcpe\protocol\StartGamePacket;
-use pocketmine\network\mcpe\protocol\types\DimensionIds;
+use pocketmine\network\mcpe\protocol\{
+	PlayerActionPacket, StartGamePacket
+};
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
-use pocketmine\Server;
 
 class PacketHandler implements Listener {
 
@@ -69,30 +67,33 @@ class PacketHandler implements Listener {
 
 		switch(true){
 			case ($pk instanceof PlayerActionPacket):
-				//Main::getInstance()->getLogger()->debug("Received PlayerActionPacket:" . $pkr->action . " from " . $p->getName());
 				$session = Main::getInstance()->getSessionById($p->getId());
-				switch($pk->action){
-					case PlayerActionPacket::ACTION_DIMENSION_CHANGE_ACK:
-						// TODO: USE THIS FOR CROSS-DIMENSION TELEPORT
-						break;
+				if($session instanceof Session){
+					switch($pk->action){
+						case PlayerActionPacket::ACTION_DIMENSION_CHANGE_ACK:
+						case PlayerActionPacket::ACTION_DIMENSION_CHANGE_REQUEST:
+							$pk->action = PlayerActionPacket::ACTION_RESPAWN; // redirect to respawn action so that PMMP would handle it as a respawn
+							break;
 
-					case PlayerActionPacket::ACTION_DIMENSION_CHANGE_REQUEST:
-						$pk->action = PlayerActionPacket::ACTION_RESPAWN; // redirect to respawn action so that PMMP would handle it as a respawn
-						break;
+						case PlayerActionPacket::ACTION_START_GLIDE:
+							if(Main::$elytraEnabled){
+								$p->setGenericFlag(PMPlayer::DATA_FLAG_GLIDING, true); // Why isn't the datatype a byte?
 
-					case PlayerActionPacket::ACTION_START_GLIDE:
-						$p->setDataFlag(PMPlayer::DATA_FLAGS, PMPlayer::DATA_FLAG_GLIDING, true, PMPlayer::DATA_TYPE_BYTE);
+								$session->usingElytra = $session->allowCheats = true;
+							}
+							break;
+						case PlayerActionPacket::ACTION_STOP_GLIDE:
+							if(Main::$elytraEnabled){
+								$p->setGenericFlag(PMPlayer::DATA_FLAG_GLIDING, false);
 
-						$session->usingElytra = $session->allowCheats = true;
-						break;
-					case PlayerActionPacket::ACTION_STOP_GLIDE:
-						$p->setDataFlag(PMPlayer::DATA_FLAGS, PMPlayer::DATA_FLAG_GLIDING, false, PMPlayer::DATA_TYPE_BYTE);
+								$session->usingElytra = $session->allowCheats = false;
 
-						$session->usingElytra = $session->allowCheats = false;
-
-						$session->damageElytra();
-						break;
+								$session->damageElytra();
+							}
+							break;
+					}
 				}
+				break;
 		}
 	}
 
@@ -106,20 +107,8 @@ class PacketHandler implements Listener {
 		$p = $ev->getPlayer();
 		switch(true){
 			case ($pk instanceof StartGamePacket):
-				if(Utils::getDimension($p->getLevel()) != DimensionIds::OVERWORLD){
+				if(Main::$registerDimensions){
 					$pk->dimension = Utils::getDimension($p->getLevel());
-				}
-				break;
-
-			case ($pk instanceof PlayerListPacket):
-				if($pk->type == PlayerListPacket::TYPE_ADD){
-					foreach($pk->entries as $entry){
-						if($p->getXuid() !== null){ // is xbox logged in but causes errors if xuid is null (BLAME PMMP)
-							if($p->getXuid() != ""){
-								$entry->xboxUserId = $p->getXuid();
-							}
-						}
-					}
 				}
 				break;
 		}

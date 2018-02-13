@@ -38,7 +38,6 @@ namespace CortexPE\item;
 use pocketmine\block\Block;
 use pocketmine\entity\Entity;
 use pocketmine\item\Item;
-use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 
@@ -51,10 +50,10 @@ class EndCrystal extends Item {
 		return 64;
 	}
 
-	public function onActivate(Level $level, Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector): bool{
+	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector): bool{
 		$nbt = Entity::createBaseNBT($blockClicked);
 		$crystal = Entity::createEntity("EnderCrystal", $player->getLevel(), $nbt);
-		if($crystal instanceof \CortexPE\entity\EndCrystal){
+		if($crystal instanceof \CortexPE\entity\object\EndCrystal){
 			$crystal->spawnToAll();
 			if($player->isSurvival()){
 				--$this->count;

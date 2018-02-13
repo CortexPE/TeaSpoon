@@ -35,7 +35,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\item;
 
-use pocketmine\block\Block;
+use CortexPE\Utils;
 use pocketmine\item\{
 	Item, ItemFactory
 };
@@ -44,46 +44,39 @@ class ItemManager {
 	public static function init(){
 		ItemFactory::registerItem(new Boat(), true);
 		ItemFactory::registerItem(new EnchantingBottle(), true);
-		ItemFactory::registerItem(new EnderPearl());
+		ItemFactory::registerItem(new EnderPearl(), true);
 		ItemFactory::registerItem(new Potion(), true);
 		ItemFactory::registerItem(new LingeringPotion(), true);
-		ItemFactory::registerItem(new SplashPotion());
+		ItemFactory::registerItem(new SplashPotion(), true);
 		ItemFactory::registerItem(new FlintSteel(), true);
-		ItemFactory::registerItem(new FireCharge());
-		ItemFactory::registerItem(new TotemOfUndying());
-		ItemFactory::registerItem(new Elytra());
-		ItemFactory::registerItem(new FireworkRocket());
-		ItemFactory::registerItem(new ChorusFruit());
+		ItemFactory::registerItem(new FireCharge(), true);
+		ItemFactory::registerItem(new TotemOfUndying(), true);
+		ItemFactory::registerItem(new Elytra(), true);
+		ItemFactory::registerItem(new Fireworks(), true); // TODO: Implement proper Fireworks
+		ItemFactory::registerItem(new ChorusFruit(), true);
 		ItemFactory::registerItem(new FishingRod(), true);
-		ItemFactory::registerItem(new EyeOfEnder());
+		ItemFactory::registerItem(new EyeOfEnder(), true);
 		ItemFactory::registerItem(new SpawnEgg(), true);
-		// LAGGY ItemFactory::registerItem(new EndCrystal());
+		ItemFactory::registerItem(new Bow(), true);
+		ItemFactory::registerItem(new EndCrystal(), true);
+		ItemFactory::registerItem(new Hopper(), true);
+		ItemFactory::registerItem(new Bucket(), true);
 
-		Item::addCreativeItem(Item::get(Item::ENDER_PEARL));
-		Item::addCreativeItem(Item::get(Item::ENDER_CHEST));
-		Item::addCreativeItem(Item::get(Item::BOTTLE_O_ENCHANTING));
-		Item::addCreativeItem(Item::get(Item::FIRE_CHARGE));
-		Item::addCreativeItem(Item::get(Item::TOTEM));
-		Item::addCreativeItem(Item::get(Item::ELYTRA));
-		Item::addCreativeItem(Item::get(Item::FIREWORKS));
-		Item::addCreativeItem(Item::get(Item::CHORUS_FRUIT));
-		Item::addCreativeItem(Item::get(Item::SLIME_BLOCK));
-		Item::addCreativeItem(Item::get(Item::ENDER_EYE));
-
-		for($i = 0; $i <= 36; $i++){
-			Item::addCreativeItem(Item::get(Item::SPLASH_POTION, $i));
+		if(!Utils::isPhared()){ // beta
+			ItemFactory::registerItem(new Record(Item::RECORD_13, 0, "Music Disc 13"), true);
+			ItemFactory::registerItem(new Record(Item::RECORD_CAT, 0, "Music Disc cat"), true);
+			ItemFactory::registerItem(new Record(Item::RECORD_BLOCKS, 0, "Music Disc blocks"), true);
+			ItemFactory::registerItem(new Record(Item::RECORD_CHIRP, 0, "Music Disc chirp"), true);
+			ItemFactory::registerItem(new Record(Item::RECORD_FAR, 0, "Music Disc far"), true);
+			ItemFactory::registerItem(new Record(Item::RECORD_MALL, 0, "Music Disc mall"), true);
+			ItemFactory::registerItem(new Record(Item::RECORD_MELLOHI, 0, "Music Disc mellohi"), true);
+			ItemFactory::registerItem(new Record(Item::RECORD_STAL, 0, "Music Disc stal"), true);
+			ItemFactory::registerItem(new Record(Item::RECORD_STRAD, 0, "Music Disc strad"), true);
+			ItemFactory::registerItem(new Record(Item::RECORD_WARD, 0, "Music Disc ward"), true);
+			ItemFactory::registerItem(new Record(Item::RECORD_11, 0, "Music Disc 11"), true);
+			ItemFactory::registerItem(new Record(Item::RECORD_WAIT, 0, "Music Disc wait"), true);
 		}
 
-		for($i = 0; $i <= 36; $i++){
-			Item::addCreativeItem(Item::get(Item::LINGERING_POTION, $i));
-		}
-
-		for($i = 0; $i <= 5; $i++){
-			Item::addCreativeItem(Item::get(Item::BOAT, $i));
-		}
-
-		for($i = 0; $i <= 15; $i++){
-			Item::addCreativeItem(Item::get(Item::SHULKER_BOX, $i, 1));
-		}
+		Item::initCreativeItems();
 	}
 }

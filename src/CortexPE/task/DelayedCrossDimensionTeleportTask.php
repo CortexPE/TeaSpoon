@@ -47,10 +47,6 @@ use pocketmine\plugin\Plugin;
 use pocketmine\scheduler\PluginTask;
 
 class DelayedCrossDimensionTeleportTask extends PluginTask {
-
-	/** @var Plugin */
-	protected $owner;
-
 	/** @var Player */
 	protected $player;
 
@@ -64,7 +60,7 @@ class DelayedCrossDimensionTeleportTask extends PluginTask {
 	protected $respawn;
 
 	public function __construct(Plugin $owner, Player $player, int $dimension, Vector3 $position, bool $respawn = false){
-		$this->owner = $owner;
+		parent::__construct($owner);
 		$this->player = $player;
 		$this->dimension = $dimension;
 		$this->position = $position;
@@ -72,11 +68,8 @@ class DelayedCrossDimensionTeleportTask extends PluginTask {
 	}
 
 	public function onRun(int $currentTick){
-		$session = Main::getInstance()->getSessionById($this->player->getId());
-		if(Utils::isDelayedTeleportCancellable($this->player)){
-			if($session->skipCheck){
-				$session->skipCheck = false;
-			}
+		if(Utils::isDelayedTeleportCancellable($this->player, $this->dimension)){
+			unset(Main::$onPortal[$this->player->getId()]);
 
 			return false;
 		}
@@ -88,9 +81,7 @@ class DelayedCrossDimensionTeleportTask extends PluginTask {
 		$this->player->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
 		$this->player->teleport($this->position);
 
-		if($session->skipCheck){
-			$session->skipCheck = false;
-		}
+		unset(Main::$onPortal[$this->player->getId()]);
 
 		return true;
 	}

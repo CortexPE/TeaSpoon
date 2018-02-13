@@ -26,15 +26,13 @@ namespace CortexPE\item;
 
 use CortexPE\Main;
 use pocketmine\entity\{
-	Effect, Entity, Human
+	Effect, Entity, Human, Living
 };
+use pocketmine\item\Consumable;
 use pocketmine\item\Item;
-use pocketmine\network\mcpe\protocol\EntityEventPacket;
-use pocketmine\Player;
-use pocketmine\Server;
 use pocketmine\utils\Color;
 
-class Potion extends Item {
+class Potion extends Item implements Consumable {
 
 	//No effects
 	const WATER_BOTTLE = 0;
@@ -292,7 +290,7 @@ class Potion extends Item {
 		self::REGENERATION_TWO  => Effect::REGENERATION,
 	];
 
-	public function __construct($meta = 0, $count = 1){
+	public function __construct($meta = 0){
 		parent::__construct(self::POTION, $meta, self::getNameByMeta($meta));
 	}
 
@@ -300,14 +298,20 @@ class Potion extends Item {
 		return self::$POTION_NAMES[$meta] ?? "Potion";
 	}
 
-	public static function getColor(int $meta) : Color{
+	public static function getColor(int $meta): Color{
 		$effect = Effect::getEffect(self::getEffectId($meta));
-
-		if($effect === null){
+		if(!($effect instanceof Effect)){
 			return new Color(46, 82, 153); // Default to Blue
 		}
 
-		return $effect->getColor() ?? new Color(0, 0, 0); // effect has no color whatsoever
+		$return = $effect->getColor();
+
+		// Only for compatibility with the inconsistency -_-
+		if(is_array($return)){
+			return new Color($return[0], $return[1], $return[2]);
+		}else{
+			return $return;
+		}
 	}
 
 	public static function getEffectId(int $meta): int{
@@ -319,11 +323,11 @@ class Potion extends Item {
 	 *
 	 * @param int $id
 	 * @param string $name
-	 * @param Effect[] $effects
+	 * @param array[] $effects
 	 *
 	 * @return bool
 	 */
-	public static function registerPotion(int $id, string $name, array $effects) : bool {
+	public static function registerPotion(int $id, string $name, array $effects): bool{
 		if(isset(self::$POTION_NAMES[$id]) || isset(self::$POTION_EFFECTS[$id]) || isset(self::$POTION_EFFECT_ID[$id])){ // So it wouldn't mess with other potions
 			Main::getInstance()->getLogger()->warning("Unable to register Potion ID: " . $id);
 
@@ -331,7 +335,7 @@ class Potion extends Item {
 		}else{
 			self::$POTION_NAMES[$id] = $name;
 			self::$POTION_EFFECTS[$id] = $effects;
-			self::$POTION_EFFECT_ID[$id] = $effects[0]->getId();
+			self::$POTION_EFFECT_ID[$id] = $effects[0][0];
 
 			Main::getInstance()->getLogger()->info("Successfully Registered Potion ID: " . $id);
 
@@ -370,31 +374,12 @@ class Potion extends Item {
 		return $entity instanceof Human;
 	}
 
-	public function onConsume(Entity $human){
-		$pk = new EntityEventPacket();
-		$pk->entityRuntimeId = $human->getId();
-		$pk->event = EntityEventPacket::USE_ITEM;
-		if($human instanceof Player){
-			$human->dataPacket($pk);
-		}
-		$server = $human->getLevel()->getServer();
+	public function getResidue(){
+		return Item::get(Item::GLASS_BOTTLE);
+	}
 
-		$server->broadcastPacket($human->getViewers(), $pk);
-
-		//($ev = new EntityDrinkPotionEvent($human, $this))->call();
-
-		//if(!$ev->isCancelled()){
-		foreach($this->getEffects() as $effect){
-			$human->addEffect($effect);
-		}
-		//Don't set the held item to glass bottle if we're in creative
-		if($human instanceof Player){
-			if($human->getGamemode() === 1){
-				return;
-			}
-		}
-		$human->getInventory()->setItemInHand(Item::get(self::GLASS_BOTTLE));
-		//}
+	public function getAdditionalEffects(): array{
+		return $this->getEffects();
 	}
 
 	public function getEffects(): array{
@@ -414,14 +399,22 @@ class Potion extends Item {
 		 *      ]
 		 * ]
 		 */
-		foreach(self::$POTION_EFFECTS[$this->meta] as $effs){ // $effs is an array of effects.
-			if(count($effs ?? []) === 3){ // if effect array is valid
-				if($effs[2] < 256){ // So they can't make potions higher than the limit
-					$effects[] = Effect::getEffect($effs[0])->setDuration($effs[1])->setAmplifier($effs[2]);
+		$effects = [];
+
+		if(is_array(self::$POTION_EFFECTS[$this->meta]) && !empty(self::$POTION_EFFECTS[$this->meta])){
+			foreach(self::$POTION_EFFECTS[$this->meta] as $effs){ // $effs is an array of effects.
+				if(count($effs ?? []) === 3){ // if effect array is valid
+					if($effs[2] < 256){ // So they can't make potions higher than the limit
+						$effects[] = Effect::getEffect($effs[0])->setDuration($effs[1])->setAmplifier($effs[2]);
+					}
 				}
 			}
 		}
 
-		return $effects ?? [];
+		return $effects;
+	}
+
+	public function onConsume(Living $consumer){
+
 	}
 }

@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\tile;
 
-use CortexPE\block\MonsterSpawner;
+use CortexPE\Main;
 use pocketmine\entity\Entity;
 use pocketmine\item\Item;
 use pocketmine\level\format\Chunk;
@@ -20,24 +20,31 @@ use pocketmine\tile\Spawnable;
 
 class MobSpawner extends Spawnable {
 
+	public const TAG_ENTITY_ID = "EntityId";
+	public const TAG_SPAWN_COUNT = "SpawnCount";
+	public const TAG_SPAWN_RANGE = "SpawnRange";
+	public const TAG_MIN_SPAWN_DELAY = "MinSpawnDelay";
+	public const TAG_MAX_SPAWN_DELAY = "MaxSpawnDelay";
+	public const TAG_DELAY = "Delay";
+
 	public function __construct(Level $level, CompoundTag $nbt){
-		if(!isset($nbt->EntityId) or !($nbt->EntityId instanceof IntTag)){
-			$nbt->EntityId = new IntTag("EntityId", 0);
+		if(!$nbt->hasTag(self::TAG_ENTITY_ID, IntTag::class)){
+			$nbt->setInt(self::TAG_ENTITY_ID, 0);
 		}
-		if(!isset($nbt->SpawnCount) or !($nbt->SpawnCount instanceof IntTag)){
-			$nbt->SpawnCount = new IntTag("SpawnCount", 4);
+		if(!$nbt->hasTag(self::TAG_SPAWN_COUNT, IntTag::class)){
+			$nbt->setInt(self::TAG_SPAWN_COUNT, 4);
 		}
-		if(!isset($nbt->SpawnRange) or !($nbt->SpawnRange instanceof IntTag)){
-			$nbt->SpawnRange = new IntTag("SpawnRange", 4);
+		if(!$nbt->hasTag(self::TAG_SPAWN_RANGE, IntTag::class)){
+			$nbt->setInt(self::TAG_SPAWN_RANGE, 4);
 		}
-		if(!isset($nbt->MinSpawnDelay) or !($nbt->MinSpawnDelay instanceof IntTag)){
-			$nbt->MinSpawnDelay = new IntTag("MinSpawnDelay", 200);
+		if(!$nbt->hasTag(self::TAG_MIN_SPAWN_DELAY, IntTag::class)){
+			$nbt->setInt(self::TAG_MIN_SPAWN_DELAY, 200);
 		}
-		if(!isset($nbt->MaxSpawnDelay) or !($nbt->MaxSpawnDelay instanceof IntTag)){
-			$nbt->MaxSpawnDelay = new IntTag("MaxSpawnDelay", 800);
+		if(!$nbt->hasTag(self::TAG_MAX_SPAWN_DELAY, IntTag::class)){
+			$nbt->setInt(self::TAG_MAX_SPAWN_DELAY, 800);
 		}
-		if(!isset($nbt->Delay) or !($nbt->Delay instanceof IntTag)){
-			$nbt->Delay = new IntTag("Delay", mt_rand($nbt->MinSpawnDelay->getValue(), $nbt->MaxSpawnDelay->getValue()));
+		if(!$nbt->hasTag(self::TAG_DELAY, IntTag::class)){
+			$nbt->setInt(self::TAG_DELAY, mt_rand($nbt->getInt(self::TAG_MIN_SPAWN_DELAY), $nbt->getInt(self::TAG_MAX_SPAWN_DELAY)));
 		}
 		parent::__construct($level, $nbt);
 		if($this->getEntityId() > 0){
@@ -46,38 +53,33 @@ class MobSpawner extends Spawnable {
 	}
 
 	public function getEntityId(){
-		return $this->namedtag["EntityId"];
+		return $this->getNBT()->getInt(self::TAG_ENTITY_ID);
 	}
 
 	public function setEntityId(int $id){
-		$this->namedtag->EntityId->setValue($id);
+		$this->getNBT()->setInt(self::TAG_ENTITY_ID, $id);
 		$this->onChanged();
 		$this->scheduleUpdate();
 	}
 
 	public function setSpawnCount(int $value){
-		$this->namedtag->SpawnCount->setValue($value);
+		$this->getNBT()->setInt(self::TAG_SPAWN_COUNT, $value);
 	}
 
 	public function setSpawnRange(int $value){
-		$this->namedtag->SpawnRange->setValue($value);
+		$this->getNBT()->setInt(self::TAG_SPAWN_RANGE, $value);
 	}
 
 	public function setMinSpawnDelay(int $value){
-		$this->namedtag->MinSpawnDelay->setValue($value);
+		$this->getNBT()->setInt(self::TAG_MIN_SPAWN_DELAY, $value);
 	}
 
 	public function setMaxSpawnDelay(int $value){
-		$this->namedtag->MaxSpawnDelay->setValue($value);
+		$this->getNBT()->setInt(self::TAG_MAX_SPAWN_DELAY, $value);
 	}
 
 	public function getName(): string{
-		if($this->getEntityId() === 0) return "Monster Spawner";
-		else{
-			$name = ucfirst(MonsterSpawner::EID_TO_STR[$this->getEntityId()] ?? 'Monster') . ' Spawner';
-
-			return $name;
-		}
+		return "Monster Spawner";
 	}
 
 	public function onUpdate(): bool{
@@ -90,7 +92,7 @@ class MobSpawner extends Spawnable {
 		if(!($this->chunk instanceof Chunk)){
 			return false;
 		}
-		if($this->canUpdate()){
+		if($this->canUpdate() && Main::$mobSpawnerEnable){
 			if($this->getDelay() <= 0){
 				$success = 0;
 				for($i = 0; $i < $this->getSpawnCount(); $i++){
@@ -99,7 +101,9 @@ class MobSpawner extends Spawnable {
 					if($target->getId() == Item::AIR){
 						$success++;
 						$entity = Entity::createEntity($this->getEntityId(), $this->getLevel(), Entity::createBaseNBT($target->add(0.5, 0, 0.5), null, lcg_value() * 360, 0));
-						$entity->spawnToAll();
+						if($entity instanceof Entity){
+							$entity->spawnToAll();
+						}
 					}
 				}
 				if($success > 0){
@@ -135,35 +139,35 @@ class MobSpawner extends Spawnable {
 	}
 
 	public function getDelay(){
-		return $this->namedtag["Delay"];
+		return $this->getNBT()->getInt(self::TAG_DELAY);
 	}
 
 	public function getSpawnCount(){
-		return $this->namedtag["SpawnCount"];
+		return $this->getNBT()->getInt(self::TAG_SPAWN_COUNT);
 	}
 
 	public function getSpawnRange(){
-		return $this->namedtag["SpawnRange"];
+		return $this->getNBT()->getInt(self::TAG_SPAWN_RANGE);
 	}
 
 	public function setDelay(int $value){
-		$this->namedtag->Delay->setValue($value);
+		$this->getNBT()->setInt(self::TAG_DELAY, $value);
 	}
 
 	public function getMinSpawnDelay(){
-		return $this->namedtag["MinSpawnDelay"];
+		return $this->getNBT()->getInt(self::TAG_MIN_SPAWN_DELAY);
 	}
 
 	public function getMaxSpawnDelay(){
-		return $this->namedtag["MaxSpawnDelay"];
+		return $this->getNBT()->getInt(self::TAG_MAX_SPAWN_DELAY);
 	}
 
 	public function addAdditionalSpawnData(CompoundTag $nbt): void{
-		$nbt->EntityId = $this->namedtag->EntityId;
-		$nbt->Delay = $this->namedtag->Delay;
-		$nbt->SpawnCount = $this->namedtag->SpawnCount;
-		$nbt->SpawnRange = $this->namedtag->SpawnRange;
-		$nbt->MinSpawnDelay = $this->namedtag->MinSpawnDelay;
-		$nbt->MaxSpawnDelay = $this->namedtag->MaxSpawnDelay;
+		$nbt->setInt(self::TAG_ENTITY_ID, $this->getNBT()->getInt(self::TAG_ENTITY_ID));
+		$nbt->setInt(self::TAG_DELAY, $this->getNBT()->getInt(self::TAG_DELAY));
+		$nbt->setInt(self::TAG_SPAWN_COUNT, $this->getNBT()->getInt(self::TAG_SPAWN_COUNT));
+		$nbt->setInt(self::TAG_SPAWN_RANGE, $this->getNBT()->getInt(self::TAG_SPAWN_RANGE));
+		$nbt->setInt(self::TAG_MIN_SPAWN_DELAY, $this->getNBT()->getInt(self::TAG_MIN_SPAWN_DELAY));
+		$nbt->setInt(self::TAG_MAX_SPAWN_DELAY, $this->getNBT()->getInt(self::TAG_MAX_SPAWN_DELAY));
 	}
 }

@@ -36,6 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\commands;
 
 use CortexPE\Main;
+use CortexPE\Utils;
 use pocketmine\command\Command;
 use pocketmine\Server as PMServer;
 
@@ -48,7 +49,7 @@ class CommandManager {
 			new BugReportCommand("bugreport"),
 		];
 
-		if(Main::$debug){
+		if(!Utils::isPhared()){
 			$cmds[] = new TestCommand("test");
 		}
 		if(Main::$weatherEnabled){
@@ -57,13 +58,13 @@ class CommandManager {
 
 		PMServer::getInstance()->getCommandMap()->registerAll("pocketmine", $cmds);
 
-		self::overwrite(new KillCommand("kill"), "kill");
+		self::overwrite(new KillCommand("kill"));
 	}
 
-	public static function overwrite(Command $cmd, string $commandName){
+	public static function overwrite(Command $cmd){
 		// Thank you very much iksaku for leaving this method on the *good o'l* PocketMine Forums. :)
 		$cmdMap = PMServer::getInstance()->getCommandMap();
-		$cmdOverwrite = $cmdMap->getCommand($commandName);
+		$cmdOverwrite = $cmdMap->getCommand($cmd->getName());
 		$cmdOverwrite->setLabel($cmdOverwrite->getLabel() . "__disabled");
 		$cmdMap->unregister($cmdOverwrite);
 

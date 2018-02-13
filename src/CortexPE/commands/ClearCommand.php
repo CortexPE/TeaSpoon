@@ -39,7 +39,7 @@ use CortexPE\utils\TextFormat;
 use pocketmine\command\{
 	CommandSender, defaults\VanillaCommand
 };
-use pocketmine\event\TranslationContainer;
+use pocketmine\lang\TranslationContainer;
 use pocketmine\Player;
 
 class ClearCommand extends VanillaCommand {

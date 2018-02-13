@@ -35,17 +35,26 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
-
-use pocketmine\block\Block;
-use pocketmine\block\Ice;
+use pocketmine\block\{
+	Block, Ice
+};
 
 class FrostedIce extends Ice {
+
+	/** @var int $id */
 	protected $id = self::FROSTED_ICE;
 
+	/**
+	 * @return string
+	 */
 	public function getName(): string{
 		return "Frosted Ice";
 	}
 
+	/**
+	 * @param int $type
+	 * @return bool|int|void
+	 */
 	public function onUpdate(int $type){
 		$this->meta++;
 		$this->getLevel()->setBlock($this->asVector3(), $this, false, false);

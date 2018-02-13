@@ -37,10 +37,12 @@ namespace CortexPE\inventory;
 
 use CortexPE\tile\Beacon;
 use pocketmine\inventory\ContainerInventory;
-use pocketmine\inventory\InventoryHolder;
 use pocketmine\network\mcpe\protocol\types\WindowTypes;
 
 class BeaconInventory extends ContainerInventory {
+	public function __construct(Beacon $tile){
+		parent::__construct($tile);
+	}
 
 	public function getNetworkType(): int{
 		return WindowTypes::BEACON;
@@ -54,9 +56,6 @@ class BeaconInventory extends ContainerInventory {
 		return 1;
 	}
 
-	/**
-	 * @return Beacon|InventoryHolder
-	 */
 	public function getHolder(){
 		return $this->holder;
 	}

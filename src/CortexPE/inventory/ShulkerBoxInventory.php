@@ -54,10 +54,6 @@ class ShulkerBoxInventory extends ContainerInventory {
 		parent::__construct($tile);
 	}
 
-	public function getHolder(){
-		return $this->holder;
-	}
-
 	public function getName(): string{
 		return "Shulker Box";
 	}
@@ -70,31 +66,39 @@ class ShulkerBoxInventory extends ContainerInventory {
 		return WindowTypes::CONTAINER;
 	}
 
-	public function onOpen(Player $who) : void {
+	public function onOpen(Player $who): void{
 		parent::onOpen($who);
 		if(count($this->getViewers()) === 1 && ($level = $this->getHolder()->getLevel()) instanceof Level){
 			$this->broadcastBlockEventPacket($this->getHolder(), true);
-			$level->broadcastLevelSoundEvent($this->getHolder()->add(0.5, 0.5, 0.5), LevelSoundEventPacket::SOUND_SHULKER_OPEN);
+			$level->broadcastLevelSoundEvent($this->getHolder()->add(0.5, 0.5, 0.5), LevelSoundEventPacket::SOUND_SHULKERBOX_OPEN);
 		}
 	}
 
-	public function onClose(Player $who) : void {
+	public function getHolder(){
+		return $this->holder;
+	}
+
+	protected function broadcastBlockEventPacket(Vector3 $vector, bool $isOpen){
+		$pk = new BlockEventPacket();
+		$pk->x = (int)$vector->x;
+		$pk->y = (int)$vector->y;
+		$pk->z = (int)$vector->z;
+		$pk->eventType = 1;
+		$pk->eventData = $isOpen ? 1 : 0;
+		$this->getHolder()->getLevel()->addChunkPacket($this->getHolder()->getX() >> 4, $this->getHolder()->getZ() >> 4, $pk);
+	}
+
+	public function onClose(Player $who): void{
 		if(count($this->getViewers()) === 1 && ($level = $this->getHolder()->getLevel()) instanceof Level){
 			$this->broadcastBlockEventPacket($this->getHolder(), false);
-			$level->broadcastLevelSoundEvent($this->getHolder()->add(0.5, 0.5, 0.5), LevelSoundEventPacket::SOUND_SHULKER_CLOSE);
+			$level->broadcastLevelSoundEvent($this->getHolder()->add(0.5, 0.5, 0.5), LevelSoundEventPacket::SOUND_SHULKERBOX_CLOSED);
 		}
 		$this->getHolder()->saveNBT();
 		parent::onClose($who);
 	}
 
-	protected function broadcastBlockEventPacket(Vector3 $vector, bool $isOpen) {
-		$pk = new BlockEventPacket();
-		$pk->x = (int) $vector->x;
-		$pk->y = (int) $vector->y;
-		$pk->z = (int) $vector->z;
-		$pk->eventType  = 1;
-		$pk->eventData = $isOpen ? 1 : 0;
-		$this->getHolder()->getLevel()->addChunkPacket($this->getHolder()->getX() >> 4, $this->getHolder()->getZ() >> 4, $pk);
+	public function sendContents($target): void{
+		parent::sendContents($target);
+		$this->getHolder()->saveNBT();
 	}
-
 }

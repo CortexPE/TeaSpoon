@@ -42,10 +42,6 @@ use pocketmine\scheduler\PluginTask;
 use pocketmine\Server as PMServer;
 
 class ElytraRocketBoostTrackingTask extends PluginTask {
-
-	/** @var Plugin */
-	protected $owner;
-
 	/** @var Player */
 	protected $player;
 
@@ -56,14 +52,18 @@ class ElytraRocketBoostTrackingTask extends PluginTask {
 	private $internalCount = 1;
 
 	public function __construct(Plugin $owner, Player $player, int $count){
-		$this->owner = $owner;
+		parent::__construct($owner);
 		$this->player = $player;
 		$this->count = $count;
 	}
 
 	public function onRun(int $currentTick){
 		if($this->internalCount <= $this->count){
-			$this->player->getLevel()->addParticle(new RocketParticle($this->player->getPosition()));
+			$this->player->getLevel()->addParticle(new RocketParticle($this->player->asVector3()->add(
+				$this->player->width / 2 + mt_rand(-100, 100) / 500,
+				$this->player->height / 2 + mt_rand(-100, 100) / 500,
+				$this->player->width / 2 + mt_rand(-100, 100) / 500
+			)));
 			$this->internalCount++;
 		}else{
 			PMServer::getInstance()->getScheduler()->cancelTask($this->getTaskId());

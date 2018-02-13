@@ -31,12 +31,13 @@ use pocketmine\item\{
 };
 use pocketmine\level\sound\LaunchSound;
 use pocketmine\math\Vector3;
-use pocketmine\nbt\tag\ShortTag;
 use pocketmine\Player;
 
 class LingeringPotion extends ProjectileItem {
 
-	public function __construct($meta = 0, $count = 1){
+	public const TAG_POTION_ID = "PotionId";
+
+	public function __construct($meta = 0){
 		parent::__construct(Item::LINGERING_POTION, $meta, $this->getNameByMeta($meta));
 	}
 
@@ -95,12 +96,12 @@ class LingeringPotion extends ProjectileItem {
 	}
 
 	public function getMaxStackSize(): int{
-		return 16;
+		return 1;
 	}
 
 	public function onClickAir(Player $player, Vector3 $directionVector): bool{//TODO optimise
 		$nbt = Entity::createBaseNBT($player->add(0, $player->getEyeHeight(), 0), $directionVector, $player->yaw, $player->pitch);
-		$nbt["PotionId"] = new ShortTag("PotionId", $this->meta);
+		$nbt->setShort(self::TAG_POTION_ID, $this->meta);
 		$projectile = Entity::createEntity($this->getProjectileEntityType(), $player->getLevel(), $nbt, $player);
 
 		if($projectile !== null){

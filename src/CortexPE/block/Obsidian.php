@@ -35,17 +35,16 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
-use pocketmine\block\{
-	Air, Block, Solid
-};
-use pocketmine\item\{
-	Item, Tool
-};
+use pocketmine\block\Air;
+use pocketmine\block\Block;
+use pocketmine\block\Obsidian as PMObsidian;
+use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 
-class Obsidian extends Solid {
+class Obsidian extends PMObsidian {
 
+	/** @var int $id */
 	protected $id = self::OBSIDIAN;
 
 	/** @var Vector3 */
@@ -53,36 +52,11 @@ class Obsidian extends Solid {
 
 	public function __construct($meta = 0){
 		$this->meta = $meta;
-		if($this->temporalVector === null){
-			$this->temporalVector = new Vector3(0, 0, 0);
-		}
-	}
-
-	public function getName(): string{
-		return "Obsidian";
-	}
-
-	public function getToolType(): int{
-		return Tool::TYPE_PICKAXE;
-	}
-
-	public function getHardness(): float{
-		return 35;
-	}
-
-	public function getDrops(Item $item): array{
-		if($item->isPickaxe() >= Tool::TIER_DIAMOND){
-			return [
-				[Item::OBSIDIAN, 0, 1],
-			];
-		}else{
-			return [];
-		}
+		$this->temporalVector = new Vector3(0, 0, 0);
 	}
 
 	public function onBreak(Item $item, Player $player = null): bool{
 		parent::onBreak($item);
-
 		for($i = 0; $i <= 6; $i++){
 			if($this->getSide($i)->getId() == self::PORTAL){
 				break;

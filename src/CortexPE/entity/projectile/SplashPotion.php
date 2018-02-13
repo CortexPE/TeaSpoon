@@ -40,8 +40,12 @@ use CortexPE\level\particle\SpellParticle;
 use pocketmine\entity\{
 	Entity, Living, projectile\Throwable
 };
+use pocketmine\network\mcpe\protocol\PlaySoundPacket;
+use pocketmine\Server;
 
 class SplashPotion extends Throwable {
+
+	public const TAG_POTION_ID = "PotionId";
 
 	const NETWORK_ID = self::SPLASH_POTION;
 
@@ -57,18 +61,26 @@ class SplashPotion extends Throwable {
 					}
 				}
 			}
-			$this->flagForDespawn();
+
+			$pk = new PlaySoundPacket();
+			$pk->soundName = "random.glass";
+			$pk->volume = 500;
+			$pk->pitch = 1;
+			Server::getInstance()->broadcastPacket($this->getViewers(), $pk);
+
+			$this->close();
 		}
 
 		return parent::onUpdate($currentTick);
 	}
 
 	public function getPotionId(): int{
-		return (int)$this->namedtag["PotionId"];
+		return $this->namedtag->getShort(self::TAG_POTION_ID);
 	}
 
 	public function onCollideWithEntity(Entity $entity){
 		$this->isCollided = true;
+
 		return;
 	}
 }

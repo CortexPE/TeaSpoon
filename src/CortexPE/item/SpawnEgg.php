@@ -39,12 +39,12 @@ use CortexPE\block\MonsterSpawner;
 use pocketmine\block\Block;
 use pocketmine\entity\Entity;
 use pocketmine\item\SpawnEgg as PMSpawnEgg;
-use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 
 class SpawnEgg extends PMSpawnEgg {
-	public function onActivate(Level $level, Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector): bool{
+	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector): bool{
+		$level = $player->getLevel();
 		if(!($blockClicked instanceof MonsterSpawner)){
 			$nbt = Entity::createBaseNBT($blockReplace->add(0.5, 0, 0.5), null, lcg_value() * 360, 0);
 
@@ -59,11 +59,13 @@ class SpawnEgg extends PMSpawnEgg {
 					--$this->count;
 				}
 				$entity->spawnToAll();
+
 				return true;
 			}
 
 			return false;
 		}
+
 		return false;
 	}
 }
