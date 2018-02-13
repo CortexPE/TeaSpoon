@@ -62,6 +62,9 @@ weather:
  # If lightning should be spawned in stormy weather
  lightning: true
 
+# Redstone System
+redstone:
+=======
 player:
  # Enable to dis-allow container interactions & item dropping when in creative
  limitedCreative: true

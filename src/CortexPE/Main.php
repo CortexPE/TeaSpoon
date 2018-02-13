@@ -47,11 +47,14 @@ use CortexPE\item\{
 use CortexPE\level\weather\Weather;
 use CortexPE\network\PacketManager;
 use CortexPE\plugin\AllAPILoaderManager;
-use CortexPE\task\TickLevelsTask;
+use CortexPE\task\{
+  CheckPlayersTask, TickLevelsTask
+};
 use CortexPE\tile\Tile;
 use CortexPE\utils\{
 	FishingLootTable, TextFormat
 };
+use pocketmine\block\Block;
 use pocketmine\command\{
 	CommandSender, defaults\DumpMemoryCommand, defaults\GarbageCollectorCommand, defaults\StatusCommand
 };
@@ -123,6 +126,21 @@ class Main extends PluginBase {
 	/** @var bool */
 	public static $limitedCreative = true;
 	/** @var bool */
+	public static $debug = false;
+	/** @var bool */
+	public static $redstoneEnabled = true;
+	/** @var bool */
+	public static $allowFrequencyPulse = true; ////////////////////////////// conf
+	/** @var bool */
+	public static $pulseFrequency = 20; ///////////////////////////////////////// conf
+	/** @var Main */
+	private static $instance;
+	/** @var Session[] */
+	private $sessions = [];
+	/** @var Config */
+	public static $cacheFile;
+	private static $BlockTempData = [];
+  
 	public static $randomFishingLootTables = false;
 	/** @var bool */
 	public static $armorDamage = true;
@@ -252,6 +270,8 @@ class Main extends PluginBase {
 		self::$XPTicksTillDespawn = self::$config->getNested("Xp.ticksTillDespawn", self::$XPTicksTillDespawn);
 		self::$EnchantingTableEnabled = self::$config->getNested("enchantments.enchantingTableEnabled", self::$EnchantingTableEnabled);
 		self::$AnvilEnabled = self::$config->getNested("anvil.enable", self::$AnvilEnabled);
+    self::$redstoneEnabled = self::$config->getNested("redstone.enable", true);
+		self::$debug = self::$config->get("debug", false); // intentionally don't add this on the config...
 
 		// Pre-Enable Checks //
 
@@ -422,6 +442,19 @@ class Main extends PluginBase {
 		return null;
 	}
 
+	public static function getBlockTempData(Block $block){
+		$serialized = serialize($block);
+		if(isset(self::$BlockTempData[$serialized])){
+			return self::$BlockTempData[$serialized];
+		}
+		return null;
+	}
+
+	public static function setBlockTempData(Block $block, $value = null){
+		$serialized = serialize($block);
+		self::$BlockTempData[$serialized] = $value;
+	}
+}
 	public static function sendVersion(CommandSender $sender){
 		$sender->getServer()->dispatchCommand($sender, "ver");
 		$sender->sendMessage("\x2d\x2d\x2d\x20\x2b\x20\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x20\x2b\x20\x2d\x2d\x2d");

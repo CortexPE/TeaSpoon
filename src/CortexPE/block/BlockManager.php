@@ -39,6 +39,12 @@ use CortexPE\Utils;
 use pocketmine\block\BlockFactory;
 
 class BlockManager {
+
+	public static function register(int $id, Block $block, bool $overwrite = false): bool{
+		if(!BlockFactory::isRegistered($id) && !$overwrite){
+			BlockFactory::registerBlock($block);
+    }
+  }
 	public static function init(): void{
 		BlockFactory::registerBlock(new Portal(), true);
 		BlockFactory::registerBlock(new EndPortal(), true);
@@ -57,6 +63,37 @@ class BlockManager {
 		BlockFactory::registerBlock(new Hopper(), true);
 		BlockFactory::registerBlock(new EnchantingTable(), true);
 		BlockFactory::registerBlock(new Anvil(), true);
+    		// Redstone
+		self::register(Block::ACTIVATOR_RAIL, new redstone\ActivatorRail(), true);
+		self::register(Block::LIT_REDSTONE_LAMP, new redstone\ActiveRedstoneLamp(), true);
+		self::register(Block::DAYLIGHT_DETECTOR, new redstone\DaylightDetector(), true);
+		self::register(Block::DAYLIGHT_DETECTOR_INVERTED, new redstone\DaylightDetectorInverted(), true);
+		self::register(Block::DETECTOR_RAIL, new redstone\DetectorRail(), true);
+		self::register(Block::DISPENSER, new redstone\Dispenser(), true);
+		// TODO: DOORS
+		self::register(Block::DROPPER, new redstone\Dropper(), true);
+		// TODO: FENCEGATES
+		self::register(Block::HEAVY_WEIGHTED_PRESSURE_PLATE, new redstone\HeavyWeightedPressurePlate(), true);
+		self::register(Block::REDSTONE_LAMP, new redstone\InactiveRedstoneLamp(), true);
+		self::register(Block::LEVER, new Lever(), true);
+		self::register(Block::LIGHT_WEIGHTED_PRESSURE_PLATE, new redstone\LightWeightedPressurePlate(), true);
+		self::register(Block::LIT_REDSTONE_LAMP, new redstone\LitRedstoneLamp(), true);
+		// TODO: NOTEBLOCKS self::register(Block::NOTE_BLOCK, new NoteBlock(), true);
+		self::register(Block::POWERED_RAIL, new redstone\PoweredRail(), true);
+		self::register(Block::POWERED_REPEATER, new redstone\PoweredRepeater(), true);
+		self::register(Block::STONE_PRESSURE_PLATE, new redstone\PressurePlate(), true);
+		self::register(Block::RAIL, new redstone\Rail(), true);
+		self::register(Block::REDSTONE_BLOCK, new redstone\Redstone(), true);
+		self::register(Block::REDSTONE_TORCH, new redstone\RedstoneTorch(), true);
+		self::register(Block::REDSTONE_WIRE, new redstone\RedstoneWire(), true);
+		self::register(Block::STONE_BUTTON, new redstone\StoneButton(), true);
+		// TODO: TNT self::register(Block::TNT, new StoneButton(), true);
+		self::register(Block::TRAPDOOR, new redstone\Trapdoor(), true);
+		self::register(Block::TRAPPED_CHEST, new redstone\TrappedChest(), true);
+		self::register(Block::TRIPWIRE, new redstone\Tripwire(), true);
+		self::register(Block::TRIPWIRE_HOOK, new redstone\TripwireHook(), true);
+		self::register(Block::WOODEN_BUTTON, new redstone\WoodenButton(), true);
+		self::register(Block::WOODEN_PRESSURE_PLATE, new redstone\WoodenPressurePlate(), true);
 
 		if(!Utils::isPhared()){ // beta
 			BlockFactory::registerBlock(new Jukebox(), true);
