@@ -63,10 +63,10 @@ use pocketmine\utils\Config;
 class Main extends PluginBase {
 
 	// self explanatory constants
-	public const CONFIG_VERSION = 20;
+	public const CONFIG_VERSION = 21;
 	public const BASE_POCKETMINE_VERSION = "1.7dev"; // The PocketMine version before Jenkins builds it... (Can be found on PocketMine.php as the 'VERSION' constant)
 	public const TESTED_MIN_POCKETMINE_VERSION = "1.7dev-699"; // The minimum build this was tested working
-	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-700"; // The current build this was actually tested
+	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-721"; // The current build this was actually tested
 
 	///////////////////////////////// START OF INSTANCE VARIABLES /////////////////////////////////
 	/** @var Config */
@@ -173,17 +173,19 @@ class Main extends PluginBase {
 	/** @var bool */
 	public static $elytraBoostParticles = true;
 	/** @var bool */
-	public static $XPOrbOverride = false;
+	public static $XPOrbOverride = true;
 	/** @var bool */
-	public static $XPPickupDelay = true;
+	public static $XPPickupDelay = false;
 	/** @var bool */
 	public static $endCrystalExplode = true;
 	/** @var int */
-	public static $XPTicksTillDespawn = 6000;
+	public static $XPTicksTillDespawn = 200;
 	/** @var bool */
 	public static $EnchantingTableEnabled = true;
 	/** @var bool */
 	public static $AnvilEnabled = true;
+	/** @var bool */
+	public static $dragonEggTeleport = true;
 	////////////////////////////////// END OF CONFIGS VARIABLES //////////////////////////////////
 
 	public static function getInstance(): Main{
@@ -252,6 +254,7 @@ class Main extends PluginBase {
 		self::$XPTicksTillDespawn = self::$config->getNested("Xp.ticksTillDespawn", self::$XPTicksTillDespawn);
 		self::$EnchantingTableEnabled = self::$config->getNested("enchantments.enchantingTableEnabled", self::$EnchantingTableEnabled);
 		self::$AnvilEnabled = self::$config->getNested("anvil.enable", self::$AnvilEnabled);
+		self::$dragonEggTeleport = self::$config->getNested("blocks.dragonEggTeleport", self::$dragonEggTeleport);
 
 		// Pre-Enable Checks //
 

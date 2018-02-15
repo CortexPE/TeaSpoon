@@ -81,6 +81,8 @@ class Lightning extends Animal {
 					if($entity instanceof Living){
 						$distance = $this->distance($entity);
 
+						$distance = ($distance > 0 ? $distance : 1);
+
 						$k = 5;
 						$damage = $k / $distance;
 

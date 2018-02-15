@@ -30,6 +30,7 @@ use CortexPE\tile\MobSpawner;
 use pocketmine\block\{
 	Block, MonsterSpawner as SpawnerPM
 };
+use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\{
@@ -117,16 +118,7 @@ class MonsterSpawner extends SpawnerPM {
 	}
 
 	public function getSilkTouchDrops(Item $item): array{
-		$drops = [];
-
-		if(Main::$silkSpawners){
-			$tile = $this->getLevel()->getTile($this->asVector3());
-			if($tile instanceof MobSpawner){
-				$drops[] = Item::get(Item::MOB_SPAWNER, $tile->getEntityId(), 1);
-			}
-		}
-
-		return $drops;
+		return [];
 	}
 
 	/**
@@ -134,5 +126,16 @@ class MonsterSpawner extends SpawnerPM {
 	 */
 	public function getName(): string{
 			return "Monster Spawner";
+	}
+
+	public function onBreak(Item $item, Player $player = \null): bool{
+		$parent = parent::onBreak($item, $player);
+		if(Main::$silkSpawners && $item->hasEnchantment(Enchantment::SILK_TOUCH)){
+			$tile = $this->getLevel()->getTile($this->asVector3());
+			if($tile instanceof MobSpawner){
+				$this->getLevel()->dropItem($this->add(0.5, 0.5,0.5), Item::get(Item::MOB_SPAWNER, $tile->getEntityId(), 1));
+			}
+		}
+		return $parent;
 	}
 }

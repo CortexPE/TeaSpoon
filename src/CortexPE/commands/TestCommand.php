@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace CortexPE\commands;
 
-use CortexPE\tile\ShulkerBox;
 use pocketmine\command\{
 	CommandSender, defaults\VanillaCommand
 };

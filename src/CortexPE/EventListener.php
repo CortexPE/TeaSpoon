@@ -50,7 +50,7 @@ use pocketmine\event\entity\{
 	EntityDamageEvent, EntityDeathEvent
 };
 use pocketmine\event\player\{
-	cheat\PlayerIllegalMoveEvent, PlayerCommandPreprocessEvent, PlayerDropItemEvent, PlayerGameModeChangeEvent, PlayerInteractEvent, PlayerItemHeldEvent, PlayerKickEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
+	cheat\PlayerIllegalMoveEvent, PlayerCommandPreprocessEvent, PlayerDropItemEvent, PlayerGameModeChangeEvent, PlayerInteractEvent, PlayerItemHeldEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
 };
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
@@ -90,16 +90,11 @@ class EventListener implements Listener {
 
 		$lvl = $ev->getLevel();
 
+		$lvlWeather = Main::$weatherData[$lvl->getId()] = new Weather($lvl, 0);
 		if(Main::$weatherEnabled){
-			Main::$weatherData[$lvl->getId()] = new Weather($lvl, 0);
-			if($lvl->getName() != Main::$netherName && $lvl->getName() != Main::$endName){
-				Main::$weatherData[$lvl->getId()]->setCanCalculate(true);
-			}else{
-				Main::$weatherData[$lvl->getId()]->setCanCalculate(false);
-			}
+			$lvlWeather->setCanCalculate(($lvl->getName() != Main::$netherName && $lvl->getName() != Main::$endName)); // This is: if($lvl->getName() != Main::$netherName && $lvl->getName() != Main::$endName){}else{} but shorteded...
 		}else{
-			Main::$weatherData[$lvl->getId()] = new Weather($lvl, 0);
-			Main::$weatherData[$lvl->getId()]->setCanCalculate(false);
+			$lvlWeather->setCanCalculate(false);
 		}
 
 		foreach($lvl->getEntities() as $entity){
@@ -121,17 +116,22 @@ class EventListener implements Listener {
 	 */
 	public function onDamage(EntityDamageEvent $ev){
 		if($ev->isCancelled()) return false;
+		$v = $ev->getEntity();
+		$session = null;
+		if($v instanceof PMPlayer){
+			$session = Main::getInstance()->getSessionById($v->getId());
+		}
+
 		/////////////////////// TOTEM OF UNDYING ///////////////////////////////
 		if(Main::$totemEnabled){
 			if($ev->getDamage() >= $ev->getEntity()->getHealth()){
-				$p = $ev->getEntity();
-				if($p instanceof PMPlayer){
-					if($p->getInventory()->getItemInHand()->getId() === Item::TOTEM && $ev->getCause() !== EntityDamageEvent::CAUSE_VOID && $ev->getCause() !== EntityDamageEvent::CAUSE_SUICIDE){
-						$p->getInventory()->setItemInHand(Item::get(Item::AIR)); // this is supposed to be unstackable anyways... right?
+				if($v instanceof PMPlayer){
+					if($v->getInventory()->getItemInHand()->getId() === Item::TOTEM && $ev->getCause() !== EntityDamageEvent::CAUSE_VOID && $ev->getCause() !== EntityDamageEvent::CAUSE_SUICIDE){
+						$v->getInventory()->setItemInHand(Item::get(Item::AIR)); // this is supposed to be unstackable anyways... right?
 						$ev->setCancelled(true);
-						$p->setHealth(1);
+						$v->setHealth(1);
 
-						$p->removeAllEffects();
+						$v->removeAllEffects();
 
 						$REGENERATION = Effect::getEffect(Effect::REGENERATION);
 						$REGENERATION->setAmplifier(1);
@@ -146,45 +146,36 @@ class EventListener implements Listener {
 						$FIRE_RESISTANCE->setVisible(true);
 						$FIRE_RESISTANCE->setDuration(40 * 20);
 
-						$p->addEffect($REGENERATION);
-						$p->addEffect($ABSORPTION);
-						$p->addEffect($FIRE_RESISTANCE);
+						$v->addEffect($REGENERATION);
+						$v->addEffect($ABSORPTION);
+						$v->addEffect($FIRE_RESISTANCE);
 
 						$pk = new LevelEventPacket();
 						$pk->evid = LevelEventPacket::EVENT_SOUND_TOTEM;
 						$pk->data = 0;
-						$pk->position = new Vector3($p->getX(), $p->getY(), $p->getZ());
-						PMServer::getInstance()->broadcastPacket($p->getViewers(), $pk);
+						$pk->position = new Vector3($v->getX(), $v->getY(), $v->getZ());
+						PMServer::getInstance()->broadcastPacket($v->getViewers(), $pk);
 
 						$pk2 = new EntityEventPacket();
-						$pk2->entityRuntimeId = $p->getId();
+						$pk2->entityRuntimeId = $v->getId();
 						$pk2->event = EntityEventPacket::CONSUME_TOTEM;
 						$pk2->data = 0;
-						PMServer::getInstance()->broadcastPacket($p->getViewers(), $pk2);
+						PMServer::getInstance()->broadcastPacket($v->getViewers(), $pk2);
 					}
 				}
 			}
 		}
 
 		////////////////////////////// ARMOR DAMAGE //////////////////////////////////////
-		$p = $ev->getEntity();
-		if($p instanceof PMPlayer){
-			$session = Main::getInstance()->getSessionById($p->getId());
-
-			if($session instanceof Session){
-				$session->useArmors();
-			}
+		if($session instanceof Session){
+			$session->useArmors();
 		}
 
 		/////////////////////// ELYTRA WINGS & SLIME BLOCK ///////////////////////////////
 		if($ev->getCause() === EntityDamageEvent::CAUSE_FALL){
-			$p = $ev->getEntity();
-			if($p instanceof PMPlayer){
-				$session = Main::getInstance()->getSessionById($p->getId());
-				if($session instanceof Session){
-					if($session->isUsingElytra() || $p->getLevel()->getBlock($p->subtract(0, 1, 0))->getId() == Block::SLIME_BLOCK){
-						$ev->setCancelled(true);
-					}
+			if($session instanceof Session){
+				if($session->isUsingElytra() || $v->getLevel()->getBlock($v->subtract(0, 1, 0))->getId() == Block::SLIME_BLOCK){
+					$ev->setCancelled(true);
 				}
 			}
 		}
@@ -232,29 +223,6 @@ class EventListener implements Listener {
 	public function onLeave(PlayerQuitEvent $ev){
 		Main::getInstance()->destroySession($ev->getPlayer());
 		unset(Main::$onPortal[$ev->getPlayer()->getId()]);
-	}
-
-	/**
-	 * @param PlayerKickEvent $ev
-	 *
-	 * @priority HIGHEST
-	 */
-	public function onKick(PlayerKickEvent $ev){
-		if($ev->isCancelled()) return;
-		$p = $ev->getPlayer();
-		if(!$p->isOnline()){
-			return;
-		}
-		$pid = $p->getId();
-		if($pid === null){
-			return;
-		}
-		$session = Main::getInstance()->getSessionById($pid);
-		if($session instanceof Session){
-			if($session->isUsingElytra() && $ev->getReason() == PMServer::getInstance()->getLanguage()->translateString("kick.reason.cheat", ["%ability.flight"])){
-				$ev->setCancelled(true);
-			}
-		}
 	}
 
 	/**

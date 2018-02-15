@@ -10,7 +10,7 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 20
+version: 21
 
 entities:
  # Weather to register Vanilla Entities (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...) or not
@@ -83,7 +83,7 @@ player:
 
 mobSpawner:
  enable: true
- # Drop spawners on silk touch
+ # Drop spawners on silk touch (damageAsEID needs to be enabled)
  silkTouchSpawners: false
  # Use MonsterSpawner Damage Value as the Entity ID -- False in vanilla minecraft
  damageAsEID: false
@@ -93,15 +93,16 @@ fireworks:
 
 Xp:
  # ExperienceOrb Override -- Enabling this will override PMMP's ExperienceOrb entity
- override: false
+ override: true
  dropMobExperience: true
  # Toggle to enable/disable pickup delay when picking up XPOrbs (true in Vanilla-MineCraft) [NEEDS OVERRIDE TO BE ENABLED]
- pickupDelay: true
- # Ticks till despawn -- 1 Second = 20 Ticks [NEEDS OVERRIDE TO BE ENABLED]
- ticksTillDespawn: 6000
+ pickupDelay: false
+ # Ticks till despawn -- 1 Second = 20 Ticks [NEEDS OVERRIDE TO BE ENABLED] (6000 in Vanilla-Minecraft -- according to PMMP)
+ ticksTillDespawn: 200
 
 blocks:
  dropExperience: true
+ dragonEggTeleport: true
 
 hopper:
  itemTransferEnable: true
