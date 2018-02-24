@@ -43,7 +43,7 @@ use pocketmine\event\entity\{
 use pocketmine\item\Item;
 use pocketmine\level\Level;
 use pocketmine\nbt\tag\{
-	ByteTag, CompoundTag
+	IntTag, CompoundTag
 };
 use pocketmine\Player;
 
@@ -65,22 +65,23 @@ class Rabbit extends Animal {
 	public const TAG_RABBIT_TYPE = "RabbitType";
 
 	public function __construct(Level $level, CompoundTag $nbt){
-		if(!$nbt->hasTag(self::TAG_RABBIT_TYPE, ByteTag::class)){
-			$nbt->setByte(self::TAG_RABBIT_TYPE, $this->getRandomRabbitType());
+		$type = $this->getRandomRabbitType();
+		if(!$nbt->hasTag(self::TAG_RABBIT_TYPE, IntTag::class)){
+			$nbt->setInt(self::TAG_RABBIT_TYPE, $type);
 		}
 		parent::__construct($level, $nbt);
 
-		$this->getDataPropertyManager()->setByte(self::DATA_RABBIT_TYPE, $this->getRabbitType());
+		$this->getDataPropertyManager()->setByte(self::DATA_RABBIT_TYPE, $type);
 	}
 
 	public function getRandomRabbitType(): int{
 		$arr = [0, 1, 2, 3, 4, 5, 99];
 
-		return $arr[mt_rand(0, count($arr) - 1)];
+		return $arr[array_rand($arr)];
 	}
 
 	public function getRabbitType(): int{
-		return $this->namedtag->getByte(self::TAG_RABBIT_TYPE);
+		return $this->namedtag->getInt(self::TAG_RABBIT_TYPE);
 	}
 
 	public function getName(): string{
@@ -93,7 +94,7 @@ class Rabbit extends Animal {
 	}
 
 	public function setRabbitType(int $type){
-		$this->namedtag->setByte(self::TAG_RABBIT_TYPE, $type);
+		$this->namedtag->setInt(self::TAG_RABBIT_TYPE, $type);
 	}
 
 	public function getDrops(): array{

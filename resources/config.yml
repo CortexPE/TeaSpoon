@@ -93,7 +93,7 @@ fireworks:
 
 Xp:
  # ExperienceOrb Override -- Enabling this will override PMMP's ExperienceOrb entity
- override: true
+ override: false
  dropMobExperience: true
  # Toggle to enable/disable pickup delay when picking up XPOrbs (true in Vanilla-MineCraft) [NEEDS OVERRIDE TO BE ENABLED]
  pickupDelay: false
