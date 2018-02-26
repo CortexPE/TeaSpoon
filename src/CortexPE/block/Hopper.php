@@ -38,7 +38,7 @@ namespace CortexPE\block;
 use CortexPE\Main;
 use CortexPE\tile\Tile;
 use pocketmine\{
-	block\Block, block\BlockToolType, block\Transparent, item\Item, math\Vector3, nbt\NBT, nbt\tag\CompoundTag, nbt\tag\IntTag, nbt\tag\ListTag, nbt\tag\StringTag, Player
+	block\Block, block\BlockToolType, block\Transparent, item\Item, math\Vector3, nbt\tag\CompoundTag, nbt\tag\IntTag, nbt\tag\ListTag, nbt\tag\StringTag, Player
 };
 use CortexPE\tile\Hopper as HopperTile;
 
@@ -74,6 +74,20 @@ class Hopper extends Transparent {
 			if($player instanceof Player){
 				$t = $this->getLevel()->getTile($this);
 				if($t instanceof HopperTile){
+					if($player->isCreative() and Main::$limitedCreative){
+						return true;
+					}
+					$player->addWindow($t->getInventory());
+				} else {
+					$nbt = new CompoundTag("", [
+						new ListTag("Items", []),
+						new StringTag("id", Tile::HOPPER),
+						new IntTag("x", $this->x),
+						new IntTag("y", $this->y),
+						new IntTag("z", $this->z),
+					]);
+					/** @var HopperTile $t */
+					$t = Tile::createTile(Tile::HOPPER, $this->getLevel(), $nbt);
 					if($player->isCreative() and Main::$limitedCreative){
 						return true;
 					}
@@ -121,6 +135,6 @@ class Hopper extends Transparent {
 	}
 
 	public function getDrops(Item $item): array{
-		return $item->isPickaxe() ? [Item::get(Item::HOPPER, 0, 1)] : [];
+		return [Item::get(Item::HOPPER, 0, 1)];
 	}
 }

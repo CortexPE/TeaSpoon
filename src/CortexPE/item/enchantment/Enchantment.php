@@ -40,6 +40,7 @@ use pocketmine\item\enchantment\Enchantment as EnchantmentPM;
 
 class Enchantment extends EnchantmentPM {
 	public static function init(){
+		Main::getPluginLogger()->debug("Registering Enchantments...");
 		if(Main::$registerVanillaEnchantments){
 			self::registerEnchantment(new Enchantment(self::THORNS, "%enchantment.protect.thorns", self::RARITY_UNCOMMON, self::SLOT_SWORD, 3));
 			self::registerEnchantment(new Enchantment(self::DEPTH_STRIDER, "%enchantment.waterspeed", self::RARITY_UNCOMMON, self::SLOT_FEET, 3));

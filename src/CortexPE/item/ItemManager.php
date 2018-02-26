@@ -59,7 +59,6 @@ class ItemManager {
 		ItemFactory::registerItem(new SpawnEgg(), true);
 		ItemFactory::registerItem(new Bow(), true);
 		ItemFactory::registerItem(new EndCrystal(), true);
-		ItemFactory::registerItem(new Hopper(), true);
 		ItemFactory::registerItem(new Bucket(), true);
 
 		if(!Utils::isPhared()){ // beta

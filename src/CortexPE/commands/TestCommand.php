@@ -28,7 +28,7 @@ class TestCommand extends VanillaCommand {
 		if($sender instanceof Player){
 			$block = $sender->getTargetBlock(10);
 			$tile = $sender->getLevel()->getTile($block);
-			$sender->sendMessage("Block: " . $block->getName());
+			$sender->sendMessage("Block: " . get_class($block));
 			$sender->sendMessage("Tile: " . ($tile instanceof Tile ? get_class($tile) : "null"));
 		}
 	}

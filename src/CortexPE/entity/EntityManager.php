@@ -50,6 +50,7 @@ use pocketmine\entity\Entity;
 
 class EntityManager extends Entity {
 	public static function init(): void{
+		Main::getPluginLogger()->debug("Registering Entities...");
 		if(Main::$registerVanillaEntities){
 			self::registerEntity(Bat::class, true, ['Bat', 'minecraft:bat']);
 			self::registerEntity(Blaze::class, true, ['Blaze', 'minecraft:blaze']);

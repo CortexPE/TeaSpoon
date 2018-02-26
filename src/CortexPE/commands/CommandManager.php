@@ -42,6 +42,7 @@ use pocketmine\Server as PMServer;
 
 class CommandManager {
 	public static function init(){
+		Main::getPluginLogger()->debug("Registering Commands...");
 		$cmds = [
 			new WorldCommand("world"),
 			new ClearCommand("clear"),

@@ -35,10 +35,12 @@ declare(strict_types = 1);
 
 namespace CortexPE\network;
 
+use CortexPE\Main;
 use pocketmine\network\mcpe\protocol\PacketPool;
 
 class PacketManager {
 	public static function init(){
+		Main::getPluginLogger()->debug("Registering Packets...");
 		PacketPool::registerPacket(new CraftingDataPacket());
 		PacketPool::registerPacket(new InventoryTransactionPacket());
 	}

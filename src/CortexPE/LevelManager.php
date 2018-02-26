@@ -46,6 +46,7 @@ class LevelManager {
 
 	public static function init(){
 		if(!self::$loaded){
+			Main::getPluginLogger()->debug("Registering Generators...");
 			self::registerGenerators();
 			self::loadAndGenerateLevels();
 			self::$loaded = true;

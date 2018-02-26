@@ -58,6 +58,7 @@ use pocketmine\command\{
 use pocketmine\level\Level;
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
+use pocketmine\plugin\PluginLogger;
 use pocketmine\utils\Config;
 
 class Main extends PluginBase {
@@ -439,5 +440,9 @@ class Main extends PluginBase {
 		}
 		$sender->sendMessage("\x52\x65\x70\x6f\x73\x69\x74\x6f\x72\x79\x3a\x20\x68\x74\x74\x70\x73\x3a\x2f\x2f\x67\x69\x74\x68\x75\x62\x2e\x63\x6f\x6d\x2f\x43\x6f\x72\x74\x65\x78\x50\x45\x2f\x54\x65\x61\x53\x70\x6f\x6f\x6e");
 		$sender->sendMessage("\x57\x65\x62\x73\x69\x74\x65\x3a\x20\x68\x74\x74\x70\x73\x3a\x2f\x2f\x43\x6f\x72\x74\x65\x78\x50\x45\x2e\x78\x79\x7a");
+	}
+
+	public static function getPluginLogger() : PluginLogger { // 2 lazy
+		return self::$instance->getLogger();
 	}
 }
