@@ -62,11 +62,6 @@ Installation is easy, Just download the latest phar from [Poggit](https://poggit
    - [X] Chorus Fruit (with customizable Delay)
    - [X] FishingRod (Fully working Fishing System)
    - [X] Vanilla-Like "Instant-Armor-Equipment"
-   - [X] CustomPotions API
-   ```php
-   // Example:
-   \CortexPE\item\Potion::registerPotion(101, "TEST", [[Effect::HEALTH_BOOST, 100 * 20, 100], [Effect::STRENGTH, 100 * 20, 100]]);
-   ```
  - Entities & Mobs
    - [X] XP Drops
    - [X] Projectiles
@@ -74,7 +69,7 @@ Installation is easy, Just download the latest phar from [Poggit](https://poggit
     <!-- - [X] Snowballs -->
     <!-- - [X] Eggs -->
      - [X] Tipped Arrows
-     - [X] EnchantingBottle
+    <!-- - [X] EnchantingBottle -->
     <!-- - [X] SplashPotion -->
      - [X] LingeringPotion
    - [ ] Entities

@@ -43,13 +43,12 @@ use pocketmine\item\{
 class ItemManager {
 	public static function init(){
 		ItemFactory::registerItem(new Boat(), true);
-		ItemFactory::registerItem(new EnchantingBottle(), true);
 		ItemFactory::registerItem(new LingeringPotion(), true);
 		ItemFactory::registerItem(new FlintSteel(), true);
 		ItemFactory::registerItem(new FireCharge(), true);
 		ItemFactory::registerItem(new TotemOfUndying(), true);
 		ItemFactory::registerItem(new Elytra(), true);
-		ItemFactory::registerItem(new Fireworks(), true); // TODO: Implement proper Fireworks
+		ItemFactory::registerItem(new Fireworks(), true);
 		ItemFactory::registerItem(new ChorusFruit(), true);
 		ItemFactory::registerItem(new FishingRod(), true);
 		ItemFactory::registerItem(new EyeOfEnder(), true);

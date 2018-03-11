@@ -98,7 +98,6 @@ class EntityManager extends Entity {
 		}
 
 		// Projectiles ////
-		self::registerEntity(EnchantingBottle::class, true, ['EnchantingBottle', 'minecraft:enchantingbottle']);
 		self::registerEntity(LingeringPotion::class, true, ['LingeringPotion', 'minecraft:lingeringpotion']);
 		self::registerEntity(FishingHook::class, true, ['FishingHook', 'minecraft:fishinghook']);
 		self::registerEntity(Arrow::class, true, ['Arrow', 'minecraft:arrow']);
