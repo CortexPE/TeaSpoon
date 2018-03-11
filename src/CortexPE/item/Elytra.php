@@ -43,4 +43,8 @@ class Elytra extends Armor {
 	public function __construct($meta = 0){
 		parent::__construct(Item::ELYTRA, $meta, "Elytra Wings");
 	}
+
+	public function getMaxDurability(): int{
+		return 433;
+	}
 }

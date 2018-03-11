@@ -27,7 +27,7 @@ use pocketmine\entity\{
 };
 use pocketmine\event\entity\ProjectileLaunchEvent;
 use pocketmine\item\{
-	Item, ProjectileItem
+	Item, Potion, ProjectileItem
 };
 use pocketmine\level\sound\LaunchSound;
 use pocketmine\math\Vector3;
@@ -43,52 +43,52 @@ class LingeringPotion extends ProjectileItem {
 
 	public function getNameByMeta($meta){
 		switch($meta){
-			case Potion::WATER_BOTTLE:
+			case Potion::WATER:
 				return "Lingering Water Bottle";
 			case Potion::MUNDANE:
-			case Potion::MUNDANE_EXTENDED:
+			case Potion::LONG_MUNDANE:
 				return "Lingering Mundane Potion";
 			case Potion::THICK:
 				return "Lingering Thick Potion";
 			case Potion::AWKWARD:
 				return "Lingering Awkward Potion";
 			case Potion::INVISIBILITY:
-			case Potion::INVISIBILITY_T:
+			case Potion::LONG_INVISIBILITY:
 				return "Lingering Potion of Invisibility";
 			case Potion::LEAPING:
-			case Potion::LEAPING_T:
+			case Potion::LONG_LEAPING:
 				return "Lingering Potion of Leaping";
-			case Potion::LEAPING_TWO:
+			case Potion::STRONG_LEAPING:
 				return "Lingering Potion of Leaping II";
 			case Potion::FIRE_RESISTANCE:
-			case Potion::FIRE_RESISTANCE_T:
+			case Potion::LONG_FIRE_RESISTANCE:
 				return "Lingering Potion of Fire Residence";
 			case Potion::SWIFTNESS:
-			case Potion::SWIFTNESS_T:
+			case Potion::LONG_SWIFTNESS:
 				return "Lingering Potion of Swiftness";
-			case Potion::SWIFTNESS_TWO:
+			case Potion::STRONG_SWIFTNESS:
 				return "Lingering Potion of Swiftness II";
 			case Potion::SLOWNESS:
-			case Potion::SLOWNESS_T:
+			case Potion::LONG_SLOWNESS:
 				return "Lingering Potion of Slowness";
 			case Potion::WATER_BREATHING:
-			case Potion::WATER_BREATHING_T:
+			case Potion::LONG_WATER_BREATHING:
 				return "Lingering Potion of Water Breathing";
 			case Potion::HARMING:
 				return "Lingering Potion of Harming";
-			case Potion::HARMING_TWO:
+			case Potion::STRONG_HARMING:
 				return "Lingering Potion of Harming II";
 			case Potion::POISON:
-			case Potion::POISON_T:
+			case Potion::LONG_POISON:
 				return "Lingering Potion of Poison";
-			case Potion::POISON_TWO:
+			case Potion::STRONG_POISON:
 				return "Lingering Potion of Poison II";
 			case Potion::HEALING:
 				return "Lingering Potion of Healing";
-			case Potion::HEALING_TWO:
+			case Potion::STRONG_HEALING:
 				return "Lingering Potion of Healing II";
 			case Potion::NIGHT_VISION:
-			case Potion::NIGHT_VISION_T:
+			case Potion::LONG_NIGHT_VISION:
 				return "Lingerin Potion of Night Vision";
 			default:
 				return "Lingering Potion";

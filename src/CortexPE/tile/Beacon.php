@@ -26,6 +26,7 @@ use CortexPE\inventory\BeaconInventory;
 use CortexPE\Main;
 use pocketmine\block\Block;
 use pocketmine\entity\Effect;
+use pocketmine\entity\EffectInstance;
 use pocketmine\inventory\InventoryHolder;
 use pocketmine\item\Item;
 use pocketmine\level\Level;
@@ -185,7 +186,8 @@ class Beacon extends Spawnable implements InventoryHolder {
 			foreach($this->getEffects() as $effectId){
 				if($this->isEffectAvailable($effectId) and $player instanceof Player){
 					$player->removeEffect($effectId);//Pretty hacky..
-					$effect = Effect::getEffect($effectId)->setDuration(20 * 9 + $layers * 2 * 20);
+					$eff = new EffectInstance(Effect::getEffect($effectId));
+					$effect = $eff->setDuration(20 * 9 + $layers * 2 * 20);
 					if($this->getSecondaryEffect() !== 0 && $this->getSecondaryEffect() !== Effect::REGENERATION)
 						$effect->setAmplifier(1);
 					$player->addEffect($effect);

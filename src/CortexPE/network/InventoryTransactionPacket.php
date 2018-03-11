@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace CortexPE\network;
 
 use pocketmine\network\mcpe\protocol\ProtocolInfo;
-use pocketmine\utils\Binary;
 
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket as PMInventoryTransactionPacket;

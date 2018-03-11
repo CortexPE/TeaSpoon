@@ -46,20 +46,21 @@ class LevelManager {
 
 	public static function init(){
 		if(!self::$loaded){
-			Main::getPluginLogger()->debug("Registering Generators...");
+			self::$loaded = true;
 			self::registerGenerators();
 			self::loadAndGenerateLevels();
-			self::$loaded = true;
 		}
 	}
 
-	public static function registerGenerators(){
+	private static function registerGenerators(){
+		Main::getPluginLogger()->debug("Registering Generators...");
 		Generator::addGenerator(Nether::class, "nether");
 		Generator::addGenerator(Ender::class, "ender");
 		Generator::addGenerator(VoidGenerator::class, "void");
 	}
 
-	public static function loadAndGenerateLevels(){
+	private static function loadAndGenerateLevels(){
+		Main::getPluginLogger()->debug("Loading Levels...");
 		if(Main::$registerDimensions){
 			if(!PMServer::getInstance()->loadLevel(Main::$netherName)){
 				PMServer::getInstance()->generateLevel(Main::$netherName, time(), Generator::getGenerator("nether"));

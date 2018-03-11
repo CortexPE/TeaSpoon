@@ -35,12 +35,12 @@ declare(strict_types = 1);
 
 namespace CortexPE\utils;
 
-use CortexPE\item\Potion;
 use CortexPE\Main;
 use pocketmine\item\Durable;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
+use pocketmine\item\Potion;
 
 class FishingLootTable {
 	// VALUES BASED FROM: https://minecraft.gamepedia.com/Fishing
@@ -134,7 +134,7 @@ class FishingLootTable {
 		self::loopedEntry(self::getItem(Item::ROTTEN_FLESH), 12, $arr);
 		self::loopedEntry(self::getItem(Item::STICK), 6, $arr);
 		self::loopedEntry(self::getItem(Item::STRING), 6, $arr);
-		self::loopedEntry(self::getItem(Item::POTION)->setDamage(Potion::WATER_BOTTLE), 12, $arr); // water bottle
+		self::loopedEntry(self::getItem(Item::POTION)->setDamage(Potion::WATER), 12, $arr); // water bottle
 		self::loopedEntry(self::getItem(Item::BONE), 12, $arr);
 		self::loopedEntry(self::getItem(Item::DYE)->setDamage(0), 1, $arr); // ink sac
 		self::loopedEntry(self::getItem(Item::TRIPWIRE_HOOK), 12, $arr);
@@ -223,7 +223,7 @@ class FishingLootTable {
 		self::loopedEntry(self::getItem(Item::ROTTEN_FLESH), 10, $arr);
 		self::loopedEntry(self::getItem(Item::STICK), 5, $arr);
 		self::loopedEntry(self::getItem(Item::STRING), 5, $arr);
-		self::loopedEntry(self::getItem(Item::POTION)->setDamage(Potion::WATER_BOTTLE), 10, $arr); // water bottle
+		self::loopedEntry(self::getItem(Item::POTION)->setDamage(Potion::WATER), 10, $arr); // water bottle
 		self::loopedEntry(self::getItem(Item::BONE), 10, $arr);
 		self::loopedEntry(self::getItem(Item::DYE)->setDamage(0), 1, $arr); // ink sac
 		self::loopedEntry(self::getItem(Item::TRIPWIRE_HOOK), 10, $arr);
@@ -256,7 +256,7 @@ class FishingLootTable {
 		self::loopedEntry(self::getItem(Item::ROTTEN_FLESH), 7, $arr);
 		self::loopedEntry(self::getItem(Item::STICK), 4, $arr);
 		self::loopedEntry(self::getItem(Item::STRING), 4, $arr);
-		self::loopedEntry(self::getItem(Item::POTION)->setDamage(Potion::WATER_BOTTLE), 7, $arr); // water bottle
+		self::loopedEntry(self::getItem(Item::POTION)->setDamage(Potion::WATER), 7, $arr); // water bottle
 		self::loopedEntry(self::getItem(Item::BONE), 7, $arr);
 		self::loopedEntry(self::getItem(Item::DYE)->setDamage(0), 1, $arr); // ink sac
 		self::loopedEntry(self::getItem(Item::TRIPWIRE_HOOK), 7, $arr);
@@ -289,7 +289,7 @@ class FishingLootTable {
 		self::loopedEntry(self::getItem(Item::ROTTEN_FLESH), 5, $arr);
 		self::loopedEntry(self::getItem(Item::STICK), 2, $arr);
 		self::loopedEntry(self::getItem(Item::STRING), 2, $arr);
-		self::loopedEntry(self::getItem(Item::POTION)->setDamage(Potion::WATER_BOTTLE), 5, $arr); // water bottle
+		self::loopedEntry(self::getItem(Item::POTION)->setDamage(Potion::WATER), 5, $arr); // water bottle
 		self::loopedEntry(self::getItem(Item::BONE), 5, $arr);
 		self::loopedEntry(self::getItem(Item::DYE)->setDamage(0), 1, $arr); // ink sac
 		self::loopedEntry(self::getItem(Item::TRIPWIRE_HOOK), 5, $arr);

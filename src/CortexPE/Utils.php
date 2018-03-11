@@ -39,11 +39,13 @@ use CortexPE\block\{
 	EndPortal, Portal
 };
 use pocketmine\block\BlockFactory;
+use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\Potion;
 use pocketmine\level\Level;
 use pocketmine\math\Math;
 use pocketmine\math\Vector3;
@@ -52,6 +54,7 @@ use pocketmine\nbt\tag\ListTag;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player as PMPlayer;
 use pocketmine\Server as PMServer;
+use pocketmine\utils\Color;
 
 class Utils {
 
@@ -94,6 +97,10 @@ class Utils {
 
 	public static function vector3XZDistance(Vector3 $pos1, Vector3 $pos2){
 		return (($pos1->x - $pos2->x) + ($pos1->z - $pos2->z));
+	}
+
+	public static function getPotionColor(int $effectID): Color{
+		return Potion::getPotionEffectsById($effectID)[0]->getColor();
 	}
 
 	public static function toggleBool(bool $boolean): bool{

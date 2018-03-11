@@ -11,6 +11,7 @@ namespace CortexPE\commands;
 use pocketmine\command\{
 	CommandSender, defaults\VanillaCommand
 };
+use pocketmine\network\mcpe\protocol\StopSoundPacket;
 use pocketmine\Player;
 use pocketmine\tile\Tile;
 
@@ -29,7 +30,13 @@ class TestCommand extends VanillaCommand {
 			$block = $sender->getTargetBlock(10);
 			$tile = $sender->getLevel()->getTile($block);
 			$sender->sendMessage("Block: " . get_class($block));
+			$sender->sendMessage("HeldItem: " . get_class($sender->getInventory()->getItemInHand()));
 			$sender->sendMessage("Tile: " . ($tile instanceof Tile ? get_class($tile) : "null"));
+
+			$stopPk = new StopSoundPacket();
+			$stopPk->soundName = "record.cat";
+			$stopPk->stopAll = false;
+			$sender->dataPacket($stopPk);
 		}
 	}
 }

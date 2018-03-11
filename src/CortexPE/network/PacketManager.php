@@ -39,9 +39,13 @@ use CortexPE\Main;
 use pocketmine\network\mcpe\protocol\PacketPool;
 
 class PacketManager {
+	private static $initialized;
 	public static function init(){
-		Main::getPluginLogger()->debug("Registering Packets...");
-		PacketPool::registerPacket(new CraftingDataPacket());
-		PacketPool::registerPacket(new InventoryTransactionPacket());
+		if(!self::$initialized){
+			self::$initialized = true;
+			Main::getPluginLogger()->debug("Registering Packets...");
+			PacketPool::registerPacket(new CraftingDataPacket());
+			PacketPool::registerPacket(new InventoryTransactionPacket());
+		}
 	}
 }

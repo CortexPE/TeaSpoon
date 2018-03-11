@@ -39,6 +39,7 @@ use CortexPE\level\particle\SpellParticle;
 use pocketmine\entity\{
 	Entity, projectile\Throwable
 };
+use pocketmine\math\RayTraceResult;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\Server;
 
@@ -73,7 +74,7 @@ class EnchantingBottle extends Throwable {
 		return parent::onUpdate($currentTick);
 	}
 
-	public function onCollideWithEntity(Entity $entity){
+	public function onHitEntity(Entity $entityHit, RayTraceResult $hitResult): void{
 		return;
 	}
 }

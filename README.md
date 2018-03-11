@@ -53,7 +53,7 @@ Installation is easy, Just download the latest phar from [Poggit](https://poggit
  - Items
    - [X] Vanilla Enchants (Progress: 98% | Credits to [TheAz928](https://github.com/TheAz928) for some of the values)
    - [X] Armor Damage
-   - [X] Splash Potions
+  <!-- - [X] Splash Potions -->
    - [X] FireCharge
    - [X] Totem of Undying
    - [X] Fully Functional Elytra Wings
@@ -70,12 +70,12 @@ Installation is easy, Just download the latest phar from [Poggit](https://poggit
  - Entities & Mobs
    - [X] XP Drops
    - [X] Projectiles
-     - [X] EnderPearls
-     - [X] Snowballs
-     - [X] Eggs
-     - [X] Arrows with potion effects
+    <!-- - [X] EnderPearls -->
+    <!-- - [X] Snowballs -->
+    <!-- - [X] Eggs -->
+     - [X] Tipped Arrows
      - [X] EnchantingBottle
-     - [X] SplashPotion
+    <!-- - [X] SplashPotion -->
      - [X] LingeringPotion
    - [ ] Entities
      - [X] Lightning

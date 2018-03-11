@@ -44,10 +44,7 @@ class ItemManager {
 	public static function init(){
 		ItemFactory::registerItem(new Boat(), true);
 		ItemFactory::registerItem(new EnchantingBottle(), true);
-		ItemFactory::registerItem(new EnderPearl(), true);
-		ItemFactory::registerItem(new Potion(), true);
 		ItemFactory::registerItem(new LingeringPotion(), true);
-		ItemFactory::registerItem(new SplashPotion(), true);
 		ItemFactory::registerItem(new FlintSteel(), true);
 		ItemFactory::registerItem(new FireCharge(), true);
 		ItemFactory::registerItem(new TotemOfUndying(), true);

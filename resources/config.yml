@@ -10,7 +10,7 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 21
+version: 22
 
 entities:
  # Weather to register Vanilla Entities (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...) or not
@@ -67,8 +67,6 @@ player:
  limitedCreative: true
  # In vanilla, this is false... In Genisys, its true
  clearInventoryOnGameModeChange: false
- # Armor Damage toggle
- armorDamage: true
  instantArmor:
   enable: true
  # Toggle to replace current armor or not (Vanilla-Way: false) [might cause glitches/bugs on server lag]

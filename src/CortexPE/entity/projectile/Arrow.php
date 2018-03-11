@@ -35,40 +35,37 @@ declare(strict_types = 1);
 
 namespace CortexPE\entity\projectile;
 
-use CortexPE\item\Potion;
 use CortexPE\level\particle\MobSpellParticle;
+use CortexPE\Utils;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
 use pocketmine\entity\projectile\Arrow as PMArrow;
+use pocketmine\item\Potion;
 use pocketmine\level\Level;
+use pocketmine\math\RayTraceResult;
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\utils\Color;
 
 class Arrow extends PMArrow {
 	/** @var int */
 	protected $potionId;
-	/** @var array */
-	protected $color = []; // arrays are faster than getting values from a function every update?
+	/** @var Color */
+	protected $color;
 
 	public function __construct(Level $level, CompoundTag $nbt, Entity $shootingEntity = null, bool $critical = false){
 		parent::__construct($level, $nbt, $shootingEntity, $critical);
 		$this->potionId = $this->namedtag->getShort("Potion", 0);
-		if($this->potionId != 0){
-			$col = Potion::getColor($this->potionId);
-			$this->color = [
-				"r" => $col->getR(),
-				"g" => $col->getG(),
-				"b" => $col->getB(),
-				"a" => $col->getA(),
-			];
+		if($this->potionId >= 1 && $this->potionId <= 36){
+			$this->color = Utils::getPotionColor($this->potionId);
 		}
 	}
 
-	public function onCollideWithEntity(Entity $entity){
-		parent::onCollideWithEntity($entity);
+	public function onHitEntity(Entity $entityHit, RayTraceResult $hitResult): void{
+		parent::onHitEntity($entityHit, $hitResult);
 
-		if($this->potionId != 0 && $entity instanceof Living){
-			foreach(Potion::getEffectsById($this->potionId) as $effect){
-				$entity->addEffect($effect);
+		if($this->potionId >= 1 && $this->potionId <= 36 && $entityHit instanceof Living){
+			foreach(Potion::getPotionEffectsById($this->potionId) as $effect){
+				$entityHit->addEffect($effect);
 			}
 		}
 	}
@@ -76,10 +73,10 @@ class Arrow extends PMArrow {
 	public function onUpdate(int $currentTick): bool{
 		$hasUpdate = parent::onUpdate($currentTick);
 
-		if($this->potionId != 0){
+		if($this->potionId >= 1 && $this->potionId <= 36){
 			if(!$this->isOnGround() or ($this->isOnGround() and ($currentTick % 4) == 0)){
-				if($this->getLevel() instanceof Level){ // why tf would it even be null?! #BlamePocketMine (this has been an entity bug for ages now -_-)
-					$this->getLevel()->addParticle(new MobSpellParticle($this->asVector3(), $this->color["r"], $this->color["g"], $this->color["b"], $this->color["a"]));
+				if($this->getLevel() instanceof Level && $this->color instanceof Color){
+					$this->getLevel()->addParticle(new MobSpellParticle($this->asVector3(), $this->color->getR(), $this->color->getG(), $this->color->getB(), $this->color->getA()));
 				}
 			}
 			$hasUpdate = true;

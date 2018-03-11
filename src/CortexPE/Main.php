@@ -64,10 +64,10 @@ use pocketmine\utils\Config;
 class Main extends PluginBase {
 
 	// self explanatory constants
-	public const CONFIG_VERSION = 21;
+	public const CONFIG_VERSION = 22;
 	public const BASE_POCKETMINE_VERSION = "1.7dev"; // The PocketMine version before Jenkins builds it... (Can be found on PocketMine.php as the 'VERSION' constant)
-	public const TESTED_MIN_POCKETMINE_VERSION = "1.7dev-699"; // The minimum build this was tested working
-	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-759"; // The current build this was actually tested
+	public const TESTED_MIN_POCKETMINE_VERSION = "1.7dev-811"; // The minimum build this was tested working
+	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-813"; // The current build this was actually tested
 
 	///////////////////////////////// START OF INSTANCE VARIABLES /////////////////////////////////
 	/** @var Config */
@@ -125,8 +125,6 @@ class Main extends PluginBase {
 	public static $limitedCreative = true;
 	/** @var bool */
 	public static $randomFishingLootTables = false;
-	/** @var bool */
-	public static $armorDamage = true;
 	/** @var bool */
 	public static $vanillaNetherTranfer = false;
 	/** @var string */
@@ -226,7 +224,6 @@ class Main extends PluginBase {
 		self::$enableWeatherLightning = self::$config->getNested("weather.lightning", self::$enableWeatherLightning);
 		self::$limitedCreative = self::$config->getNested("player.limitedCreative", self::$limitedCreative);
 		self::$randomFishingLootTables = self::$config->getNested("misc.randomFishingLootTables", self::$randomFishingLootTables);
-		self::$armorDamage = self::$config->getNested("player.armorDamage", self::$armorDamage);
 		self::$vanillaNetherTranfer = self::$config->getNested("dimensions.nether.vanillaNetherTranfer", self::$vanillaNetherTranfer);
 		self::$overworldLevelName = self::$config->getNested("dimensions.overrideOverworldLevel", self::$overworldLevelName);
 		self::$instantArmorReplace = self::$config->getNested("player.instantArmor.replace", self::$instantArmorReplace);
@@ -329,6 +326,7 @@ class Main extends PluginBase {
 		// LevelManager::init(); EXECUTED VIA EventListener
 		Tile::init();
 		FishingLootTable::init();
+		PacketManager::init();
 		PacketManager::init();
 
 		// Register Listeners

@@ -43,7 +43,8 @@ use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\event\entity\ProjectileHitEvent;
+use pocketmine\event\entity\ProjectileHitEntityEvent;
+use pocketmine\math\RayTraceResult;
 use pocketmine\network\mcpe\protocol\EntityEventPacket;
 use pocketmine\Player;
 use pocketmine\Server as PMServer;
@@ -80,7 +81,7 @@ class FishingHook extends Projectile {
 			$this->keepMovement = false;
 			$hasUpdate = true;
 		}
-		if($this->hadCollision && !$this->touchedWater){
+		if($this->isCollided && !$this->touchedWater){
 			foreach($this->getBlocksAround() as $block){
 				if($block instanceof Water || $block instanceof StillWater){
 					$this->touchedWater = true;
@@ -136,22 +137,22 @@ class FishingHook extends Projectile {
 		}
 	}
 
-	public function onCollideWithEntity(Entity $entity){
-		$this->server->getPluginManager()->callEvent(new ProjectileHitEvent($this));
+	public function onHitEntity(Entity $entityHit, RayTraceResult $hitResult): void {
+		$this->server->getPluginManager()->callEvent(new ProjectileHitEntityEvent($this, $hitResult, $entityHit));
 
 		$damage = $this->getResultDamage();
 
 		if($this->getOwningEntity() === null){
-			$ev = new EntityDamageByEntityEvent($this, $entity, EntityDamageEvent::CAUSE_PROJECTILE, $damage);
+			$ev = new EntityDamageByEntityEvent($this, $entityHit, EntityDamageEvent::CAUSE_PROJECTILE, $damage);
 		}else{
-			$ev = new EntityDamageByChildEntityEvent($this->getOwningEntity(), $this, $entity, EntityDamageEvent::CAUSE_PROJECTILE, $damage);
+			$ev = new EntityDamageByChildEntityEvent($this->getOwningEntity(), $this, $entityHit, EntityDamageEvent::CAUSE_PROJECTILE, $damage);
 		}
 
-		$entity->attack($ev);
+		$entityHit->attack($ev);
 
-		$entity->setMotion($this->getOwningEntity()->getDirectionVector()->multiply(-0.3)->add(0, 0.3, 0));
+		$entityHit->setMotion($this->getOwningEntity()->getDirectionVector()->multiply(-0.3)->add(0, 0.3, 0));
 
-		$this->hadCollision = true;
+		$this->isCollided = true;
 		$this->close();
 	}
 

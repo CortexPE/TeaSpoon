@@ -5,15 +5,16 @@ declare(strict_types = 1);
 namespace CortexPE\entity\projectile;
 
 use CortexPE\entity\object\AreaEffectCloud;
-use CortexPE\item\Potion;
+use pocketmine\item\Potion;
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Throwable;
 use pocketmine\item\Item as ItemItem;
 use pocketmine\level\{
 	Level, particle\ItemBreakParticle
 };
+use pocketmine\math\RayTraceResult;
 use pocketmine\nbt\tag\{
-	CompoundTag, DoubleTag, FloatTag, IntTag, ListTag, ShortTag
+	CompoundTag, DoubleTag, FloatTag, ListTag, ShortTag
 };
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\Server;
@@ -96,7 +97,7 @@ class LingeringPotion extends Throwable {
 		return parent::onUpdate($currentTick);
 	}
 
-	public function onCollideWithEntity(Entity $entity){
+	public function onHitEntity(Entity $entityHit, RayTraceResult $hitResult): void{
 		return;
 	}
 }

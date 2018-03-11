@@ -22,10 +22,10 @@
 
 namespace CortexPE\entity\object;
 
-use CortexPE\item\Potion;
-use pocketmine\entity\Effect;
+use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
+use pocketmine\item\Potion;
 use pocketmine\level\particle\Particle;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\nbt\tag\FloatTag;
@@ -136,8 +136,8 @@ class AreaEffectCloud extends Entity {
 			$this->close();
 			$hasUpdate = true;
 		}else{
-			/** @var Effect[] $effects */
-			$effects = Potion::getEffectsById($this->PotionId);
+			/** @var EffectInstance[] $effects */
+			$effects = Potion::getPotionEffectsById($this->PotionId);
 			if(count($effects) <= 0){
 				$this->close();
 				$this->timings->stopTiming();
@@ -174,7 +174,7 @@ class AreaEffectCloud extends Entity {
 			/*foreach($effects as $eff){
 				$eff->setDuration($this->DurationOnUse + 20);//would do nothing at 0
 			}*/ // Buggy as of now...
-			$bb = new AxisAlignedBB($this->x - $this->Radius, $this->y, $this->z - $this->Radius, $this->x + $this->Radius, $this->y + $this->height, $this->z + $this->Radius);
+			$bb = new AxisAlignedBB($this->x - $this->Radius, $this->y - 1, $this->z - $this->Radius, $this->x + $this->Radius, $this->y + 1, $this->z + $this->Radius);
 			$used = false;
 			foreach($this->getLevel()->getCollidingEntities($bb, $this) as $collidingEntity){
 				if($collidingEntity instanceof Living && $collidingEntity->distanceSquared($this) <= $this->Radius ** 2){

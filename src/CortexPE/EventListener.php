@@ -42,6 +42,7 @@ use CortexPE\utils\ArmorTypes;
 use CortexPE\utils\Xp;
 use pocketmine\block\Block;
 use pocketmine\entity\Effect;
+use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Entity;
 use pocketmine\event\{
 	block\BlockBreakEvent, level\LevelLoadEvent, Listener, server\RemoteServerCommandEvent, server\ServerCommandEvent
@@ -134,15 +135,18 @@ class EventListener implements Listener {
 						$v->removeAllEffects();
 
 						$REGENERATION = Effect::getEffect(Effect::REGENERATION);
+						$REGENERATION = new EffectInstance($REGENERATION);
 						$REGENERATION->setAmplifier(1);
 						$REGENERATION->setVisible(true);
 						$REGENERATION->setDuration(40 * 20);
 
 						$ABSORPTION = Effect::getEffect(Effect::ABSORPTION);
+						$ABSORPTION = new EffectInstance($ABSORPTION);
 						$ABSORPTION->setVisible(true);
 						$ABSORPTION->setDuration(5 * 20);
 
 						$FIRE_RESISTANCE = Effect::getEffect(Effect::FIRE_RESISTANCE);
+						$FIRE_RESISTANCE = new EffectInstance($FIRE_RESISTANCE);
 						$FIRE_RESISTANCE->setVisible(true);
 						$FIRE_RESISTANCE->setDuration(40 * 20);
 
@@ -164,11 +168,6 @@ class EventListener implements Listener {
 					}
 				}
 			}
-		}
-
-		////////////////////////////// ARMOR DAMAGE //////////////////////////////////////
-		if($session instanceof Session){
-			$session->useArmors();
 		}
 
 		/////////////////////// ELYTRA WINGS & SLIME BLOCK ///////////////////////////////

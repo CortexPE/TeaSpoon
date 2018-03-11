@@ -32,7 +32,6 @@ use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\CraftingDataPacket as PMCraftingDataPacket;
 use pocketmine\network\mcpe\protocol\ProtocolInfo;
-use pocketmine\utils\Binary;
 
 class CraftingDataPacket extends PMCraftingDataPacket {
 	public const NETWORK_ID = ProtocolInfo::CRAFTING_DATA_PACKET;

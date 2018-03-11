@@ -48,16 +48,19 @@ use pocketmine\Player;
 
 class Bow extends PMBow {
 	public function onReleaseUsing(Player $player): bool{
-		$first = Item::get(Item::ARROW, 0, 1);
-		if($player->isSurvival() || $player->isAdventure()){
-			if(!$player->getInventory()->contains(Item::get(Item::ARROW, -1, 1))){
-				$player->getInventory()->sendContents($player);
+		if($player->isSurvival() and !$player->getInventory()->contains(Item::get(Item::ARROW, 0, 1))){
+			$player->getInventory()->sendContents($player);
+			return \false;
+		}
+		$skipcheckItem = false;
+		if(!$player->getInventory()->contains(Item::get(Item::ARROW, 0, 1))){
+			$skipcheckItem = true;
+		}
 
-				return false;
-			}
-
-			$first = $player->getInventory()->first(Item::get(Item::ARROW, -1, 1), false);
-			$first = $player->getInventory()->getItem($first);
+		if(!$skipcheckItem){
+			$first = $player->getInventory()->getItem($player->getInventory()->first(Item::get(Item::ARROW, -1, 1), false));
+		} else {
+			$first = Item::get(Item::ARROW, 0, 1);
 		}
 
 		$nbt = Entity::createBaseNBT(
@@ -67,7 +70,7 @@ class Bow extends PMBow {
 			-$player->pitch
 		);
 		$nbt->setShort("Fire", $player->isOnFire() ? 45 * 60 : 0);
-		if($first->getDamage() > 0){
+		if($first->getDamage() >= 1 && $first->getDamage() <= 36){
 			$nbt->setShort("Potion", $first->getDamage() - 1);
 		}
 
@@ -77,7 +80,8 @@ class Bow extends PMBow {
 
 
 		/** @var Arrow $entity */
-		$entity = Entity::createEntity("Arrow", $player->getLevel(), $nbt, $player, $force == 2);
+		$entity = new Arrow($player->getLevel(), $nbt, $player, $force == 2);
+		//$entity = Entity::createEntity("Arrow", $player->getLevel(), $nbt, $player, $force == 2);
 		if($entity instanceof Projectile){
 			$ev = new EntityShootBowEvent($player, $this, $entity, $force);
 
