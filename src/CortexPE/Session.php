@@ -88,7 +88,6 @@ class Session {
 	}
 
 	public function damageElytra(int $damage = 1){
-		if(!Main::$armorDamage) return;
 		if(!$this->player->isAlive() || !$this->player->isSurvival()){
 			return;
 		}
