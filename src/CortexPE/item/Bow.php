@@ -43,7 +43,7 @@ use pocketmine\event\entity\ProjectileLaunchEvent;
 use pocketmine\item\Bow as PMBow;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\Item;
-use pocketmine\level\sound\LaunchSound;
+use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\Player;
 
 class Bow extends PMBow {
@@ -133,7 +133,7 @@ class Bow extends PMBow {
 						$ev->getProjectile()->flagForDespawn();
 					}else{
 						$ev->getProjectile()->spawnToAll();
-						$player->level->addSound(new LaunchSound($player), $player->getViewers());
+						$player->getLevel()->broadcastLevelSoundEvent($player, LevelSoundEventPacket::SOUND_BOW);
 					}
 				}else{
 					$entity->spawnToAll();
