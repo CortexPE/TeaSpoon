@@ -11,7 +11,6 @@ namespace CortexPE\tile;
 use CortexPE\Main;
 use pocketmine\entity\Entity;
 use pocketmine\item\Item;
-use pocketmine\level\format\Chunk;
 use pocketmine\level\Level;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
@@ -89,9 +88,6 @@ class MobSpawner extends Spawnable {
 
 		$this->timings->startTiming();
 
-		if(!($this->chunk instanceof Chunk)){
-			return false;
-		}
 		if($this->canUpdate() && Main::$mobSpawnerEnable){
 			if($this->getDelay() <= 0){
 				$success = 0;
@@ -120,6 +116,7 @@ class MobSpawner extends Spawnable {
 	}
 
 	public function canUpdate(): bool{
+		if(!$this->getLevel()->isChunkLoaded($this->getX(), $this->getZ())) return false;
 		if($this->getEntityId() === 0) return false;
 		$hasPlayer = false;
 		$count = 0;

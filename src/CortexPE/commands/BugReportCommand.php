@@ -76,6 +76,7 @@ class BugReportCommand extends VanillaCommand {
 		$str .= "Base64 Encoded Config: " . $this->encodeFile(Main::getInstance()->getDataFolder() . "config.yml") . "\n";
 		$str .= "Base64 Encoded PocketMine Configuration: " . $this->encodeFile(PMServer::getInstance()->getDataPath() . "pocketmine.yml") . "\n";
 		$str .= "Base64 Encoded Server Properties: " . $this->encodeFile(PMServer::getInstance()->getDataPath() . "server.properties") . "\n";
+		$str .= "Base64 Encoded TSP CACHE " . $this->encodeFile(Main::getInstance()->getDataFolder() . "cache.json") . "\n";
 
 		if(!is_dir(Main::getInstance()->getDataFolder() . "dumps")){
 			mkdir(Main::getInstance()->getDataFolder() . "dumps");
