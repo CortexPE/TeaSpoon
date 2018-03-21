@@ -51,17 +51,10 @@ class FrostedIce extends Ice {
 		return "Frosted Ice";
 	}
 
-	/**
-	 * @param int $type
-	 * @return bool|int|void
-	 */
-	public function onUpdate(int $type){
+	public function onRandomTick() : void{
 		$this->meta++;
 		$this->getLevel()->setBlock($this->asVector3(), $this, false, false);
 		if($this->meta > 3){
-			foreach($this->getAllSides() as $side){
-				$side->onUpdate($type);
-			}
 			$this->getLevel()->setBlock($this->asVector3(), Block::get(Block::WATER), false, true);
 		}
 	}

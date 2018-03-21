@@ -39,7 +39,6 @@ use CortexPE\block\{
 	EndPortal, Portal
 };
 use pocketmine\block\BlockFactory;
-use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;

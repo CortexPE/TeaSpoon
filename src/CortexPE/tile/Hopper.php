@@ -38,7 +38,7 @@ namespace CortexPE\tile;
 use CortexPE\block\Hopper as HopperBlock;
 use CortexPE\inventory\HopperInventory;
 use CortexPE\Main;
-use pocketmine\entity\Item as ItemEntity;
+use pocketmine\entity\object\ItemEntity;
 use pocketmine\inventory\InventoryHolder;
 use pocketmine\item\Item;
 use pocketmine\level\Level;

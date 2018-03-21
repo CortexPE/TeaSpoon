@@ -41,49 +41,38 @@ use CortexPE\{
 use pocketmine\block\{
 	Block, BlockFactory, Fire as PMFire
 };
-use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 
 class Fire extends PMFire {
 
-	/**
-	 * @param int $type
-	 * @return bool|int
-	 */
-	public function onUpdate(int $type){
-		if($type == Level::BLOCK_UPDATE_RANDOM || $type == Level::BLOCK_UPDATE_SCHEDULED || $type == Level::BLOCK_UPDATE_NORMAL){
-			$weather = Main::$weatherData[$this->getLevel()->getId()];
-			$forever = ($this->getSide(Vector3::SIDE_DOWN)->getId() == Block::NETHERRACK);
-			if(!$forever){
-				if($weather->canCalculate()){
-					$rainy = ($weather->isRainy() || $weather->isRainyThunder());
+	public function onScheduledUpdate(): void{
+		if($this->meta >= 15){
+			$this->level->setBlock($this, BlockFactory::get(Block::AIR));
+		}else{
+			$this->meta += mt_rand(1, 4);
+			$this->level->setBlock($this, $this);
+		}
+	}
 
-					if($rainy &&
-						(
-							Utils::canSeeSky($this->getLevel(), $this->asVector3()) ||
-							Utils::canSeeSky($this->getLevel(), $this->getSide(Vector3::SIDE_NORTH)) ||
-							Utils::canSeeSky($this->getLevel(), $this->getSide(Vector3::SIDE_SOUTH)) ||
-							Utils::canSeeSky($this->getLevel(), $this->getSide(Vector3::SIDE_EAST)) ||
-							Utils::canSeeSky($this->getLevel(), $this->getSide(Vector3::SIDE_WEST))
-						)
-					){
-						$this->level->setBlock($this, BlockFactory::get(Block::AIR));
-						return $type;
-					}
-				}
+	public function onRandomTick(): void{
+		$weather = Main::$weatherData[$this->getLevel()->getId()];
+		$forever = ($this->getSide(Vector3::SIDE_DOWN)->getId() == Block::NETHERRACK);
+		if(!$forever){
+			if($weather->canCalculate()){
+				$rainy = ($weather->isRainy() || $weather->isRainyThunder());
 
-				if($type != Level::BLOCK_UPDATE_NORMAL){ // delayed
-					if($this->meta >= 15){
-						$this->level->setBlock($this, BlockFactory::get(Block::AIR));
-					}else{
-						$this->meta += mt_rand(1, 4);
-						$this->level->setBlock($this, $this);
-					}
+				if($rainy &&
+					(
+						Utils::canSeeSky($this->getLevel(), $this->asVector3()) ||
+						Utils::canSeeSky($this->getLevel(), $this->getSide(Vector3::SIDE_NORTH)) ||
+						Utils::canSeeSky($this->getLevel(), $this->getSide(Vector3::SIDE_SOUTH)) ||
+						Utils::canSeeSky($this->getLevel(), $this->getSide(Vector3::SIDE_EAST)) ||
+						Utils::canSeeSky($this->getLevel(), $this->getSide(Vector3::SIDE_WEST))
+					)
+				){
+					$this->level->setBlock($this, BlockFactory::get(Block::AIR));
 				}
 			}
 		}
-
-		return $type;
-		//TODO: fire spread
 	}
 }
