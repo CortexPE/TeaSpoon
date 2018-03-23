@@ -51,12 +51,14 @@ class EndCrystal extends Item {
 	}
 
 	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector): bool{
-		$nbt = Entity::createBaseNBT($blockClicked);
-		$crystal = Entity::createEntity("EnderCrystal", $player->getLevel(), $nbt);
-		if($crystal instanceof \CortexPE\entity\object\EndCrystal){
-			$crystal->spawnToAll();
-			if($player->isSurvival()){
-				--$this->count;
+		if(in_array($blockClicked->getId(), [Block::OBSIDIAN, Block::BEDROCK])){
+			$nbt = Entity::createBaseNBT($blockReplace);
+			$crystal = Entity::createEntity("EnderCrystal", $player->getLevel(), $nbt);
+			if($crystal instanceof \CortexPE\entity\object\EndCrystal){
+				$crystal->spawnToAll();
+				if($player->isSurvival()){
+					--$this->count;
+				}
 			}
 		}
 

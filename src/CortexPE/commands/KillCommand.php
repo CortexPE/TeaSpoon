@@ -117,20 +117,22 @@ class KillCommand extends VanillaCommand {
 							}
 						}
 					}else{
-						foreach($sender->getServer()->getDefaultLevel()->getEntities() as $entity){
-							if($entity instanceof Player){
-								if($entity->getGamemode() === Player::ADVENTURE or $entity->getGamemode() === Player::SURVIVAL){
-									$sender->getServer()->getPluginManager()->callEvent($ev = new EntityDamageEvent($entity, EntityDamageEvent::CAUSE_SUICIDE, $entity->getMaxHealth()));
+						foreach($sender->getServer()->getLevels() as $level){
+							foreach($level->getEntities() as $entity){
+								if($entity instanceof Player){
+									if($entity->getGamemode() === Player::ADVENTURE or $entity->getGamemode() === Player::SURVIVAL){
+										$sender->getServer()->getPluginManager()->callEvent($ev = new EntityDamageEvent($entity, EntityDamageEvent::CAUSE_SUICIDE, $entity->getMaxHealth()));
 
-									if(!$ev->isCancelled()){
-										$entity->setLastDamageCause($ev);
-										$entity->setHealth(0);
-										$count++;
+										if(!$ev->isCancelled()){
+											$entity->setLastDamageCause($ev);
+											$entity->setHealth(0);
+											$count++;
+										}
 									}
+								}else{
+									$entity->close();
+									$count++;
 								}
-							}else{
-								$entity->close();
-								$count++;
 							}
 						}
 					}
