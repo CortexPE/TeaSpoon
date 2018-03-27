@@ -39,7 +39,7 @@ use CortexPE\entity\mob\{
 	Bat, Blaze, CaveSpider, Chicken, Cow, Creeper, Donkey, ElderGuardian, EnderDragon, Enderman, Endermite, Evoker, Ghast, Guardian, Horse, Husk, IronGolem, Llama, MagmaCube, Mooshroom, Mule, Ocelot, Parrot, Pig, PigZombie, PolarBear, Rabbit, Sheep, Shulker, Silverfish, Skeleton, Slime, SnowGolem, Spider, Stray, Vex, Vindicator, Witch, Wither, WitherSkeleton, Wolf, ZombieHorse, ZombieVillager
 };
 use CortexPE\entity\object\{
-	AreaEffectCloud, EndCrystal, ExperienceOrb, Lightning
+	AreaEffectCloud, ArmorStand, EndCrystal, ExperienceOrb, Lightning
 };
 use CortexPE\entity\projectile\{
 	Arrow, EnchantingBottle, FireworkRocket, FishingHook, LingeringPotion
@@ -108,6 +108,7 @@ class EntityManager extends Entity {
 		self::registerEntity(Lightning::class, true, ['Lightning', 'minecraft:lightning']);
 		self::registerEntity(EndCrystal::class, true, ['EnderCrystal', 'minecraft:ender_crystal']);
 		self::registerEntity(Boat::class, true, ['Boat', 'minecraft:boat']);
+		self::registerEntity(ArmorStand::class, true, ['ArmorStand', 'minecraft:armor_stand']);
 
 		if(Main::$XPOrbOverride){
 			self::registerEntity(ExperienceOrb::class, true, ['XPOrb', 'minecraft:xp_orb']);

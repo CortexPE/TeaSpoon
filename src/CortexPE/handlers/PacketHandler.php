@@ -36,6 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\handlers;
 
 use CortexPE\Main;
+use CortexPE\network\InventoryTransactionPacket;
 use CortexPE\Session;
 use CortexPE\Utils;
 use pocketmine\event\{
@@ -91,6 +92,20 @@ class PacketHandler implements Listener {
 								$session->damageElytra();
 							}
 							break;
+					}
+				}
+				break;
+			case ($pk instanceof InventoryTransactionPacket): // TODO: Remove this once https://github.com/pmmp/PocketMine-MP/pull/2124 gets merged
+				if($pk->transactionType == InventoryTransactionPacket::TYPE_USE_ITEM_ON_ENTITY){
+					if($pk->trData->actionType == InventoryTransactionPacket::USE_ITEM_ON_ENTITY_ACTION_INTERACT){
+						$entity = $p->getLevel()->getEntity($pk->trData->entityRuntimeId);
+						$item = $pk->trData->itemInHand;
+						$slot = $pk->trData->hotbarSlot;
+						$clickPos = $pk->trData->clickPos;
+						if(method_exists($entity, "onInteract")){
+							//                  Player Item  Int   Vector3
+							$entity->onInteract($p, $item, $slot, $clickPos);
+						}
 					}
 				}
 				break;

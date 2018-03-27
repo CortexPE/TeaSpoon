@@ -10,7 +10,7 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 22
+version: 23
 
 entities:
  # Weather to register Vanilla Entities (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...) or not
@@ -19,6 +19,8 @@ entities:
  lightningFire: true
  # Enable EndCrystal Explosion
  endCrystalExplosion: true
+ # Enable EndCrystal Explosion Power
+ endCrystalPower: 6
 
 enchantments:
  # Weather to enable & register Vanilla Enchantments (Set to false if you're going to use VanillaEnchantments plugin etc...) or not

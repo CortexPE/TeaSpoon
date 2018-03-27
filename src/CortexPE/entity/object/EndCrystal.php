@@ -86,7 +86,7 @@ class EndCrystal extends Entity {
 			}
 			$pos = clone $this->asPosition();
 			$this->close();
-			$explode = new Explosion($pos, 6, $this);
+			$explode = new Explosion($pos, Main::$endCrystalPower, $this);
 			$explode->explodeA();
 			$explode->explodeB();
 		}

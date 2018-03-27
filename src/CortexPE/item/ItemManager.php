@@ -56,6 +56,7 @@ class ItemManager {
 		ItemFactory::registerItem(new Bow(), true);
 		ItemFactory::registerItem(new EndCrystal(), true);
 		ItemFactory::registerItem(new Bucket(), true);
+		ItemFactory::registerItem(new ArmorStand(), true);
 
 		if(!Utils::isPhared()){ // beta
 			ItemFactory::registerItem(new Record(Item::RECORD_13, 0, "Music Disc 13"), true);
