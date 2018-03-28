@@ -51,6 +51,8 @@ use pocketmine\Player;
 class ArmorStand extends Entity {
 
 	protected $gravity = 0.04;
+	public $height = 1.975;
+	public $width = 0.5;
 
 	// TODO: Poses...
 	const NETWORK_ID = self::ARMOR_STAND;
@@ -102,8 +104,8 @@ class ArmorStand extends Entity {
 		$this->leggings = Item::nbtDeserialize($armorItems[1]);
 		$this->boots = Item::nbtDeserialize($armorItems[0]);
 
-		$this->setHealth(2);
-		$this->setMaxHealth(2);
+		$this->setHealth(6);
+		$this->setMaxHealth(6);
 	}
 
 	public function canCollideWith(Entity $entity): bool{

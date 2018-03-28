@@ -51,8 +51,8 @@ class EndCrystal extends Entity {
 	public const TAG_SHOW_BOTTOM = "ShowBottom";
 
 	const NETWORK_ID = self::ENDER_CRYSTAL;
-	public $height = 1.50;
-	public $width = 0.50;
+	public $height = 0.98;
+	public $width = 0.98;
 
 	public function __construct(Level $level, CompoundTag $nbt){
 		if(!$nbt->hasTag(self::TAG_SHOW_BOTTOM, ByteTag::class)){

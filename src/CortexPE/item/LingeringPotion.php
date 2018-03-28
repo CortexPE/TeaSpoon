@@ -130,6 +130,6 @@ class LingeringPotion extends ProjectileItem {
 	}
 
 	public function getThrowForce(): float{
-		return 1.1;
+		return 0.5;
 	}
 }

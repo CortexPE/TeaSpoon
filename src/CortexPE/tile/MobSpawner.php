@@ -14,6 +14,7 @@ use pocketmine\item\Item;
 use pocketmine\level\Level;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
+use pocketmine\nbt\tag\StringTag;
 use pocketmine\Player;
 use pocketmine\tile\Spawnable;
 
@@ -27,6 +28,14 @@ class MobSpawner extends Spawnable {
 	public const TAG_DELAY = "Delay";
 
 	public function __construct(Level $level, CompoundTag $nbt){
+		if($nbt->hasTag(self::TAG_ENTITY_ID, StringTag::class)){ // duct-tape fix for #206
+			$nbt->removeTag(self::TAG_ENTITY_ID); // fuck it. FUCK. IT.
+			$nbt->removeTag(self::TAG_SPAWN_COUNT);
+			$nbt->removeTag(self::TAG_SPAWN_RANGE);
+			$nbt->removeTag(self::TAG_MIN_SPAWN_DELAY);
+			$nbt->removeTag(self::TAG_MAX_SPAWN_DELAY);
+			$nbt->removeTag(self::TAG_DELAY);
+		}
 		if(!$nbt->hasTag(self::TAG_ENTITY_ID, IntTag::class)){
 			$nbt->setInt(self::TAG_ENTITY_ID, 0);
 		}

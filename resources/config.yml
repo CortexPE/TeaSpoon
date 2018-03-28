@@ -19,7 +19,7 @@ entities:
  lightningFire: true
  # Enable EndCrystal Explosion
  endCrystalExplosion: true
- # Enable EndCrystal Explosion Power
+ # EndCrystal Explosion Power
  endCrystalPower: 6
 
 enchantments:
