@@ -31,6 +31,7 @@ class TestCommand extends VanillaCommand {
 			$sender->sendMessage("Block: " . get_class($block));
 			$sender->sendMessage("HeldItem: " . get_class($sender->getInventory()->getItemInHand()));
 			$sender->sendMessage("Tile: " . ($tile instanceof Tile ? get_class($tile) : "null"));
+			$sender->sendMessage("Chunk is loaded: " . ($sender->getLevel()->isChunkLoaded((int) $sender->getX(), (int) $sender->getZ()) ? "TRUE" : "FALSE"));
 		}
 	}
 }
