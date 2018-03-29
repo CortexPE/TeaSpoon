@@ -46,4 +46,8 @@ class Silverfish extends Monster {
 	public function getName(): string{
 		return "Silverfish";
 	}
+	
+	public function getDrops(): array{
+		return [
+			Item::get(Item::EMERALD, 0, mt_rand(3, 5)),
 }
