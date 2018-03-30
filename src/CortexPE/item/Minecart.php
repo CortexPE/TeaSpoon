@@ -47,6 +47,9 @@ class Minecart extends PMMinecart {
 		$entity = Entity::createEntity(Entity::MINECART, $level, Entity::createBaseNBT($blockReplace->add(0.5, 0, 0.5)));
 
 		$entity->spawnToAll();
-		return false;
+		if($player->isSurvival()){
+			$this->count--;
+		}
+		return true;
 	}
 }
