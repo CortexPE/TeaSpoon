@@ -45,7 +45,6 @@ use pocketmine\block\Block;
 use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Entity;
-use pocketmine\entity\Vehicle;
 use pocketmine\event\{
 	block\BlockBreakEvent, level\LevelLoadEvent, Listener, server\RemoteServerCommandEvent, server\ServerCommandEvent
 };
@@ -53,12 +52,11 @@ use pocketmine\event\entity\{
 	EntityDamageEvent, EntityDeathEvent
 };
 use pocketmine\event\player\{
-	cheat\PlayerIllegalMoveEvent, PlayerCommandPreprocessEvent, PlayerDropItemEvent, PlayerGameModeChangeEvent, PlayerInteractEvent, PlayerItemHeldEvent, PlayerJumpEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
+	cheat\PlayerIllegalMoveEvent, PlayerCommandPreprocessEvent, PlayerDropItemEvent, PlayerGameModeChangeEvent, PlayerJumpEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent, PlayerInteractEvent, PlayerItemHeldEvent
 };
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
 use pocketmine\level\Level;
-use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\{
 	EntityEventPacket, LevelEventPacket
 };
@@ -156,17 +154,8 @@ class EventListener implements Listener {
 						$v->addEffect($ABSORPTION);
 						$v->addEffect($FIRE_RESISTANCE);
 
-						$pk = new LevelEventPacket();
-						$pk->evid = LevelEventPacket::EVENT_SOUND_TOTEM;
-						$pk->data = 0;
-						$pk->position = new Vector3($v->getX(), $v->getY(), $v->getZ());
-						PMServer::getInstance()->broadcastPacket($v->getViewers(), $pk);
-
-						$pk2 = new EntityEventPacket();
-						$pk2->entityRuntimeId = $v->getId();
-						$pk2->event = EntityEventPacket::CONSUME_TOTEM;
-						$pk2->data = 0;
-						PMServer::getInstance()->broadcastPacket($v->getViewers(), $pk2);
+						$v->getLevel()->broadcastLevelEvent($v, LevelEventPacket::EVENT_SOUND_TOTEM);
+						$v->broadcastEntityEvent(EntityEventPacket::CONSUME_TOTEM);
 					}
 				}
 			}
@@ -387,13 +376,13 @@ class EventListener implements Listener {
 						if(!$skipReplace){
 							if(!Main::$instantArmorReplace){
 								if($player->isSurvival() || $player->isAdventure()){
-									$player->getInventory()->setItemInHand(Item::get(Item::AIR, 0, 1));
+									$player->getInventory()->setItemInHand(Item::get(Item::AIR));
 								}
 							}else{
 								if(!$old->isNull()){
 									$player->getInventory()->setItemInHand($old);
 								}else{
-									$player->getInventory()->setItemInHand(Item::get(Item::AIR, 0, 1));
+									$player->getInventory()->setItemInHand(Item::get(Item::AIR));
 								}
 							}
 						}

@@ -35,16 +35,15 @@ declare(strict_types = 1);
 
 namespace CortexPE\item;
 
-use pocketmine\item\{
-	Armor, Item
-};
+use pocketmine\item\Durable;
+use pocketmine\item\Item;
 
-class Elytra extends Armor {
+class Elytra extends Durable{
 	public function __construct($meta = 0){
 		parent::__construct(Item::ELYTRA, $meta, "Elytra Wings");
 	}
 
-	public function getMaxDurability(): int{
+	public function getMaxDurability() : int{
 		return 433;
 	}
 }

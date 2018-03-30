@@ -42,7 +42,7 @@ use pocketmine\level\Explosion;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player;
 
-class Bed extends PMBed {
+class Bed extends PMBed{
 
 	/**
 	 * @param Item $item

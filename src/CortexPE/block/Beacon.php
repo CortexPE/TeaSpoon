@@ -25,22 +25,19 @@ use pocketmine\block\{
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\{
-	ByteTag, CompoundTag, IntTag, StringTag
+	ByteTag, CompoundTag, StringTag, IntTag
 };
 use pocketmine\Player;
 
-class Beacon extends Transparent {
-
-	/**
-	 * @var int
-	 */
+class Beacon extends Transparent{
+	/** @var int */
 	protected $id = self::BEACON;
 
 	/**
 	 * Beacon constructor.
 	 * @param int $meta
 	 */
-	public function __construct($meta = 0){
+	public function __construct(int $meta = 0){
 		$this->meta = $meta;
 	}
 
