@@ -60,9 +60,9 @@ class Lightning extends Animal {
 
 	public function onUpdate(int $currentTick): bool{
 		if(!$this->doneDamage){
+			$this->doneDamage = true;
 			// Tnx Genisys
 			if(Main::$lightningFire){
-				$this->doneDamage = true;
 				$fire = Item::get(Item::FIRE)->getBlock();
 				$oldBlock = $this->getLevel()->getBlock($this);
 				if($oldBlock instanceof Liquid){
