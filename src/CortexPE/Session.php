@@ -37,6 +37,7 @@ namespace CortexPE;
 
 use CortexPE\entity\projectile\FishingHook;
 use CortexPE\item\Elytra;
+use pocketmine\entity\Vehicle;
 use pocketmine\network\mcpe\protocol\EntityEventPacket;
 use pocketmine\Player;
 use pocketmine\Server as PMServer;
@@ -54,6 +55,8 @@ class Session {
 	public $fishingHook = null;
 	/** @var array */
 	public $clientData = [];
+	/** @var Vehicle */
+	public $vehicle = null;
 	/** @var Player */
 	private $player;
 

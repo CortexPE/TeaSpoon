@@ -42,9 +42,10 @@ use CortexPE\entity\object\{
 	AreaEffectCloud, ArmorStand, EndCrystal, ExperienceOrb, Lightning
 };
 use CortexPE\entity\projectile\{
-	Arrow, EnchantingBottle, FireworkRocket, FishingHook, LingeringPotion
+	Arrow, FireworkRocket, FishingHook, LingeringPotion
 };
 use CortexPE\entity\vehicle\Boat;
+use CortexPE\entity\vehicle\Minecart;
 use CortexPE\Main;
 use pocketmine\entity\Entity;
 
@@ -109,6 +110,9 @@ class EntityManager extends Entity {
 		self::registerEntity(EndCrystal::class, true, ['EnderCrystal', 'minecraft:ender_crystal']);
 		self::registerEntity(Boat::class, true, ['Boat', 'minecraft:boat']);
 		self::registerEntity(ArmorStand::class, true, ['ArmorStand', 'minecraft:armor_stand']);
+		if(Main::$cars){
+			self::registerEntity(Minecart::class, true, ['Minecart', 'minecraft:minecart']);
+		}
 
 		if(Main::$XPOrbOverride){
 			self::registerEntity(ExperienceOrb::class, true, ['XPOrb', 'minecraft:xp_orb']);

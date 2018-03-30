@@ -38,12 +38,15 @@ namespace CortexPE\entity\object;
 
 use CortexPE\utils\ArmorTypes;
 use pocketmine\entity\Entity;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\ListTag;
+use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\network\mcpe\protocol\MobArmorEquipmentPacket;
 use pocketmine\network\mcpe\protocol\MobEquipmentPacket;
 use pocketmine\Player;
@@ -332,4 +335,29 @@ class ArmorStand extends Entity {
 		$this->boots = $item;
 		$this->sendAll();
 	}
+
+	// A E S T H E T I C S  --  from Altay
+	public function applyGravity(){
+		$this->level->broadcastLevelEvent($this, LevelEventPacket::EVENT_SOUND_ARMOR_STAND_FALL);
+		parent::applyGravity();
+	}
+
+	public function attack(EntityDamageEvent $source){
+		if($source instanceof EntityDamageByEntityEvent){
+			$damager = $source->getDamager();
+			if($damager instanceof Player){
+				if($damager->isCreative()){
+					$this->level->broadcastLevelEvent($this, LevelEventPacket::EVENT_SOUND_ARMOR_STAND_BREAK);
+					$this->level->broadcastLevelEvent($this, LevelEventPacket::EVENT_PARTICLE_DESTROY, 5);
+					$this->flagForDespawn();
+				}else{
+					$this->level->broadcastLevelEvent($this, LevelEventPacket::EVENT_SOUND_ARMOR_STAND_HIT);
+				}
+			}
+		}
+		if($source->getCause() != EntityDamageEvent::CAUSE_CONTACT){ // cactus
+			Entity::attack($source);
+		}
+	}
+	// A E S T H E T I C S  --  from Altay
 }

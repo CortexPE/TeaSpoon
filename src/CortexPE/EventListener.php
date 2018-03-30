@@ -37,6 +37,7 @@ declare(strict_types = 1);
 
 namespace CortexPE;
 
+use CortexPE\entity\vehicle\Minecart;
 use CortexPE\level\weather\Weather;
 use CortexPE\utils\ArmorTypes;
 use CortexPE\utils\Xp;
@@ -44,6 +45,7 @@ use pocketmine\block\Block;
 use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Entity;
+use pocketmine\entity\Vehicle;
 use pocketmine\event\{
 	block\BlockBreakEvent, level\LevelLoadEvent, Listener, server\RemoteServerCommandEvent, server\ServerCommandEvent
 };
@@ -51,7 +53,7 @@ use pocketmine\event\entity\{
 	EntityDamageEvent, EntityDeathEvent
 };
 use pocketmine\event\player\{
-	cheat\PlayerIllegalMoveEvent, PlayerCommandPreprocessEvent, PlayerDropItemEvent, PlayerGameModeChangeEvent, PlayerInteractEvent, PlayerItemHeldEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
+	cheat\PlayerIllegalMoveEvent, PlayerCommandPreprocessEvent, PlayerDropItemEvent, PlayerGameModeChangeEvent, PlayerInteractEvent, PlayerItemHeldEvent, PlayerJumpEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
 };
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
@@ -422,6 +424,22 @@ class EventListener implements Listener {
 	public function onPlayerDropItem(PlayerDropItemEvent $ev){
 		if(!$ev->isCancelled() && Main::$limitedCreative && $ev->getPlayer()->isCreative()){
 			$ev->setCancelled();
+		}
+	}
+
+	/**
+	 * @param PlayerJumpEvent $ev
+	 *
+	 * @priority HIGHEST
+	 */
+	public function onJump(PlayerJumpEvent $ev){
+		if(Main::$cars){ // this hasck is used since linking the entity makes em a fucking ghost -_-
+			$session = Main::getInstance()->getSessionById($ev->getPlayer()->getId());
+			if($session instanceof Session){
+				if($session->vehicle instanceof Minecart && $session->vehicle->isAlive()){
+					$session->vehicle->rider = null;
+				}
+			}
 		}
 	}
 }

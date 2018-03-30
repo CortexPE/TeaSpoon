@@ -35,6 +35,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\item;
 
+use CortexPE\Main;
 use CortexPE\Utils;
 use pocketmine\item\{
 	Item, ItemFactory
@@ -57,6 +58,9 @@ class ItemManager {
 		ItemFactory::registerItem(new EndCrystal(), true);
 		ItemFactory::registerItem(new Bucket(), true);
 		ItemFactory::registerItem(new ArmorStand(), true);
+		if(Main::$cars){
+			ItemFactory::registerItem(new Minecart(), true);
+		}
 
 		if(!Utils::isPhared()){ // beta
 			ItemFactory::registerItem(new Record(Item::RECORD_13, 0, "Music Disc 13"), true);

@@ -187,6 +187,8 @@ class Main extends PluginBase {
 	public static $dragonEggTeleport = true;
 	/** @var float */
 	public static $endCrystalPower = 6;
+	/** @var bool */
+	public static $cars = false;
 	////////////////////////////////// END OF CONFIGS VARIABLES //////////////////////////////////
 
 	public static function getInstance(): Main{
@@ -256,6 +258,7 @@ class Main extends PluginBase {
 		self::$AnvilEnabled = self::$config->getNested("anvil.enable", self::$AnvilEnabled);
 		self::$dragonEggTeleport = self::$config->getNested("blocks.dragonEggTeleport", self::$dragonEggTeleport);
 		self::$endCrystalPower = self::$config->getNested("entities.endCrystalPower", self::$endCrystalPower);
+		self::$cars = self::$config->getNested("misc.cars", self::$cars);
 
 		// Pre-Enable Checks //
 
