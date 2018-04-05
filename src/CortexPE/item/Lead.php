@@ -33,21 +33,13 @@
 
 declare(strict_types = 1);
 
-namespace CortexPE\network;
+namespace CortexPE\item;
 
-use CortexPE\Main;
-use pocketmine\network\mcpe\protocol\PacketPool;
 
-class PacketManager {
-	private static $initialized;
-	public static function init(){
-		if(!self::$initialized){
-			self::$initialized = true;
-			Main::getPluginLogger()->debug("Registering Packets...");
-			if(Main::$AnvilEnabled || Main::$EnchantingTableEnabled){
-				PacketPool::registerPacket(new CraftingDataPacket());
-				PacketPool::registerPacket(new InventoryTransactionPacket());
-			}
-		}
+use pocketmine\item\Item;
+
+class Lead extends Item {
+	public function __construct(int $meta = 0){
+		parent::__construct(self::LEAD, $meta, "Lead");
 	}
 }

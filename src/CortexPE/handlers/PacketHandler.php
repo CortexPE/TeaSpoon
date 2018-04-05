@@ -35,18 +35,15 @@ declare(strict_types = 1);
 
 namespace CortexPE\handlers;
 
-use CortexPE\entity\vehicle\Minecart;
 use CortexPE\Main;
 use CortexPE\network\InventoryTransactionPacket;
 use CortexPE\Session;
 use CortexPE\Utils;
-use pocketmine\entity\Entity;
-use pocketmine\entity\Vehicle;
 use pocketmine\event\{
 	Listener, server\DataPacketReceiveEvent, server\DataPacketSendEvent
 };
 use pocketmine\network\mcpe\protocol\{
-	InteractPacket, PlayerActionPacket, SetEntityLinkPacket, StartGamePacket, types\EntityLink
+	PlayerActionPacket, StartGamePacket
 };
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
@@ -102,13 +99,23 @@ class PacketHandler implements Listener {
 				if($pk->transactionType == InventoryTransactionPacket::TYPE_USE_ITEM_ON_ENTITY){
 					if($pk->trData->actionType == InventoryTransactionPacket::USE_ITEM_ON_ENTITY_ACTION_INTERACT){
 						$entity = $p->getLevel()->getEntity($pk->trData->entityRuntimeId);
-						$item = $pk->trData->itemInHand;
+						$item = $p->getInventory()->getItemInHand();
 						$slot = $pk->trData->hotbarSlot;
 						$clickPos = $pk->trData->clickPos;
 						if(method_exists($entity, "onInteract")){
 							//                  Player Item  Int   Vector3
 							$entity->onInteract($p, $item, $slot, $clickPos);
 						}
+
+						/*if($item instanceof Lead){
+							if(Utils::leashEntityToPlayer($p, $entity)){
+								if($p->isSurvival()){
+									$item->count--;
+								}
+							} else {
+								$p->getLevel()->dropItem($entity, $item);
+							}
+						}*/
 					}
 				}
 				break;
@@ -127,7 +134,8 @@ class PacketHandler implements Listener {
 							}
 						}
 					}
-				}*/
+				}
+				break;*/
 		}
 	}
 

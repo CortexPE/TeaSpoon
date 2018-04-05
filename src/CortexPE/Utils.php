@@ -51,6 +51,7 @@ use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
+use pocketmine\Player;
 use pocketmine\Player as PMPlayer;
 use pocketmine\Server as PMServer;
 use pocketmine\utils\Color;
@@ -292,5 +293,21 @@ class Utils {
 		}
 
 		return $enchantments;
+	}
+
+	public static function leashEntityToPlayer(Player $player, Entity $entity): bool{
+		$entityDPM = $entity->getDataPropertyManager();
+		if($entityDPM->getByte(Entity::DATA_FLAG_LEASHED) != 1){
+			$entityDPM->setByte(Entity::DATA_FLAG_LEASHED, 1, true);
+			$entityDPM->setLong(Entity::DATA_LEAD_HOLDER_EID, $player->getId(), true);
+
+			return true;
+		}else{
+			$entityDPM->removeProperty(Entity::DATA_FLAG_LEASHED);
+			//$entityDPM->setByte(Entity::DATA_FLAG_LEASHED, 0, true);
+			$entityDPM->setLong(Entity::DATA_LEAD_HOLDER_EID, -1, true);
+
+			return false;
+		}
 	}
 }

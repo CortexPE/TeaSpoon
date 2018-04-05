@@ -33,21 +33,13 @@
 
 declare(strict_types = 1);
 
-namespace CortexPE\network;
+namespace CortexPE\entity\object;
 
-use CortexPE\Main;
-use pocketmine\network\mcpe\protocol\PacketPool;
 
-class PacketManager {
-	private static $initialized;
-	public static function init(){
-		if(!self::$initialized){
-			self::$initialized = true;
-			Main::getPluginLogger()->debug("Registering Packets...");
-			if(Main::$AnvilEnabled || Main::$EnchantingTableEnabled){
-				PacketPool::registerPacket(new CraftingDataPacket());
-				PacketPool::registerPacket(new InventoryTransactionPacket());
-			}
-		}
+use pocketmine\entity\Entity;
+
+class LeadKnot extends Entity {
+	public function onUpdate(int $currentTick): bool{
+		return false;
 	}
 }

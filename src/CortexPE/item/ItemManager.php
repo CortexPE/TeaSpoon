@@ -61,6 +61,7 @@ class ItemManager {
 		if(Main::$cars){
 			ItemFactory::registerItem(new Minecart(), true);
 		}
+		//ItemFactory::registerItem(new Lead(), true);
 
 		if(!Utils::isPhared()){ // beta
 			ItemFactory::registerItem(new Record(Item::RECORD_13, 0, "Music Disc 13"), true);

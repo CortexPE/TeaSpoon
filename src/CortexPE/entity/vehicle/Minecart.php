@@ -39,21 +39,19 @@ use CortexPE\Main;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
 use pocketmine\entity\Vehicle;
-use pocketmine\item\Item as ItemItem;
+use pocketmine\item\Item;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\network\mcpe\protocol\SetEntityLinkPacket;
-use pocketmine\network\mcpe\protocol\types\EntityLink;
 use pocketmine\Player;
 
 class Minecart extends Vehicle {
 
 	const NETWORK_ID = self::MINECART;
 
-	public $height = 0.7;
+	public $height = 0.8;
 	public $width = 0.98;
-	public $gravity = 0.4;
+	public $gravity = 1.5; // idk but I'm pretty sure this isnt like this in vanilla. Minecarts are just cars for now anyways xD
 	public $drag = 0.1;
 
 	/** @var Living */
@@ -74,7 +72,7 @@ class Minecart extends Vehicle {
 
 	public function getDrops(): array{
 		return [
-			ItemItem::get(ItemItem::MINECART, 0, 1),
+			Item::get(Item::MINECART, 0, 1),
 		];
 	}
 
@@ -82,14 +80,15 @@ class Minecart extends Vehicle {
 		$parent = parent::onUpdate($currentTick);
 		if($this->rider !== null){
 			$mot = $this->rider->getDirectionVector()->multiply(2);
-			//$mot->y = -$this->gravity;
+			$mot->y = -$this->gravity;
+			//$mot->y = 0;
 			$this->teleport($this->rider);
 			$this->rider->setMotion($mot);
 		}
 		return $parent;
 	}
 
-	public function onInteract(Player $player, ItemItem $item, int $slot, Vector3 $clickPos): bool{
+	public function onInteract(Player $player, Item $item, int $slot, Vector3 $clickPos): bool{
 		$this->rider = $player;
 		Main::getInstance()->getSessionById($player->getId())->vehicle = $this;
 
@@ -97,11 +96,6 @@ class Minecart extends Vehicle {
 		$link = new EntityLink($this->getId(), $player->getId(), 2, true); // todo: figure out what that last boolean is
 		$pk->link = $link;
 		$player->getServer()->broadcastPacket($this->getViewers(), $pk);
-
-		$pk = new SetEntityLinkPacket();
-		$link = new EntityLink($this->getId(), 0, 2, true); // todo: figure out what that last boolean is
-		$pk->link = $link;
-		$player->dataPacket($pk);
 		$this->rider->getDataPropertyManager()->setVector3(Entity::DATA_RIDER_SEAT_POSITION, new Vector3(0, 0, 0));*/
 		return true;
 	}
