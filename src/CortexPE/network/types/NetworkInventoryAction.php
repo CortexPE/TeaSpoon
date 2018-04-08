@@ -116,8 +116,10 @@ class NetworkInventoryAction {
 			case self::SOURCE_TODO:
 				$this->windowId = $packet->getVarInt();
 				switch($this->windowId){
-					case self::SOURCE_TYPE_CRAFTING_USE_INGREDIENT:
+					/** @noinspection PhpMissingBreakStatementInspection */
 					case self::SOURCE_TYPE_CRAFTING_RESULT:
+						$packet->isFinalCraftingPart = \true;
+					case self::SOURCE_TYPE_CRAFTING_USE_INGREDIENT:
 						$packet->isCraftingPart = \true;
 						break;
 				}
@@ -175,7 +177,7 @@ class NetworkInventoryAction {
 					throw new \UnexpectedValueException("Only expecting drop-item world actions from the client!");
 				}
 
-				return new DropItemAction($this->oldItem, $this->newItem);
+				return new DropItemAction($this->newItem);
 			case self::SOURCE_CREATIVE:
 				switch($this->inventorySlot){
 					case self::ACTION_MAGIC_SLOT_CREATIVE_DELETE_ITEM:
@@ -196,12 +198,10 @@ class NetworkInventoryAction {
 					case self::SOURCE_TYPE_CRAFTING_ADD_INGREDIENT:
 					case self::SOURCE_TYPE_CRAFTING_REMOVE_INGREDIENT:
 						$window = $player->getCraftingGrid();
-
 						return new SlotChangeAction($window, $this->inventorySlot, $this->oldItem, $this->newItem);
 					case self::SOURCE_TYPE_CRAFTING_RESULT:
-						return new CraftingTakeResultAction($this->oldItem, $this->newItem);
 					case self::SOURCE_TYPE_CRAFTING_USE_INGREDIENT:
-						return new CraftingTransferMaterialAction($this->oldItem, $this->newItem, $this->inventorySlot);
+						return \null;
 
 					case self::SOURCE_TYPE_CONTAINER_DROP_CONTENTS:
 						//TODO: this type applies to all fake windows, not just crafting
@@ -212,7 +212,6 @@ class NetworkInventoryAction {
 						if($inventorySlot === -1){
 							throw new \InvalidStateException("Fake container " . \get_class($window) . " for " . $player->getName() . " does not contain $this->oldItem");
 						}
-
 						return new SlotChangeAction($window, $inventorySlot, $this->oldItem, $this->newItem);
 
 					case self::SOURCE_TYPE_ENCHANT_INPUT:

@@ -137,13 +137,13 @@ class CraftingDataPacket extends PMCraftingDataPacket {
 			$stream->putSlot($item);
 		}
 
-		$results = $recipe->getAllResults();
+		$results = $recipe->getResults();
 		$stream->putUnsignedVarInt(\count($results));
 		foreach($results as $item){
 			$stream->putSlot($item);
 		}
 
-		$stream->putUUID($recipe->getId());
+		$stream->put(\str_repeat("\x00", 16)); //Null UUID
 
 		return CraftingDataPacket::ENTRY_SHAPELESS;
 	}
@@ -158,13 +158,13 @@ class CraftingDataPacket extends PMCraftingDataPacket {
 			}
 		}
 
-		$results = $recipe->getAllResults();
+		$results = $recipe->getResults();
 		$stream->putUnsignedVarInt(\count($results));
 		foreach($results as $item){
 			$stream->putSlot($item);
 		}
 
-		$stream->putUUID($recipe->getId());
+		$stream->put(\str_repeat("\x00", 16)); //Null UUID
 
 		return CraftingDataPacket::ENTRY_SHAPED;
 	}

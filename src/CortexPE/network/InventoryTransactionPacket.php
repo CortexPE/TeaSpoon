@@ -57,6 +57,12 @@ class InventoryTransactionPacket extends PMInventoryTransactionPacket {
 	 * determine whether we're doing a crafting transaction.
 	 */
 	public $isCraftingPart = \false;
+	/**
+	 * @var bool
+	 * NOTE: THIS FIELD DOES NOT EXIST IN THE PROTOCOL, it's merely used for convenience for PocketMine-MP to easily
+	 * determine whether we're doing a crafting transaction.
+	 */
+	public $isFinalCraftingPart = \false;
 
 	/** @var NetworkInventoryAction[] */
 	public $actions = [];
