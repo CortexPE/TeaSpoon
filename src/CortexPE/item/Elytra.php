@@ -36,10 +36,10 @@ declare(strict_types = 1);
 namespace CortexPE\item;
 
 use pocketmine\item\{
-	Armor, Item
+	Durable, Item
 };
 
-class Elytra extends Armor {
+class Elytra extends Durable {
 	public function __construct($meta = 0){
 		parent::__construct(Item::ELYTRA, $meta, "Elytra Wings");
 	}

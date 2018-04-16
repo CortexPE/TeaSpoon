@@ -72,10 +72,7 @@ class Session {
 		$this->fishing = false;
 
 		if($this->fishingHook instanceof FishingHook){
-			$pk = new EntityEventPacket();
-			$pk->entityRuntimeId = $this->fishingHook->getId();
-			$pk->event = EntityEventPacket::FISH_HOOK_TEASE;
-			$this->player->getServer()->broadcastPacket($this->player->getLevel()->getPlayers(), $pk);
+			$this->fishingHook->broadcastEntityEvent(EntityEventPacket::FISH_HOOK_TEASE, null, $this->fishingHook->getViewers());
 
 			$this->fishingHook->close();
 			$this->fishingHook = null;

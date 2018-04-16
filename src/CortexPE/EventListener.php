@@ -57,7 +57,6 @@ use pocketmine\event\player\{
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
 use pocketmine\level\Level;
-use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\{
 	EntityEventPacket, LevelEventPacket
 };
@@ -155,17 +154,8 @@ class EventListener implements Listener {
 						$v->addEffect($ABSORPTION);
 						$v->addEffect($FIRE_RESISTANCE);
 
-						$pk = new LevelEventPacket();
-						$pk->evid = LevelEventPacket::EVENT_SOUND_TOTEM;
-						$pk->data = 0;
-						$pk->position = new Vector3($v->getX(), $v->getY(), $v->getZ());
-						PMServer::getInstance()->broadcastPacket($v->getViewers(), $pk);
-
-						$pk2 = new EntityEventPacket();
-						$pk2->entityRuntimeId = $v->getId();
-						$pk2->event = EntityEventPacket::CONSUME_TOTEM;
-						$pk2->data = 0;
-						PMServer::getInstance()->broadcastPacket($v->getViewers(), $pk2);
+						$v->getLevel()->broadcastLevelEvent($v, LevelEventPacket::EVENT_SOUND_TOTEM);
+						$v->broadcastEntityEvent(EntityEventPacket::CONSUME_TOTEM, null, $v->getViewers());
 					}
 				}
 			}

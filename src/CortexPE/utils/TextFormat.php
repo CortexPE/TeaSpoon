@@ -56,19 +56,19 @@ class TextFormat extends PMTextFormat {
 	public const RGB_YELLOW = [63,63,21];
 	public const RGB_WHITE = [63,63,63];
 
-	public static function center($input){
+	public static function center($input): string{
 		$clear = TextFormat::clean($input);
 		$lines = explode("\n", $clear);
 		$max = max(array_map("strlen", $lines));
 		$lines = explode("\n", $input);
 		foreach($lines as $key => $line){
-			$lines[$key] = str_pad($line, $max + self::colorCount($line), " ", STR_PAD_LEFT);
+			$lines[$key] = str_pad($line, $max + self::colorCount($line), " ", STR_PAD_BOTH);
 		}
 
 		return implode("\n", $lines);
 	}
 
-	public static function colorCount($input){
+	public static function colorCount($input): int{
 		$colors = "abcdef0123456789lo";
 		$count = 0;
 		for($i = 0; $i < strlen($colors); $i++){
