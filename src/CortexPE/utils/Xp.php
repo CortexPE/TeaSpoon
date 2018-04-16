@@ -99,7 +99,7 @@ class Xp extends Utils {
 			case Entity::VILLAGER:
 				return 0;
 			case Entity::ENDER_DRAGON:
-				return (mt_rand(1,2) == 1 ? 12000 : 500);
+				return (boolval(rand(0, 1)) ? 12000 : 500);
 			case Entity::WITHER:
 				return 50;
 			case Entity::LIGHTNING_BOLT:
