@@ -45,9 +45,8 @@ use pocketmine\block\Block;
 use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Entity;
-use pocketmine\entity\Vehicle;
 use pocketmine\event\{
-	block\BlockBreakEvent, level\LevelLoadEvent, Listener, server\RemoteServerCommandEvent, server\ServerCommandEvent
+	level\LevelLoadEvent, Listener, server\RemoteServerCommandEvent, server\ServerCommandEvent
 };
 use pocketmine\event\entity\{
 	EntityDamageEvent, EntityDeathEvent
@@ -250,21 +249,6 @@ class EventListener implements Listener {
 			$xp = Xp::getXpDropsForEntity($ev->getEntity());
 			if($xp > 0){
 				$ev->getEntity()->getLevel()->dropExperience($ev->getEntity()->asVector3(), $xp);
-			}
-		}
-	}
-
-	/**
-	 * @param BlockBreakEvent $ev
-	 *
-	 * @priority HIGHEST
-	 */
-	public function onBlockBreak(BlockBreakEvent $ev){
-		if($ev->isCancelled()) return;
-		if(Main::$dropBlockExperience){
-			$xp = Xp::getXpDropsForBlock($ev->getBlock());
-			if($xp > 0){
-				$ev->getPlayer()->getLevel()->dropExperience($ev->getBlock()->asVector3(), $xp);
 			}
 		}
 	}

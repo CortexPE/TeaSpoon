@@ -121,13 +121,6 @@ class MonsterSpawner extends SpawnerPM {
 		return [];
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getName(): string{
-			return "Monster Spawner";
-	}
-
 	public function onBreak(Item $item, Player $player = \null): bool{
 		$parent = parent::onBreak($item, $player);
 		if(Main::$silkSpawners && $item->hasEnchantment(Enchantment::SILK_TOUCH)){

@@ -64,10 +64,10 @@ use pocketmine\utils\Config;
 class Main extends PluginBase {
 
 	// self explanatory constants
-	public const CONFIG_VERSION = 23;
+	public const CONFIG_VERSION = 24;
 	public const BASE_POCKETMINE_VERSION = "1.7dev"; // The PocketMine version before Jenkins builds it... (Can be found on PocketMine.php as the 'VERSION' constant)
-	public const TESTED_MIN_POCKETMINE_VERSION = "1.7dev-935"; // The minimum build this was tested working
-	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-935"; // The current build this was actually tested
+	public const TESTED_MIN_POCKETMINE_VERSION = "1.7dev-939"; // The minimum build this was tested working
+	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-940"; // The current build this was actually tested
 
 	///////////////////////////////// START OF INSTANCE VARIABLES /////////////////////////////////
 	/** @var Config */
@@ -151,8 +151,6 @@ class Main extends PluginBase {
 	public static $instantArmorEnabled = true;
 	/** @var bool */
 	public static $dropMobExperience = true;
-	/** @var bool */
-	public static $dropBlockExperience = true;
 	/** @var bool */
 	public static $fishingEnabled = true;
 	/** @var bool */
@@ -240,7 +238,6 @@ class Main extends PluginBase {
 		self::$chorusFruitEnabled = self::$config->getNested("chorusFruit.enable", self::$chorusFruitEnabled);
 		self::$instantArmorEnabled = self::$config->getNested("player.instantArmor.enable", self::$instantArmorEnabled);
 		self::$dropMobExperience = self::$config->getNested("Xp.dropMobExperience", self::$dropMobExperience);
-		self::$dropBlockExperience = self::$config->getNested("blocks.dropExperience", self::$dropBlockExperience);
 		self::$fishingEnabled = self::$config->getNested("player.fishing", self::$fishingEnabled);
 		self::$clearInventoryOnGMChange = self::$config->getNested("player.clearInventoryOnGameModeChange", self::$clearInventoryOnGMChange);
 		self::$mobSpawnerEnable = self::$config->getNested("mobSpawner.enable", self::$mobSpawnerEnable);

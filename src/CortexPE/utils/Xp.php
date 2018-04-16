@@ -36,7 +36,6 @@ declare(strict_types = 1);
 namespace CortexPE\utils;
 
 use CortexPE\Utils;
-use pocketmine\block\Block;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Human;
 
@@ -107,29 +106,5 @@ class Xp extends Utils {
 				return 0;
 		}
 		return 0;
-	}
-
-	public static function getXpDropsForBlock(Block $b): int{
-		switch($b->getId()){
-			case Block::COAL_ORE:
-				return mt_rand(0, 2);
-
-			case Block::DIAMOND_ORE:
-			case Block::EMERALD_ORE:
-				return mt_rand(3, 7);
-
-			case Block::LAPIS_ORE:
-			case Block::NETHER_QUARTZ_ORE:
-				return mt_rand(2, 5);
-
-			case Block::REDSTONE_ORE:
-				return mt_rand(1, 5);
-
-			case Block::MONSTER_SPAWNER:
-				return mt_rand(15, 43);
-
-			default:
-				return 0;
-		}
 	}
 }
