@@ -36,7 +36,6 @@ declare(strict_types = 1);
 namespace CortexPE\entity\mob;
 
 use CortexPE\Main;
-use CortexPE\task\DelayedCreeperExplosionTask;
 use pocketmine\entity\Monster;
 use pocketmine\item\Item;
 use pocketmine\level\Explosion;
@@ -52,11 +51,9 @@ class Creeper extends Monster {
 	public $height = 1.7;
 	public $width = 0.6;
 
-	/** @var bool */
-	protected $ignited = false; // used to ignore flint and steel interaction when about to explode
-
 	public const TAG_POWERED = "powered";
 	public const TAG_IGNITED = "ignited";
+	public const TAG_FUSE = "Fuse";
 	public const TAG_EXPLOSION_RADIUS = "ExplosionRadius";
 
 	public function initEntity(){
@@ -66,15 +63,33 @@ class Creeper extends Monster {
 			$this->namedtag->setByte(self::TAG_POWERED, 0);
 		}
 
-		if(!$this->namedtag->hasTag(self::TAG_EXPLOSION_RADIUS, ShortTag::class)){
-			$this->namedtag->setShort(self::TAG_EXPLOSION_RADIUS, 3);
+		if($this->namedtag->hasTag(self::TAG_EXPLOSION_RADIUS, ShortTag::class)){ // oopsie whoopsie we made a fucky wucky [73f710b]
+			$this->namedtag->removeTag(self::TAG_EXPLOSION_RADIUS);
+		}
+		if(!$this->namedtag->hasTag(self::TAG_EXPLOSION_RADIUS, ByteTag::class)){
+			$this->namedtag->setByte(self::TAG_EXPLOSION_RADIUS, 3);
 		}
 
-		// TODO: Fuse NBT (probably used for MobAI)
+		if(!$this->namedtag->hasTag(self::TAG_FUSE, ShortTag::class)){
+			$this->namedtag->setShort(self::TAG_FUSE, 30);
+		}
 
 		if(!$this->namedtag->hasTag(self::TAG_IGNITED, ByteTag::class)){
 			$this->namedtag->setByte(self::TAG_IGNITED, 0);
 		}
+	}
+
+	public function entityBaseTick(int $tickDiff = 1): bool{
+		$parent = parent::entityBaseTick($tickDiff);
+		if($this->isIgnited()){
+			$fuse = $this->getFuse() - $tickDiff;
+			$this->setFuse($fuse);
+			if($fuse <= 0){
+				$this->explode();
+			}
+		}
+
+		return $parent;
 	}
 
 	public function getName(): string{
@@ -94,12 +109,8 @@ class Creeper extends Monster {
 	}
 
 	public function setIgnited(bool $ignited): void{
-		if(!$this->ignited){
-			$this->ignited = true;
-			$this->namedtag->setByte(self::TAG_IGNITED, intval($ignited));
-			$this->setGenericFlag(self::DATA_FLAG_IGNITED, $ignited);
-			Main::getInstance()->getServer()->getScheduler()->scheduleDelayedTask(new DelayedCreeperExplosionTask(Main::getInstance(), $this), 30); // 1.5 seconds
-		}
+		$this->namedtag->setByte(self::TAG_IGNITED, intval($ignited));
+		$this->setGenericFlag(self::DATA_FLAG_IGNITED, $ignited);
 	}
 
 	public function isPowered(): bool{
@@ -112,11 +123,19 @@ class Creeper extends Monster {
 	}
 
 	public function setExplosionRadius(int $explosionRadius): void{
-		$this->namedtag->setShort(self::TAG_EXPLOSION_RADIUS, $explosionRadius);
+		$this->namedtag->setByte(self::TAG_EXPLOSION_RADIUS, $explosionRadius);
 	}
 
 	public function getExplosionRadius(): int{
-		return $this->namedtag->getShort(self::TAG_EXPLOSION_RADIUS, 3);
+		return $this->namedtag->getByte(self::TAG_EXPLOSION_RADIUS, 3);
+	}
+
+	public function setFuse(int $fuse): void{
+		$this->namedtag->setShort(self::TAG_FUSE, $fuse);
+	}
+
+	public function getFuse(): int{
+		return $this->namedtag->getShort(self::TAG_FUSE, 30);
 	}
 
 	public function explode(){
