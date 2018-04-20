@@ -61,6 +61,7 @@ Installation is easy, Just download the latest phar from [Poggit](https://poggit
    - [X] Chorus Fruit (with customizable Delay)
    - [X] FishingRod (Fully working Fishing System)
    - [X] Vanilla-Like "Instant-Armor-Equipment"
+   - [X] Lightning Rods
  - Entities & Mobs
    - [X] XP Drops
    - [X] Projectiles
@@ -76,6 +77,8 @@ Installation is easy, Just download the latest phar from [Poggit](https://poggit
      - [X] Chicken
      - [X] Cow
      - [X] Creeper
+       - [X] Charged Creepers
+       - [X] Ignited Creepers
      - [X] Donkey
      - [X] ElderGuardian
      - [X] EnderDragon

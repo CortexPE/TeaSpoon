@@ -35,6 +35,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\entity\object;
 
+use CortexPE\entity\mob\Creeper;
 use CortexPE\Main;
 use pocketmine\block\Liquid;
 use pocketmine\entity\{
@@ -91,9 +92,9 @@ class Lightning extends Animal {
 						$entity->setOnFire(mt_rand(3, 8));
 					}
 
-					/*if($entity instanceof Creeper){
-						$entity->setPowered(true, $this);
-					}*/
+					if($entity instanceof Creeper){
+						$entity->setPowered(true);
+					}
 				}
 			}
 			$spk = new PlaySoundPacket();

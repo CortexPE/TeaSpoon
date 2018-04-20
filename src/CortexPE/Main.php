@@ -67,7 +67,7 @@ class Main extends PluginBase {
 	public const CONFIG_VERSION = 24;
 	public const BASE_POCKETMINE_VERSION = "1.7dev"; // The PocketMine version before Jenkins builds it... (Can be found on PocketMine.php as the 'VERSION' constant)
 	public const TESTED_MIN_POCKETMINE_VERSION = "1.7dev-939"; // The minimum build this was tested working
-	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-940"; // The current build this was actually tested
+	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-941"; // The current build this was actually tested
 
 	///////////////////////////////// START OF INSTANCE VARIABLES /////////////////////////////////
 	/** @var Config */
@@ -187,6 +187,14 @@ class Main extends PluginBase {
 	public static $endCrystalPower = 6;
 	/** @var bool */
 	public static $cars = false;
+	/** @var bool */
+	public static $creepersExplodes = false;
+	/** @var bool */
+	public static $chargedCreepers = false;
+	/** @var bool */
+	public static $ignitableCreepers = false;
+	/** @var bool */
+	public static $lightningRods = false;
 	////////////////////////////////// END OF CONFIGS VARIABLES //////////////////////////////////
 
 	public static function getInstance(): Main{
@@ -256,6 +264,10 @@ class Main extends PluginBase {
 		self::$dragonEggTeleport = self::$config->getNested("blocks.dragonEggTeleport", self::$dragonEggTeleport);
 		self::$endCrystalPower = self::$config->getNested("entities.endCrystalPower", self::$endCrystalPower);
 		self::$cars = self::$config->getNested("misc.cars", self::$cars);
+		self::$creepersExplodes = self::$config->getNested("entities.creeper.enableExplosions", self::$creepersExplodes);
+		self::$ignitableCreepers = self::$config->getNested("entities.creeper.enableIgnitedCreepers", self::$ignitableCreepers);
+		self::$chargedCreepers = self::$config->getNested("entities.creeper.enableChargedCreepers", self::$chargedCreepers);
+		self::$lightningRods = self::$config->getNested("misc.lightningRods", self::$lightningRods);
 
 		// Pre-Enable Checks //
 

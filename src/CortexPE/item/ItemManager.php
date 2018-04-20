@@ -62,6 +62,7 @@ class ItemManager {
 			ItemFactory::registerItem(new Minecart(), true);
 		}
 		//ItemFactory::registerItem(new Lead(), true);
+		ItemFactory::registerItem(new BlazeRod(), true);
 
 		if(!Utils::isPhared()){ // beta
 			ItemFactory::registerItem(new Record(Item::RECORD_13, 0, "Music Disc 13"), true);
