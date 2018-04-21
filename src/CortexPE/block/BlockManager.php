@@ -35,6 +35,8 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
+use CortexPE\block\redstone\RedstoneTorch;
+use CortexPE\block\redstone\RedstoneWire;
 use CortexPE\Main;
 use CortexPE\Utils;
 use pocketmine\block\BlockFactory;
@@ -63,5 +65,8 @@ class BlockManager {
 		if(!Utils::isPhared()){ // beta
 			BlockFactory::registerBlock(new Jukebox(), true);
 		}
+
+		BlockFactory::registerBlock(new RedstoneWire(), true);
+		BlockFactory::registerBlock(new RedstoneTorch(), true);
 	}
 }

@@ -108,7 +108,7 @@ class PacketHandler implements Listener {
 						}
 
 						/*if($item instanceof Lead){
-							if(Utils::leashEntityToPlayer($p, $entity)){
+							if(EntityUtils::leashEntityToPlayer($p, $entity)){
 								if($p->isSurvival()){
 									$item->count--;
 								}
@@ -120,19 +120,16 @@ class PacketHandler implements Listener {
 				}
 				break;
 			/*case ($pk instanceof InteractPacket):
-				$session = Main::getInstance()->getSessionById($p->getId());
+				$target = $p->getLevel()->getEntity($pk->target);
+				if($target === null){
+					break;
+				}
 				if($pk->action == InteractPacket::ACTION_LEAVE_VEHICLE){
-					if($session instanceof Session){
-						if($session->vehicle instanceof Vehicle){
-							$pk = new SetEntityLinkPacket();
-							$link = new EntityLink($session->vehicle->getId(), $p->getId(), 0, true); // todo: figure out what that last boolean is
-							$pk->link = $link;
-							$p->getServer()->broadcastPacket($session->vehicle->getViewers(), $pk);
-							$p->getDataPropertyManager()->removeProperty(Entity::DATA_RIDER_SEAT_POSITION);
-							if($session->vehicle instanceof Minecart){
-								$session->vehicle->rider = null;
-							}
-						}
+					if(!isset(EntityUtils::$ridingEntity[$p->getId()])){
+						break;
+					}
+					if(EntityUtils::$ridingEntity[$p->getId()] === $target){
+						EntityUtils::dismountEntity($target, $p);
 					}
 				}
 				break;*/

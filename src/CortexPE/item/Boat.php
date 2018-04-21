@@ -23,12 +23,13 @@ declare(strict_types = 1);
 
 namespace CortexPE\item;
 
+use CortexPE\entity\vehicle\Boat as BoatEntity;
 use pocketmine\block\Block;
-use pocketmine\item\Item as ItemPM;
+use pocketmine\item\Boat as BoatPM;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 
-class Boat extends ItemPM {
+class Boat extends BoatPM {
 
 	public function __construct($meta = 0){
 		parent::__construct(self::BOAT, $meta, "Oak Boat");
@@ -54,36 +55,15 @@ class Boat extends ItemPM {
 	}
 
 	public function onActivate(Player $player, Block $block, Block $target, int $face, Vector3 $facepos): bool{
-		// TODO
-		return true;
-		/*$realPos = $target->getSide($face)->add(0.5, 0.4, 0.5);
-		$boat = new BoatEntity($player->getLevel(), new CompoundTag("", [
-			new ListTag("Pos", [
-				new DoubleTag("", $realPos->getX()),
-				new DoubleTag("", $realPos->getY()),
-				new DoubleTag("", $realPos->getZ()),
-			]),
-			new ListTag("Motion", [
-				new DoubleTag("", 0),
-				new DoubleTag("", 0),
-				new DoubleTag("", 0),
-			]),
-			new ListTag("Rotation", [
-				new FloatTag("", 0),
-				new FloatTag("", 0),
-			]),
-			new IntTag("WoodID", $this->getDamage()),
-		]));
+		$realPos = $target->getSide($face)->add(0.5, 0.4, 0.5);
+		$nbt = BoatEntity::createBaseNBT($realPos);
+		$nbt->setInt(BoatEntity::TAG_VARIANT, $this->getDamage());
+		$boat = new BoatEntity($player->getLevel(), $nbt);
 		$boat->spawnToAll();
 		if($player->isSurvival()){
 			--$this->count;
 		}
 
-		return true;*/
+		return true;
 	}
-
-	public function getFuelTime(): int{
-		return 1200; //400 in PC
-	}
-	//TODO
 }
