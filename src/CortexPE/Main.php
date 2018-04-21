@@ -41,11 +41,11 @@ use CortexPE\entity\EntityManager;
 use CortexPE\handlers\{
 	EnchantHandler, PacketHandler
 };
+use CortexPE\inventory\BrewingManager;
 use CortexPE\item\{
 	enchantment\Enchantment, ItemManager
 };
 use CortexPE\level\weather\Weather;
-use CortexPE\network\PacketManager;
 use CortexPE\plugin\AllAPILoaderManager;
 use CortexPE\task\TickLevelsTask;
 use CortexPE\tile\Tile;
@@ -341,8 +341,8 @@ class Main extends PluginBase {
 		// LevelManager::init(); EXECUTED VIA EventListener
 		Tile::init();
 		FishingLootTable::init();
-		PacketManager::init();
-		PacketManager::init();
+		//PacketManager::init();
+		(new BrewingManager())->init();
 
 		// Register Listeners
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);

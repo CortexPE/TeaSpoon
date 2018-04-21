@@ -59,6 +59,7 @@ class BlockManager {
 		BlockFactory::registerBlock(new Hopper(), true);
 		BlockFactory::registerBlock(new EnchantingTable(), true);
 		BlockFactory::registerBlock(new Anvil(), true);
+		BlockFactory::registerBlock(new BrewingStand(), true);
 
 		if(!Utils::isPhared()){ // beta
 			BlockFactory::registerBlock(new Jukebox(), true);
