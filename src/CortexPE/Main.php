@@ -64,7 +64,7 @@ use pocketmine\utils\Config;
 class Main extends PluginBase {
 
 	// self explanatory constants
-	public const CONFIG_VERSION = 25;
+	public const CONFIG_VERSION = 26;
 	public const BASE_POCKETMINE_VERSION = "1.7dev"; // The PocketMine version before Jenkins builds it... (Can be found on PocketMine.php as the 'VERSION' constant)
 	public const TESTED_MIN_POCKETMINE_VERSION = "1.7dev-939"; // The minimum build this was tested working
 	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-941"; // The current build this was actually tested
@@ -190,11 +190,23 @@ class Main extends PluginBase {
 	/** @var bool */
 	public static $creepersExplodes = false;
 	/** @var bool */
-	public static $chargedCreepers = false;
+	public static $chargedCreepers = true;
 	/** @var bool */
-	public static $ignitableCreepers = false;
+	public static $ignitableCreepers = true;
 	/** @var bool */
 	public static $lightningRods = false;
+	/** @var bool */
+	public static $enableIronGolemStructures = true;
+	/** @var bool */
+	public static $enableSnowGolemStructures = true;
+	/** @var bool */
+	public static $shearableSnowGolem = true;
+	/** @var bool */
+	public static $snowGolemSnowTrails = false;
+	/** @var bool */
+	public static $snowGolemMelts = true;
+	/** @var bool */
+	public static $snowLayerMelts = true;
 	////////////////////////////////// END OF CONFIGS VARIABLES //////////////////////////////////
 
 	public static function getInstance(): Main{
@@ -268,6 +280,12 @@ class Main extends PluginBase {
 		self::$ignitableCreepers = self::$config->getNested("entities.creeper.enableIgnitedCreepers", self::$ignitableCreepers);
 		self::$chargedCreepers = self::$config->getNested("entities.creeper.enableChargedCreepers", self::$chargedCreepers);
 		self::$lightningRods = self::$config->getNested("misc.lightningRods", self::$lightningRods);
+		self::$enableIronGolemStructures = self::$config->getNested("blocks.enableIronGolem", self::$enableIronGolemStructures);
+		self::$enableSnowGolemStructures = self::$config->getNested("blocks.enableSnowGolem", self::$enableSnowGolemStructures);
+		self::$shearableSnowGolem = self::$config->getNested("entities.snowGolem.shearable", self::$shearableSnowGolem);
+		self::$snowGolemSnowTrails = self::$config->getNested("entities.snowGolem.generatesSnow", self::$snowGolemSnowTrails);
+		self::$snowGolemMelts = self::$config->getNested("entities.snowGolem.melting", self::$snowGolemMelts);
+		self::$snowLayerMelts = self::$config->getNested("blocks.snowLayerMelts", self::$snowLayerMelts);
 
 		// Pre-Enable Checks //
 

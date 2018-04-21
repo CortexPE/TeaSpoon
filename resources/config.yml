@@ -10,7 +10,7 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 25
+version: 26
 
 entities:
  # Weather to register Vanilla Entities (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...) or not
@@ -28,6 +28,13 @@ entities:
   enableChargedCreepers: true
   # Enable Ignited Creepers when clicked by Flint and Steel (if Explosions are disabled, it will only despawn)
   enableIgnitedCreepers: true
+ snowGolem:
+  # Enable the ability to shear Snow Golems (Currently Doesn't work. idk why. maybe PC Docs isn't consistent with PE?)
+  shearable: true
+  # Enable to let snow golems leave out traces of snow (If disabled, The client will still show snow trails)
+  generatesSnow: false # Disabled by default (might be used to griefed servers :/)
+  # Enable to let snow golems melt when in hot biomes, in contact with raining / water (RIP Snowman#1337 2018-2018 ;-;)
+  melting: true
 
 enchantments:
  # Weather to enable & register Vanilla Enchantments (Set to false if you're going to use VanillaEnchantments plugin etc...) or not
@@ -113,6 +120,9 @@ Xp:
 
 blocks:
  dragonEggTeleport: true
+ enableIronGolem: true
+ enableSnowGolem: true
+ snowLayerMelts: true
 
 hopper:
  itemTransferEnable: true

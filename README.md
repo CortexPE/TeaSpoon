@@ -39,7 +39,7 @@ Installation is easy, Just download the latest phar from [Poggit](https://poggit
     - [X] Fully Functional Nether Portal Frame and Block
     - [X] Funtional END_PORTAL Block (Portal Soon)
   - [X] Weather System
-  - [ ] Temperature System
+  - [X] Temperature System
  - Blocks
    - [X] EndPortal
    - [X] Portal (Nether Portal Block)
@@ -51,6 +51,8 @@ Installation is easy, Just download the latest phar from [Poggit](https://poggit
    - [X] Hoppers
    - [X] (somewhat working) Anvils [needs fix] // Handling is translated from [NukkitX](https://github.com/NukkitX/Nukkit)
    - [X] Enchantment Tables // Handling is translated from [NukkitX](https://github.com/NukkitX/Nukkit)
+   - [X] SnowLayer (Affected by rain and temperature)
+   - [X] Pumpkin / Jack o' Lantern (Spawns Golems)
  - Items
    - [X] Vanilla Enchants (Progress: 98% | Credits to [TheAz928](https://github.com/TheAz928) for some of the values)
    - [X] Armor Damage
@@ -107,7 +109,7 @@ Installation is easy, Just download the latest phar from [Poggit](https://poggit
      - [X] Skeleton
      - [X] Skeleton Horse
      - [X] Slime
-     - [X] SnowGolem
+     - [X] SnowGolem (Affected by Rain & Temperature)
      - [X] Spider
      - [X] Stray
      - [X] Vex
