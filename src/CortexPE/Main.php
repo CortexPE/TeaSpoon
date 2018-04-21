@@ -342,7 +342,6 @@ class Main extends PluginBase {
 		Tile::init();
 		FishingLootTable::init();
 		PacketManager::init();
-		PacketManager::init();
 
 		// Register Listeners
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
