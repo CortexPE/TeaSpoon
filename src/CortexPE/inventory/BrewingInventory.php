@@ -65,6 +65,7 @@ class BrewingInventory extends ContainerInventory {
 
 	public function onSlotChange(int $index, Item $before, bool $send): void{
 		$this->holder->scheduleUpdate();
+		parent::onSlotChange($index, $before, $send);
 	}
 
 	public function getIngredient(): Item{
