@@ -42,7 +42,6 @@ use pocketmine\level\Explosion;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\ShortTag;
-use pocketmine\network\mcpe\protocol\EntityEventPacket;
 use pocketmine\Player;
 
 class Creeper extends Monster {
@@ -139,6 +138,7 @@ class Creeper extends Monster {
 	}
 
 	public function explode(){
+		$this->kill();
 		if(Main::$creepersExplodes){
 			$pow = $this->getExplosionRadius();
 			if($this->isPowered()){
@@ -148,8 +148,6 @@ class Creeper extends Monster {
 			$explosion->explodeA();
 			$explosion->explodeB();
 		}
-		$this->broadcastEntityEvent(EntityEventPacket::DEATH_ANIMATION); // idek why this isn't called somewhere on explosion and on Entity::kill()
-		$this->kill();
 	}
 
 	public function onInteract(Player $player, Item $item, int $slot, Vector3 $clickPos): bool{
