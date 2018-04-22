@@ -40,19 +40,24 @@ use CortexPE\tile\BrewingStand;
 use pocketmine\inventory\ContainerInventory;
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\types\WindowTypes;
+use pocketmine\Player;
 
 class BrewingInventory extends ContainerInventory {
 	/** @var BrewingStand */
 	protected $holder;
 
 	public const SLOT_INGREDIENT = 0;
+	public const SLOT_LEFT = 1;
+	public const SLOT_MIDDLE = 2;
+	public const SLOT_RIGHT = 3;
+	public const SLOT_FUEL = 4;
 
 	public function __construct(BrewingStand $holder, array $items = [], int $size = \null, string $title = \null){
 		parent::__construct($holder, $items, $size, $title);
 	}
 
 	public function getDefaultSize(): int{
-		return 4;
+		return 5;
 	}
 
 	public function getName(): string{
@@ -86,5 +91,23 @@ class BrewingInventory extends ContainerInventory {
 		}
 
 		return $return;
+	}
+
+	public function onClose(Player $who): void{
+		parent::onClose($who);
+		$this->holder->saveNBT();
+	}
+
+	public function onOpen(Player $who): void{
+		parent::onOpen($who);
+		$this->holder->loadBottles();
+	}
+
+	public function getFuel(): Item{
+		return $this->getItem(self::SLOT_FUEL);
+	}
+
+	public function setFuel(Item $fuel): void{
+		$this->setItem(self::SLOT_FUEL, $fuel);
 	}
 }

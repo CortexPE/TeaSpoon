@@ -57,7 +57,7 @@ class BrewingStand extends PMBrewingStand {
 				new IntTag(Tile::TAG_Y, (int)$this->y),
 				new IntTag(Tile::TAG_Z, (int)$this->z),
 			]);
-			$nbt->setShort(BrewingStandTile::TAG_COOK_TIME, BrewingStandTile::MAX_BREW_TIME);
+			$nbt->setInt(BrewingStandTile::TAG_BREW_TIME, BrewingStandTile::MAX_BREW_TIME);
 
 			if($item->hasCustomName()){
 				$nbt->setString("CustomName", $item->getCustomName());
@@ -89,7 +89,7 @@ class BrewingStand extends PMBrewingStand {
 				new IntTag(Tile::TAG_Y, (int)$this->y),
 				new IntTag(Tile::TAG_Z, (int)$this->z),
 			]);
-			$nbt->setShort(BrewingStandTile::TAG_COOK_TIME, BrewingStandTile::MAX_BREW_TIME);
+			$nbt->setInt(BrewingStandTile::TAG_BREW_TIME, BrewingStandTile::MAX_BREW_TIME);
 
 			if($item->hasCustomName()){
 				$nbt->setString("CustomName", $item->getCustomName());
