@@ -46,6 +46,7 @@ use CortexPE\item\{
 	enchantment\Enchantment, ItemManager
 };
 use CortexPE\level\weather\Weather;
+use CortexPE\network\PacketManager;
 use CortexPE\plugin\AllAPILoaderManager;
 use CortexPE\task\TickLevelsTask;
 use CortexPE\tile\Tile;
@@ -64,7 +65,7 @@ use pocketmine\utils\Config;
 class Main extends PluginBase {
 
 	// self explanatory constants
-	public const CONFIG_VERSION = 24;
+	public const CONFIG_VERSION = 26;
 	public const BASE_POCKETMINE_VERSION = "1.7dev"; // The PocketMine version before Jenkins builds it... (Can be found on PocketMine.php as the 'VERSION' constant)
 	public const TESTED_MIN_POCKETMINE_VERSION = "1.7dev-939"; // The minimum build this was tested working
 	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-941"; // The current build this was actually tested
@@ -84,6 +85,8 @@ class Main extends PluginBase {
 	private $disable = false;
 	/** @var string */
 	private static $sixCharCommitHash = "";
+	/** @var BrewingManager */
+	private $brewingManager = null;
 	////////////////////////////////// END OF INSTANCE VARIABLES //////////////////////////////////
 
 	///////////////////////////////// START OF CONFIGS VARIABLES /////////////////////////////////
@@ -195,6 +198,8 @@ class Main extends PluginBase {
 	public static $ignitableCreepers = false;
 	/** @var bool */
 	public static $lightningRods = false;
+	/** @var bool */
+	public static $brewingStandsEnabled = true;
 	////////////////////////////////// END OF CONFIGS VARIABLES //////////////////////////////////
 
 	public static function getInstance(): Main{
@@ -268,6 +273,7 @@ class Main extends PluginBase {
 		self::$ignitableCreepers = self::$config->getNested("entities.creeper.enableIgnitedCreepers", self::$ignitableCreepers);
 		self::$chargedCreepers = self::$config->getNested("entities.creeper.enableChargedCreepers", self::$chargedCreepers);
 		self::$lightningRods = self::$config->getNested("misc.lightningRods", self::$lightningRods);
+		self::$brewingStandsEnabled = self::$config->getNested("blocks.brewingStands", self::$brewingStandsEnabled);
 
 		// Pre-Enable Checks //
 
@@ -341,8 +347,9 @@ class Main extends PluginBase {
 		// LevelManager::init(); EXECUTED VIA EventListener
 		Tile::init();
 		FishingLootTable::init();
-		//PacketManager::init();
-		(new BrewingManager())->init();
+		PacketManager::init();
+		$this->brewingManager = new BrewingManager();
+		$this->brewingManager->init();
 
 		// Register Listeners
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
@@ -457,5 +464,9 @@ class Main extends PluginBase {
 
 	public static function getPluginLogger() : PluginLogger { // 2 lazy
 		return self::$instance->getLogger();
+	}
+
+	public function getBrewingManager(): BrewingManager{
+		return $this->brewingManager;
 	}
 }

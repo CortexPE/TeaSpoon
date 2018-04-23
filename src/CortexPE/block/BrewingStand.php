@@ -35,6 +35,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
+use CortexPE\Main;
 use CortexPE\tile\BrewingStand as BrewingStandTile;
 use pocketmine\block\Block;
 use pocketmine\block\BrewingStand as PMBrewingStand;
@@ -77,6 +78,9 @@ class BrewingStand extends PMBrewingStand {
 	}
 
 	public function onActivate(Item $item, Player $player = \null): bool{
+		if(!Main::$brewingStandsEnabled || (Main::$limitedCreative && $player->isCreative())){
+			return true;
+		}
 		$parent = parent::onActivate($item, $player);
 		$tile = $player->getLevel()->getTile($this);
 		if($tile instanceof BrewingStandTile){

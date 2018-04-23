@@ -10,7 +10,7 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 25
+version: 26
 
 entities:
  # Weather to register Vanilla Entities (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...) or not
@@ -113,6 +113,7 @@ Xp:
 
 blocks:
  dragonEggTeleport: true
+ brewingStands: true
 
 hopper:
  itemTransferEnable: true

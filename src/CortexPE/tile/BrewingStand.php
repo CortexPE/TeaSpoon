@@ -37,7 +37,7 @@ namespace CortexPE\tile;
 
 
 use CortexPE\inventory\BrewingInventory;
-use CortexPE\inventory\BrewingManager;
+use CortexPE\Main;
 use pocketmine\inventory\InventoryHolder;
 use pocketmine\item\Item;
 use pocketmine\level\Level;
@@ -79,6 +79,7 @@ class BrewingStand extends Spawnable implements InventoryHolder, Container, Name
 		Item::PUFFERFISH,
 		Item::RABBIT_FOOT,
 		Item::GUNPOWDER,
+		Item::DRAGON_BREATH,
 	];
 
 	/** @var BrewingInventory */
@@ -127,12 +128,11 @@ class BrewingStand extends Spawnable implements InventoryHolder, Container, Name
 
 	// Ported and cleaned up from iTXTech/Genisys
 	public function onUpdate(): bool{
-		if($this->isClosed()){
+		if($this->isClosed() || !Main::$brewingStandsEnabled){
 			return false;
 		}
 
-		$return = false;
-		$canBrew = false;
+		$return = $consumeFuel = $canBrew = false;
 
 		$this->timings->startTiming();
 
@@ -149,20 +149,25 @@ class BrewingStand extends Spawnable implements InventoryHolder, Container, Name
 			$this->setBottle($i - 1, $hasBottle);
 		}
 
-		if($this->getFuelValue() <= 0){
-			$fuel->count--;
-			if($fuel->getCount() <= 0){
-				$fuel = Item::get(Item::AIR);
+		if($this->getFuelValue() > 0){
+			$canBrew = true;
+			$this->broadcastFuelAmount($this->getFuelValue());
+			$this->broadcastFuelTotal(self::MAX_FUEL);
+		}else{
+			if(!$fuel->isNull()){
+				if($fuel->equals(Item::get(Item::BLAZE_POWDER, 0), true, false)){
+					$consumeFuel = true;
+					$canBrew = true;
+				}
+			}else{
+				$canBrew = false;
 			}
-			$this->inventory->setFuel($fuel);
-			$this->setFuelValue(self::MAX_FUEL);
 		}
-		$canBrew = (($fuel->getId() == Item::BLAZE_POWDER || $this->getFuelValue() > 0) && $canBrew);
 
-		if(!$ingredient->isNull()){
+		if(!$ingredient->isNull() && $canBrew){
 			if($canBrew && $this->isValidIngredient($ingredient)){
 				foreach($this->inventory->getPotions() as $potion){
-					$recipe = BrewingManager::$instance->matchBrewingRecipe($ingredient, $potion);
+					$recipe = Main::getInstance()->getBrewingManager()->matchBrewingRecipe($ingredient, $potion);
 					if($recipe !== null){
 						$canBrew = true;
 						break;
@@ -175,19 +180,28 @@ class BrewingStand extends Spawnable implements InventoryHolder, Container, Name
 		}
 
 		if($canBrew){
-			$this->broadcastFuelTotal(self::MAX_FUEL);
+			if($consumeFuel){
+				$fuel->count--;
+				if($fuel->getCount() <= 0){
+					$fuel = Item::get(Item::AIR);
+				}
+				$this->inventory->setFuel($fuel);
+				$this->setFuelValue(self::MAX_FUEL);
+				$this->broadcastFuelAmount(self::MAX_FUEL);
+			}
 			$return = true;
 			$brewTime = $this->getBrewTime();
 			$brewTime -= 1;
 			$this->setBrewTime($brewTime);
 
 			$this->broadcastBrewTime($brewTime);
+			$this->broadcastFuelTotal(self::MAX_FUEL);
 
 			if($brewTime <= 0){
 				for($i = 1; $i <= 3; $i++){
 					$hasBottle = false;
 					$potion = $this->inventory->getItem($i);
-					$recipe = BrewingManager::$instance->matchBrewingRecipe($ingredient, $potion);
+					$recipe = Main::getInstance()->getBrewingManager()->matchBrewingRecipe($ingredient, $potion);
 					if($recipe != null and !$potion->isNull()){
 						$this->inventory->setItem($i, $recipe->getResult());
 						$hasBottle = true;

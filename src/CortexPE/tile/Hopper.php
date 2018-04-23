@@ -137,7 +137,7 @@ class Hopper extends Spawnable implements InventoryHolder, Container, Nameable {
 
 			// suck items from container above it
 			$source = $this->getLevel()->getTile($this->getBlock()->getSide(Vector3::SIDE_UP));
-			if($source instanceof Container && !($source instanceof EnderChest)){ // follow vanilla rules
+			if($source instanceof Container && !($source instanceof EnderChest) && !($source instanceof BrewingStand)){ // follow vanilla rules
 				$inventory = $source->getInventory();
 				$firstOccupied = null;
 				for($index = 0; $index < $inventory->getSize(); $index++){
@@ -170,7 +170,7 @@ class Hopper extends Spawnable implements InventoryHolder, Container, Nameable {
 			// put items to target
 			if(!($this->getLevel()->getTile($this->getBlock()->getSide(Vector3::SIDE_DOWN)) instanceof Hopper)){ // vanilla way of doing it
 				$target = $this->getLevel()->getTile($this->getBlock()->getSide($this->getBlock()->getDamage()));
-				if($target instanceof Container){
+				if($target instanceof Container && !($target instanceof BrewingStand)){
 					$inv = $target->getInventory();
 					foreach($this->inventory->getContents() as $item){
 						if($item->isNull()){

@@ -23,6 +23,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\inventory;
 
+use CortexPE\Main;
 use pocketmine\inventory\CraftingManager;
 use pocketmine\inventory\Recipe;
 use pocketmine\item\Item;
@@ -63,7 +64,7 @@ class BrewingRecipe implements Recipe {
 
 	public function setId(UUID $id){
 		if($this->id !== null){
-			throw new \InvalidStateException("Id is already set");
+			throw new \InvalidStateException("ID is already set");
 		}
 
 		$this->id = $id;
@@ -91,6 +92,6 @@ class BrewingRecipe implements Recipe {
 	}
 
 	public function registerToCraftingManager(CraftingManager $manager): void{
-		BrewingManager::$instance->registerBrewingRecipe($this); // hakk
+		Main::getInstance()->getBrewingManager()->registerBrewingRecipe($this);
 	}
 }
