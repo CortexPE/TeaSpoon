@@ -62,6 +62,7 @@ class BlockManager {
 		BlockFactory::registerBlock(new Pumpkin(), true);
 		BlockFactory::registerBlock(new LitPumpkin(), true);
 		BlockFactory::registerBlock(new SnowLayer(), true);
+		BlockFactory::registerBlock(new BrewingStand(), true);
 
 		if(!Utils::isPhared()){ // beta
 			BlockFactory::registerBlock(new Jukebox(), true);
