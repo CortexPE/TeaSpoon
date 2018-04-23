@@ -193,11 +193,23 @@ class Main extends PluginBase {
 	/** @var bool */
 	public static $creepersExplodes = false;
 	/** @var bool */
-	public static $chargedCreepers = false;
+	public static $chargedCreepers = true;
 	/** @var bool */
-	public static $ignitableCreepers = false;
+	public static $ignitableCreepers = true;
 	/** @var bool */
 	public static $lightningRods = false;
+	/** @var bool */
+	public static $enableIronGolemStructures = true;
+	/** @var bool */
+	public static $enableSnowGolemStructures = true;
+	/** @var bool */
+	public static $shearableSnowGolem = true;
+	/** @var bool */
+	public static $snowGolemSnowTrails = false;
+	/** @var bool */
+	public static $snowGolemMelts = true;
+	/** @var bool */
+	public static $snowLayerMelts = true;
 	/** @var bool */
 	public static $brewingStandsEnabled = true;
 	////////////////////////////////// END OF CONFIGS VARIABLES //////////////////////////////////
@@ -273,6 +285,12 @@ class Main extends PluginBase {
 		self::$ignitableCreepers = self::$config->getNested("entities.creeper.enableIgnitedCreepers", self::$ignitableCreepers);
 		self::$chargedCreepers = self::$config->getNested("entities.creeper.enableChargedCreepers", self::$chargedCreepers);
 		self::$lightningRods = self::$config->getNested("misc.lightningRods", self::$lightningRods);
+		self::$enableIronGolemStructures = self::$config->getNested("blocks.enableIronGolem", self::$enableIronGolemStructures);
+		self::$enableSnowGolemStructures = self::$config->getNested("blocks.enableSnowGolem", self::$enableSnowGolemStructures);
+		self::$shearableSnowGolem = self::$config->getNested("entities.snowGolem.shearable", self::$shearableSnowGolem);
+		self::$snowGolemSnowTrails = self::$config->getNested("entities.snowGolem.generatesSnow", self::$snowGolemSnowTrails);
+		self::$snowGolemMelts = self::$config->getNested("entities.snowGolem.melting", self::$snowGolemMelts);
+		self::$snowLayerMelts = self::$config->getNested("blocks.snowLayerMelts", self::$snowLayerMelts);
 		self::$brewingStandsEnabled = self::$config->getNested("blocks.brewingStands", self::$brewingStandsEnabled);
 
 		// Pre-Enable Checks //

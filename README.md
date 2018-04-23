@@ -5,6 +5,8 @@
 
 A Massive PocketMine-MP plugin designed and is aiming to extend PMMP's functionalities (Without completely changing it) to Make it more Vanilla-Like.
 
+I wouldn't provide any support for using other branches of the plugin. They're still under development and very experimental. I won't be held responsible for any damages or corruptions that occured by using unsupported branches.
+
 A/N: If you don't like it / hate it, Then don't even bother using it. It's that simple... TeaSpoon was made for those who need it. :wink:
 
 Contributions are very welcome :smile:<br />You may contribute by opening a Pull Request and if it has been proven to be correct & working, I'll surely merge it.
@@ -37,7 +39,7 @@ Installation is easy, Just download the latest phar from [Poggit](https://poggit
     - [X] Fully Functional Nether Portal Frame and Block
     - [X] Funtional END_PORTAL Block (Portal Soon)
   - [X] Weather System
-  - [ ] Temperature System
+  - [X] Temperature System
  - Blocks
    - [X] EndPortal
    - [X] Portal (Nether Portal Block)
@@ -49,6 +51,8 @@ Installation is easy, Just download the latest phar from [Poggit](https://poggit
    - [X] Hoppers
    - [X] (somewhat working) Anvils [needs fix] // Handling is translated from [NukkitX](https://github.com/NukkitX/Nukkit)
    - [X] Enchantment Tables // Handling is translated from [NukkitX](https://github.com/NukkitX/Nukkit)
+   - [X] SnowLayer (Affected by rain and temperature)
+   - [X] Pumpkin / Jack o' Lantern (Spawns Golems)
  - Items
    - [X] Vanilla Enchants (Progress: 98% | Credits to [TheAz928](https://github.com/TheAz928) for some of the values)
    - [X] Armor Damage
@@ -105,7 +109,7 @@ Installation is easy, Just download the latest phar from [Poggit](https://poggit
      - [X] Skeleton
      - [X] Skeleton Horse
      - [X] Slime
-     - [X] SnowGolem
+     - [X] SnowGolem (Affected by Rain & Temperature)
      - [X] Spider
      - [X] Stray
      - [X] Vex
