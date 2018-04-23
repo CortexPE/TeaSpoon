@@ -53,6 +53,7 @@ Installation is easy, Just download the latest phar from [Poggit](https://poggit
    - [X] Enchantment Tables // Handling is translated from [NukkitX](https://github.com/NukkitX/Nukkit)
    - [X] SnowLayer (Affected by rain and temperature)
    - [X] Pumpkin / Jack o' Lantern (Spawns Golems)
+   - [X] Brewing Stand
  - Items
    - [X] Vanilla Enchants (Progress: 98% | Credits to [TheAz928](https://github.com/TheAz928) for some of the values)
    - [X] Armor Damage
@@ -66,6 +67,7 @@ Installation is easy, Just download the latest phar from [Poggit](https://poggit
    - [X] FishingRod (Fully working Fishing System)
    - [X] Vanilla-Like "Instant-Armor-Equipment"
    - [X] Lightning Rods
+   - [X] Dragon Breath
  - Entities & Mobs
    - [X] XP Drops
    - [X] Projectiles

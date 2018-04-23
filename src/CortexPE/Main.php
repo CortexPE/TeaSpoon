@@ -41,6 +41,7 @@ use CortexPE\entity\EntityManager;
 use CortexPE\handlers\{
 	EnchantHandler, PacketHandler
 };
+use CortexPE\inventory\BrewingManager;
 use CortexPE\item\{
 	enchantment\Enchantment, ItemManager
 };
@@ -84,6 +85,8 @@ class Main extends PluginBase {
 	private $disable = false;
 	/** @var string */
 	private static $sixCharCommitHash = "";
+	/** @var BrewingManager */
+	private $brewingManager = null;
 	////////////////////////////////// END OF INSTANCE VARIABLES //////////////////////////////////
 
 	///////////////////////////////// START OF CONFIGS VARIABLES /////////////////////////////////
@@ -207,6 +210,8 @@ class Main extends PluginBase {
 	public static $snowGolemMelts = true;
 	/** @var bool */
 	public static $snowLayerMelts = true;
+	/** @var bool */
+	public static $brewingStandsEnabled = true;
 	////////////////////////////////// END OF CONFIGS VARIABLES //////////////////////////////////
 
 	public static function getInstance(): Main{
@@ -286,6 +291,7 @@ class Main extends PluginBase {
 		self::$snowGolemSnowTrails = self::$config->getNested("entities.snowGolem.generatesSnow", self::$snowGolemSnowTrails);
 		self::$snowGolemMelts = self::$config->getNested("entities.snowGolem.melting", self::$snowGolemMelts);
 		self::$snowLayerMelts = self::$config->getNested("blocks.snowLayerMelts", self::$snowLayerMelts);
+		self::$brewingStandsEnabled = self::$config->getNested("blocks.brewingStands", self::$brewingStandsEnabled);
 
 		// Pre-Enable Checks //
 
@@ -360,6 +366,8 @@ class Main extends PluginBase {
 		Tile::init();
 		FishingLootTable::init();
 		PacketManager::init();
+		$this->brewingManager = new BrewingManager();
+		$this->brewingManager->init();
 
 		// Register Listeners
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
@@ -474,5 +482,9 @@ class Main extends PluginBase {
 
 	public static function getPluginLogger() : PluginLogger { // 2 lazy
 		return self::$instance->getLogger();
+	}
+
+	public function getBrewingManager(): BrewingManager{
+		return $this->brewingManager;
 	}
 }

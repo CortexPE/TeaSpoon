@@ -120,6 +120,7 @@ Xp:
 
 blocks:
  dragonEggTeleport: true
+ brewingStands: true
  enableIronGolem: true
  enableSnowGolem: true
  snowLayerMelts: true
