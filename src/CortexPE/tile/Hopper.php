@@ -51,7 +51,6 @@ use pocketmine\Server;
 use pocketmine\tile\Chest;
 use pocketmine\tile\Container;
 use pocketmine\tile\ContainerTrait;
-use pocketmine\tile\EnderChest;
 use pocketmine\tile\Nameable;
 use pocketmine\tile\NameableTrait;
 use pocketmine\tile\Spawnable;
@@ -137,13 +136,24 @@ class Hopper extends Spawnable implements InventoryHolder, Container, Nameable {
 
 			// suck items from container above it
 			$source = $this->getLevel()->getTile($this->getBlock()->getSide(Vector3::SIDE_UP));
-			if($source instanceof Container && !($source instanceof EnderChest)){ // follow vanilla rules
+			if($source instanceof Container){ // follow vanilla rules
 				$inventory = $source->getInventory();
 				$firstOccupied = null;
-				for($index = 0; $index < $inventory->getSize(); $index++){
-					if(!$inventory->getItem($index)->isNull()){
-						$firstOccupied = $index;
-						break;
+				if(!($source instanceof BrewingStand)){
+					for($index = 0; $index < $inventory->getSize(); $index++){
+						if(!$inventory->getItem($index)->isNull()){
+							$firstOccupied = $index;
+							break;
+						}
+					}
+				}else{
+					if(!$source->brewing){
+						for($index = 1; $index <= 3; $index++){
+							if(!$inventory->getItem($index)->isNull()){
+								$firstOccupied = $index;
+								break;
+							}
+						}
 					}
 				}
 				if($firstOccupied !== null){ // if changed from null
@@ -180,17 +190,60 @@ class Hopper extends Spawnable implements InventoryHolder, Container, Nameable {
 						$targetItem->setCount(1);
 
 						if($inv->canAddItem($targetItem)){
-							$inv->addItem($targetItem);
-							$this->inventory->removeItem($targetItem);
-							$inv->sendContents($inv->getViewers());
+							if(!($target instanceof BrewingStand)){
+								$inv->addItem($targetItem);
+								$this->inventory->removeItem($targetItem);
+								$inv->sendContents($inv->getViewers());
+							}
 							if($target instanceof Chest){
 								if($target->isPaired()){
 									$pair = $target->getPair();
 									$pInv = $pair->getInventory();
 									$pInv->sendContents($pInv->getViewers());
 								}
+								break;
+							}elseif($target instanceof BrewingStand){
+								if(!$target->brewing){
+									$remove = false;
+									if($target->isValidIngredient($targetItem)){
+										if($target->getInventory()->getIngredient()->isNull()){
+											$target->getInventory()->setIngredient($targetItem);
+											$this->inventory->removeItem($targetItem);
+											$inv->sendContents($inv->getViewers());
+											$target->scheduleUpdate();
+											$remove = true;
+										}
+									}
+									if($target->isValidFuel($targetItem)){
+										if($target->getInventory()->getFuel()->isNull()){
+											$target->getInventory()->setFuel($targetItem);
+											$this->inventory->removeItem($targetItem);
+											$inv->sendContents($inv->getViewers());
+											$target->scheduleUpdate();
+											$remove = true;
+										}
+									}
+									if(!$target->getInventory()->getIngredient()->isNull() || $target->getInventory()->getIngredient()->equals($targetItem)){
+										for($i = 1; $i <= 3; $i++){
+											if($target->getInventory()->getItem($i)->isNull()){
+												if($target->isValidMatch($target->getInventory()->getIngredient(), $targetItem)){
+													$target->getInventory()->setItem($i, $targetItem);
+													$inv->sendContents($inv->getViewers());
+													$target->scheduleUpdate();
+													$remove = true;
+													break;
+												}
+											}
+										}
+									}
+									if($remove){
+										$this->inventory->removeItem($targetItem);
+										$inv->sendContents($inv->getViewers());
+									}
+								}
+							}else{
+								break;
 							}
-							break;
 						}
 					}
 				}

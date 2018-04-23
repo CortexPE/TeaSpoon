@@ -46,14 +46,13 @@ class CraftingDataPacket extends PMCraftingDataPacket {
 	/** @var object[] */
 	public $entries = [];
 	/** @var bool */
-	public $cleanRecipes = \false;
+	public $cleanRecipes = false;
 
 	public $decodedEntries = [];
 
 	public function clean(){
 		$this->entries = [];
 		$this->decodedEntries = [];
-
 		return parent::clean();
 	}
 
@@ -112,7 +111,7 @@ class CraftingDataPacket extends PMCraftingDataPacket {
 			}
 			$this->decodedEntries[] = $entry;
 		}
-		(($this->get(1) !== "\x00")); //cleanRecipes
+		$this->getBool(); //cleanRecipes
 	}
 
 	private static function writeEntry($entry, NetworkBinaryStream $stream){
@@ -125,7 +124,6 @@ class CraftingDataPacket extends PMCraftingDataPacket {
 		}elseif($entry instanceof EnchantmentList){
 			return self::writeEnchantList($entry, $stream);
 		}
-
 		//TODO: add MultiRecipe
 
 		return -1;
@@ -138,12 +136,12 @@ class CraftingDataPacket extends PMCraftingDataPacket {
 		}
 
 		$results = $recipe->getResults();
-		$stream->putUnsignedVarInt(\count($results));
+		$stream->putUnsignedVarInt(count($results));
 		foreach($results as $item){
 			$stream->putSlot($item);
 		}
 
-		$stream->put(\str_repeat("\x00", 16)); //Null UUID
+		$stream->put(str_repeat("\x00", 16)); //Null UUID
 
 		return CraftingDataPacket::ENTRY_SHAPELESS;
 	}
@@ -159,12 +157,12 @@ class CraftingDataPacket extends PMCraftingDataPacket {
 		}
 
 		$results = $recipe->getResults();
-		$stream->putUnsignedVarInt(\count($results));
+		$stream->putUnsignedVarInt(count($results));
 		foreach($results as $item){
 			$stream->putSlot($item);
 		}
 
-		$stream->put(\str_repeat("\x00", 16)); //Null UUID
+		$stream->put(str_repeat("\x00", 16)); //Null UUID
 
 		return CraftingDataPacket::ENTRY_SHAPED;
 	}
@@ -213,14 +211,14 @@ class CraftingDataPacket extends PMCraftingDataPacket {
 	}
 
 	protected function encodePayload(){
-		$this->putUnsignedVarInt(\count($this->entries));
+		$this->putUnsignedVarInt(count($this->entries));
 
 		$writer = new NetworkBinaryStream();
 		foreach($this->entries as $d){
 			$entryType = self::writeEntry($d, $writer);
 			if($entryType >= 0){
 				$this->putVarInt($entryType);
-				($this->buffer .= $writer->getBuffer());
+				$this->put($writer->getBuffer());
 			}else{
 				$this->putVarInt(-1);
 			}
@@ -228,7 +226,7 @@ class CraftingDataPacket extends PMCraftingDataPacket {
 			$writer->reset();
 		}
 
-		($this->buffer .= ($this->cleanRecipes ? "\x01" : "\x00"));
+		$this->putBool($this->cleanRecipes);
 	}
 
 	public function handle(NetworkSession $session): bool{

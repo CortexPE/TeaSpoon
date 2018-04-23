@@ -27,8 +27,6 @@ use CortexPE\inventory\AnvilInventory;
 use CortexPE\inventory\EnchantInventory;
 use CortexPE\Main;
 use CortexPE\network\InventoryTransactionPacket;
-use pocketmine\inventory\transaction\action\CraftingTakeResultAction;
-use pocketmine\inventory\transaction\action\CraftingTransferMaterialAction;
 use pocketmine\inventory\transaction\action\CreativeInventoryAction;
 use pocketmine\inventory\transaction\action\DropItemAction;
 use pocketmine\inventory\transaction\action\InventoryAction;
@@ -89,7 +87,7 @@ class NetworkInventoryAction {
 	/** @var int */
 	public $windowId = ContainerIds::NONE;
 	/** @var int */
-	public $unknown = 0;
+	public $sourceFlags = 0;
 	/** @var int */
 	public $inventorySlot;
 	/** @var Item */
@@ -109,7 +107,7 @@ class NetworkInventoryAction {
 				$this->windowId = $packet->getVarInt();
 				break;
 			case self::SOURCE_WORLD:
-				$this->unknown = $packet->getUnsignedVarInt();
+				$this->sourceFlags = $packet->getUnsignedVarInt();
 				break;
 			case self::SOURCE_CREATIVE:
 				break;
@@ -118,9 +116,9 @@ class NetworkInventoryAction {
 				switch($this->windowId){
 					/** @noinspection PhpMissingBreakStatementInspection */
 					case self::SOURCE_TYPE_CRAFTING_RESULT:
-						$packet->isFinalCraftingPart = \true;
+						$packet->isFinalCraftingPart = true;
 					case self::SOURCE_TYPE_CRAFTING_USE_INGREDIENT:
-						$packet->isCraftingPart = \true;
+						$packet->isCraftingPart = true;
 						break;
 				}
 				break;
@@ -144,7 +142,7 @@ class NetworkInventoryAction {
 				$packet->putVarInt($this->windowId);
 				break;
 			case self::SOURCE_WORLD:
-				$packet->putUnsignedVarInt($this->unknown);
+				$packet->putUnsignedVarInt($this->sourceFlags);
 				break;
 			case self::SOURCE_CREATIVE:
 				break;
@@ -167,7 +165,7 @@ class NetworkInventoryAction {
 		switch($this->sourceType){
 			case self::SOURCE_CONTAINER:
 				$window = $player->getWindow($this->windowId);
-				if($window !== \null){
+				if($window !== null){
 					return new SlotChangeAction($window, $this->inventorySlot, $this->oldItem, $this->newItem);
 				}
 
@@ -201,16 +199,16 @@ class NetworkInventoryAction {
 						return new SlotChangeAction($window, $this->inventorySlot, $this->oldItem, $this->newItem);
 					case self::SOURCE_TYPE_CRAFTING_RESULT:
 					case self::SOURCE_TYPE_CRAFTING_USE_INGREDIENT:
-						return \null;
+						return null;
 
 					case self::SOURCE_TYPE_CONTAINER_DROP_CONTENTS:
 						//TODO: this type applies to all fake windows, not just crafting
 						$window = $player->getCraftingGrid();
 
 						//DROP_CONTENTS doesn't bother telling us what slot the item is in, so we find it ourselves
-						$inventorySlot = $window->first($this->oldItem, \true);
+						$inventorySlot = $window->first($this->oldItem, true);
 						if($inventorySlot === -1){
-							throw new \InvalidStateException("Fake container " . \get_class($window) . " for " . $player->getName() . " does not contain $this->oldItem");
+							throw new \InvalidStateException("Fake container " . get_class($window) . " for " . $player->getName() . " does not contain $this->oldItem");
 						}
 						return new SlotChangeAction($window, $inventorySlot, $this->oldItem, $this->newItem);
 

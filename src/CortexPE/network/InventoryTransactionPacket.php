@@ -23,11 +23,10 @@ declare(strict_types=1);
 
 namespace CortexPE\network;
 
-use pocketmine\network\mcpe\protocol\ProtocolInfo;
-
+use CortexPE\network\types\NetworkInventoryAction;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket as PMInventoryTransactionPacket;
-use CortexPE\network\types\NetworkInventoryAction;
+use pocketmine\network\mcpe\protocol\ProtocolInfo;
 
 class InventoryTransactionPacket extends PMInventoryTransactionPacket {
 	public const NETWORK_ID = ProtocolInfo::INVENTORY_TRANSACTION_PACKET;
@@ -56,13 +55,13 @@ class InventoryTransactionPacket extends PMInventoryTransactionPacket {
 	 * NOTE: THIS FIELD DOES NOT EXIST IN THE PROTOCOL, it's merely used for convenience for PocketMine-MP to easily
 	 * determine whether we're doing a crafting transaction.
 	 */
-	public $isCraftingPart = \false;
+	public $isCraftingPart = false;
 	/**
 	 * @var bool
 	 * NOTE: THIS FIELD DOES NOT EXIST IN THE PROTOCOL, it's merely used for convenience for PocketMine-MP to easily
 	 * determine whether we're doing a crafting transaction.
 	 */
-	public $isFinalCraftingPart = \false;
+	public $isFinalCraftingPart = false;
 
 	/** @var NetworkInventoryAction[] */
 	public $actions = [];
@@ -115,7 +114,7 @@ class InventoryTransactionPacket extends PMInventoryTransactionPacket {
 	protected function encodePayload(){
 		$this->putUnsignedVarInt($this->transactionType);
 
-		$this->putUnsignedVarInt(\count($this->actions));
+		$this->putUnsignedVarInt(count($this->actions));
 		foreach($this->actions as $action){
 			$action->write($this);
 		}
