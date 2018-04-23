@@ -33,46 +33,6 @@ use pocketmine\item\Potion;
 
 class BrewingManager extends CraftingManager {
 
-	private const POTIONS = [
-		"WATER"                => 0,
-		"MUNDANE"              => 1,
-		"LONG_MUNDANE"         => 2,
-		"THICK"                => 3,
-		"AWKWARD"              => 4,
-		"NIGHT_VISION"         => 5,
-		"LONG_NIGHT_VISION"    => 6,
-		"INVISIBILITY"         => 7,
-		"LONG_INVISIBILITY"    => 8,
-		"LEAPING"              => 9,
-		"LONG_LEAPING"         => 10,
-		"STRONG_LEAPING"       => 11,
-		"FIRE_RESISTANCE"      => 12,
-		"LONG_FIRE_RESISTANCE" => 13,
-		"SWIFTNESS"            => 14,
-		"LONG_SWIFTNESS"       => 15,
-		"STRONG_SWIFTNESS"     => 16,
-		"SLOWNESS"             => 17,
-		"LONG_SLOWNESS"        => 18,
-		"WATER_BREATHING"      => 19,
-		"LONG_WATER_BREATHING" => 20,
-		"HEALING"              => 21,
-		"STRONG_HEALING"       => 22,
-		"HARMING"              => 23,
-		"STRONG_HARMING"       => 24,
-		"POISON"               => 25,
-		"LONG_POISON"          => 26,
-		"STRONG_POISON"        => 27,
-		"REGENERATION"         => 28,
-		"LONG_REGENERATION"    => 29,
-		"STRONG_REGENERATION"  => 30,
-		"STRENGTH"             => 31,
-		"LONG_STRENGTH"        => 32,
-		"STRONG_STRENGTH"      => 33,
-		"WEAKNESS"             => 34,
-		"LONG_WEAKNESS"        => 35,
-		"WITHER"               => 36,
-	];
-
 	/** @var BrewingRecipe[] */
 	protected $brewingRecipes = [];
 
@@ -219,7 +179,9 @@ class BrewingManager extends CraftingManager {
 		$this->registerBrewingRecipe(new BrewingRecipe(Item::get(Item::SPLASH_POTION, Potion::LONG_INVISIBILITY, 1), Item::get(Item::FERMENTED_SPIDER_EYE, 0, 1), Item::get(Item::SPLASH_POTION, Potion::LONG_NIGHT_VISION, 1)));
 		//===================================================================分隔符=======================================================================
 		//普通药水升级成喷溅
-		foreach(self::POTIONS as $potion){
+		$ref = new \ReflectionClass(Potion::class);
+		$potions = array_diff_assoc($ref->getConstants(), $ref->getParentClass()->getConstants());
+		foreach($potions as $potion){
 			$this->registerBrewingRecipe(new BrewingRecipe(Item::get(Item::SPLASH_POTION, $potion, 1), Item::get(Item::GUNPOWDER, 0, 1), Item::get(Item::POTION, $potion, 1)));
 			$this->registerBrewingRecipe(new BrewingRecipe(Item::get(Item::LINGERING_POTION, $potion, 1), Item::get(Item::DRAGON_BREATH, 0, 1), Item::get(Item::SPLASH_POTION, $potion, 1)));
 		}
