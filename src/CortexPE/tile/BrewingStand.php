@@ -46,6 +46,7 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\ShortTag;
 use pocketmine\network\mcpe\protocol\ContainerSetDataPacket;
+use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\tile\Container;
 use pocketmine\tile\ContainerTrait;
 use pocketmine\tile\Nameable;
@@ -225,7 +226,12 @@ class BrewingStand extends Spawnable implements InventoryHolder, Container, Name
 					}
 					$this->setBottle($i - 1, $hasBottle);
 				}
-
+				foreach($this->inventory->getViewers() as $player){
+					$pk = new LevelSoundEventPacket();
+					$pk->sound = LevelSoundEventPacket::SOUND_POTION_BREWED;
+					$pk->position = $this->asVector3();
+					$player->dataPacket($pk);
+				}
 				$ingredient->count--;
 				if($ingredient->getCount() <= 0){
 					$ingredient = Item::get(Item::AIR);
