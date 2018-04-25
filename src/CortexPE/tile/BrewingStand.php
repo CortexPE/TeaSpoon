@@ -226,12 +226,7 @@ class BrewingStand extends Spawnable implements InventoryHolder, Container, Name
 					}
 					$this->setBottle($i - 1, $hasBottle);
 				}
-				foreach($this->inventory->getViewers() as $player){
-					$pk = new LevelSoundEventPacket();
-					$pk->sound = LevelSoundEventPacket::SOUND_POTION_BREWED;
-					$pk->position = $this->asVector3();
-					$player->dataPacket($pk);
-				}
+				$this->getLevel()->broadcastLevelSoundEvent($this, LevelSoundEventPacket::SOUND_POTION_BREWED);
 				$ingredient->count--;
 				if($ingredient->getCount() <= 0){
 					$ingredient = Item::get(Item::AIR);
