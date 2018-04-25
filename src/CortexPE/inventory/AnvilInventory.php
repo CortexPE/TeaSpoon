@@ -36,10 +36,9 @@ declare(strict_types = 1);
 namespace CortexPE\inventory;
 
 use pocketmine\inventory\AnvilInventory as PMAnvilInventory;
-use pocketmine\Player;
 
 class AnvilInventory extends PMAnvilInventory {
-	public function onClose(Player $who): void{
-		return; // do nothing...
+	public function getDefaultSize(): int{
+		return 3;
 	}
 }

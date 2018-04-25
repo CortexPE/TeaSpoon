@@ -262,9 +262,16 @@ class NetworkInventoryAction {
 								break;
 							case self::SOURCE_TYPE_ANVIL_RESULT:
 								$this->inventorySlot = 2;
+								$cost = $this->oldItem->getNamedTag()->getInt("RepairCost", 1);
+								if($player->getXpLevel() < $cost){
+									break;
+								}
 								$inv->clear(0);
 								$inv->clear(1);
 								$inv->setItem(2, $this->oldItem);
+								if($player->isSurvival()){
+									$player->subtractXpLevels($cost);
+								}
 								return new SlotChangeAction($inv, $this->inventorySlot, $this->oldItem, $this->newItem);
 								break;
 						}
