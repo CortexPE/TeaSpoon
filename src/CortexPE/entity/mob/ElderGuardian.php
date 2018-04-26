@@ -36,6 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\entity\mob;
 
 use pocketmine\entity\Animal;
+use pocketmine\entity\Entity;
 use pocketmine\item\Item;
 
 class ElderGuardian extends Animal {
@@ -50,6 +51,7 @@ class ElderGuardian extends Animal {
 
 	public function initEntity(){
 		$this->setMaxHealth(80);
+		$this->setDataFlag(Entity::DATA_FLAGS, Entity::DATA_FLAG_ELDER, true, Entity::DATA_TYPE_LONG);
 		parent::initEntity();
 	}
 
