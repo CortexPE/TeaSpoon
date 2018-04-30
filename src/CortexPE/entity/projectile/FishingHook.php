@@ -61,7 +61,7 @@ class FishingHook extends Projectile {
 	protected $touchedWater = false;
 
 	public function onUpdate(int $currentTick): bool{
-		if($this->closed){
+		if($this->isClosed() || !$this->isAlive()){
 			return false;
 		}
 
