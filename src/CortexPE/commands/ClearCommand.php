@@ -148,6 +148,12 @@ class ClearCommand extends VanillaCommand {
 			$count += $item->getCount();
 		}
 		$inv->clearAll();
+		
+		$ainv = $p->getArmorInventory();
+		foreach($ainv->getContents() as $armor){
+			$count += $armor->getCount();
+		}
+		$ainv->clearAll();
 
 		return $count;
 	}
