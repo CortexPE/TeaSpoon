@@ -143,17 +143,12 @@ class ClearCommand extends VanillaCommand {
 
 	private function clearTarget(Player $p): int{
 		$count = 0;
-		$inv = $p->getInventory();
-		foreach($inv->getContents() as $item){
+		$items = $p->getInventory()->getContents() + $p->getArmorInventory()->getContents();
+		foreach($items as $item){
 			$count += $item->getCount();
 		}
-		$inv->clearAll();
-		
-		$ainv = $p->getArmorInventory();
-		foreach($ainv->getContents() as $armor){
-			$count += $armor->getCount();
-		}
-		$ainv->clearAll();
+		$p->getInventory()->clearAll();
+		$p->getArmorInventory()->clearAll();
 
 		return $count;
 	}

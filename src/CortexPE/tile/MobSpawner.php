@@ -125,7 +125,7 @@ class MobSpawner extends Spawnable {
 	}
 
 	public function canUpdate(): bool{
-		//if(!$this->getLevel()->isChunkLoaded($this->getX(), $this->getZ())) return false; WTFFFFFFFFF I TESTED THIS ON A PLAYER ON AN ABSOLUTELY LOADED CHUNK AND IT STILL RETURNS FALSE. WTF DYLAN
+		if(!$this->getLevel()->isChunkLoaded($this->getX() >> 4, $this->getZ() >> 4)) return false;
 		if($this->getEntityId() === 0) return false;
 		$hasPlayer = false;
 		$count = 0;

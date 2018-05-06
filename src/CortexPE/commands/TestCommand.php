@@ -25,14 +25,21 @@ class TestCommand extends VanillaCommand {
 	}
 
 	public function execute(CommandSender $sender, $currentAlias, array $args){
-		if($sender instanceof Player){
+		if($sender instanceof Player && $sender->isOp()){
 			$block = $sender->getTargetBlock(10);
 			$tile = $sender->getLevel()->getTile($block);
 			$sender->sendMessage("Block: " . get_class($block));
 			$sender->sendMessage("HeldItem: " . get_class($sender->getInventory()->getItemInHand()));
 			$sender->sendMessage("Tile: " . ($tile instanceof Tile ? get_class($tile) : "null"));
-			$sender->sendMessage("Chunk is loaded: " . ($sender->getLevel()->isChunkLoaded((int) $sender->getX(), (int) $sender->getZ()) ? "TRUE" : "FALSE"));
+			$sender->sendMessage("Chunk is loaded: " . ($sender->getLevel()->isChunkLoaded($sender->getFloorX() >> 4, $sender->getFloorZ() >> 4) ? "TRUE" : "FALSE"));
 			$sender->sendMessage("Pos: " . $sender->asVector3()->__toString());
+			if(isset($args[0])){
+				switch($args[0]){
+					case "duplicate":
+						$sender->getInventory()->addItem($sender->getInventory()->getItemInHand());
+						break;
+				}
+			}
 		}
 	}
 }
