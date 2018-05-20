@@ -64,7 +64,7 @@ class Minecart extends Vehicle {
 		parent::__construct($level, $nbt);
 	}
 
-	public function initEntity(){
+	public function initEntity(): void{
 		parent::initEntity();
 		$this->setHealth(2);
 		$this->setMaxHealth(2);

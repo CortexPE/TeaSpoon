@@ -49,7 +49,7 @@ class ZombieHorse extends Animal {
 		return "Zombie Horse";
 	}
 
-	public function initEntity(){
+	public function initEntity(): void{
 		$this->setMaxHealth(20);
 		parent::initEntity();
 	}

@@ -47,7 +47,7 @@ class WitherSkeleton extends Skeleton {
 		return "Wither Skeleton";
 	}
 
-	public function initEntity(){
+	public function initEntity(): void{
 		$this->setMaxHealth(20);
 		parent::initEntity();
 	}

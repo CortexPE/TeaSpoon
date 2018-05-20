@@ -48,7 +48,7 @@ class Evoker extends Monster {
 		return "Evoker";
 	}
 
-	public function initEntity(){
+	public function initEntity(): void{
 		$this->setMaxHealth(24);
 		parent::initEntity();
 	}

@@ -52,7 +52,7 @@ class Boat extends Vehicle {
 		parent::__construct($level, $nbt);
 	}
 
-	public function initEntity(){
+	public function initEntity(): void{
 		$this->setMaxHealth(4);
 		parent::initEntity();
 	}
@@ -67,7 +67,7 @@ class Boat extends Vehicle {
 		return $this->namedtag->getByte(self::TAG_WOOD_ID);
 	}
 
-	public function attack(EntityDamageEvent $source){
+	public function attack(EntityDamageEvent $source): void{
 		parent::attack($source);
 		if(!$source->isCancelled()){
 			$pk = new EntityEventPacket();

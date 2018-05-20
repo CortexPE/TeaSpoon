@@ -77,7 +77,7 @@ class SnowGolem extends Monster {
 		return "Snow Golem";
 	}
 
-	public function initEntity(){
+	public function initEntity(): void{
 		$this->setMaxHealth(4);
 		$this->setHealth(4);
 		parent::initEntity();

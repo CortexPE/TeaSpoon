@@ -50,7 +50,7 @@ class Vindicator extends Monster {
 		return "Vindicator";
 	}
 
-	public function initEntity(){
+	public function initEntity(): void{
 		$this->setMaxHealth(24);
 		parent::initEntity();
 	}

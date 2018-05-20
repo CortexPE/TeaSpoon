@@ -223,7 +223,7 @@ class ArmorStand extends Entity {
 		}
 	}
 
-	public function kill(){
+	public function kill(): void{
 		$this->level->dropItem($this, Item::get(Item::ARMOR_STAND));
 		$this->level->dropItem($this, $this->getItemInHand());
 		$this->level->dropItem($this, $this->getItemOffHand());
@@ -234,7 +234,7 @@ class ArmorStand extends Entity {
 		parent::kill();
 	}
 
-	public function spawnTo(Player $player){
+	public function spawnTo(Player $player): void{
 		parent::spawnTo($player);
 		$this->sendArmorItems($player);
 		$this->sendHandItems($player);
@@ -268,7 +268,7 @@ class ArmorStand extends Entity {
 		}
 	}
 
-	public function saveNBT(){
+	public function saveNBT(): void{
 		parent::saveNBT();
 		$this->namedtag->setTag(new ListTag(self::TAG_ARMOR_ITEMS, [
 			$this->boots->nbtSerialize(),
@@ -337,12 +337,12 @@ class ArmorStand extends Entity {
 	}
 
 	// A E S T H E T I C S  --  from Altay
-	public function applyGravity(){
+	public function applyGravity(): void{
 		$this->level->broadcastLevelEvent($this, LevelEventPacket::EVENT_SOUND_ARMOR_STAND_FALL);
 		parent::applyGravity();
 	}
 
-	public function attack(EntityDamageEvent $source){
+	public function attack(EntityDamageEvent $source): void{
 		if($source instanceof EntityDamageByEntityEvent){
 			$damager = $source->getDamager();
 			if($damager instanceof Player){

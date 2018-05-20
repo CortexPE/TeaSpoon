@@ -47,7 +47,7 @@ class Vex extends Monster {
 		return "Vex";
 	}
 
-	public function initEntity(){
+	public function initEntity(): void{
 		$this->setMaxHealth(14);
 		parent::initEntity();
 	}
