@@ -38,7 +38,7 @@ namespace CortexPE\level\generator\biome;
 use CortexPE\level\generator\ender\biome\EnderBiome;
 use pocketmine\level\generator\hell\HellBiome;
 
-abstract class Biome extends \pocketmine\level\generator\biome\Biome {
+abstract class Biome extends \pocketmine\level\biome\Biome {
 
 	const END = 9;
 	const FROZEN_OCEAN = 10;

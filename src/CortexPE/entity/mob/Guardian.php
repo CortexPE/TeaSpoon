@@ -48,7 +48,7 @@ class Guardian extends Animal {
 		return "Guardian";
 	}
 
-	public function initEntity(){
+	public function initEntity(): void{
 		$this->setMaxHealth(30);
 		parent::initEntity();
 	}

@@ -48,7 +48,7 @@ class Wither extends Animal {
 		return "Wither";
 	}
 
-	public function initEntity(){
+	public function initEntity(): void{
 		$this->setMaxHealth(300);
 		parent::initEntity();
 	}

@@ -47,7 +47,7 @@ class ZombieVillager extends Zombie {
 		return "Zombie Villager";
 	}
 
-	public function initEntity(){
+	public function initEntity(): void{
 		$this->setMaxHealth(20);
 		parent::initEntity();
 	}

@@ -88,7 +88,7 @@ class Rabbit extends Animal {
 		return "Rabbit";
 	}
 
-	public function initEntity(){
+	public function initEntity(): void{
 		$this->setMaxHealth(3);
 		parent::initEntity();
 	}

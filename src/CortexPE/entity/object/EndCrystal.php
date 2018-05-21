@@ -79,7 +79,7 @@ class EndCrystal extends Entity {
 		]));
 	}
 
-	public function attack(EntityDamageEvent $source){
+	public function attack(EntityDamageEvent $source): void{
 		if(Main::$endCrystalExplode){
 			if($this->isClosed()){
 				return;

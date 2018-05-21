@@ -44,7 +44,7 @@ class FireworkRocket extends Projectile {
 		parent::__construct($level, $nbt, $shootingEntity);
 	}
 
-	protected function initEntity(){
+	protected function initEntity(): void{
 		parent::initEntity();
 		$random = $this->random ?? new Random();
 		$this->setGenericFlag(self::DATA_FLAG_HAS_COLLISION, true);
@@ -69,7 +69,7 @@ class FireworkRocket extends Projectile {
 	 * @param Player[]|Player $player
 	 * @param array $data Properly formatted entity data, defaults to everything
 	 */
-	public function sendData($player, array $data = null){
+	public function sendData($player, array $data = null): void{
 		if(!is_array($player)){
 			$player = [$player];
 		}
@@ -87,13 +87,13 @@ class FireworkRocket extends Projectile {
 		}
 	}
 
-	public function spawnTo(Player $player){
+	public function spawnTo(Player $player): void{
 		$this->setMotion($this->getDirectionVector());
 		$this->level->broadcastLevelSoundEvent($this, LevelSoundEventPacket::SOUND_LAUNCH);
 		parent::spawnTo($player);
 	}
 
-	public function despawnFromAll(){
+	public function despawnFromAll(): void{
 		if(count($this->namedtag->getCompoundTag(Fireworks::TAG_FIREWORKS)->getListTag(Fireworks::TAG_EXPLOSIONS)) > 0){
 			foreach($this->getLevel()->getNearbyEntities($this->getBoundingBox()->expand(5,5,5)) as $entity){ // 4 1/2 blocks acording to the wiki
 				if($entity instanceof Living){

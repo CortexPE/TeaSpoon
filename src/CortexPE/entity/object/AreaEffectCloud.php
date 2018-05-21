@@ -62,7 +62,7 @@ class AreaEffectCloud extends Entity {
 	public const TAG_DURATION = "Duration";
 	public const TAG_DURATION_ON_USE = "DurationOnUse";
 
-	public function initEntity(){
+	public function initEntity(): void{
 		parent::initEntity();
 
 		if(!$this->namedtag->hasTag(self::TAG_POTION_ID, ShortTag::class)){
@@ -203,6 +203,6 @@ class AreaEffectCloud extends Entity {
 		return "Area Effect Cloud";
 	}
 
-	protected function applyGravity(){
+	protected function applyGravity(): void{
 	}
 }

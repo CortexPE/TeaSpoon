@@ -48,7 +48,7 @@ class Mule extends Animal {
 		return "Mule";
 	}
 
-	public function initEntity(){
+	public function initEntity(): void{
 		$this->setMaxHealth(20);
 		parent::initEntity();
 	}

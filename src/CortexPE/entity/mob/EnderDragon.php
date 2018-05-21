@@ -44,7 +44,7 @@ class EnderDragon extends Monster {
 		return "Ender Dragon";
 	}
 
-	public function initEntity(){
+	public function initEntity(): void{
 		$this->setMaxHealth(200);
 		parent::initEntity();
 	}

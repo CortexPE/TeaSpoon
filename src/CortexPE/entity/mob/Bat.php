@@ -67,7 +67,7 @@ class Bat extends Animal {
 		return "Bat";
 	}
 
-	public function initEntity(){
+	public function initEntity(): void{
 		$this->setMaxHealth(6);
 		parent::initEntity();
 	}

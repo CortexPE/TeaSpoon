@@ -48,7 +48,7 @@ class PolarBear extends Monster {
 		return "Polar Bear";
 	}
 
-	public function initEntity(){
+	public function initEntity(): void{
 		$this->setMaxHealth(30);
 		parent::initEntity();
 	}

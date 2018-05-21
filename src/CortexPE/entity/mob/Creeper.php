@@ -55,7 +55,7 @@ class Creeper extends Monster {
 	public const TAG_FUSE = "Fuse";
 	public const TAG_EXPLOSION_RADIUS = "ExplosionRadius";
 
-	public function initEntity(){
+	public function initEntity(): void{
 		parent::initEntity();
 
 		if(!$this->namedtag->hasTag(self::TAG_POWERED, ByteTag::class)){

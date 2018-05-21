@@ -49,7 +49,7 @@ class Ghast extends Animal {
 		return "Ghast";
 	}
 
-	public function initEntity(){
+	public function initEntity(): void{
 		$this->setMaxHealth(10);
 		parent::initEntity();
 	}
