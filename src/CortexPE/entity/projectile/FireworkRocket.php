@@ -34,35 +34,14 @@ class FireworkRocket extends Projectile {
 	public $height = 0.25;
 	public $gravity = 0.0;
 	public $drag = 0.01;
-	private $lifeTime = 0;
 	public $random;
 	public $fireworks;
+	private $lifeTime = 0;
 
 	public function __construct(Level $level, CompoundTag $nbt, Entity $shootingEntity = null, ?Fireworks $item = null, ?Random $random = null){
 		$this->random = $random;
 		$this->fireworks = $item;
 		parent::__construct($level, $nbt, $shootingEntity);
-	}
-
-	protected function initEntity(): void{
-		parent::initEntity();
-		$random = $this->random ?? new Random();
-		$this->setGenericFlag(self::DATA_FLAG_HAS_COLLISION, true);
-		$this->setGenericFlag(self::DATA_FLAG_AFFECTED_BY_GRAVITY, true);
-		$this->getDataPropertyManager()->setItem(16, Item::get($this->fireworks->getId(), $this->fireworks->getDamage(), $this->fireworks->getCount(), $this->fireworks->getCompoundTag()));
-		//id [1][0], meta $d[1][2], count $d[1][1], data $d[1][3]
-		$flyTime = 1;
-		try{
-			if(!is_null($this->namedtag->getCompoundTag(Fireworks::TAG_FIREWORKS))){
-				$fireworksNBT = $this->namedtag->getCompoundTag(Fireworks::TAG_FIREWORKS);
-				if($fireworksNBT->hasTag(Fireworks::TAG_FLIGHT, ByteTag::class)){
-					$flyTime = $fireworksNBT->getByte(Fireworks::TAG_FLIGHT, 1);
-				}
-			}
-		}catch(\Exception $exception){
-			$this->server->getLogger()->debug($exception);
-		}
-		$this->lifeTime = 20 * $flyTime + $random->nextBoundedInt(5) + $random->nextBoundedInt(7);
 	}
 
 	/**
@@ -95,7 +74,7 @@ class FireworkRocket extends Projectile {
 
 	public function despawnFromAll(): void{
 		if(count($this->namedtag->getCompoundTag(Fireworks::TAG_FIREWORKS)->getListTag(Fireworks::TAG_EXPLOSIONS)) > 0){
-			foreach($this->getLevel()->getNearbyEntities($this->getBoundingBox()->expand(5,5,5)) as $entity){ // 4 1/2 blocks acording to the wiki
+			foreach($this->getLevel()->getNearbyEntities($this->getBoundingBox()->expand(5, 5, 5)) as $entity){ // 4 1/2 blocks acording to the wiki
 				if($entity instanceof Living){
 					$distance = $this->distance($entity);
 
@@ -125,5 +104,30 @@ class FireworkRocket extends Projectile {
 		}else{
 			return parent::entityBaseTick($tickDiff);
 		}
+	}
+
+	protected function initEntity(): void{
+		parent::initEntity();
+		$random = $this->random ?? new Random();
+		$this->setGenericFlag(self::DATA_FLAG_HAS_COLLISION, true);
+		$this->setGenericFlag(self::DATA_FLAG_AFFECTED_BY_GRAVITY, true);
+		if($this->fireworks instanceof Item){
+			$this->getDataPropertyManager()->setItem(16, Item::get($this->fireworks->getId(), $this->fireworks->getDamage(), $this->fireworks->getCount(), $this->fireworks->getCompoundTag()));
+		}else{
+			$this->getDataPropertyManager()->setItem(16, Item::get(Item::FIREWORKS));
+		}
+		//id [1][0], meta $d[1][2], count $d[1][1], data $d[1][3]
+		$flyTime = 1;
+		try{
+			if(!is_null($this->namedtag->getCompoundTag(Fireworks::TAG_FIREWORKS))){
+				$fireworksNBT = $this->namedtag->getCompoundTag(Fireworks::TAG_FIREWORKS);
+				if($fireworksNBT->hasTag(Fireworks::TAG_FLIGHT, ByteTag::class)){
+					$flyTime = $fireworksNBT->getByte(Fireworks::TAG_FLIGHT, 1);
+				}
+			}
+		}catch(\Exception $exception){
+			$this->server->getLogger()->debug($exception);
+		}
+		$this->lifeTime = 20 * $flyTime + $random->nextBoundedInt(5) + $random->nextBoundedInt(7);
 	}
 }
