@@ -59,7 +59,6 @@ Installation is easy, Just download the latest phar from [Poggit](https://poggit
    - [X] Armor Damage
    - [X] Armor Stands
    - [X] FireCharge
-   - [X] Totem of Undying
    - [X] Fully Functional Elytra Wings
    - [X] Fully Functional Fireworks (Credits to [XenialDan](https://github.com/thebigsmileXD) for 45% of it)
    - [X] Lingering Potions (Credits: [ClearSkyTeam](https://github.com/ClearSkyTeam))

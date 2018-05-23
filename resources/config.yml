@@ -10,7 +10,7 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 26
+version: 27
 
 entities:
  # Weather to register Vanilla Entities (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...) or not
@@ -96,7 +96,6 @@ player:
   enable: true
   enableElytraBoost: true
   elytraBoostParticles: true
- totemOfUndying: true
  fishing: true
 
 mobSpawner:

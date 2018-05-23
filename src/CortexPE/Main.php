@@ -65,10 +65,10 @@ use pocketmine\utils\Config;
 class Main extends PluginBase {
 
 	// self explanatory constants
-	public const CONFIG_VERSION = 26;
+	public const CONFIG_VERSION = 27;
 	public const BASE_POCKETMINE_VERSION = "1.7dev"; // The PocketMine version before Jenkins builds it... (Can be found on PocketMine.php as the 'VERSION' constant)
-	public const TESTED_MIN_POCKETMINE_VERSION = "1.7dev-1014"; // The minimum build this was tested working
-	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-1034"; // The current build this was actually tested
+	public const TESTED_MIN_POCKETMINE_VERSION = "1.7dev-1041"; // The minimum build this was tested working
+	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-1043"; // The current build this was actually tested
 
 	///////////////////////////////// START OF INSTANCE VARIABLES /////////////////////////////////
 	/** @var Config */
@@ -144,8 +144,6 @@ class Main extends PluginBase {
 	public static $silkSpawners = false;
 	/** @var bool */
 	public static $fireworksEnabled = true;
-	/** @var bool */
-	public static $totemEnabled = true;
 	/** @var bool */
 	public static $ePearlEnabled = true;
 	/** @var bool */
@@ -258,7 +256,6 @@ class Main extends PluginBase {
 		self::$elytraBoostEnabled = self::$config->getNested("player.elytra.enableElytraBoost", self::$elytraBoostEnabled);
 		self::$silkSpawners = self::$config->getNested("mobSpawner.silkTouchSpawners", self::$silkSpawners);
 		self::$fireworksEnabled = self::$config->getNested("fireworks.enable", self::$fireworksEnabled);
-		self::$totemEnabled = self::$config->getNested("player.totemOfUndying", self::$totemEnabled);
 		self::$ePearlEnabled = self::$config->getNested("enderPearl.enable", self::$ePearlEnabled);
 		self::$chorusFruitEnabled = self::$config->getNested("chorusFruit.enable", self::$chorusFruitEnabled);
 		self::$instantArmorEnabled = self::$config->getNested("player.instantArmor.enable", self::$instantArmorEnabled);

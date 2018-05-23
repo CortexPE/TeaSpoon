@@ -47,7 +47,6 @@ class ItemManager {
 		ItemFactory::registerItem(new LingeringPotion(), true);
 		ItemFactory::registerItem(new FlintSteel(), true);
 		ItemFactory::registerItem(new FireCharge(), true);
-		ItemFactory::registerItem(new TotemOfUndying(), true);
 		ItemFactory::registerItem(new Elytra(), true);
 		ItemFactory::registerItem(new Fireworks(), true);
 		ItemFactory::registerItem(new ChorusFruit(), true);
