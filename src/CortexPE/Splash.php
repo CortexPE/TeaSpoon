@@ -180,7 +180,7 @@ class Splash {
 		"crawls the interwebs",
 	];
 
-	public const VALENTINES_SPLASH = "Cortex loves J****e <3";
+	public const VALENTINES_SPLASH = "Happy Valentines Day!";
 
 	private static $TEASPOON_SPLASHES = [
 		'Low-Calorie blend', // first ever teaspoon splash text... and that's why its in ' not " xd
@@ -206,7 +206,6 @@ class Splash {
 		"We have *crappy* VCS Systems. :P",
 		":shrug:",
 		"Fukkit!",
-		self::VALENTINES_SPLASH,
 		"§4R§cA§6I§eN§2B§aO§bW§3 T§1E§9X§dT§5!",
 		"@TheAz928 is notorious for HardCoding values!",
 

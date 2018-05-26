@@ -53,9 +53,7 @@ use CortexPE\tile\Tile;
 use CortexPE\utils\{
 	FishingLootTable, TextFormat
 };
-use pocketmine\command\{
-	CommandSender, defaults\DumpMemoryCommand, defaults\GarbageCollectorCommand, defaults\StatusCommand
-};
+use pocketmine\command\CommandSender;
 use pocketmine\level\Level;
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
@@ -65,7 +63,7 @@ use pocketmine\utils\Config;
 class Main extends PluginBase {
 
 	// self explanatory constants
-	public const CONFIG_VERSION = 26;
+	public const CONFIG_VERSION = 27;
 	public const BASE_POCKETMINE_VERSION = "1.7dev"; // The PocketMine version before Jenkins builds it... (Can be found on PocketMine.php as the 'VERSION' constant)
 	public const TESTED_MIN_POCKETMINE_VERSION = "1.7dev-1014"; // The minimum build this was tested working
 	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-1034"; // The current build this was actually tested
@@ -145,8 +143,6 @@ class Main extends PluginBase {
 	/** @var bool */
 	public static $fireworksEnabled = true;
 	/** @var bool */
-	public static $totemEnabled = true;
-	/** @var bool */
 	public static $ePearlEnabled = true;
 	/** @var bool */
 	public static $chorusFruitEnabled = true;
@@ -173,13 +169,7 @@ class Main extends PluginBase {
 	/** @var bool */
 	public static $elytraBoostParticles = true;
 	/** @var bool */
-	public static $XPOrbOverride = false;
-	/** @var bool */
-	public static $XPPickupDelay = false;
-	/** @var bool */
 	public static $endCrystalExplode = true;
-	/** @var int */
-	public static $XPTicksTillDespawn = 200;
 	/** @var bool */
 	public static $EnchantingTableEnabled = true;
 	/** @var bool */
@@ -258,7 +248,6 @@ class Main extends PluginBase {
 		self::$elytraBoostEnabled = self::$config->getNested("player.elytra.enableElytraBoost", self::$elytraBoostEnabled);
 		self::$silkSpawners = self::$config->getNested("mobSpawner.silkTouchSpawners", self::$silkSpawners);
 		self::$fireworksEnabled = self::$config->getNested("fireworks.enable", self::$fireworksEnabled);
-		self::$totemEnabled = self::$config->getNested("player.totemOfUndying", self::$totemEnabled);
 		self::$ePearlEnabled = self::$config->getNested("enderPearl.enable", self::$ePearlEnabled);
 		self::$chorusFruitEnabled = self::$config->getNested("chorusFruit.enable", self::$chorusFruitEnabled);
 		self::$instantArmorEnabled = self::$config->getNested("player.instantArmor.enable", self::$instantArmorEnabled);
@@ -272,10 +261,7 @@ class Main extends PluginBase {
 		self::$beaconEffectsEnabled = self::$config->getNested("beacon.effectsEnabled", self::$beaconEffectsEnabled);
 		self::$shulkerBoxEnabled = self::$config->getNested("shulkerBox.enable", self::$shulkerBoxEnabled);
 		self::$elytraBoostParticles = self::$config->getNested("player.elytra.elytraBoostParticles", self::$elytraBoostParticles);
-		self::$XPOrbOverride = self::$config->getNested("Xp.override", self::$XPOrbOverride);
-		self::$XPPickupDelay = self::$config->getNested("Xp.pickupDelay", self::$XPPickupDelay);
 		self::$endCrystalExplode = self::$config->getNested("entities.endCrystalExplosion", self::$endCrystalExplode);
-		self::$XPTicksTillDespawn = self::$config->getNested("Xp.ticksTillDespawn", self::$XPTicksTillDespawn);
 		self::$EnchantingTableEnabled = self::$config->getNested("enchantments.enchantingTableEnabled", self::$EnchantingTableEnabled);
 		self::$AnvilEnabled = self::$config->getNested("anvil.enable", self::$AnvilEnabled);
 		self::$dragonEggTeleport = self::$config->getNested("blocks.dragonEggTeleport", self::$dragonEggTeleport);
@@ -307,18 +293,6 @@ class Main extends PluginBase {
 
 			self::$sixCharCommitHash = substr($meta["fromCommit"], 0, 6);
 		} else {
-			$this->getServer()->getLogger()->setLogDebug(true);
-			$cm = $this->getServer()->getCommandMap();
-			if($cm->getCommand("status") === null){
-				$cm->register("pocketmine", new StatusCommand("status"));
-			}
-			if($cm->getCommand("gc") === null){
-				$cm->register("pocketmine", new GarbageCollectorCommand("gc"));
-			}
-			if($cm->getCommand("dumpmemory") === null){
-				$cm->register("pocketmine", new DumpMemoryCommand("dumpmemory"));
-			}
-
 			$this->getLogger()->warning("You're using a developer's build of TeaSpoon. For better performance and stability, please get a pre-packaged version here: https://poggit.pmmp.io/ci/CortexPE/TeaSpoon/~");
 		}
 

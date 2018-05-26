@@ -39,7 +39,7 @@ use CortexPE\entity\mob\{
 	Bat, Blaze, CaveSpider, Chicken, Cow, Creeper, Donkey, ElderGuardian, EnderDragon, Enderman, Endermite, Evoker, Ghast, Guardian, Horse, Husk, IronGolem, Llama, MagmaCube, Mooshroom, Mule, Ocelot, Parrot, Pig, PigZombie, PolarBear, Rabbit, Sheep, Shulker, Silverfish, Skeleton, Slime, SnowGolem, Spider, Stray, Vex, Vindicator, Witch, Wither, WitherSkeleton, Wolf, ZombieHorse, ZombieVillager
 };
 use CortexPE\entity\object\{
-	AreaEffectCloud, ArmorStand, EndCrystal, ExperienceOrb, Lightning
+	AreaEffectCloud, ArmorStand, EndCrystal, Lightning
 };
 use CortexPE\entity\projectile\{
 	Arrow, FireworkRocket, FishingHook, LingeringPotion
@@ -103,6 +103,7 @@ class EntityManager extends Entity {
 		self::registerEntity(FishingHook::class, true, ['FishingHook', 'minecraft:fishinghook']);
 		self::registerEntity(Arrow::class, true, ['Arrow', 'minecraft:arrow']);
 		self::registerEntity(FireworkRocket::class, true, ['Firework', 'minecraft:firework']);
+		//self::registerEntity(ThrownTrident::class, true, ['Thrown Trident', 'minecraft:thrown_trident']);
 
 		// Other Entities ////
 		self::registerEntity(AreaEffectCloud::class, true, ['AreaEffectCloud', 'minecraft:areaeffectcloud']);
@@ -112,10 +113,6 @@ class EntityManager extends Entity {
 		self::registerEntity(ArmorStand::class, true, ['ArmorStand', 'minecraft:armor_stand']);
 		if(Main::$cars){
 			self::registerEntity(Minecart::class, true, ['Minecart', 'minecraft:minecart']);
-		}
-
-		if(Main::$XPOrbOverride){
-			self::registerEntity(ExperienceOrb::class, true, ['XPOrb', 'minecraft:xp_orb']);
 		}
 	}
 }

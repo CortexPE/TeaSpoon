@@ -11,6 +11,7 @@ namespace CortexPE\commands;
 use pocketmine\command\{
 	CommandSender, defaults\VanillaCommand
 };
+use pocketmine\network\mcpe\protocol\PacketPool;
 use pocketmine\Player;
 use pocketmine\tile\Tile;
 
@@ -37,6 +38,11 @@ class TestCommand extends VanillaCommand {
 				switch($args[0]){
 					case "duplicate":
 						$sender->getInventory()->addItem($sender->getInventory()->getItemInHand());
+						break;
+					case "decodepk":
+						if(isset($args[1])){
+							print_r(PacketPool::getPacket(hex2bin($args[1])));
+						}
 						break;
 				}
 			}

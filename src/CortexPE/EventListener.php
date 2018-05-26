@@ -42,8 +42,6 @@ use CortexPE\level\weather\Weather;
 use CortexPE\utils\ArmorTypes;
 use CortexPE\utils\Xp;
 use pocketmine\block\Block;
-use pocketmine\entity\Effect;
-use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Entity;
 use pocketmine\event\{
 	level\LevelLoadEvent, Listener, server\RemoteServerCommandEvent, server\ServerCommandEvent
@@ -57,9 +55,6 @@ use pocketmine\event\player\{
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
 use pocketmine\level\Level;
-use pocketmine\network\mcpe\protocol\{
-	EntityEventPacket, LevelEventPacket
-};
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
 use pocketmine\Server as PMServer;
@@ -121,44 +116,6 @@ class EventListener implements Listener {
 		$session = null;
 		if($v instanceof PMPlayer){
 			$session = Main::getInstance()->getSessionById($v->getId());
-		}
-
-		/////////////////////// TOTEM OF UNDYING ///////////////////////////////
-		if(Main::$totemEnabled){
-			if($ev->getFinalDamage() >= $ev->getEntity()->getHealth()){
-				if($v instanceof PMPlayer){
-					if($v->getInventory()->getItemInHand()->getId() === Item::TOTEM && $ev->getCause() !== EntityDamageEvent::CAUSE_VOID && $ev->getCause() !== EntityDamageEvent::CAUSE_SUICIDE){
-						$v->getInventory()->setItemInHand(Item::get(Item::AIR)); // this is supposed to be unstackable anyways... right?
-						$ev->setCancelled(true);
-						$v->setHealth(1);
-
-						$v->removeAllEffects();
-
-						$REGENERATION = Effect::getEffect(Effect::REGENERATION);
-						$REGENERATION = new EffectInstance($REGENERATION);
-						$REGENERATION->setAmplifier(1);
-						$REGENERATION->setVisible(true);
-						$REGENERATION->setDuration(40 * 20);
-
-						$ABSORPTION = Effect::getEffect(Effect::ABSORPTION);
-						$ABSORPTION = new EffectInstance($ABSORPTION);
-						$ABSORPTION->setVisible(true);
-						$ABSORPTION->setDuration(5 * 20);
-
-						$FIRE_RESISTANCE = Effect::getEffect(Effect::FIRE_RESISTANCE);
-						$FIRE_RESISTANCE = new EffectInstance($FIRE_RESISTANCE);
-						$FIRE_RESISTANCE->setVisible(true);
-						$FIRE_RESISTANCE->setDuration(40 * 20);
-
-						$v->addEffect($REGENERATION);
-						$v->addEffect($ABSORPTION);
-						$v->addEffect($FIRE_RESISTANCE);
-
-						$v->getLevel()->broadcastLevelEvent($v, LevelEventPacket::EVENT_SOUND_TOTEM);
-						$v->broadcastEntityEvent(EntityEventPacket::CONSUME_TOTEM, null, $v->getViewers());
-					}
-				}
-			}
 		}
 
 		/////////////////////// ELYTRA WINGS & SLIME BLOCK ///////////////////////////////

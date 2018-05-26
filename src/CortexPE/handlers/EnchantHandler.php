@@ -46,8 +46,10 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDeathEvent;
 use pocketmine\event\Listener;
+use pocketmine\item\Axe;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
+use pocketmine\item\Pickaxe;
 use pocketmine\item\TieredTool;
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
@@ -118,7 +120,7 @@ class EnchantHandler implements Listener {
 			}
 			if($d instanceof PMPlayer && $e instanceof Living){
 				$i = $d->getInventory()->getItemInHand();
-				$damage = $ev->getDamage();
+				$damage = $ev->getModifier(EntityDamageEvent::MODIFIER_ARMOR);
 				$knockback = $ev->getKnockBack();
 				foreach(Utils::getEnchantments($i) as $ench){
 					$lvl = $ench->getLevel();
@@ -136,19 +138,19 @@ class EnchantHandler implements Listener {
 							break;
 						case Enchantment::BANE_OF_ARTHROPODS:
 							if(Utils::in_arrayi($e->getName(), self::BANE_OF_ARTHROPODS_AFFECTED_ENTITIES)){
-								$ev->setDamage($damage + ($lvl * 2.5));
+								$ev->setModifier($damage + ($lvl * 2.5), EntityDamageEvent::MODIFIER_ARMOR);
 							}
 							break;
 						case Enchantment::POWER:
 							if($i->getId() == Item::BOW){
-								$ev->setDamage($damage + ((($damage * 0.25) * $lvl) + 1));
+								$ev->setModifier($damage + ((($damage * 0.25) * $lvl) + 1), EntityDamageEvent::MODIFIER_ARMOR);
 							}
 							break;
 						case Enchantment::SMITE:
-							$ev->setDamage($damage + ($lvl * 2.5));
+							$ev->setModifier($damage + ($lvl * 2.5), EntityDamageEvent::MODIFIER_ARMOR);
 							break;
 						case Enchantment::SHARPNESS:
-							$ev->setDamage($damage + (($lvl * 0.4) + 1));
+							$ev->setModifier($damage + (($lvl * 0.4) + 1), EntityDamageEvent::MODIFIER_ARMOR);
 							break;
 					}
 				}
@@ -231,66 +233,66 @@ class EnchantHandler implements Listener {
 		if($item instanceof TieredTool){
 			switch($block->getId()){
 				case Block::COAL_ORE:
-					if($item->isPickaxe()){
+					if($item instanceof Pickaxe){
 						$ev->setDrops([Item::get(Item::COAL, 0, 1 + $rand)]);
 					}
 					break;
 				case Block::LAPIS_ORE:
-					if($item->isPickaxe() && $item->getTier() > TieredTool::TIER_WOODEN){
+					if($item instanceof Pickaxe && $item->getTier() > TieredTool::TIER_WOODEN){
 						$ev->setDrops([Item::get(Item::DYE, 4, rand(1, 4) + $rand)]);
 					}
 					break;
 				case Block::GLOWING_REDSTONE_ORE:
 				case Block::REDSTONE_ORE:
-					if($item->isPickaxe() && $item->getTier() > TieredTool::TIER_WOODEN){
+					if($item instanceof Pickaxe && $item->getTier() > TieredTool::TIER_WOODEN){
 						$ev->setDrops([Item::get(Item::REDSTONE, 0, rand(2, 3) + $rand)]);
 					}
 					break;
 				case Block::NETHER_QUARTZ_ORE:
-					if($item->isPickaxe() && $item->getTier() > TieredTool::TIER_WOODEN){
+					if($item instanceof Pickaxe && $item->getTier() > TieredTool::TIER_WOODEN){
 						$ev->setDrops([Item::get(Item::QUARTZ, 0, rand(1, 2) + $rand)]);
 					}
 					break;
 				case Block::DIAMOND_ORE:
-					if($item->isPickaxe() && $item->getTier() == TieredTool::TIER_IRON){
+					if($item instanceof Pickaxe && $item->getTier() == TieredTool::TIER_IRON){
 						$ev->setDrops([Item::get(Item::DIAMOND, 0, 1 + $rand)]);
 					}
 					break;
 				case Block::EMERALD_ORE:
-					if($item->isPickaxe() && $item->getTier() == TieredTool::TIER_IRON){
+					if($item instanceof Pickaxe && $item->getTier() == TieredTool::TIER_IRON){
 						$ev->setDrops([Item::get(Item::EMERALD, 0, 1 + $rand)]);
 					}
 					break;
 				case Block::POTATO_BLOCK:
-					if($item->isAxe() || $item->isPickaxe()){
+					if($item instanceof Axe || $item instanceof Pickaxe){
 						if($block->getDamage() >= 7){
 							$ev->setDrops([Item::get(Item::POTATO, 0, rand(1, 3) + $rand)]);
 						}
 					}
 					break;
 				case Block::CARROT_BLOCK:
-					if($item->isAxe() || $item->isPickaxe()){
+					if($item instanceof Axe || $item instanceof Pickaxe){
 						if($block->getDamage() >= 7){
 							$ev->setDrops([Item::get(Item::CARROT, 0, rand(1, 3) + $rand)]);
 						}
 					}
 					break;
 				case Block::BEETROOT_BLOCK:
-					if($item->isAxe() || $item->isPickaxe()){
+					if($item instanceof Axe || $item instanceof Pickaxe){
 						if($block->getDamage() >= 7){
 							$ev->setDrops([Item::get(Item::BEETROOT, 0, rand(1, 3) + $rand)]);
 						}
 					}
 					break;
 				case Block::WHEAT_BLOCK:
-					if($item->isAxe() || $item->isPickaxe()){
+					if($item instanceof Axe || $item instanceof Pickaxe){
 						if($block->getDamage() >= 7){
 							$ev->setDrops([Item::get(Item::SEEDS, 0, rand(1, 3) + $rand), Item::get(Item::WHEAT, 0, 1)]);
 						}
 					}
 					break;
 				case Block::MELON_BLOCK:
-					if($item->isAxe() || $item->isPickaxe()){
+					if($item instanceof Axe || $item instanceof Pickaxe){
 						$ev->setDrops([Item::get(Item::MELON, 0, rand(3, 9) + $rand)]);
 					}
 					break;

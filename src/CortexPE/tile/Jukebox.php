@@ -94,6 +94,7 @@ class Jukebox extends Spawnable {
 	public function dropMusicDisc(){
 		$this->getLevel()->dropItem($this->add(0.5, 0.5, 0.5), $this->getRecordItem());
 		$this->recordItem = Item::get(Item::AIR,0, 1);
+		// $this->getLevel()->broadcastLevelSoundEvent($this, LevelSoundEventPacket::SOUND_RECORD_STOP); wtf phpstorm
 	}
 
 	public function setRecordItem(Record $disc){
