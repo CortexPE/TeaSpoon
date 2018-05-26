@@ -39,7 +39,7 @@ use CortexPE\Main;
 use pocketmine\item\enchantment\Enchantment as EnchantmentPM;
 
 class Enchantment extends EnchantmentPM {
-	public static function init(){
+	public static function init() : void{
 		Main::getPluginLogger()->debug("Registering Enchantments...");
 		if(Main::$registerVanillaEnchantments){
 			// TODO: Fix secondary item flags when better anvils get implemented
