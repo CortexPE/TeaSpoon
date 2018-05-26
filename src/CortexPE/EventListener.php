@@ -125,7 +125,7 @@ class EventListener implements Listener {
 
 		/////////////////////// TOTEM OF UNDYING ///////////////////////////////
 		if(Main::$totemEnabled){
-			if($ev->getDamage() >= $ev->getEntity()->getHealth()){
+			if($ev->getFinalDamage() >= $ev->getEntity()->getHealth()){
 				if($v instanceof PMPlayer){
 					if($v->getInventory()->getItemInHand()->getId() === Item::TOTEM && $ev->getCause() !== EntityDamageEvent::CAUSE_VOID && $ev->getCause() !== EntityDamageEvent::CAUSE_SUICIDE){
 						$v->getInventory()->setItemInHand(Item::get(Item::AIR)); // this is supposed to be unstackable anyways... right?
