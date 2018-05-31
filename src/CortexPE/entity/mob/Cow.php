@@ -41,9 +41,8 @@ use pocketmine\item\Item;
 class Cow extends Animal {
 	const NETWORK_ID = self::COW;
 
-	public $width = 0.3;
-	public $length = 0.9;
-	public $height = 0;
+	public $width = 0.9;
+	public $height = 1.3;
 
 	public function getName(): string{
 		return "Cow";
