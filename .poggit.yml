@@ -5,4 +5,5 @@ projects:
   TeaSpoon:
     path: ""
     fullGzip: 9
+    compressBuilds: false
 ...
