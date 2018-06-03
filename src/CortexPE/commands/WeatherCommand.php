@@ -114,7 +114,7 @@ class WeatherCommand extends VanillaCommand {
 
 			return false;
 		}
-		if($args[0] == "get"){
+		if($args[1] == "get"){
 			switch(Main::$weatherData[$level->getId()]->getWeather()){
 				case 0:
 					$sender->sendMessage("Weather: Clear");
