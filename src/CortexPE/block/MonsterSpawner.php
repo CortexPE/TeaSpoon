@@ -90,6 +90,8 @@ class MonsterSpawner extends SpawnerPM {
 		if($item->getDamage() > 9 && Main::$mobSpawnerEnable && Main::$mobSpawnerDamageAsEID){
 			$tile = $this->getLevel()->getTile($this);
 			$this->entityid = $item->getDamage();
+			$this->meta = 0;
+			$this->getLevel()->setBlock($this, $this, true, false);
 			if(!$tile instanceof MobSpawner){
 				/** @var CompoundTag $nbt */
 				$nbt = new CompoundTag("", [
