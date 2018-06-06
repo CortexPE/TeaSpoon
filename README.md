@@ -122,6 +122,10 @@ Installation is easy, Just download the latest phar from [Poggit](https://poggit
      - [X] Zombie Horse
      - [X] Zombie Pigman
      - [X] Zombie Villager
+     - [X] Dolphin
+     - [X] Cod Fish
+     - [X] Salmon Fish
+     - [X] Puffer Fish
  - Commands
    - [X] More Vanilla-Like /kill command (Not perfect)
    - [X] World Command

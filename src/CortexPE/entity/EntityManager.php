@@ -36,7 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\entity;
 
 use CortexPE\entity\mob\{
-	Bat, Blaze, CaveSpider, Chicken, Cow, Creeper, Donkey, ElderGuardian, EnderDragon, Enderman, Endermite, Evoker, Ghast, Guardian, Horse, Husk, IronGolem, Llama, MagmaCube, Mooshroom, Mule, Ocelot, Parrot, Pig, PigZombie, PolarBear, Rabbit, Sheep, Shulker, Silverfish, Skeleton, Slime, SnowGolem, Spider, Stray, Vex, Vindicator, Witch, Wither, WitherSkeleton, Wolf, ZombieHorse, ZombieVillager
+	Bat, Blaze, CaveSpider, Chicken, Cow, Creeper, Donkey, ElderGuardian, EnderDragon, Enderman, Endermite, Evoker, Ghast, Guardian, Horse, Husk, IronGolem, Llama, MagmaCube, Mooshroom, Mule, Ocelot, Parrot, Pig, PigZombie, PolarBear, Rabbit, Sheep, Shulker, Silverfish, Skeleton, Slime, SnowGolem, Spider, Stray, Vex, Vindicator, Witch, Wither, WitherSkeleton, Wolf, ZombieHorse, ZombieVillager, Dolphin, CodFish, SalmonFish, PufferFish
 };
 use CortexPE\entity\object\{
 	AreaEffectCloud, ArmorStand, EndCrystal, Lightning
@@ -96,6 +96,10 @@ class EntityManager extends Entity {
 			self::registerEntity(Wolf::class, true, ['Wolf', 'minecraft:wolf']);
 			self::registerEntity(ZombieHorse::class, true, ['ZombieHorse', 'minecraft:zombiehorse']);
 			self::registerEntity(ZombieVillager::class, true, ['ZombieVillager', 'minecraft:zombievillager']);
+			self::registerEntity(Dolphin::class, true, ['Dolphin', 'minecraft:dolphin']);
+			self::registerEntity(CodFish::class, true, ['CodFish', 'minecraft:codfish']);
+			self::registerEntity(SalmonFish::class, true, ['SalmonFish', 'minecraft:salmonfish']);
+			self::registerEntity(PufferFish::class, true, ['PufferFish', 'minecraft:pufferfish']);
 		}
 
 		// Projectiles ////
