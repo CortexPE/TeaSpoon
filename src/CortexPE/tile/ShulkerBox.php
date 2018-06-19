@@ -76,9 +76,10 @@ class ShulkerBox extends Spawnable implements InventoryHolder, Container, Nameab
 		}
 	}
 
-	public function saveNBT(): void{
-		parent::saveNBT();
+	public function saveNBT(): CompoundTag{
+
 		$this->saveItems();
+        return parent::saveNBT();
 	}
 
 	public function getSize(): int{
@@ -105,4 +106,12 @@ class ShulkerBox extends Spawnable implements InventoryHolder, Container, Nameab
 			parent::close();
 		}
 	}
+
+    protected function readSaveData(CompoundTag $nbt): void
+    {
+    }
+
+    protected function writeSaveData(CompoundTag $nbt): void
+    {
+    }
 }

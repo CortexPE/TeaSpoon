@@ -23,6 +23,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\network;
 
+use CortexPE\item\enchantment\Enchantment;
 use pocketmine\inventory\FurnaceRecipe;
 use pocketmine\inventory\ShapedRecipe;
 use pocketmine\inventory\ShapelessRecipe;
@@ -188,7 +189,8 @@ class CraftingDataPacket extends PMCraftingDataPacket {
 			$entry = $list->getSlot($i);
 			$stream->putUnsignedVarInt($entry->getCost());
 			$stream->putUnsignedVarInt(count($entry->getEnchantments()));
-			foreach($entry->getEnchantments() as $enchantment){
+			/** @var Enchantment $enchantment */
+            foreach($entry->getEnchantments() as $enchantment){
 				$stream->putUnsignedVarInt($enchantment->getId());
 				$stream->putUnsignedVarInt(mt_rand(1,$enchantment->getMaxLevel()));
 			}

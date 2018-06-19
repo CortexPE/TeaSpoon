@@ -34,7 +34,6 @@ use pocketmine\block\NetherQuartzOre;
 use pocketmine\block\SoulSand;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\biome\Biome;
-use pocketmine\level\generator\Generator;
 use pocketmine\level\generator\noise\Simplex;
 use pocketmine\level\generator\object\OreType;
 use pocketmine\level\generator\populator\Populator;
@@ -48,9 +47,9 @@ class Nether extends \pocketmine\level\generator\hell\Nether {
 	/** @var Populator[] */
 	private $populators = [];
 	/** @var ChunkManager */
-	private $level;
+	protected $level;
 	/** @var Random */
-	private $random;
+	protected $random;
 	private $waterHeight = 32;
 	private $emptyHeight = 64;
 	private $emptyAmplitude = 1;
@@ -93,7 +92,7 @@ class Nether extends \pocketmine\level\generator\hell\Nether {
 	 * @return string
 	 */
 	public function getName(): string{
-		return "Nether";
+		return "TeaNether";
 	}
 
 	/**
@@ -114,9 +113,9 @@ class Nether extends \pocketmine\level\generator\hell\Nether {
 	 * @param ChunkManager $level
 	 * @param Random $random
 	 *
-	 * @return mixed|void
+	 * @return void
 	 */
-	public function init(ChunkManager $level, Random $random){
+	public function init(ChunkManager $level, Random $random) : void{
 		$this->level = $level;
 		$this->random = $random;
 		$this->random->setSeed($this->level->getSeed());
@@ -146,12 +145,12 @@ class Nether extends \pocketmine\level\generator\hell\Nether {
 	 * @param $chunkX
 	 * @param $chunkZ
 	 *
-	 * @return mixed|void
+	 * @return void
 	 */
-	public function generateChunk($chunkX, $chunkZ){
+	public function generateChunk(int $chunkX, int $chunkZ) : void{
 		$this->random->setSeed(0xdeadbeef ^ ($chunkX << 8) ^ $chunkZ ^ $this->level->getSeed());
 
-		$noise = Generator::getFastNoise3D($this->noiseBase, 16, 128, 16, 4, 8, 4, $chunkX * 16, 0, $chunkZ * 16);
+		$noise = $this->noiseBase->getFastNoise3D(16, 128, 16, 4, 8, 4, $chunkX * 16, 0, $chunkZ * 16);
 
 		$chunk = $this->level->getChunk($chunkX, $chunkZ);
 
@@ -194,9 +193,9 @@ class Nether extends \pocketmine\level\generator\hell\Nether {
 	 * @param $chunkX
 	 * @param $chunkZ
 	 *
-	 * @return mixed|void
+	 * @return void
 	 */
-	public function populateChunk($chunkX, $chunkZ){
+	public function populateChunk(int $chunkX, int $chunkZ) : void{
 		$this->random->setSeed(0xdeadbeef ^ ($chunkX << 8) ^ $chunkZ ^ $this->level->getSeed());
 		foreach($this->populators as $populator){
 			$populator->populate($this->level, $chunkX, $chunkZ, $this->random);

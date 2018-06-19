@@ -262,8 +262,16 @@ class Hopper extends Spawnable implements InventoryHolder, Container, Nameable {
 		}
 	}
 
-	public function saveNBT(): void{
-		parent::saveNBT();
-		$this->saveItems();
+	public function saveNBT(): CompoundTag{
+        $this->saveItems();
+		return parent::saveNBT();
 	}
+
+    protected function readSaveData(CompoundTag $nbt): void
+    {
+    }
+
+    protected function writeSaveData(CompoundTag $nbt): void
+    {
+    }
 }

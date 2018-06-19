@@ -120,10 +120,11 @@ class EndPortal extends Solid {
 				Main::$onPortal[$entity->getId()] = true;
 				if($entity instanceof Player){
 					if($entity->getLevel() instanceof Level){
+					    $plug = Server::getInstance()->getPluginManager()->getPlugin(Main::getInstance()->getName());
 						if($entity->getLevel()->getName() != Main::$endName){ // OVERWORLD -> END
-							Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::THE_END, Main::$endLevel->getSafeSpawn()), 1);
+							$plug->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::THE_END, Main::$endLevel->getSafeSpawn()), 1);
 						}else{ // END -> OVERWORLD
-							Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::OVERWORLD, Main::$overworldLevel->getSafeSpawn()), 1);
+							$plug->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::OVERWORLD, Main::$overworldLevel->getSafeSpawn()), 1);
 						}
 					}
 				}

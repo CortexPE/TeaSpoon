@@ -255,8 +255,9 @@ class BrewingStand extends Spawnable implements InventoryHolder, Container, Name
 		return $return;
 	}
 
-	public function saveNBT(): void{
+	public function saveNBT(): CompoundTag{
 		$this->saveItems();
+		return parent::saveNBT();
 	}
 
 	public function loadBottles(): void{
@@ -322,4 +323,12 @@ class BrewingStand extends Spawnable implements InventoryHolder, Container, Name
 			}
 		}
 	}
+
+    protected function readSaveData(CompoundTag $nbt): void
+    {
+    }
+
+    protected function writeSaveData(CompoundTag $nbt): void
+    {
+    }
 }

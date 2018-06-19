@@ -177,4 +177,12 @@ class MobSpawner extends Spawnable {
 		$nbt->setInt(self::TAG_MIN_SPAWN_DELAY, $this->getNBT()->getInt(self::TAG_MIN_SPAWN_DELAY));
 		$nbt->setInt(self::TAG_MAX_SPAWN_DELAY, $this->getNBT()->getInt(self::TAG_MAX_SPAWN_DELAY));
 	}
+
+    protected function readSaveData(CompoundTag $nbt): void
+    {
+    }
+
+    protected function writeSaveData(CompoundTag $nbt): void
+    {
+    }
 }

@@ -36,7 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\level\generator\biome;
 
 use CortexPE\level\generator\ender\biome\EnderBiome;
-use pocketmine\level\generator\hell\HellBiome;
+use pocketmine\level\biome\HellBiome;
 
 abstract class Biome extends \pocketmine\level\biome\Biome {
 

@@ -89,7 +89,7 @@ class Main extends PluginBase {
 
 	///////////////////////////////// START OF CONFIGS VARIABLES /////////////////////////////////
 	/** @var string */
-	public static $netherName = "nether";
+	public static $netherName = "teanether";
 	/** @var Level */
 	public static $netherLevel;
 	/** @var string */
@@ -352,7 +352,7 @@ class Main extends PluginBase {
 
 		// Task(s)
 		if(self::$weatherEnabled){
-			$this->getServer()->getScheduler()->scheduleRepeatingTask(new TickLevelsTask($this), 1);
+			$this->getScheduler()->scheduleRepeatingTask(new TickLevelsTask($this), 1);
 		}
 
 		// Load other API plugins at last (too still look gud)

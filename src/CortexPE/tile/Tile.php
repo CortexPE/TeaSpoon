@@ -37,6 +37,7 @@ namespace CortexPE\tile;
 
 use CortexPE\Main;
 use CortexPE\Utils;
+use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\tile\Tile as PMTile;
 
 class Tile extends PMTile {
@@ -58,4 +59,12 @@ class Tile extends PMTile {
 			self::registerTile(Jukebox::class);
 		}
 	}
+
+    protected function readSaveData(CompoundTag $nbt): void
+    {
+    }
+
+    protected function writeSaveData(CompoundTag $nbt): void
+    {
+    }
 }

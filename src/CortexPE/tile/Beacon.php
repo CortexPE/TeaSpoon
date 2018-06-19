@@ -59,8 +59,8 @@ class Beacon extends Spawnable implements InventoryHolder {
 		$this->scheduleUpdate();
 	}
 
-	public function saveNBT(): void{
-		parent::saveNBT();
+	public function saveNBT() : CompoundTag{
+		return parent::saveNBT();
 	}
 
 	public function addAdditionalSpawnData(CompoundTag $nbt): void{
@@ -207,4 +207,12 @@ class Beacon extends Spawnable implements InventoryHolder {
 	public function getInventory(){
 		return $this->inventory;
 	}
+
+    protected function readSaveData(CompoundTag $nbt): void
+    {
+    }
+
+    protected function writeSaveData(CompoundTag $nbt): void
+    {
+    }
 }

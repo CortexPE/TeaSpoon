@@ -122,10 +122,10 @@ class Jukebox extends Spawnable {
 		return true;
 	}
 
-	public function saveNBT() : void {
-		parent::saveNBT();
-		$this->namedtag->setTag($this->getRecordItem()->nbtSerialize(-1, self::TAG_RECORD_ITEM));
-		$this->namedtag->setInt(self::TAG_RECORD, $this->getRecordId());
+	public function saveNBT() : CompoundTag {
+        $this->namedtag->setTag($this->getRecordItem()->nbtSerialize(-1, self::TAG_RECORD_ITEM));
+        $this->namedtag->setInt(self::TAG_RECORD, $this->getRecordId());
+		return parent::saveNBT();
 	}
 
 	public function addAdditionalSpawnData(CompoundTag $nbt) : void {
@@ -134,4 +134,13 @@ class Jukebox extends Spawnable {
 		$record = $this->getRecordItem() instanceof Item ? $this->getRecordItem() : Item::get(Item::AIR, 0, 1);
 		$nbt->setTag($record->nbtSerialize(-1, self::TAG_RECORD_ITEM));
 	}
+
+
+    protected function readSaveData(CompoundTag $nbt): void
+    {
+    }
+
+    protected function writeSaveData(CompoundTag $nbt): void
+    {
+    }
 }
