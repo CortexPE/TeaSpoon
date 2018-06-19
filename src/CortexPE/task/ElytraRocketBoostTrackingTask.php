@@ -36,8 +36,8 @@ declare(strict_types = 1);
 namespace CortexPE\task;
 
 use CortexPE\level\particle\RocketParticle;
+use CortexPE\Main;
 use pocketmine\Player;
-use pocketmine\scheduler\PluginTask;
 use pocketmine\scheduler\Task;
 use pocketmine\Server as PMServer;
 
@@ -65,7 +65,8 @@ class ElytraRocketBoostTrackingTask extends Task {
 			)));
 			$this->internalCount++;
 		}else{
-			PMServer::getInstance()->getScheduler()->cancelTask($this->getTaskId());
+		    $plug = PMServer::getInstance()->getPluginManager()->getPlugin(Main::getInstance()->getName());
+			$plug->getScheduler()->cancelTask($this->getTaskId());
 		}
 	}
 }

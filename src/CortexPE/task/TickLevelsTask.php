@@ -37,7 +37,6 @@ namespace CortexPE\task;
 
 use CortexPE\LevelManager;
 use CortexPE\Main;
-use pocketmine\scheduler\PluginTask;
 use pocketmine\scheduler\Task;
 
 class TickLevelsTask extends Task {
