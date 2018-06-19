@@ -352,7 +352,7 @@ class Main extends PluginBase {
 
 		// Task(s)
 		if(self::$weatherEnabled){
-			$this->getScheduler()->scheduleRepeatingTask(new TickLevelsTask($this), 1);
+			$this->getScheduler()->scheduleRepeatingTask(new TickLevelsTask(), 1);
 		}
 
 		// Load other API plugins at last (too still look gud)
