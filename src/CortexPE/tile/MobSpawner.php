@@ -60,7 +60,6 @@ class MobSpawner extends Spawnable {
 			$nbt->setInt(self::TAG_DELAY, mt_rand($nbt->getInt(self::TAG_MIN_SPAWN_DELAY), $nbt->getInt(self::TAG_MAX_SPAWN_DELAY)));
 		}
         $this->nbt = $nbt;
-        var_dump($nbt);
 		parent::__construct($level, $nbt);
 		if($this->getEntityId() > 0){
 			$this->scheduleUpdate();
