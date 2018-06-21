@@ -64,8 +64,7 @@ class ElytraRocketBoostTrackingTask extends Task {
 			)));
 			$this->internalCount++;
 		}else{
-		    $plug = Main::getInstance();
-			$plug->getScheduler()->cancelTask($this->getTaskId());
+			Main::getInstance()->getScheduler()->cancelTask($this->getTaskId());
 		}
 	}
 }
