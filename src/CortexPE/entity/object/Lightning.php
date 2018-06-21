@@ -62,8 +62,7 @@ class Lightning extends Animal {
 	}
 
 
-	private function growAxis(AxisAlignedBB $axis, $x, $y, $z)
-    {
+	private function growAxis(AxisAlignedBB $axis, $x, $y, $z){
         return new AxisAlignedBB($axis->minX - $x, $axis->minY - $y, $axis->minZ - $z, $axis->maxX + $x, $axis->maxY + $y, $axis->maxZ + $z);
     }
 

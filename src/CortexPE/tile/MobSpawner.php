@@ -30,6 +30,8 @@ class MobSpawner extends Spawnable {
         TAG_MAX_SPAWN_DELAY = "MaxSpawnDelay",
         TAG_DELAY = "Delay";
 
+	private $nbt; //Todo: Save in hard disk MobSpawners
+
 	public function __construct(Level $level, CompoundTag $nbt){
 		if($nbt->hasTag(self::TAG_SPAWN_COUNT, ShortTag::class) || $nbt->hasTag(self::TAG_ENTITY_ID, StringTag::class)){ // duct-tape fix for #206
 			$nbt->removeTag(self::TAG_ENTITY_ID); // fuck it. FUCK. IT.
@@ -57,11 +59,17 @@ class MobSpawner extends Spawnable {
 		if(!$nbt->hasTag(self::TAG_DELAY, IntTag::class)){
 			$nbt->setInt(self::TAG_DELAY, mt_rand($nbt->getInt(self::TAG_MIN_SPAWN_DELAY), $nbt->getInt(self::TAG_MAX_SPAWN_DELAY)));
 		}
+        $this->nbt = $nbt;
+        var_dump($nbt);
 		parent::__construct($level, $nbt);
 		if($this->getEntityId() > 0){
 			$this->scheduleUpdate();
 		}
 	}
+
+	public function getNBT(){
+        return $this->nbt;
+    }
 
 	public function getEntityId(){
 		return $this->getNBT()->getInt(self::TAG_ENTITY_ID);
