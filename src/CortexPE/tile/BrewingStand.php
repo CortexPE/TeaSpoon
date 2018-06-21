@@ -56,17 +56,25 @@ use pocketmine\tile\Spawnable;
 class BrewingStand extends Spawnable implements InventoryHolder, Container, Nameable {
 	use NameableTrait, ContainerTrait;
 
-	public const TAG_BREW_TIME = "BrewTime";
-	public const TAG_FUEL = "Fuel";
-	public const TAG_HAS_BOTTLE_0 = "has_bottle_0";
-	public const TAG_HAS_BOTTLE_1 = "has_bottle_1";
-	public const TAG_HAS_BOTTLE_2 = "has_bottle_2";
+	/** @var string */
+	public const
+        TAG_BREW_TIME = "BrewTime",
+        TAG_FUEL = "Fuel",
+        TAG_HAS_BOTTLE_0 = "has_bottle_0",
+        TAG_HAS_BOTTLE_1 = "has_bottle_1",
+        TAG_HAS_BOTTLE_2 = "has_bottle_2";
+
+	/** @var string */
 	private const TAG_HAS_BOTTLE_BASE = "has_bottle_"; // lazy
-	public const MAX_BREW_TIME = 400;
-	public const MAX_FUEL = 20;
+
+    /** @var int */
+	public const
+        MAX_BREW_TIME = 400,
+        MAX_FUEL = 20;
 	/** @var bool */
 	public $brewing = false; // used for hoppers...
 
+    /** @var int[] */
 	public const INGREDIENTS = [
 		Item::NETHER_WART,
 		Item::GLOWSTONE_DUST,

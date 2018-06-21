@@ -45,7 +45,6 @@ use pocketmine\item\Item;
 use pocketmine\level\Level;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player;
-use pocketmine\Server;
 
 class EndPortal extends Solid {
 
@@ -120,7 +119,7 @@ class EndPortal extends Solid {
 				Main::$onPortal[$entity->getId()] = true;
 				if($entity instanceof Player){
 					if($entity->getLevel() instanceof Level){
-					    $plug = Server::getInstance()->getPluginManager()->getPlugin(Main::getInstance()->getName());
+					    $plug = Main::getInstance();
 						if($entity->getLevel()->getName() != Main::$endName){ // OVERWORLD -> END
 							$plug->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::THE_END, Main::$endLevel->getSafeSpawn()), 1);
 						}else{ // END -> OVERWORLD

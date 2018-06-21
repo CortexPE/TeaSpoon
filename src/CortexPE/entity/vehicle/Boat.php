@@ -35,7 +35,7 @@ class Boat extends Vehicle {
 
 	public const TAG_WOOD_ID = "WoodID";
 
-	const NETWORK_ID = self::BOAT;
+	public const NETWORK_ID = self::BOAT;
 
 	public $height = 0.7;
 	public $width = 1.6;

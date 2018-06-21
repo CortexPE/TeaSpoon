@@ -21,12 +21,14 @@ use pocketmine\tile\Spawnable;
 
 class MobSpawner extends Spawnable {
 
-	public const TAG_ENTITY_ID = "EntityId";
-	public const TAG_SPAWN_COUNT = "SpawnCount";
-	public const TAG_SPAWN_RANGE = "SpawnRange";
-	public const TAG_MIN_SPAWN_DELAY = "MinSpawnDelay";
-	public const TAG_MAX_SPAWN_DELAY = "MaxSpawnDelay";
-	public const TAG_DELAY = "Delay";
+    /** @var string */
+	public const
+        TAG_ENTITY_ID = "EntityId",
+        TAG_SPAWN_COUNT = "SpawnCount",
+        TAG_SPAWN_RANGE = "SpawnRange",
+        TAG_MIN_SPAWN_DELAY = "MinSpawnDelay",
+        TAG_MAX_SPAWN_DELAY = "MaxSpawnDelay",
+        TAG_DELAY = "Delay";
 
 	public function __construct(Level $level, CompoundTag $nbt){
 		if($nbt->hasTag(self::TAG_SPAWN_COUNT, ShortTag::class) || $nbt->hasTag(self::TAG_ENTITY_ID, StringTag::class)){ // duct-tape fix for #206

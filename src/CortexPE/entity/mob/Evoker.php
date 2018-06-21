@@ -39,7 +39,8 @@ use pocketmine\entity\Monster;
 use pocketmine\item\Item;
 
 class Evoker extends Monster {
-	const NETWORK_ID = self::EVOCATION_ILLAGER;
+	
+    public const NETWORK_ID = self::EVOCATION_ILLAGER;
 
 	public $width = 0.6;
 	public $height = 1.95;

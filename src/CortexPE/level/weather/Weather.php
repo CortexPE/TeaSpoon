@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  *
  *  _____   _____   __   _   _   _____  __    __  _____
@@ -31,12 +33,15 @@ use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\Player;
 
 class Weather {
-	const CLEAR = 0;
-	const SUNNY = 0;
-	const RAIN = 1;
-	const RAINY = 1;
-	const RAINY_THUNDER = 2;
-	const THUNDER = 3;
+
+    /** @var int */
+	public const
+        CLEAR = 0,
+        SUNNY = 0,
+        RAIN = 1,
+        RAINY = 1,
+        RAINY_THUNDER = 2,
+        THUNDER = 3;
 
 	private $level;
 	private $weatherNow = 0;

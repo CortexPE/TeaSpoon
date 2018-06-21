@@ -47,7 +47,8 @@ use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 
 class Lightning extends Animal {
-	const NETWORK_ID = self::LIGHTNING_BOLT;
+    
+	public const NETWORK_ID = self::LIGHTNING_BOLT;
 
 	public $doneDamage = false;
 

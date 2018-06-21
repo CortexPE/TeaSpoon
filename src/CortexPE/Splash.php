@@ -45,6 +45,7 @@ class Splash {
 	// Some are removed due to how long they are, and some have vulgar / NSFW word(s).
 	// But still, Thanks to the author of the script for most of the random splashes...
 
+    /** @var string[] */
 	private static $RANDOM_NOUN = [
 		"The sky",
 		"Everything and more",
@@ -119,6 +120,7 @@ class Splash {
 		"da wae",
 	];
 
+	/** @var string[] */
 	private static $RANDOM_VERB = [
 		"runs through everything.",
 		"is ever present.",
@@ -182,6 +184,7 @@ class Splash {
 
 	public const VALENTINES_SPLASH = "Happy Valentines Day!";
 
+	/** @var string[] */
 	private static $TEASPOON_SPLASHES = [
 		'Low-Calorie blend', // first ever teaspoon splash text... and that's why its in ' not " xd
 		"Don't panic! Have a cup of tea",
@@ -298,6 +301,7 @@ class Splash {
 		"b2ggbWFoIGdhaA==",
 	];
 
+	/** @var string[] */
 	private static $CHRISTMAS_SPLASHES = [
 		"Ho Ho Ho...",
 		"Merry Christmas",

@@ -43,7 +43,8 @@ use pocketmine\item\Item;
 use pocketmine\Player;
 
 class Spider extends Monster {
-	const NETWORK_ID = self::SPIDER;
+
+    public const NETWORK_ID = self::SPIDER;
 
 	public $width = 1.4;
 	public $height = 0.9;

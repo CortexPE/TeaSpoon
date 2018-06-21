@@ -39,7 +39,8 @@ use pocketmine\entity\Monster;
 use pocketmine\item\Item;
 
 class Enderman extends Monster {
-	const NETWORK_ID = self::ENDERMAN;
+
+    public const NETWORK_ID = self::ENDERMAN;
 
 	public $width = 0.3;
 	public $length = 0.9;

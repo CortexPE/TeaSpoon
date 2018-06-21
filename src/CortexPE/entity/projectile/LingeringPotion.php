@@ -21,9 +21,9 @@ use pocketmine\Server;
 
 class LingeringPotion extends Throwable {
 
-	const NETWORK_ID = self::LINGERING_POTION;
+	public const NETWORK_ID = self::LINGERING_POTION;
 
-	const DATA_POTION_ID = 16;//TODO: update this
+	public const DATA_POTION_ID = 16;//TODO: update this
 
 	public $width = 0.25;
 	public $length = 0.25;

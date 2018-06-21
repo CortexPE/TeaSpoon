@@ -47,8 +47,9 @@ use pocketmine\tile\Spawnable;
 
 class Jukebox extends Spawnable {
 
-	public const TAG_RECORD = "record";
-	public const TAG_RECORD_ITEM = "recordItem";
+	public const
+        TAG_RECORD = "record",
+        TAG_RECORD_ITEM = "recordItem";
 
 	/** @var int */
 	protected $record = 0; // default id...

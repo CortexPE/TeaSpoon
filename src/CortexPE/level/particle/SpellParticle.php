@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CortexPE\level\particle;
 
 use pocketmine\level\particle\GenericParticle;

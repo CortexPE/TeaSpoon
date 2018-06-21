@@ -48,16 +48,23 @@ use pocketmine\nbt\tag\{
 use pocketmine\Player;
 
 class Rabbit extends Animal {
-	const NETWORK_ID = self::RABBIT;
-	const DATA_RABBIT_TYPE = 18;
-	const DATA_JUMP_TYPE = 19;
-	const TYPE_BROWN = 0;
-	const TYPE_WHITE = 1;
-	const TYPE_BLACK = 2;
-	const TYPE_BLACK_WHITE = 3;
-	const TYPE_GOLD = 4;
-	const TYPE_SALT_PEPPER = 5;
-	const TYPE_KILLER_BUNNY = 99;
+
+    public const NETWORK_ID = self::RABBIT;
+
+    /** @var int */
+	public const
+        DATA_RABBIT_TYPE = 18,
+        DATA_JUMP_TYPE = 19;
+
+	/** @var int */
+	public const
+        TYPE_BROWN = 0,
+        TYPE_WHITE = 1,
+        TYPE_BLACK = 2,
+        TYPE_BLACK_WHITE = 3,
+        TYPE_GOLD = 4,
+        TYPE_SALT_PEPPER = 5,
+        TYPE_KILLER_BUNNY = 99;
 
 	public $width = 0.4;
 	public $height = 0.5;

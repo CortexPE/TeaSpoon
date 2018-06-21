@@ -45,7 +45,8 @@ use pocketmine\nbt\tag\ShortTag;
 use pocketmine\Player;
 
 class Creeper extends Monster {
-	const NETWORK_ID = self::CREEPER;
+	
+    public const NETWORK_ID = self::CREEPER;
 
 	public $height = 1.7;
 	public $width = 0.6;

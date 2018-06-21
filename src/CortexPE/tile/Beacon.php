@@ -44,8 +44,10 @@ class Beacon extends Spawnable implements InventoryHolder {
 	 */
 	private $inventory;
 
-	public const TAG_PRIMARY = "primary";
-	public const TAG_SECONDARY = "secondary";
+	/** @var string */
+	public const
+        TAG_PRIMARY = "primary",
+        TAG_SECONDARY = "secondary";
 
 	public function __construct(Level $level, CompoundTag $nbt){
 		if(!$nbt->hasTag(self::TAG_PRIMARY, IntTag::class)){

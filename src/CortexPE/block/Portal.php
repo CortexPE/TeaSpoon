@@ -27,7 +27,7 @@ use CortexPE\Main;
 use CortexPE\task\DelayedCrossDimensionTeleportTask;
 use CortexPE\Utils;
 use pocketmine\{
-	Player, Server
+	Player
 };
 use pocketmine\block\{
 	Air, Block, BlockToolType, Transparent
@@ -174,7 +174,7 @@ class Portal extends Transparent {
 			if($entity->getLevel()->getSafeSpawn()->distance($entity->asVector3()) <= 0.1){
 				return;
 			}
-            $plug = Server::getInstance()->getPluginManager()->getPlugin(Main::getInstance()->getName());
+            $plug = Main::getInstance();
 			if(!isset(Main::$onPortal[$entity->getId()])){
 				Main::$onPortal[$entity->getId()] = true;
 				if($entity instanceof Player){

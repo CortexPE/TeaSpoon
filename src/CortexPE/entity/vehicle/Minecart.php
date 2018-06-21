@@ -47,7 +47,7 @@ use pocketmine\Player;
 
 class Minecart extends Vehicle {
 
-	const NETWORK_ID = self::MINECART;
+	public const NETWORK_ID = self::MINECART;
 
 	public $height = 0.8;
 	public $width = 0.98;

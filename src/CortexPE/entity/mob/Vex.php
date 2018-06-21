@@ -38,7 +38,8 @@ namespace CortexPE\entity\mob;
 use pocketmine\entity\Monster;
 
 class Vex extends Monster {
-	const NETWORK_ID = self::VEX;
+
+    public const NETWORK_ID = self::VEX;
 
 	public $width = 0.4;
 	public $height = 0.8;
