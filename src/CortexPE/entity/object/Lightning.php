@@ -43,6 +43,7 @@ use pocketmine\entity\{
 };
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\item\Item;
+use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 
@@ -59,6 +60,12 @@ class Lightning extends Animal {
 	public function getName(): string{
 		return "Lightning";
 	}
+
+
+	private function growAxis(AxisAlignedBB $axis, $x, $y, $z)
+    {
+        return new AxisAlignedBB($axis->minX - $x, $axis->minY - $y, $axis->minZ - $z, $axis->maxX + $x, $axis->maxY + $y, $axis->maxZ + $z);
+    }
 
 	public function onUpdate(int $currentTick): bool{
 		if(!$this->doneDamage){
@@ -79,7 +86,7 @@ class Lightning extends Animal {
 
 				if(isset($v3)) $this->getLevel()->setBlock($v3, $fire);
 
-				foreach($this->level->getNearbyEntities($this->boundingBox->grow(6, 6, 6), $this) as $entity){
+				foreach($this->level->getNearbyEntities($this->growAxis($this->boundingBox, 6, 6, 6), $this) as $entity){
 					if($entity instanceof Living){
 						$distance = $this->distance($entity);
 
