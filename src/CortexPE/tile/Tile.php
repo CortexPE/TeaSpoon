@@ -58,7 +58,7 @@ class Tile extends PMTile {
 		self::registerTile(BrewingStand::class);
 
 		if(!Utils::isPhared()){ // beta
-			self::registerTile(Jukebox::class);
+            self::registerTile(Jukebox::class);
 		}
 	}
 

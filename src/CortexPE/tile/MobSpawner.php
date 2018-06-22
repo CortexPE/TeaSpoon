@@ -30,6 +30,7 @@ class MobSpawner extends Spawnable {
         TAG_MAX_SPAWN_DELAY = "MaxSpawnDelay",
         TAG_DELAY = "Delay";
 
+	/** @var CompoundTag */
 	private $nbt;
 
 	public function __construct(Level $level, CompoundTag $nbt){

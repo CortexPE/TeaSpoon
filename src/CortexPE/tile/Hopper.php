@@ -60,6 +60,8 @@ class Hopper extends Spawnable implements InventoryHolder, Container, Nameable {
 
 	/** @var HopperInventory */
 	private $inventory = null;
+	/** @var CompoundTag */
+	private $nbt;
 
 	public function __construct(Level $level, CompoundTag $nbt){
 		parent::__construct($level, $nbt);
@@ -263,12 +265,13 @@ class Hopper extends Spawnable implements InventoryHolder, Container, Nameable {
 	}
 
 	public function saveNBT(): CompoundTag{
-        $this->saveItems();
+        $this->saveItems($this->nbt);
 		return parent::saveNBT();
 	}
 
     protected function readSaveData(CompoundTag $nbt): void
     {
+        $this->nbt = $nbt;
     }
 
     protected function writeSaveData(CompoundTag $nbt): void
