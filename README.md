@@ -67,6 +67,7 @@ Installation is easy, Just download the latest phar from [Poggit](https://poggit
    - [X] Vanilla-Like "Instant-Armor-Equipment"
    - [X] Lightning Rods
    - [X] Dragon Breath
+   - [X] Trident
  - Entities & Mobs
    - [X] XP Drops
    - [X] Projectiles
