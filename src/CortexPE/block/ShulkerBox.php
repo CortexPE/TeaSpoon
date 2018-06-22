@@ -157,7 +157,7 @@ class ShulkerBox extends Transparent {
 				$nbt->setTag(new ListTag("Items", []));
 				$sb = Tile::createTile(Tile::SHULKER_BOX, $this->getLevel(), $nbt);
 			}
-			if(!($this->getSide(Vector3::SIDE_UP)->isTransparent()) or ($sb->namedtag->hasTag("Lock", StringTag::class) and $sb->namedtag->getString("Lock") !== $item->getCustomName())){
+			if(!($this->getSide(Vector3::SIDE_UP)->isTransparent()) or ($sb->getNBT()->hasTag("Lock", StringTag::class) and $sb->namedtag->getString("Lock") !== $item->getCustomName())){
 				return true;
 			}
 			if($player->isCreative() and Main::$limitedCreative){
