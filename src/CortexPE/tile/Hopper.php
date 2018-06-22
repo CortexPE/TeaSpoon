@@ -66,7 +66,7 @@ class Hopper extends Spawnable implements InventoryHolder, Container, Nameable {
 
 		$this->inventory = new HopperInventory($this);
 
-		$this->loadItems();
+		$this->loadItems($nbt);
 		$this->scheduleUpdate();
 	}
 
