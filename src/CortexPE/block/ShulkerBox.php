@@ -101,7 +101,7 @@ class ShulkerBox extends Transparent {
 	 * @return bool
 	 */
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null): bool{
-		$this->getLevel()->setBlock($blockReplace, $this, true, true);
+        $this->getLevel()->setBlock($blockReplace, $this, true, true);
 		/** @var CompoundTag $nbt */
 		$nbt = TileShulkerBox::createNBT($this->asVector3());
 		if($item->getNamedTag()->hasTag("Items", ListTag::class)){
@@ -113,7 +113,8 @@ class ShulkerBox extends Transparent {
 			$nbt->setString("CustomName", $item->getCustomName());
 		}
 		/** @var TileShulkerBox $tile */
-		Tile::createTile(Tile::SHULKER_BOX, $this->getLevel(), $nbt);
+        Tile::createTile(Tile::SHULKER_BOX, $this->getLevel(), TileShulkerBox::createNBT($this, $face, $item, $player));
+
 		$player->getInventory()->setItemInHand(Item::get(Item::AIR));
 
 		return true;
