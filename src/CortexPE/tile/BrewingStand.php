@@ -74,6 +74,9 @@ class BrewingStand extends Spawnable implements InventoryHolder, Container, Name
 	/** @var bool */
 	public $brewing = false; // used for hoppers...
 
+    /** @var CompoundTag */
+    private $nbt;
+
     /** @var int[] */
 	public const INGREDIENTS = [
 		Item::NETHER_WART,
@@ -113,9 +116,14 @@ class BrewingStand extends Spawnable implements InventoryHolder, Container, Name
 
 		$this->inventory = new BrewingInventory($this);
 
-		$this->loadItems();
+		$this->loadItems($nbt);
 		$this->scheduleUpdate();
 	}
+
+
+	public function getNBT(): CompoundTag{
+	    return $this->nbt;
+    }
 
 	public function getRealInventory(){
 		return $this->inventory;
@@ -240,7 +248,7 @@ class BrewingStand extends Spawnable implements InventoryHolder, Container, Name
 					$ingredient = Item::get(Item::AIR);
 				}
 				$this->inventory->setIngredient($ingredient);
-				$this->saveItems();
+				$this->saveItems($this->nbt);
 
 				$fuelAmount = max($this->getFuelValue() - 1, 0);
 				$this->setFuelValue($fuelAmount);
@@ -264,33 +272,33 @@ class BrewingStand extends Spawnable implements InventoryHolder, Container, Name
 	}
 
 	public function saveNBT(): CompoundTag{
-		$this->saveItems();
+		$this->saveItems($this->nbt);
 		return parent::saveNBT();
 	}
 
 	public function loadBottles(): void{
-		$this->loadItems();
+		$this->loadItems($this->nbt);
 	}
 
 	public function getBrewTime(): int{
-		return $this->namedtag->getInt(self::TAG_BREW_TIME);
+		return $this->getNBT()->getInt(self::TAG_BREW_TIME);
 	}
 
 	public function setBrewTime(int $time): void{
-		$this->namedtag->setInt(self::TAG_BREW_TIME, $time);
+		$this->getNBT()->setInt(self::TAG_BREW_TIME, $time);
 	}
 
 	public function getFuelValue(): int{
-		return $this->namedtag->getByte(self::TAG_FUEL, 0);
+		return $this->getNBT()->getByte(self::TAG_FUEL, 0);
 	}
 
 	public function setFuelValue(int $fuel): void{
-		$this->namedtag->setByte(self::TAG_FUEL, $fuel);
+		$this->getNBT()->setByte(self::TAG_FUEL, $fuel);
 	}
 
 	public function setBottle(int $slot, bool $hasBottle): void{
 		if($slot > -1 && $slot < 3){
-			$this->namedtag->setByte(self::TAG_HAS_BOTTLE_BASE . strval($slot), intval($hasBottle));
+			$this->getNBT()->setByte(self::TAG_HAS_BOTTLE_BASE . strval($slot), intval($hasBottle));
 		}else{
 			throw new \InvalidArgumentException("Slot must be in the range of 0-2.");
 		}
@@ -332,11 +340,11 @@ class BrewingStand extends Spawnable implements InventoryHolder, Container, Name
 		}
 	}
 
-    protected function readSaveData(CompoundTag $nbt): void
-    {
+    protected function readSaveData(CompoundTag $nbt): void{
+        $this->nbt = $nbt;
     }
 
-    protected function writeSaveData(CompoundTag $nbt): void
-    {
+    protected function writeSaveData(CompoundTag $nbt): void{
+        $nbt->setShort(self::TAG_BREW_TIME, self::MAX_BREW_TIME);
     }
 }

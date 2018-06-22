@@ -112,13 +112,11 @@ class ShulkerBox extends Spawnable implements InventoryHolder, Container, Nameab
 		}
 	}
 
-    protected function readSaveData(CompoundTag $nbt): void
-    {
+    protected function readSaveData(CompoundTag $nbt): void{
         $this->nbt = $nbt;
     }
 
-    protected function writeSaveData(CompoundTag $nbt): void
-    {
+    protected function writeSaveData(CompoundTag $nbt): void{
         $itembase = [];
         /** @var Item $content */
         foreach($this->getRealInventory()->getContents() as $slot => $content){
