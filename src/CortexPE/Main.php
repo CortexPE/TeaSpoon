@@ -67,9 +67,9 @@ class Main extends PluginBase {
 
 	/** @var string */
 	public const
-        BASE_POCKETMINE_VERSION = "1.7dev", // The PocketMine version before Jenkins builds it... (Can be found on PocketMine.php as the 'VERSION' constant)
-        TESTED_MIN_POCKETMINE_VERSION = "1.7dev-1014", // The minimum build this was tested working
-	    TESTED_MAX_POCKETMINE_VERSION = "1.7dev-1034"; // The current build this was actually tested
+        BASE_POCKETMINE_VERSION = "3.0.0",
+        TESTED_MIN_POCKETMINE_VERSION = "3.0.0",
+	    TESTED_MAX_POCKETMINE_VERSION = "4.0.0";
 
 	///////////////////////////////// START OF INSTANCE VARIABLES /////////////////////////////////
 	/** @var Config */
@@ -386,12 +386,11 @@ class Main extends PluginBase {
 
 			if($versionMinComp < 0){
 				// PocketMine version is older than minimum tested version
-				$this->getLogger()->alert("This plugin has been tested on PocketMine version: " . self::TESTED_MAX_POCKETMINE_VERSION . ", running it on older PocketMine versions is very unstable. To prevent any futher in-compatibility issues, TeaSpoon will now disable itself."); // I still put the max version so that patches will be included...
+				$this->getLogger()->alert(TextFormat::RED . "This plugin has been tested on PocketMine version: " . self::TESTED_MAX_POCKETMINE_VERSION . ", running it on older PocketMine versions is very unstable. To prevent any futher in-compatibility issues, TeaSpoon will now disable itself."); // I still put the max version so that patches will be included...
 				return false;
 			}
-
 			if($versionMaxComp > 0){
-				$this->getLogger()->info("You're using a newer PocketMine build than the highest tested version (" . self::TESTED_MAX_POCKETMINE_VERSION . "). Please report bugs if there's any. ;)");
+				$this->getLogger()->info(TextFormat::GREEN . "You're using a newer PocketMine build than the highest tested version (" . self::TESTED_MAX_POCKETMINE_VERSION . "). Please report bugs if there's any. ;)");
 			}
 		}
 		return true;
