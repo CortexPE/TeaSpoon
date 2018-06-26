@@ -48,9 +48,9 @@ class Nether extends \pocketmine\level\generator\hell\Nether {
 	/** @var Populator[] */
 	private $populators = [];
 	/** @var ChunkManager */
-	private $level;
+	protected $level;
 	/** @var Random */
-	private $random;
+	protected $random;
 	private $waterHeight = 32;
 	private $emptyHeight = 64;
 	private $emptyAmplitude = 1;
@@ -116,7 +116,7 @@ class Nether extends \pocketmine\level\generator\hell\Nether {
 	 *
 	 * @return mixed|void
 	 */
-	public function init(ChunkManager $level, Random $random){
+	public function init(ChunkManager $level, Random $random):void {
 		$this->level = $level;
 		$this->random = $random;
 		$this->random->setSeed($this->level->getSeed());
@@ -148,7 +148,7 @@ class Nether extends \pocketmine\level\generator\hell\Nether {
 	 *
 	 * @return mixed|void
 	 */
-	public function generateChunk($chunkX, $chunkZ){
+	public function generateChunk($chunkX, $chunkZ):void {
 		$this->random->setSeed(0xdeadbeef ^ ($chunkX << 8) ^ $chunkZ ^ $this->level->getSeed());
 
 		$noise = Generator::getFastNoise3D($this->noiseBase, 16, 128, 16, 4, 8, 4, $chunkX * 16, 0, $chunkZ * 16);
@@ -196,7 +196,7 @@ class Nether extends \pocketmine\level\generator\hell\Nether {
 	 *
 	 * @return mixed|void
 	 */
-	public function populateChunk($chunkX, $chunkZ){
+	public function populateChunk($chunkX, $chunkZ):void {
 		$this->random->setSeed(0xdeadbeef ^ ($chunkX << 8) ^ $chunkZ ^ $this->level->getSeed());
 		foreach($this->populators as $populator){
 			$populator->populate($this->level, $chunkX, $chunkZ, $this->random);

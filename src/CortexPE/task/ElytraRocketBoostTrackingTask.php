@@ -39,9 +39,13 @@ use CortexPE\level\particle\RocketParticle;
 use pocketmine\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 use pocketmine\Server as PMServer;
 
-class ElytraRocketBoostTrackingTask extends PluginTask {
+class ElytraRocketBoostTrackingTask extends Task {
+
+    private $owner;
+
 	/** @var Player */
 	protected $player;
 
@@ -52,7 +56,7 @@ class ElytraRocketBoostTrackingTask extends PluginTask {
 	private $internalCount = 1;
 
 	public function __construct(Plugin $owner, Player $player, int $count){
-		parent::__construct($owner);
+	    $this->owner = $owner;
 		$this->player = $player;
 		$this->count = $count;
 	}
@@ -66,7 +70,7 @@ class ElytraRocketBoostTrackingTask extends PluginTask {
 			)));
 			$this->internalCount++;
 		}else{
-			PMServer::getInstance()->getScheduler()->cancelTask($this->getTaskId());
+			$this->owner->getScheduler()->cancelTask($this->getTaskId());
 		}
 	}
 }

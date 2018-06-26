@@ -31,7 +31,7 @@ use CortexPE\level\generator\{
 };
 use pocketmine\block\Block;
 use pocketmine\level\{
-	ChunkManager, generator\Generator, generator\noise\Simplex, generator\populator\Populator
+    ChunkManager, generator\Generator, generator\noise\Noise, generator\noise\Simplex, generator\populator\Populator
 };
 use pocketmine\math\Vector3 as Vector3;
 use pocketmine\utils\Random;
@@ -43,9 +43,9 @@ class Ender extends Generator {
 	/** @var Populator[] */
 	private $populators = [];
 	/** @var ChunkManager */
-	private $level;
+	protected $level;
 	/** @var Random */
-	private $random;
+	protected $random;
 	private $waterHeight = 0;
 	private $emptyHeight = 24;
 	private $emptyAmplitude = 2;
@@ -90,7 +90,7 @@ class Ender extends Generator {
 		return [];
 	}
 
-	public function init(ChunkManager $level, Random $random){
+	public function init(ChunkManager $level, Random $random):void {
 		$this->level = $level;
 		$this->random = $random;
 		$this->random->setSeed($this->level->getSeed());
@@ -102,10 +102,10 @@ class Ender extends Generator {
 		$this->populators[] = $pilar;
 	}
 
-	public function generateChunk($chunkX, $chunkZ){
+	public function generateChunk($chunkX, $chunkZ):void {
 		$this->random->setSeed(0xa6fe78dc ^ ($chunkX << 8) ^ $chunkZ ^ $this->level->getSeed());
 
-		$noise = Generator::getFastNoise3D($this->noiseBase, 16, 128, 16, 4, 8, 4, $chunkX * 16, 0, $chunkZ * 16);
+		$noise = $this->noiseBase->getFastNoise3D(16, 128, 16, 4, 8, 4, $chunkX * 16, 0, $chunkZ * 16);
 
 		$chunk = $this->level->getChunk($chunkX, $chunkZ);
 
@@ -139,7 +139,7 @@ class Ender extends Generator {
 		}
 	}
 
-	public function populateChunk($chunkX, $chunkZ){
+	public function populateChunk($chunkX, $chunkZ):void {
 		$this->random->setSeed(0xa6fe78dc ^ ($chunkX << 8) ^ $chunkZ ^ $this->level->getSeed());
 		foreach($this->populators as $populator){
 			$populator->populate($this->level, $chunkX, $chunkZ, $this->random);

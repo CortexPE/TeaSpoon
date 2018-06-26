@@ -255,11 +255,11 @@ class BrewingStand extends Spawnable implements InventoryHolder, Container, Name
 		return $return;
 	}
 
-	public function saveNBT(): void{
-		$this->saveItems();
-	}
+	public function saveNBT(): CompoundTag {
+        $this->saveItems();
+    }
 
-	public function loadBottles(): void{
+    public function loadBottles(): void{
 		$this->loadItems();
 	}
 
@@ -322,4 +322,22 @@ class BrewingStand extends Spawnable implements InventoryHolder, Container, Name
 			}
 		}
 	}
+
+    /**
+     * Reads additional data from the CompoundTag on tile creation.
+     *
+     * @param CompoundTag $nbt
+     */
+    protected function readSaveData(CompoundTag $nbt): void {
+        // TODO: Implement readSaveData() method.
+    }
+
+    /**
+     * Writes additional save data to a CompoundTag, not including generic things like ID and coordinates.
+     *
+     * @param CompoundTag $nbt
+     */
+    protected function writeSaveData(CompoundTag $nbt): void {
+        // TODO: Implement writeSaveData() method.
+    }
 }
