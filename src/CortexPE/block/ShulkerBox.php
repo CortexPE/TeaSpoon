@@ -59,11 +59,12 @@ class ShulkerBox extends Transparent {
 	 * ShulkerBox constructor.
 	 * @param int $meta
 	 */
-	public function __construct(int $meta = 0){
-		$this->meta = $meta;
-	}
+	public function __construct(int $id, int $meta = 0, ?string $name = \null, int $itemId = \null) {
+        parent::__construct($id, $meta, $name, $itemId);
+        $this->meta = $meta;
+    }
 
-	/**
+    /**
 	 * @return float
 	 */
 	public function getResistance(): float{

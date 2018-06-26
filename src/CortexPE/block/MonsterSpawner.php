@@ -44,11 +44,12 @@ class MonsterSpawner extends SpawnerPM {
 	/** @var int $entityid */
 	private $entityid = 0;
 
-	public function __construct(int $meta = 0){
-		$this->meta = $meta;
-	}
+	public function __construct(int $meta = 0) {
+        parent::__construct($meta);
+        $this->meta = $meta;
+    }
 
-	/**
+    /**
 	 * @return bool
 	 */
 	public function canBeActivated(): bool{
