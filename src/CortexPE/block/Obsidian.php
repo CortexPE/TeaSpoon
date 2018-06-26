@@ -50,12 +50,13 @@ class Obsidian extends PMObsidian {
 	/** @var Vector3 */
 	private $temporalVector = null;
 
-	public function __construct($meta = 0){
-		$this->meta = $meta;
-		$this->temporalVector = new Vector3(0, 0, 0);
-	}
+	public function __construct(int $meta = 0) {
+        parent::__construct($meta);
+        $this->meta = $meta;
+        $this->temporalVector = new Vector3(0, 0, 0);
+    }
 
-	public function onBreak(Item $item, Player $player = null): bool{
+    public function onBreak(Item $item, Player $player = null): bool{
 		parent::onBreak($item);
 		for($i = 0; $i <= 6; $i++){
 			if($this->getSide($i)->getId() == self::PORTAL){

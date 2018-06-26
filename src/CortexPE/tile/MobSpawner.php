@@ -177,4 +177,22 @@ class MobSpawner extends Spawnable {
 		$nbt->setInt(self::TAG_MIN_SPAWN_DELAY, $this->getNBT()->getInt(self::TAG_MIN_SPAWN_DELAY));
 		$nbt->setInt(self::TAG_MAX_SPAWN_DELAY, $this->getNBT()->getInt(self::TAG_MAX_SPAWN_DELAY));
 	}
+
+    /**
+     * Reads additional data from the CompoundTag on tile creation.
+     *
+     * @param CompoundTag $nbt
+     */
+    protected function readSaveData(CompoundTag $nbt): void {
+        // TODO: Implement readSaveData() method.
+    }
+
+    /**
+     * Writes additional save data to a CompoundTag, not including generic things like ID and coordinates.
+     *
+     * @param CompoundTag $nbt
+     */
+    protected function writeSaveData(CompoundTag $nbt): void {
+        // TODO: Implement writeSaveData() method.
+    }
 }

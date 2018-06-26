@@ -40,11 +40,11 @@ class Beacon extends Transparent {
 	 * Beacon constructor.
 	 * @param int $meta
 	 */
-	public function __construct($meta = 0){
-		$this->meta = $meta;
-	}
+    public function __construct($meta = 0) {
+        $this->meta = $meta;
+    }
 
-	/**
+    /**
 	 * @return bool
 	 */
 	public function canBeActivated(): bool{

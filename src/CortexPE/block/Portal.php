@@ -45,11 +45,11 @@ class Portal extends Transparent {
 	/** @var int $id */
 	protected $id = Block::PORTAL;
 
-	public function __construct($meta = 0){
-		$this->meta = $meta;
-	}
+	public function __construct($meta = 0) {
+        $this->meta = $meta;
+    }
 
-	/**
+    /**
 	 * @return string
 	 */
 	public function getName(): string{

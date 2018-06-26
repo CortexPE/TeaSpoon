@@ -45,11 +45,11 @@ use CortexPE\tile\Hopper as HopperTile;
 class Hopper extends Transparent {
 	protected $id = self::HOPPER_BLOCK;
 
-	public function __construct(int $meta = 0){
-		$this->meta = $meta;
-	}
+    public function __construct($meta = 0) {
+        $this->meta = $meta;
+    }
 
-	public function canBeActivated(): bool{
+    public function canBeActivated(): bool{
 		return true;
 	}
 

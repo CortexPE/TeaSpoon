@@ -43,10 +43,10 @@ use pocketmine\Server as PMServer;
 
 class AllAPILoaderManager {
 	public static function init(){
-		PMServer::getInstance()->getPluginManager()->registerInterface(PharPluginLoader::class);
-		PMServer::getInstance()->getPluginManager()->registerInterface(ScriptPluginLoader::class);
+		PMServer::getInstance()->getPluginManager()->registerInterface(new PharPluginLoader(PMServer::getInstance()));
+		PMServer::getInstance()->getPluginManager()->registerInterface(new ScriptPluginLoader(PMServer::getInstance()));
 		if(self::hasFolderPluginLoader()){
-			PMServer::getInstance()->getPluginManager()->registerInterface(FolderPluginLoader::class);
+			PMServer::getInstance()->getPluginManager()->registerInterface(new FolderPluginLoader(PMServer::getInstance()));
 		}
 
 		PMServer::getInstance()->getPluginManager()->loadPlugins(PMServer::getInstance()->getPluginPath(), [PharPluginLoader::class, ScriptPluginLoader::class, FolderPluginLoader::class]);

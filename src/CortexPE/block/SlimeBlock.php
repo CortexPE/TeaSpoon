@@ -47,11 +47,11 @@ class SlimeBlock extends Solid {
 	 */
 	protected $id = Block::SLIME_BLOCK;
 
-	public function __construct($meta = 0){
-		$this->meta = $meta;
-	}
+    public function __construct($meta = 0) {
+        $this->meta = $meta;
+    }
 
-	/**
+    /**
 	 * @return string
 	 */
 	public function getName(): string{

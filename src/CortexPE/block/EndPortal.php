@@ -52,11 +52,11 @@ class EndPortal extends Solid {
 	/** @var int $id */
 	protected $id = Block::END_PORTAL;
 
-	public function __construct($meta = 0){
-		$this->meta = $meta;
-	}
+    public function __construct($meta = 0) {
+        $this->meta = $meta;
+    }
 
-	/**
+    /**
 	 * @return int
 	 */
 	public function getLightLevel(): int{
