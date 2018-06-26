@@ -40,8 +40,7 @@ class Beacon extends Transparent {
 	 * Beacon constructor.
 	 * @param int $meta
 	 */
-	public function __construct(int $id, int $meta = 0, ?string $name = \null, int $itemId = \null) {
-        parent::__construct($id, $meta, $name, $itemId);
+    public function __construct($meta = 0) {
         $this->meta = $meta;
     }
 
