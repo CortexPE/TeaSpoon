@@ -174,7 +174,6 @@ class Portal extends Transparent {
 			if($entity->getLevel()->getSafeSpawn()->distance($entity->asVector3()) <= 0.1){
 				return;
 			}
-            $plug = Main::getInstance();
 			if(!isset(Main::$onPortal[$entity->getId()])){
 				Main::$onPortal[$entity->getId()] = true;
 				if($entity instanceof Player){
@@ -212,9 +211,9 @@ class Portal extends Transparent {
 								$posNether->setComponents($x, $y, $z);
 							}
 							if($gm == Player::SURVIVAL || $gm == Player::ADVENTURE){
-								$plug->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::NETHER, $posNether), 20 * 4);
+								Main::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::NETHER, $posNether), 20 * 4);
 							}else{
-								$plug->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::NETHER, $posNether), 1);
+								Main::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::NETHER, $posNether), 1);
 							}
 						}else{ // NETHER -> OVERWORLD
 							$gm = $entity->getGamemode();
@@ -250,9 +249,9 @@ class Portal extends Transparent {
 							}
 
 							if($gm == Player::SURVIVAL || $gm == Player::ADVENTURE){
-								$plug->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::OVERWORLD, $posOverworld), 20 * 4);
+								Main::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::OVERWORLD, $posOverworld), 20 * 4);
 							}else{
-								$plug->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::OVERWORLD, $posOverworld), 1);
+								Main::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::OVERWORLD, $posOverworld), 1);
 							}
 						}
 					}
