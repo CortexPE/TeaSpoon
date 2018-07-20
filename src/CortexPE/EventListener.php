@@ -61,7 +61,7 @@ use pocketmine\Server as PMServer;
 
 class EventListener implements Listener {
 
-	const VERSION_COMMANDS = ["version", "ver", "about"];
+	public const VERSION_COMMANDS = ["version", "ver", "about"];
 
 	/** @var Plugin */
 	public $plugin;

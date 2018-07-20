@@ -37,28 +37,33 @@ namespace CortexPE\item\utils;
 
 
 class FireworksExplosion {
-	public const TYPE_SMALL_BALL = 0;
-	public const TYPE_LARGE_BALL = 1;
-	public const TYPE_STAR_SHAPED = 2;
-	public const TYPE_CREEPER_SHAPED = 3;
-	public const TYPE_BURST = 4;
-	
-	public const COLOR_BLACK = 0;
-	public const COLOR_RED = 1;
-	public const COLOR_GREEN = 2;
-	public const COLOR_BROWN = 3;
-	public const COLOR_BLUE = 4;
-	public const COLOR_PURPLE = 5;
-	public const COLOR_CYAN = 6;
-	public const COLOR_LIGHT_GRAY = 7;
-	public const COLOR_GRAY = 8;
-	public const COLOR_PINK = 9;
-	public const COLOR_LIME = 10;
-	public const COLOR_YELLOW = 11;
-	public const COLOR_LIGHT_BLUE = 12;
-	public const COLOR_MAGENTA = 13;
-	public const COLOR_ORANGE = 14;
-	public const COLOR_WHITE = 15;
+
+    /** @var int */
+	public const
+        TYPE_SMALL_BALL = 0,
+        YPE_LARGE_BALL = 1,
+        TYPE_STAR_SHAPED = 2,
+        TYPE_CREEPER_SHAPED = 3,
+        TYPE_BURST = 4;
+
+	/** @var int */
+	public const
+        COLOR_BLACK = 0,
+        COLOR_RED = 1,
+        COLOR_GREEN = 2,
+        COLOR_BROWN = 3,
+        COLOR_BLUE = 4,
+        COLOR_PURPLE = 5,
+        COLOR_CYAN = 6,
+        COLOR_LIGHT_GRAY = 7,
+        COLOR_GRAY = 8,
+        COLOR_PINK = 9,
+        COLOR_LIME = 10,
+        COLOR_YELLOW = 11,
+        COLOR_LIGHT_BLUE = 12,
+        COLOR_MAGENTA = 13,
+        COLOR_ORANGE = 14,
+        COLOR_WHITE = 15;
 
 	/** @var int[] */
 	public $fireworkColor = [self::COLOR_BLACK, self::COLOR_BLACK, self::COLOR_BLACK];

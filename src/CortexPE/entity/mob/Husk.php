@@ -38,7 +38,8 @@ namespace CortexPE\entity\mob;
 use pocketmine\entity\Zombie;
 
 class Husk extends Zombie {
-	const NETWORK_ID = self::HUSK;
+	
+    public const NETWORK_ID = self::HUSK;
 
 	public function getName(): string{
 		return "Husk";

@@ -27,7 +27,7 @@ use CortexPE\Main;
 use CortexPE\task\DelayedCrossDimensionTeleportTask;
 use CortexPE\Utils;
 use pocketmine\{
-	Player, Server
+	Player
 };
 use pocketmine\block\{
 	Air, Block, BlockToolType, Transparent
@@ -210,11 +210,10 @@ class Portal extends Transparent {
 								}
 								$posNether->setComponents($x, $y, $z);
 							}
-
 							if($gm == Player::SURVIVAL || $gm == Player::ADVENTURE){
-								Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::NETHER, $posNether), 20 * 4);
+								Main::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::NETHER, $posNether), 20 * 4);
 							}else{
-								Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::NETHER, $posNether), 1);
+								Main::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::NETHER, $posNether), 1);
 							}
 						}else{ // NETHER -> OVERWORLD
 							$gm = $entity->getGamemode();
@@ -250,9 +249,9 @@ class Portal extends Transparent {
 							}
 
 							if($gm == Player::SURVIVAL || $gm == Player::ADVENTURE){
-								Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::OVERWORLD, $posOverworld), 20 * 4);
+								Main::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::OVERWORLD, $posOverworld), 20 * 4);
 							}else{
-								Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::OVERWORLD, $posOverworld), 1);
+								Main::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::OVERWORLD, $posOverworld), 1);
 							}
 						}
 					}

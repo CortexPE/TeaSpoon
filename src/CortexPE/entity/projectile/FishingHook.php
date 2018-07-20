@@ -50,7 +50,9 @@ use pocketmine\Player;
 use pocketmine\Server as PMServer;
 
 class FishingHook extends Projectile {
-	const NETWORK_ID = self::FISHING_HOOK;
+
+	public const NETWORK_ID = self::FISHING_HOOK;
+
 	public $width = 0.25;
 	public $length = 0.25;
 	public $height = 0.25;

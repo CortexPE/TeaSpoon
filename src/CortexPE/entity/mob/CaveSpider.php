@@ -41,7 +41,8 @@ use pocketmine\item\Item;
 use pocketmine\Player;
 
 class CaveSpider extends Monster {
-	const NETWORK_ID = self::CAVE_SPIDER;
+    
+	public const NETWORK_ID = self::CAVE_SPIDER;
 
 	public $width = 1;
 	public $length = 1;

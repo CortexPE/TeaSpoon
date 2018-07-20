@@ -45,7 +45,7 @@ dimensions:
  # Enable / Disable Dimensions
  enable: true
  nether:
-  levelName: "nether"
+  levelName: "teanether"
   # Vanilla-Like Nether Tranfer is not perfect and would take more time (possibly lag)...
   vanillaNetherTranfer: false
  end:

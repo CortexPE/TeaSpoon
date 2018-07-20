@@ -39,7 +39,8 @@ use pocketmine\entity\Animal;
 use pocketmine\item\Item;
 
 class Chicken extends Animal {
-	const NETWORK_ID = self::CHICKEN;
+    
+	public const NETWORK_ID = self::CHICKEN;
 
 	public $width = 0.6;
 	public $length = 0.6;

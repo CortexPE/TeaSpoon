@@ -50,7 +50,8 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\Player;
 
 class SnowGolem extends Monster {
-	const NETWORK_ID = self::SNOW_GOLEM;
+
+    public const NETWORK_ID = self::SNOW_GOLEM;
 
 	public $width = 0.7;
 	public $height = 1.9;

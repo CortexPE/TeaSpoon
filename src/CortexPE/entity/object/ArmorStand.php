@@ -58,7 +58,7 @@ class ArmorStand extends Entity {
 	public $width = 0.5;
 
 	// TODO: Poses...
-	const NETWORK_ID = self::ARMOR_STAND;
+	public const NETWORK_ID = self::ARMOR_STAND;
 
 	public const TAG_HAND_ITEMS = "HandItems";
 	public const TAG_ARMOR_ITEMS = "ArmorItems";

@@ -50,7 +50,8 @@ class EndCrystal extends Entity {
 
 	public const TAG_SHOW_BOTTOM = "ShowBottom";
 
-	const NETWORK_ID = self::ENDER_CRYSTAL;
+	public const NETWORK_ID = self::ENDER_CRYSTAL;
+	
 	public $height = 0.98;
 	public $width = 0.98;
 

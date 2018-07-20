@@ -86,12 +86,14 @@ class EnchantHandler implements Listener {
 	 * [ ] Mending
 	 */
 
-	const BANE_OF_ARTHROPODS_AFFECTED_ENTITIES = [ // Based on https://minecraft.gamepedia.com/Enchanting#Bane_of_Arthropods ^_^
+	/** @var string */
+	public const BANE_OF_ARTHROPODS_AFFECTED_ENTITIES = [ // Based on https://minecraft.gamepedia.com/Enchanting#Bane_of_Arthropods ^_^
 		"Spider", "Cave Spider",
 		"Silverfish", "Endermite",
 	];
 
-	const WATER_IDS = [
+	/** @var int[] */
+	public const WATER_IDS = [
 		Block::STILL_WATER,
 		Block::FLOWING_WATER,
 	];

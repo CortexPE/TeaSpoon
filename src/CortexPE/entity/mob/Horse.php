@@ -40,7 +40,8 @@ use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\MobArmorEquipmentPacket;
 
 class Horse extends Living {
-	const NETWORK_ID = self::HORSE;
+
+    public const NETWORK_ID = self::HORSE;
 
 	public function getName(): string{
 		return "Horse";

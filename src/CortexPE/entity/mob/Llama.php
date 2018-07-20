@@ -41,7 +41,7 @@ use pocketmine\entity\{
 use pocketmine\item\Item;
 
 class Llama extends Animal {
-	const NETWORK_ID = self::LLAMA;
+	public const NETWORK_ID = self::LLAMA;
 
 	const CREAMY = 0;
 	const WHITE = 1;

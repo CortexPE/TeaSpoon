@@ -64,10 +64,19 @@ class Main extends PluginBase {
 
 	// self explanatory constants
 	public const CONFIG_VERSION = 27;
-	public const BASE_POCKETMINE_VERSION = "1.7dev"; // The PocketMine version before Jenkins builds it... (Can be found on PocketMine.php as the 'VERSION' constant)
-	public const TESTED_MIN_POCKETMINE_VERSION = "1.7dev-1014"; // The minimum build this was tested working
-	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-1034"; // The current build this was actually tested
 
+	/** @var string */
+	public const
+        BASE_POCKETMINE_VERSION = "3.0.0",
+        TESTED_MIN_POCKETMINE_VERSION = "3.0.0",
+	    TESTED_MAX_POCKETMINE_VERSION = "4.0.0";
+	/**
+     * Dev Mode allows you to:
+     * Run a TeaSpoon .phar not on poggit
+     *
+     * @var bool
+     */
+	public const DEV_MODE = false;
 	///////////////////////////////// START OF INSTANCE VARIABLES /////////////////////////////////
 	/** @var Config */
 	public static $config;
@@ -89,7 +98,7 @@ class Main extends PluginBase {
 
 	///////////////////////////////// START OF CONFIGS VARIABLES /////////////////////////////////
 	/** @var string */
-	public static $netherName = "nether";
+	public static $netherName = "teanether";
 	/** @var Level */
 	public static $netherLevel;
 	/** @var string */
@@ -286,11 +295,12 @@ class Main extends PluginBase {
 			$thisPhar = new \Phar(\Phar::running(false));
 			$meta = $thisPhar->getMetadata(); // https://github.com/poggit/poggit/blob/beta/src/poggit/ci/builder/ProjectBuilder.php#L227-L236
 			if(!isset($meta["builderName"]) || !is_array($meta)){
-				$this->getLogger()->error("Only use TeaSpoon Builds from Poggit: https://poggit.pmmp.io/ci/CortexPE/TeaSpoon/~");
-				$this->disable = true;
-				return;
+			    if(self::DEV_MODE === false){
+                    $this->getLogger()->error("Only use TeaSpoon Builds from Poggit: https://poggit.pmmp.io/ci/CortexPE/TeaSpoon/~");
+                    $this->disable = true;
+                    return;
+                }
 			}
-
 			self::$sixCharCommitHash = substr($meta["fromCommit"], 0, 6);
 		} else {
 			$this->getLogger()->warning("You're using a developer's build of TeaSpoon. For better performance and stability, please get a pre-packaged version here: https://poggit.pmmp.io/ci/CortexPE/TeaSpoon/~");
@@ -352,7 +362,7 @@ class Main extends PluginBase {
 
 		// Task(s)
 		if(self::$weatherEnabled){
-			$this->getServer()->getScheduler()->scheduleRepeatingTask(new TickLevelsTask($this), 1);
+			$this->getScheduler()->scheduleRepeatingTask(new TickLevelsTask(), 1);
 		}
 
 		// Load other API plugins at last (too still look gud)
@@ -383,12 +393,11 @@ class Main extends PluginBase {
 
 			if($versionMinComp < 0){
 				// PocketMine version is older than minimum tested version
-				$this->getLogger()->alert("This plugin has been tested on PocketMine version: " . self::TESTED_MAX_POCKETMINE_VERSION . ", running it on older PocketMine versions is very unstable. To prevent any futher in-compatibility issues, TeaSpoon will now disable itself."); // I still put the max version so that patches will be included...
+				$this->getLogger()->alert(TextFormat::RED . "This plugin has been tested on PocketMine version: " . self::TESTED_MAX_POCKETMINE_VERSION . ", running it on older PocketMine versions is very unstable. To prevent any futher in-compatibility issues, TeaSpoon will now disable itself."); // I still put the max version so that patches will be included...
 				return false;
 			}
-
 			if($versionMaxComp > 0){
-				$this->getLogger()->info("You're using a newer PocketMine build than the highest tested version (" . self::TESTED_MAX_POCKETMINE_VERSION . "). Please report bugs if there's any. ;)");
+				$this->getLogger()->info(TextFormat::GREEN . "You're using a newer PocketMine build than the highest tested version (" . self::TESTED_MAX_POCKETMINE_VERSION . "). Please report bugs if there's any. ;)");
 			}
 		}
 		return true;

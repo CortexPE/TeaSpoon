@@ -39,6 +39,7 @@ use CortexPE\item\Record;
 use CortexPE\utils\TextFormat;
 use pocketmine\item\Item;
 use pocketmine\level\Level;
+use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
@@ -47,15 +48,19 @@ use pocketmine\tile\Spawnable;
 
 class Jukebox extends Spawnable {
 
-	public const TAG_RECORD = "record";
-	public const TAG_RECORD_ITEM = "recordItem";
+    /** @var string */
+	public const
+        TAG_RECORD = "record",
+        TAG_RECORD_ITEM = "recordItem";
 
 	/** @var int */
 	protected $record = 0; // default id...
 	/** @var Item */
 	protected $recordItem;
-
+	/** @var bool  */
 	private $loaded = false;
+	/** @var CompoundTag */
+	private $nbt;
 
 	public function __construct(Level $level, CompoundTag $nbt){
 		parent::__construct($level, $nbt);
@@ -92,10 +97,14 @@ class Jukebox extends Spawnable {
 	}
 
 	public function dropMusicDisc(){
-		$this->getLevel()->dropItem($this->add(0.5, 0.5, 0.5), $this->getRecordItem());
+		$this->getLevel()->dropItem($this->add(new Vector3(0.5, 0.5, 0.5)), new Item($this->getRecordItem()->getId()));
 		$this->recordItem = Item::get(Item::AIR,0, 1);
-		// $this->getLevel()->broadcastLevelSoundEvent($this, LevelSoundEventPacket::SOUND_RECORD_STOP); wtf phpstorm
+		$this->getLevel()->broadcastLevelSoundEvent($this, LevelSoundEventPacket::SOUND_STOP_RECORD);
 	}
+
+	public function getNBT(): CompoundTag{
+	    return $this->nbt;
+    }
 
 	public function setRecordItem(Record $disc){
 		$this->recordItem = $disc;
@@ -116,16 +125,16 @@ class Jukebox extends Spawnable {
 
 	public function onUpdate() : bool {
 		if($this->recordItem instanceof Record && !$this->loaded){
-			$this->playMusicDisc();
-			$this->loaded = true;
+		    $this->playMusicDisc();
+		    $this->loaded = true;
 		}
 		return true;
 	}
 
-	public function saveNBT() : void {
-		parent::saveNBT();
-		$this->namedtag->setTag($this->getRecordItem()->nbtSerialize(-1, self::TAG_RECORD_ITEM));
-		$this->namedtag->setInt(self::TAG_RECORD, $this->getRecordId());
+	public function saveNBT() : CompoundTag {
+        $this->getNBT()->setTag($this->getRecordItem()->nbtSerialize(-1, self::TAG_RECORD_ITEM));
+        $this->getNBT()->setInt(self::TAG_RECORD, $this->getRecordId());
+		return parent::saveNBT();
 	}
 
 	public function addAdditionalSpawnData(CompoundTag $nbt) : void {
@@ -134,4 +143,15 @@ class Jukebox extends Spawnable {
 		$record = $this->getRecordItem() instanceof Item ? $this->getRecordItem() : Item::get(Item::AIR, 0, 1);
 		$nbt->setTag($record->nbtSerialize(-1, self::TAG_RECORD_ITEM));
 	}
+
+    protected function readSaveData(CompoundTag $nbt): void{
+        $this->nbt = $nbt;
+    }
+
+    protected function writeSaveData(CompoundTag $nbt): void{
+        $nbt->setInt(self::TAG_RECORD, $this->getRecordId());
+
+        $record = $this->getRecordItem() instanceof Item ? $this->getRecordItem() : Item::get(Item::AIR, 0, 1);
+        $nbt->setTag($record->nbtSerialize(-1, self::TAG_RECORD_ITEM));
+    }
 }
