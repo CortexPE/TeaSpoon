@@ -39,7 +39,7 @@ use pocketmine\entity\Animal;
 use pocketmine\item\Item;
 
 class Mule extends Animal {
-    
+
 	public const NETWORK_ID = self::MULE;
 
 	public $width = 1.3965;

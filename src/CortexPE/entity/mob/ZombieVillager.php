@@ -39,7 +39,7 @@ use pocketmine\entity\Zombie;
 
 class ZombieVillager extends Zombie {
 
-    public const NETWORK_ID = self::ZOMBIE_VILLAGER;
+	public const NETWORK_ID = self::ZOMBIE_VILLAGER;
 
 	public $width = 0.6;
 	public $height = 1.95;

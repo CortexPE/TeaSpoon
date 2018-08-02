@@ -51,12 +51,10 @@ use pocketmine\Player;
 
 class SnowGolem extends Monster {
 
-    public const NETWORK_ID = self::SNOW_GOLEM;
-
+	public const NETWORK_ID = self::SNOW_GOLEM;
+	public const TAG_PUMPKIN = "Pumpkin";
 	public $width = 0.7;
 	public $height = 1.9;
-
-	public const TAG_PUMPKIN = "Pumpkin";
 
 	public function __construct(Level $level, CompoundTag $nbt){
 		parent::__construct($level, $nbt);
@@ -64,14 +62,6 @@ class SnowGolem extends Monster {
 		if(!$nbt->hasTag(self::TAG_PUMPKIN, ByteTag::class)){
 			$nbt->setByte(self::TAG_PUMPKIN, 1);
 		}
-	}
-
-	public function isWearingPumpkin(): bool{
-		return boolval($this->namedtag->getByte(self::TAG_PUMPKIN, 1));
-	}
-
-	public function setWearingPumpkin(bool $wearing): void{
-		$this->namedtag->setByte(self::TAG_PUMPKIN, intval($wearing));
 	}
 
 	public function getName(): string{
@@ -93,6 +83,14 @@ class SnowGolem extends Monster {
 		}
 
 		return true;
+	}
+
+	public function isWearingPumpkin(): bool{
+		return boolval($this->namedtag->getByte(self::TAG_PUMPKIN, 1));
+	}
+
+	public function setWearingPumpkin(bool $wearing): void{
+		$this->namedtag->setByte(self::TAG_PUMPKIN, intval($wearing));
 	}
 
 	public function onUpdate(int $currentTick): bool{

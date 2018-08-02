@@ -115,6 +115,15 @@ class EntityUtils extends Utils {
 		}
 	}
 
+	private static function getMountedYOffset(Entity $entity): float{
+		switch($entity->getId()){
+			case Entity::BOAT:
+				return 1.02001;
+		}
+
+		return 0;
+	}
+
 	public static function dismountEntity(Entity $vehicle, Entity $entity, bool $send = true): void{
 		if(isset(self::$ridingEntity[$entity->getId()])){
 			unset(self::$ridingEntity[$entity->getId()]);
@@ -140,15 +149,6 @@ class EntityUtils extends Utils {
 				}
 			}
 		}
-	}
-
-	private static function getMountedYOffset(Entity $entity): float{
-		switch($entity->getId()){
-			case Entity::BOAT:
-				return 1.02001;
-		}
-
-		return 0;
 	}
 
 	/**

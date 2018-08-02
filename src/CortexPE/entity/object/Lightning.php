@@ -48,7 +48,7 @@ use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 
 class Lightning extends Animal {
-    
+
 	public const NETWORK_ID = self::LIGHTNING_BOLT;
 
 	public $doneDamage = false;
@@ -60,11 +60,6 @@ class Lightning extends Animal {
 	public function getName(): string{
 		return "Lightning";
 	}
-
-
-	private function growAxis(AxisAlignedBB $axis, $x, $y, $z){
-        return new AxisAlignedBB($axis->minX - $x, $axis->minY - $y, $axis->minZ - $z, $axis->maxX + $x, $axis->maxY + $y, $axis->maxZ + $z);
-    }
 
 	public function onUpdate(int $currentTick): bool{
 		if(!$this->doneDamage){
@@ -121,5 +116,9 @@ class Lightning extends Animal {
 		}
 
 		return parent::onUpdate($currentTick);
+	}
+
+	private function growAxis(AxisAlignedBB $axis, $x, $y, $z){
+		return new AxisAlignedBB($axis->minX - $x, $axis->minY - $y, $axis->minZ - $z, $axis->maxX + $x, $axis->maxY + $y, $axis->maxZ + $z);
 	}
 }

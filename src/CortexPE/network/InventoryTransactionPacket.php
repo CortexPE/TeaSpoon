@@ -19,7 +19,7 @@
  *
 */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace CortexPE\network;
 
@@ -33,27 +33,27 @@ class InventoryTransactionPacket extends PMInventoryTransactionPacket {
 
 	/** @var int */
 	public const
-        TYPE_NORMAL = 0,
-        TYPE_MISMATCH = 1,
-        TYPE_USE_ITEM = 2,
-        TYPE_USE_ITEM_ON_ENTITY = 3,
-        TYPE_RELEASE_ITEM = 4;
+		TYPE_NORMAL = 0,
+		TYPE_MISMATCH = 1,
+		TYPE_USE_ITEM = 2,
+		TYPE_USE_ITEM_ON_ENTITY = 3,
+		TYPE_RELEASE_ITEM = 4;
 
 	/** @var int */
 	public const
-        USE_ITEM_ACTION_CLICK_BLOCK = 0,
-        USE_ITEM_ACTION_CLICK_AIR = 1,
-        USE_ITEM_ACTION_BREAK_BLOCK = 2;
+		USE_ITEM_ACTION_CLICK_BLOCK = 0,
+		USE_ITEM_ACTION_CLICK_AIR = 1,
+		USE_ITEM_ACTION_BREAK_BLOCK = 2;
 
 	/** @var int */
 	public const
-        RELEASE_ITEM_ACTION_RELEASE = 0, //bow shoot
-        RELEASE_ITEM_ACTION_CONSUME = 1; //eat food, drink potion
+		RELEASE_ITEM_ACTION_RELEASE = 0, //bow shoot
+		RELEASE_ITEM_ACTION_CONSUME = 1; //eat food, drink potion
 
-    /** @var int */
+	/** @var int */
 	public const
-        USE_ITEM_ON_ENTITY_ACTION_INTERACT = 0,
-        USE_ITEM_ON_ENTITY_ACTION_ATTACK = 1;
+		USE_ITEM_ON_ENTITY_ACTION_INTERACT = 0,
+		USE_ITEM_ON_ENTITY_ACTION_ATTACK = 1;
 
 	/** @var int */
 	public $transactionType;
@@ -77,7 +77,11 @@ class InventoryTransactionPacket extends PMInventoryTransactionPacket {
 	/** @var \stdClass */
 	public $trData;
 
-	protected function decodePayload(){
+	public function handle(NetworkSession $session): bool{
+		return $session->handleInventoryTransaction($this);
+	}
+
+	protected function decodePayload(): void{
 		$this->transactionType = $this->getUnsignedVarInt();
 
 		for($i = 0, $count = $this->getUnsignedVarInt(); $i < $count; ++$i){
@@ -119,7 +123,7 @@ class InventoryTransactionPacket extends PMInventoryTransactionPacket {
 		}
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload(): void{
 		$this->putUnsignedVarInt($this->transactionType);
 
 		$this->putUnsignedVarInt(count($this->actions));
@@ -157,9 +161,5 @@ class InventoryTransactionPacket extends PMInventoryTransactionPacket {
 			default:
 				throw new \UnexpectedValueException("Unknown transaction type $this->transactionType");
 		}
-	}
-
-	public function handle(NetworkSession $session) : bool{
-		return $session->handleInventoryTransaction($this);
 	}
 }

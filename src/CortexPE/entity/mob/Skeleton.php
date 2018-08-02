@@ -55,7 +55,7 @@ use pocketmine\item\Item;
 
 class Skeleton extends Monster {
 
-    public const NETWORK_ID = self::SKELETON;
+	public const NETWORK_ID = self::SKELETON;
 
 	public $height = 1.99;
 	public $width = 0.6;

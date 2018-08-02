@@ -33,11 +33,11 @@ use pocketmine\level\{
 use pocketmine\utils\Random;
 
 class EnderPilar extends Populator {
+	private const radii = [3, 4, 3, 5, 3, 4, 3, 3, 5, 4, 5, 3, 5, 4, 4, 5, 5, 4, 4, 4, 5];
 	/** @var ChunkManager */
 	private $level;
 	private $randomAmount;
 	private $baseAmount;
-	private const radii = [3,4,3,5,3,4,3,3,5,4,5,3,5,4,4,5,5,4,4,4,5];
 
 	public function setRandomAmount($amount){
 		$this->randomAmount = $amount;
@@ -63,19 +63,19 @@ class EnderPilar extends Populator {
 					}
 				}
 			}
-			if(mt_rand(1,2) == 1){
+			if(mt_rand(1, 2) == 1){
 				if($radius == 3){
 					$bradius = 1;
-				} else {
+				}else{
 					$bradius = 2;
 				}
 				for($bx = -$bradius; $bx <= $bradius; $bx++){
 					for($by = -$bradius; $by <= $bradius; $by++){
 						for($bz = -$bradius; $bz <= $bradius; $bz++){
 							$edge = (
-								($bx == $bradius || $bx == -$bradius) &&
-								($bz == $bradius || $bz == -$bradius)
-							) || ($by == $bradius || $by == -$bradius);
+									($bx == $bradius || $bx == -$bradius) &&
+									($bz == $bradius || $bz == -$bradius)
+								) || ($by == $bradius || $by == -$bradius);
 							if($edge){
 								$level->setBlockIdAt($x + $bx, ($height + 1) + $by, $z + $bz, Block::IRON_BARS);
 							}

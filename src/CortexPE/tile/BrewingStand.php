@@ -58,26 +58,20 @@ class BrewingStand extends Spawnable implements InventoryHolder, Container, Name
 
 	/** @var string */
 	public const
-        TAG_BREW_TIME = "BrewTime",
-        TAG_FUEL = "Fuel",
-        TAG_HAS_BOTTLE_0 = "has_bottle_0",
-        TAG_HAS_BOTTLE_1 = "has_bottle_1",
-        TAG_HAS_BOTTLE_2 = "has_bottle_2";
+		TAG_BREW_TIME = "BrewTime",
+		TAG_FUEL = "Fuel",
+		TAG_HAS_BOTTLE_0 = "has_bottle_0",
+		TAG_HAS_BOTTLE_1 = "has_bottle_1",
+		TAG_HAS_BOTTLE_2 = "has_bottle_2";
 
 	/** @var string */
 	private const TAG_HAS_BOTTLE_BASE = "has_bottle_"; // lazy
 
-    /** @var int */
+	/** @var int */
 	public const
-        MAX_BREW_TIME = 400,
-        MAX_FUEL = 20;
-	/** @var bool */
-	public $brewing = false; // used for hoppers...
-
-    /** @var CompoundTag */
-    private $nbt;
-
-    /** @var int[] */
+		MAX_BREW_TIME = 400,
+		MAX_FUEL = 20;
+		/** @var int[] */
 	public const INGREDIENTS = [
 		Item::NETHER_WART,
 		Item::GLOWSTONE_DUST,
@@ -94,8 +88,11 @@ class BrewingStand extends Spawnable implements InventoryHolder, Container, Name
 		Item::RABBIT_FOOT,
 		Item::GUNPOWDER,
 		Item::DRAGON_BREATH,
-	];
-
+	]; // used for hoppers...
+/** @var bool */
+	public $brewing = false;
+	/** @var CompoundTag */
+	private $nbt;
 	/** @var BrewingInventory */
 	private $inventory = null;
 
@@ -120,16 +117,7 @@ class BrewingStand extends Spawnable implements InventoryHolder, Container, Name
 		$this->scheduleUpdate();
 	}
 
-
-	public function getNBT(): CompoundTag{
-	    return $this->nbt;
-    }
-
 	public function getRealInventory(){
-		return $this->inventory;
-	}
-
-	public function getInventory(){
 		return $this->inventory;
 	}
 
@@ -139,10 +127,6 @@ class BrewingStand extends Spawnable implements InventoryHolder, Container, Name
 
 	public function addAdditionalSpawnData(CompoundTag $nbt): void{
 		$nbt->setShort(self::TAG_BREW_TIME, self::MAX_BREW_TIME);
-	}
-
-	public function isValidIngredient(Item $item): bool{
-		return (in_array($item->getId(), self::INGREDIENTS) && $item->getDamage() == 0);
 	}
 
 	public function isValidFuel(Item $item): bool{
@@ -155,11 +139,6 @@ class BrewingStand extends Spawnable implements InventoryHolder, Container, Name
 		return $recipe !== null;
 	}
 
-	public function isValidPotion(Item $item): bool{
-		return (in_array($item->getId(), [Item::POTION, Item::SPLASH_POTION]));
-	}
-
-	// Ported and cleaned up from iTXTech/Genisys
 	public function onUpdate(): bool{
 		if($this->isClosed() || !Main::$brewingStandsEnabled){
 			return false;
@@ -271,29 +250,12 @@ class BrewingStand extends Spawnable implements InventoryHolder, Container, Name
 		return $return;
 	}
 
-	public function saveNBT(): CompoundTag{
-		$this->saveItems($this->nbt);
-		return parent::saveNBT();
+	public function getInventory(){
+		return $this->inventory;
 	}
 
-	public function loadBottles(): void{
-		$this->loadItems($this->nbt);
-	}
-
-	public function getBrewTime(): int{
-		return $this->getNBT()->getInt(self::TAG_BREW_TIME);
-	}
-
-	public function setBrewTime(int $time): void{
-		$this->getNBT()->setInt(self::TAG_BREW_TIME, $time);
-	}
-
-	public function getFuelValue(): int{
-		return $this->getNBT()->getByte(self::TAG_FUEL, 0);
-	}
-
-	public function setFuelValue(int $fuel): void{
-		$this->getNBT()->setByte(self::TAG_FUEL, $fuel);
+	public function isValidPotion(Item $item): bool{
+		return (in_array($item->getId(), [Item::POTION, Item::SPLASH_POTION]));
 	}
 
 	public function setBottle(int $slot, bool $hasBottle): void{
@@ -304,16 +266,14 @@ class BrewingStand extends Spawnable implements InventoryHolder, Container, Name
 		}
 	}
 
-	public function broadcastBrewTime(int $time): void{
-		$pk = new ContainerSetDataPacket();
-		$pk->property = ContainerSetDataPacket::PROPERTY_BREWING_STAND_BREW_TIME;
-		$pk->value = $time;
-		foreach($this->inventory->getViewers() as $viewer){
-			$pk->windowId = $viewer->getWindowId($this->getInventory());
-			if($pk->windowId > 0){
-				$viewer->dataPacket($pk);
-			}
-		}
+	// Ported and cleaned up from iTXTech/Genisys
+
+	public function getNBT(): CompoundTag{
+		return $this->nbt;
+	}
+
+	public function getFuelValue(): int{
+		return $this->getNBT()->getByte(self::TAG_FUEL, 0);
 	}
 
 	public function broadcastFuelAmount(int $value): void{
@@ -340,11 +300,49 @@ class BrewingStand extends Spawnable implements InventoryHolder, Container, Name
 		}
 	}
 
-    protected function readSaveData(CompoundTag $nbt): void{
-        $this->nbt = $nbt;
-    }
+	public function isValidIngredient(Item $item): bool{
+		return (in_array($item->getId(), self::INGREDIENTS) && $item->getDamage() == 0);
+	}
 
-    protected function writeSaveData(CompoundTag $nbt): void{
-        $nbt->setShort(self::TAG_BREW_TIME, self::MAX_BREW_TIME);
-    }
+	public function setFuelValue(int $fuel): void{
+		$this->getNBT()->setByte(self::TAG_FUEL, $fuel);
+	}
+
+	public function getBrewTime(): int{
+		return $this->getNBT()->getInt(self::TAG_BREW_TIME);
+	}
+
+	public function setBrewTime(int $time): void{
+		$this->getNBT()->setInt(self::TAG_BREW_TIME, $time);
+	}
+
+	public function broadcastBrewTime(int $time): void{
+		$pk = new ContainerSetDataPacket();
+		$pk->property = ContainerSetDataPacket::PROPERTY_BREWING_STAND_BREW_TIME;
+		$pk->value = $time;
+		foreach($this->inventory->getViewers() as $viewer){
+			$pk->windowId = $viewer->getWindowId($this->getInventory());
+			if($pk->windowId > 0){
+				$viewer->dataPacket($pk);
+			}
+		}
+	}
+
+	public function saveNBT(): CompoundTag{
+		$this->saveItems($this->nbt);
+
+		return parent::saveNBT();
+	}
+
+	public function loadBottles(): void{
+		$this->loadItems($this->nbt);
+	}
+
+	protected function readSaveData(CompoundTag $nbt): void{
+		$this->nbt = $nbt;
+	}
+
+	protected function writeSaveData(CompoundTag $nbt): void{
+		$nbt->setShort(self::TAG_BREW_TIME, self::MAX_BREW_TIME);
+	}
 }

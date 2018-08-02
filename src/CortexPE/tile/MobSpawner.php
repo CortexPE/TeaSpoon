@@ -21,14 +21,14 @@ use pocketmine\tile\Spawnable;
 
 class MobSpawner extends Spawnable {
 
-    /** @var string */
+	/** @var string */
 	public const
-        TAG_ENTITY_ID = "EntityId",
-        TAG_SPAWN_COUNT = "SpawnCount",
-        TAG_SPAWN_RANGE = "SpawnRange",
-        TAG_MIN_SPAWN_DELAY = "MinSpawnDelay",
-        TAG_MAX_SPAWN_DELAY = "MaxSpawnDelay",
-        TAG_DELAY = "Delay";
+		TAG_ENTITY_ID = "EntityId",
+		TAG_SPAWN_COUNT = "SpawnCount",
+		TAG_SPAWN_RANGE = "SpawnRange",
+		TAG_MIN_SPAWN_DELAY = "MinSpawnDelay",
+		TAG_MAX_SPAWN_DELAY = "MaxSpawnDelay",
+		TAG_DELAY = "Delay";
 
 	/** @var CompoundTag */
 	private $nbt;
@@ -65,12 +65,12 @@ class MobSpawner extends Spawnable {
 		}
 	}
 
-	public function getNBT() : CompoundTag{
-        return $this->nbt;
-    }
-
 	public function getEntityId(){
 		return $this->getNBT()->getInt(self::TAG_ENTITY_ID);
+	}
+
+	public function getNBT(): CompoundTag{
+		return $this->nbt;
 	}
 
 	public function setEntityId(int $id){
@@ -178,25 +178,23 @@ class MobSpawner extends Spawnable {
 	}
 
 	public function addAdditionalSpawnData(CompoundTag $nbt): void{
-	    $this->baseData($nbt);
+		$this->baseData($nbt);
 	}
 
-    protected function readSaveData(CompoundTag $nbt): void
-    {
-        $this->nbt = $nbt;
-    }
+	private function baseData(CompoundTag $nbt): void{
+		$nbt->setInt(self::TAG_ENTITY_ID, $this->getNBT()->getInt(self::TAG_ENTITY_ID));
+		$nbt->setInt(self::TAG_DELAY, $this->getNBT()->getInt(self::TAG_DELAY));
+		$nbt->setInt(self::TAG_SPAWN_COUNT, $this->getNBT()->getInt(self::TAG_SPAWN_COUNT));
+		$nbt->setInt(self::TAG_SPAWN_RANGE, $this->getNBT()->getInt(self::TAG_SPAWN_RANGE));
+		$nbt->setInt(self::TAG_MIN_SPAWN_DELAY, $this->getNBT()->getInt(self::TAG_MIN_SPAWN_DELAY));
+		$nbt->setInt(self::TAG_MAX_SPAWN_DELAY, $this->getNBT()->getInt(self::TAG_MAX_SPAWN_DELAY));
+	}
 
-    protected function writeSaveData(CompoundTag $nbt): void
-    {
-        $this->baseData($nbt);
-    }
+	protected function readSaveData(CompoundTag $nbt): void{
+		$this->nbt = $nbt;
+	}
 
-    private function baseData(CompoundTag $nbt) : void{
-        $nbt->setInt(self::TAG_ENTITY_ID, $this->getNBT()->getInt(self::TAG_ENTITY_ID));
-        $nbt->setInt(self::TAG_DELAY, $this->getNBT()->getInt(self::TAG_DELAY));
-        $nbt->setInt(self::TAG_SPAWN_COUNT, $this->getNBT()->getInt(self::TAG_SPAWN_COUNT));
-        $nbt->setInt(self::TAG_SPAWN_RANGE, $this->getNBT()->getInt(self::TAG_SPAWN_RANGE));
-        $nbt->setInt(self::TAG_MIN_SPAWN_DELAY, $this->getNBT()->getInt(self::TAG_MIN_SPAWN_DELAY));
-        $nbt->setInt(self::TAG_MAX_SPAWN_DELAY, $this->getNBT()->getInt(self::TAG_MAX_SPAWN_DELAY));
-    }
+	protected function writeSaveData(CompoundTag $nbt): void{
+		$this->baseData($nbt);
+	}
 }

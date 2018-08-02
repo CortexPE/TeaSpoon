@@ -43,14 +43,13 @@ use pocketmine\network\mcpe\protocol\types\WindowTypes;
 use pocketmine\Player;
 
 class BrewingInventory extends ContainerInventory {
-	/** @var BrewingStand */
-	protected $holder;
-
 	public const SLOT_INGREDIENT = 0;
 	public const SLOT_LEFT = 1;
 	public const SLOT_MIDDLE = 2;
 	public const SLOT_RIGHT = 3;
 	public const SLOT_FUEL = 4;
+	/** @var BrewingStand */
+	protected $holder;
 
 	public function __construct(BrewingStand $holder, array $items = [], int $size = \null, string $title = \null){
 		parent::__construct($holder, $items, $size, $title);

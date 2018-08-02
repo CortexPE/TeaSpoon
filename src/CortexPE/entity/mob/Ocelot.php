@@ -39,7 +39,7 @@ use pocketmine\entity\Animal;
 
 class Ocelot extends Animal {
 
-    public const NETWORK_ID = self::OCELOT;
+	public const NETWORK_ID = self::OCELOT;
 
 	const TYPE_WILD = 0;
 	const TYPE_TUXEDO = 1;

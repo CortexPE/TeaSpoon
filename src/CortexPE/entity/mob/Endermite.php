@@ -39,7 +39,7 @@ use pocketmine\entity\Monster;
 
 class Endermite extends Monster {
 
-    public const NETWORK_ID = self::ENDERMITE;
+	public const NETWORK_ID = self::ENDERMITE;
 
 	public $height = 0.3;
 	public $width = 0.4;

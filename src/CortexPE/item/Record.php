@@ -47,18 +47,19 @@ class Record extends Item {
 		return 1;
 	}
 
-	public function isValid():bool{
+	public function isValid(): bool{
 		return ($this->getId() >= 500 && $this->getId() <= 511);
+	}
+
+	public function getSoundId(){
+		$cal = LevelSoundEventPacket::SOUND_RECORD_13 + ($this->getRecordId() - 2255);
+		$cal -= 1;
+
+		return $cal;
 	}
 
 	public function getRecordId(): int{
 		return 1756 + $this->getId(); // so that it matches the wiki...
-	}
-
-	public function getSoundId(){
-        $cal = LevelSoundEventPacket::SOUND_RECORD_13 + ($this->getRecordId() - 2255);
-        $cal -= 1;
-		return $cal;
 	}
 
 	public function getRecordName(): string{

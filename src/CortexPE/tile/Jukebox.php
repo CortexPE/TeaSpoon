@@ -48,16 +48,16 @@ use pocketmine\tile\Spawnable;
 
 class Jukebox extends Spawnable {
 
-    /** @var string */
+	/** @var string */
 	public const
-        TAG_RECORD = "record",
-        TAG_RECORD_ITEM = "recordItem";
+		TAG_RECORD = "record",
+		TAG_RECORD_ITEM = "recordItem";
 
 	/** @var int */
 	protected $record = 0; // default id...
 	/** @var Item */
 	protected $recordItem;
-	/** @var bool  */
+	/** @var bool */
 	private $loaded = false;
 	/** @var CompoundTag */
 	private $nbt;
@@ -74,6 +74,34 @@ class Jukebox extends Spawnable {
 			$nbt->setTag((Item::get(Item::AIR, 0, 1))->nbtSerialize(-1, self::TAG_RECORD_ITEM));
 		}
 		$this->recordItem = Item::nbtDeserialize($nbt->getCompoundTag(self::TAG_RECORD_ITEM));
+	}
+
+	public function dropMusicDisc(){
+		$this->getLevel()->dropItem($this->add(new Vector3(0.5, 0.5, 0.5)), new Item($this->getRecordItem()->getId()));
+		$this->recordItem = Item::get(Item::AIR, 0, 1);
+		$this->getLevel()->broadcastLevelSoundEvent($this, LevelSoundEventPacket::SOUND_STOP_RECORD);
+	}
+
+	public function getRecordItem(): Item{
+		return ($this->recordItem instanceof Item ? $this->recordItem : Item::get(Item::AIR, 0, 1));
+	}
+
+	public function setRecordItem(Record $disc){
+		$this->recordItem = $disc;
+		$this->record = $disc->getRecordId();
+	}
+
+	public function setRecordId(int $recordId){
+		$this->record = $recordId;
+	}
+
+	public function onUpdate(): bool{
+		if($this->recordItem instanceof Record && !$this->loaded){
+			$this->playMusicDisc();
+			$this->loaded = true;
+		}
+
+		return true;
 	}
 
 	public function playMusicDisc(){
@@ -96,62 +124,36 @@ class Jukebox extends Spawnable {
 		}
 	}
 
-	public function dropMusicDisc(){
-		$this->getLevel()->dropItem($this->add(new Vector3(0.5, 0.5, 0.5)), new Item($this->getRecordItem()->getId()));
-		$this->recordItem = Item::get(Item::AIR,0, 1);
-		$this->getLevel()->broadcastLevelSoundEvent($this, LevelSoundEventPacket::SOUND_STOP_RECORD);
-	}
+	public function saveNBT(): CompoundTag{
+		$this->getNBT()->setTag($this->getRecordItem()->nbtSerialize(-1, self::TAG_RECORD_ITEM));
+		$this->getNBT()->setInt(self::TAG_RECORD, $this->getRecordId());
 
-	public function getNBT(): CompoundTag{
-	    return $this->nbt;
-    }
-
-	public function setRecordItem(Record $disc){
-		$this->recordItem = $disc;
-		$this->record = $disc->getRecordId();
-	}
-
-	public function setRecordId(int $recordId){
-		$this->record = $recordId;
-	}
-
-	public function getRecordItem() : Item{
-		return ($this->recordItem instanceof Item ? $this->recordItem : Item::get(Item::AIR, 0, 1));
-	}
-
-	public function getRecordId() : int{
-		return $this->record;
-	}
-
-	public function onUpdate() : bool {
-		if($this->recordItem instanceof Record && !$this->loaded){
-		    $this->playMusicDisc();
-		    $this->loaded = true;
-		}
-		return true;
-	}
-
-	public function saveNBT() : CompoundTag {
-        $this->getNBT()->setTag($this->getRecordItem()->nbtSerialize(-1, self::TAG_RECORD_ITEM));
-        $this->getNBT()->setInt(self::TAG_RECORD, $this->getRecordId());
 		return parent::saveNBT();
 	}
 
-	public function addAdditionalSpawnData(CompoundTag $nbt) : void {
+	public function getNBT(): CompoundTag{
+		return $this->nbt;
+	}
+
+	public function getRecordId(): int{
+		return $this->record;
+	}
+
+	public function addAdditionalSpawnData(CompoundTag $nbt): void{
 		$nbt->setInt(self::TAG_RECORD, $this->getRecordId());
 
 		$record = $this->getRecordItem() instanceof Item ? $this->getRecordItem() : Item::get(Item::AIR, 0, 1);
 		$nbt->setTag($record->nbtSerialize(-1, self::TAG_RECORD_ITEM));
 	}
 
-    protected function readSaveData(CompoundTag $nbt): void{
-        $this->nbt = $nbt;
-    }
+	protected function readSaveData(CompoundTag $nbt): void{
+		$this->nbt = $nbt;
+	}
 
-    protected function writeSaveData(CompoundTag $nbt): void{
-        $nbt->setInt(self::TAG_RECORD, $this->getRecordId());
+	protected function writeSaveData(CompoundTag $nbt): void{
+		$nbt->setInt(self::TAG_RECORD, $this->getRecordId());
 
-        $record = $this->getRecordItem() instanceof Item ? $this->getRecordItem() : Item::get(Item::AIR, 0, 1);
-        $nbt->setTag($record->nbtSerialize(-1, self::TAG_RECORD_ITEM));
-    }
+		$record = $this->getRecordItem() instanceof Item ? $this->getRecordItem() : Item::get(Item::AIR, 0, 1);
+		$nbt->setTag($record->nbtSerialize(-1, self::TAG_RECORD_ITEM));
+	}
 }

@@ -42,7 +42,7 @@ use pocketmine\item\Item;
 
 class Vindicator extends Monster {
 
-    public const NETWORK_ID = self::VINDICATOR;
+	public const NETWORK_ID = self::VINDICATOR;
 
 	public $width = 0.6;
 	public $height = 1.95;

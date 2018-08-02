@@ -60,7 +60,7 @@ class Xp extends Utils {
 			case Entity::SQUID:
 			case Entity::RABBIT:
 			case Entity::WOLF:
-				return mt_rand(1,3);
+				return mt_rand(1, 3);
 			case Entity::BAT:
 				return 0;
 			// golems //
@@ -89,7 +89,7 @@ class Xp extends Utils {
 				return 3;
 			case Entity::SLIME:
 			case Entity::MAGMA_CUBE:
-				return mt_rand(1,4);
+				return mt_rand(1, 4);
 			case Entity::BLAZE:
 			case Entity::GUARDIAN:
 			case Entity::ELDER_GUARDIAN:
@@ -105,6 +105,7 @@ class Xp extends Utils {
 			case Entity::LIGHTNING_BOLT:
 				return 0;
 		}
+
 		return 0;
 	}
 }

@@ -43,12 +43,13 @@ use pocketmine\network\mcpe\protocol\types\WindowTypes;
 use pocketmine\Player;
 
 class Anvil extends PMAnvil {
-	public function onActivate(Item $item, Player $player = null) : bool{
-		if (Main::$AnvilEnabled){
+	public function onActivate(Item $item, Player $player = null): bool{
+		if(Main::$AnvilEnabled){
 			if($player instanceof Player){
 				$player->addWindow(new AnvilInventory($this), WindowTypes::ANVIL);
 			}
 		}
+
 		return true;
 	}
 }

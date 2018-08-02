@@ -39,12 +39,12 @@ class CraftingDataPacket extends PMCraftingDataPacket {
 
 	/** @var int */
 	public const
-        ENTRY_SHAPELESS = 0,
-        ENTRY_SHAPED = 1,
-        ENTRY_FURNACE = 2,
-        ENTRY_FURNACE_DATA = 3,
-        ENTRY_ENCHANT_LIST = 4, //TODO
-        ENTRY_SHULKER_BOX = 5; //TODO
+		ENTRY_SHAPELESS = 0,
+		ENTRY_SHAPED = 1,
+		ENTRY_FURNACE = 2,
+		ENTRY_FURNACE_DATA = 3,
+		ENTRY_ENCHANT_LIST = 4, //TODO
+		ENTRY_SHULKER_BOX = 5; //TODO
 
 	/** @var object[] */
 	public $entries = [];
@@ -56,10 +56,27 @@ class CraftingDataPacket extends PMCraftingDataPacket {
 	public function clean(){
 		$this->entries = [];
 		$this->decodedEntries = [];
+
 		return parent::clean();
 	}
 
-	protected function decodePayload(){
+	public function addShapelessRecipe(ShapelessRecipe $recipe): void{
+		$this->entries[] = $recipe;
+	}
+
+	public function addShapedRecipe(ShapedRecipe $recipe): void{
+		$this->entries[] = $recipe;
+	}
+
+	public function addFurnaceRecipe(FurnaceRecipe $recipe): void{
+		$this->entries[] = $recipe;
+	}
+
+	public function handle(NetworkSession $session): bool{
+		return $session->handleCraftingData($this);
+	}
+
+	protected function decodePayload(): void{
 		$this->decodedEntries = [];
 		$recipeCount = $this->getUnsignedVarInt();
 		for($i = 0; $i < $recipeCount; ++$i){
@@ -117,6 +134,25 @@ class CraftingDataPacket extends PMCraftingDataPacket {
 		$this->getBool(); //cleanRecipes
 	}
 
+	protected function encodePayload(): void{
+		$this->putUnsignedVarInt(count($this->entries));
+
+		$writer = new NetworkBinaryStream();
+		foreach($this->entries as $d){
+			$entryType = self::writeEntry($d, $writer);
+			if($entryType >= 0){
+				$this->putVarInt($entryType);
+				$this->put($writer->getBuffer());
+			}else{
+				$this->putVarInt(-1);
+			}
+
+			$writer->reset();
+		}
+
+		$this->putBool($this->cleanRecipes);
+	}
+
 	private static function writeEntry($entry, NetworkBinaryStream $stream){
 		if($entry instanceof ShapelessRecipe){
 			return self::writeShapelessRecipe($entry, $stream);
@@ -127,6 +163,7 @@ class CraftingDataPacket extends PMCraftingDataPacket {
 		}elseif($entry instanceof EnchantmentList){
 			return self::writeEnchantList($entry, $stream);
 		}
+
 		//TODO: add MultiRecipe
 
 		return -1;
@@ -194,47 +231,12 @@ class CraftingDataPacket extends PMCraftingDataPacket {
 			/** @var Enchantment $enchantment */
 			foreach($entry->getEnchantments() as $enchantment){
 				$stream->putUnsignedVarInt($enchantment->getId());
-				$stream->putUnsignedVarInt(mt_rand(1,$enchantment->getMaxLevel()));
+				$stream->putUnsignedVarInt(mt_rand(1, $enchantment->getMaxLevel()));
 			}
 			$stream->putString($entry->getRandomName());
 		}
 
 		return CraftingDataPacket::ENTRY_ENCHANT_LIST;
-	}
-
-	public function addShapelessRecipe(ShapelessRecipe $recipe){
-		$this->entries[] = $recipe;
-	}
-
-	public function addShapedRecipe(ShapedRecipe $recipe){
-		$this->entries[] = $recipe;
-	}
-
-	public function addFurnaceRecipe(FurnaceRecipe $recipe){
-		$this->entries[] = $recipe;
-	}
-
-	protected function encodePayload(){
-		$this->putUnsignedVarInt(count($this->entries));
-
-		$writer = new NetworkBinaryStream();
-		foreach($this->entries as $d){
-			$entryType = self::writeEntry($d, $writer);
-			if($entryType >= 0){
-				$this->putVarInt($entryType);
-				$this->put($writer->getBuffer());
-			}else{
-				$this->putVarInt(-1);
-			}
-
-			$writer->reset();
-		}
-
-		$this->putBool($this->cleanRecipes);
-	}
-
-	public function handle(NetworkSession $session): bool{
-		return $session->handleCraftingData($this);
 	}
 
 }

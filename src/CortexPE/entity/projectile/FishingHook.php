@@ -139,7 +139,7 @@ class FishingHook extends Projectile {
 		}
 	}
 
-	public function onHitEntity(Entity $entityHit, RayTraceResult $hitResult): void {
+	public function onHitEntity(Entity $entityHit, RayTraceResult $hitResult): void{
 		$this->server->getPluginManager()->callEvent(new ProjectileHitEntityEvent($this, $hitResult, $entityHit));
 
 		$damage = $this->getResultDamage();

@@ -60,7 +60,7 @@ class FireCharge extends Item {
 			$tx = $target->getX();
 			$ty = $target->getY();
 			$tz = $target->getZ();
-			$temporalVector = new Vector3(0,0,0);
+			$temporalVector = new Vector3(0, 0, 0);
 			$x_max = $tx;
 			$x_min = $tx;
 			for($x = $tx + 1; $level->getBlock($temporalVector->setComponents($x, $ty, $tz))->getId() == Block::OBSIDIAN; $x++){

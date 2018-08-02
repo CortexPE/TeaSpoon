@@ -43,33 +43,31 @@ use pocketmine\event\entity\{
 use pocketmine\item\Item;
 use pocketmine\level\Level;
 use pocketmine\nbt\tag\{
-	IntTag, CompoundTag
+	CompoundTag, IntTag
 };
 use pocketmine\Player;
 
 class Rabbit extends Animal {
 
-    public const NETWORK_ID = self::RABBIT;
-
-    /** @var int */
-	public const
-        DATA_RABBIT_TYPE = 18,
-        DATA_JUMP_TYPE = 19;
+	public const NETWORK_ID = self::RABBIT;
 
 	/** @var int */
 	public const
-        TYPE_BROWN = 0,
-        TYPE_WHITE = 1,
-        TYPE_BLACK = 2,
-        TYPE_BLACK_WHITE = 3,
-        TYPE_GOLD = 4,
-        TYPE_SALT_PEPPER = 5,
-        TYPE_KILLER_BUNNY = 99;
+		DATA_RABBIT_TYPE = 18,
+		DATA_JUMP_TYPE = 19;
 
+	/** @var int */
+	public const
+		TYPE_BROWN = 0,
+		TYPE_WHITE = 1,
+		TYPE_BLACK = 2,
+		TYPE_BLACK_WHITE = 3,
+		TYPE_GOLD = 4,
+		TYPE_SALT_PEPPER = 5,
+		TYPE_KILLER_BUNNY = 99;
+	public const TAG_RABBIT_TYPE = "RabbitType";
 	public $width = 0.4;
 	public $height = 0.5;
-
-	public const TAG_RABBIT_TYPE = "RabbitType";
 
 	public function __construct(Level $level, CompoundTag $nbt){
 		$type = $this->getRandomRabbitType();

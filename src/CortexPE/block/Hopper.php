@@ -36,11 +36,20 @@ declare(strict_types = 1);
 namespace CortexPE\block;
 
 use CortexPE\Main;
+use CortexPE\tile\Hopper as HopperTile;
 use CortexPE\tile\Tile;
 use pocketmine\{
-	block\Block, block\BlockToolType, block\Transparent, item\Item, math\Vector3, nbt\tag\CompoundTag, nbt\tag\IntTag, nbt\tag\ListTag, nbt\tag\StringTag, Player
+	block\Block,
+	block\BlockToolType,
+	block\Transparent,
+	item\Item,
+	math\Vector3,
+	nbt\tag\CompoundTag,
+	nbt\tag\IntTag,
+	nbt\tag\ListTag,
+	nbt\tag\StringTag,
+	Player
 };
-use CortexPE\tile\Hopper as HopperTile;
 
 class Hopper extends Transparent {
 	protected $id = self::HOPPER_BLOCK;
@@ -61,7 +70,7 @@ class Hopper extends Transparent {
 		return "Hopper";
 	}
 
-	public function getHardness() : float{
+	public function getHardness(): float{
 		return 3;
 	}
 
@@ -69,7 +78,7 @@ class Hopper extends Transparent {
 		return 24;
 	}
 
-	public function onActivate(Item $item, Player $player = null) : bool{
+	public function onActivate(Item $item, Player $player = null): bool{
 		if(Main::$hoppersEnabled){
 			if($player instanceof Player){
 				$t = $this->getLevel()->getTile($this);
@@ -78,7 +87,7 @@ class Hopper extends Transparent {
 						return true;
 					}
 					$player->addWindow($t->getInventory());
-				} else {
+				}else{
 					$nbt = new CompoundTag("", [
 						new ListTag("Items", []),
 						new StringTag("id", Tile::HOPPER),

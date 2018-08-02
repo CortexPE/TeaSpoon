@@ -48,7 +48,7 @@ class Firework extends Utils {
 		// https://github.com/thebigsmileXD/fireworks/blob/master/src/xenialdan/fireworks/item/Fireworks.php#L54-L74
 		$value = [];
 		$root = new CompoundTag();
-		foreach ($data->explosions as $explosion){
+		foreach($data->explosions as $explosion){
 			$tag = new CompoundTag();
 			$tag->setByteArray("FireworkColor", (string)$explosion->fireworkColor[0]);
 			$tag->setByteArray("FireworkFade", (string)$explosion->fireworkFade[0]);
@@ -61,9 +61,10 @@ class Firework extends Utils {
 		$root->setTag(new CompoundTag("Fireworks",
 				[
 					$explosions,
-					new ByteTag("Flight", $data->flight)
+					new ByteTag("Flight", $data->flight),
 				])
 		);
+
 		return $root;
 	}
 }

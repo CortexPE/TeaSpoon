@@ -33,10 +33,10 @@ use pocketmine\utils\Random;
 class VoidGenerator extends Generator {
 	/** @var ChunkManager */
 	protected $level;
-	/** @var Chunk */
-	private $chunk;
 	/** @var Random */
 	protected $random;
+	/** @var Chunk */
+	private $chunk;
 	private $options;
 	/** @var Chunk */
 	private $emptyChunk = null;
@@ -70,7 +70,7 @@ class VoidGenerator extends Generator {
 	 *
 	 * @return void
 	 */
-	public function init(ChunkManager $level, Random $random) : void{
+	public function init(ChunkManager $level, Random $random): void{
 		$this->level = $level;
 		$this->random = $random;
 	}
@@ -81,7 +81,7 @@ class VoidGenerator extends Generator {
 	 *
 	 * @return void
 	 */
-	public function generateChunk(int $chunkX, int $chunkZ) : void{
+	public function generateChunk(int $chunkX, int $chunkZ): void{
 		if($this->emptyChunk === null){
 			$this->chunk = clone $this->level->getChunk($chunkX, $chunkZ);
 			$this->chunk->setGenerated();
@@ -124,6 +124,6 @@ class VoidGenerator extends Generator {
 	 *
 	 * @return void
 	 */
-	public function populateChunk(int $chunkX, int $chunkZ) : void{
+	public function populateChunk(int $chunkX, int $chunkZ): void{
 	}
 }

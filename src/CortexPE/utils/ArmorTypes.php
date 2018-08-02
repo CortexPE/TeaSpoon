@@ -38,16 +38,16 @@ namespace CortexPE\utils;
 use pocketmine\item\Item;
 
 class ArmorTypes {
-    /** @var int[] */
+	/** @var int[] */
 	public const
-        HELMET = [
+		HELMET = [
 		Item::LEATHER_HELMET,
 		Item::CHAIN_HELMET,
 		Item::IRON_HELMET,
 		Item::GOLD_HELMET,
 		Item::DIAMOND_HELMET,
 	],
-        CHESTPLATE = [
+		CHESTPLATE = [
 		Item::LEATHER_CHESTPLATE,
 		Item::CHAIN_CHESTPLATE,
 		Item::IRON_CHESTPLATE,
@@ -55,14 +55,14 @@ class ArmorTypes {
 		Item::DIAMOND_CHESTPLATE,
 		Item::ELYTRA,
 	],
-        LEGGINGS = [
+		LEGGINGS = [
 		Item::LEATHER_LEGGINGS,
 		Item::CHAIN_LEGGINGS,
 		Item::IRON_LEGGINGS,
 		Item::GOLD_LEGGINGS,
 		Item::DIAMOND_LEGGINGS,
 	],
-        BOOTS = [
+		BOOTS = [
 		Item::LEATHER_BOOTS,
 		Item::CHAIN_BOOTS,
 		Item::IRON_BOOTS,
@@ -72,11 +72,11 @@ class ArmorTypes {
 
 	/** @var string */
 	public const
-        TYPE_HELMET = "HELMET",
-        TYPE_CHESTPLATE = "CHESTPLATE",
-        TYPE_LEGGINGS = "LEGGINGS",
-        TYPE_BOOTS = "BOOTS",
-        TYPE_NULL = "NIL";
+		TYPE_HELMET = "HELMET",
+		TYPE_CHESTPLATE = "CHESTPLATE",
+		TYPE_LEGGINGS = "LEGGINGS",
+		TYPE_BOOTS = "BOOTS",
+		TYPE_NULL = "NIL";
 
 	public static function getType(Item $armor): string{
 		if(in_array($armor->getId(), $type = self::HELMET)){

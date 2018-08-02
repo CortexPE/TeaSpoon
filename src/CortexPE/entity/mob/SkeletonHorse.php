@@ -55,7 +55,7 @@ use pocketmine\item\Item;
 
 class SkeletonHorse extends Animal {
 
-    public const NETWORK_ID = self::SKELETON_HORSE;
+	public const NETWORK_ID = self::SKELETON_HORSE;
 
 	public $width = 1.3965;
 	public $height = 1.6;

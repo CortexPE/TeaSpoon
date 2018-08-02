@@ -54,12 +54,12 @@ class Jukebox extends Solid {
 	/** @var int $id */
 	protected $id = self::JUKEBOX;
 
-	public function getName(): string{
-		return "Jukebox";
-	}
-
 	public function __construct(int $meta = 0){
 		parent::__construct(self::JUKEBOX, $meta);
+	}
+
+	public function getName(): string{
+		return "Jukebox";
 	}
 
 	public function getHardness(): float{
@@ -87,14 +87,14 @@ class Jukebox extends Solid {
 	}
 
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null): bool{
-        $this->getLevel()->setBlock($blockReplace, $this, true, true);
-	    $tile = $this->getLevel()->getTile($this);
+		$this->getLevel()->setBlock($blockReplace, $this, true, true);
+		$tile = $this->getLevel()->getTile($this);
 		if(!($tile instanceof JukeboxTile)){
 			$nbt = new CompoundTag("", [
 				new StringTag(Tile::TAG_ID, Tile::JUKEBOX),
-				new IntTag(Tile::TAG_X, (int) $this->getX()),
-				new IntTag(Tile::TAG_Y, (int) $this->getY()),
-				new IntTag(Tile::TAG_Z, (int) $this->getZ())
+				new IntTag(Tile::TAG_X, (int)$this->getX()),
+				new IntTag(Tile::TAG_Y, (int)$this->getY()),
+				new IntTag(Tile::TAG_Z, (int)$this->getZ()),
 			]);
 			Tile::createTile(Tile::JUKEBOX, $this->getLevel(), $nbt);
 		}
@@ -113,12 +113,12 @@ class Jukebox extends Solid {
 					$item->count--;
 				}
 			}
-		} else {
+		}else{
 			$nbt = new CompoundTag("", [
 				new StringTag(Tile::TAG_ID, Tile::JUKEBOX),
-				new IntTag(Tile::TAG_X, (int) $this->getX()),
-				new IntTag(Tile::TAG_Y, (int) $this->getY()),
-				new IntTag(Tile::TAG_Z, (int) $this->getZ())
+				new IntTag(Tile::TAG_X, (int)$this->getX()),
+				new IntTag(Tile::TAG_Y, (int)$this->getY()),
+				new IntTag(Tile::TAG_Z, (int)$this->getZ()),
 			]);
 			/** @var JukeboxTile $tile */
 			$tile = Tile::createTile(Tile::JUKEBOX, $this->getLevel(), $nbt);

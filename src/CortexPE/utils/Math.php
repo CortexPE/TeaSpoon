@@ -39,7 +39,7 @@ namespace CortexPE\utils;
 use CortexPE\Utils;
 
 class Math extends Utils {
-	public static function getPercentage(float $min,float $max){
+	public static function getPercentage(float $min, float $max){
 		return ((min($min, $max) / max($min, $max)) * 100);
 	}
 }

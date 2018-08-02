@@ -97,6 +97,7 @@ class GroundFire extends Populator {
 	 */
 	private function canGroundFireStay($x, $y, $z){
 		$b = $this->level->getBlockIdAt($x, $y, $z);
+
 		return ($b == Block::AIR) and $this->level->getBlockIdAt($x, $y - 1, $z) == Block::NETHERRACK;
 	}
 }

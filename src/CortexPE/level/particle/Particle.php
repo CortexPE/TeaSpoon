@@ -42,12 +42,12 @@ abstract class Particle extends PMParticle {
 
 	// TODO: Find the Official Names of these.
 	public const
-        TYPE_SMALL_SMOKE_CLOUD = 42,
-        TYPE_FIREWORK_GREEN_OR_YELLOW = 43,
-	// 44 crash... Test Data Value: 0
-	// 45 crash... Test Data Value: 0
-        TYPE_FIREWORK_WHITE = 46,
-        TYPE_FLASH = 47;
+		TYPE_SMALL_SMOKE_CLOUD = 42,
+		TYPE_FIREWORK_GREEN_OR_YELLOW = 43,
+		// 44 crash... Test Data Value: 0
+		// 45 crash... Test Data Value: 0
+		TYPE_FIREWORK_WHITE = 46,
+		TYPE_FLASH = 47;
 
 	// 48-50s just crashes me... :shrug: Just add more particles here if y'all find any. :)
 

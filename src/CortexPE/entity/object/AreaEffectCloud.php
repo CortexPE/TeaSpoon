@@ -35,11 +35,22 @@ use pocketmine\nbt\tag\ShortTag;
 class AreaEffectCloud extends Entity {
 
 	public const NETWORK_ID = self::AREA_EFFECT_CLOUD;
-
+	/** @var string */
+	public const
+		TAG_POTION_ID = "PotionId",
+		TAG_AGE = "Age",
+		TAG_RADIUS = "Radius",
+		TAG_RADIUS_ON_USE = "RadiusOnUse",
+		TAG_RADIUS_PER_TICK = "RadiusPerTick",
+		TAG_WAIT_TIME = "WaitTime",
+		TAG_TILE_X = "TileX",
+		TAG_TILE_Y = "TileY",
+		TAG_TILE_Z = "TileZ",
+		TAG_DURATION = "Duration",
+		TAG_DURATION_ON_USE = "DurationOnUse";
 	public $width = 5;
 	public $length = 5;
 	public $height = 1;
-
 	private $PotionId = 0;
 	private $Radius = 3;
 	private $RadiusOnUse = -0.5;
@@ -50,20 +61,6 @@ class AreaEffectCloud extends Entity {
 	private $TileZ = 0;
 	private $Duration = 600;
 	private $DurationOnUse = 0;
-
-	/** @var string */
-	public const
-        TAG_POTION_ID = "PotionId",
-        TAG_AGE = "Age",
-        TAG_RADIUS = "Radius",
-        TAG_RADIUS_ON_USE = "RadiusOnUse",
-        TAG_RADIUS_PER_TICK = "RadiusPerTick",
-        TAG_WAIT_TIME = "WaitTime",
-        TAG_TILE_X = "TileX",
-        TAG_TILE_Y = "TileY",
-        TAG_TILE_Z = "TileZ",
-        TAG_DURATION = "Duration",
-        TAG_DURATION_ON_USE = "DurationOnUse";
 
 	public function initEntity(): void{
 		parent::initEntity();

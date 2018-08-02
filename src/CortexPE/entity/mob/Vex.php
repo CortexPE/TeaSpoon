@@ -39,7 +39,7 @@ use pocketmine\entity\Monster;
 
 class Vex extends Monster {
 
-    public const NETWORK_ID = self::VEX;
+	public const NETWORK_ID = self::VEX;
 
 	public $width = 0.4;
 	public $height = 0.8;

@@ -39,7 +39,7 @@ use pocketmine\entity\Living;
 
 class MagmaCube extends Living {
 
-    public const NETWORK_ID = self::MAGMA_CUBE;
+	public const NETWORK_ID = self::MAGMA_CUBE;
 
 	public function getName(): string{
 		return "Magma Cube";

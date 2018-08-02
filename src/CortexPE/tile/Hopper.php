@@ -72,8 +72,12 @@ class Hopper extends Spawnable implements InventoryHolder, Container, Nameable {
 		$this->scheduleUpdate();
 	}
 
-	public function getInventory(){
-		return $this->inventory;
+	protected static function createAdditionalNBT(CompoundTag $nbt, Vector3 $pos, ?int $face = null, ?Item $item = null, ?Player $player = null): void{
+		$nbt->setTag(new ListTag("Items", [], NBT::TAG_Compound));
+
+		if($item !== null and $item->hasCustomName()){
+			$nbt->setString("CustomName", $item->getCustomName());
+		}
 	}
 
 	public function getRealInventory(){
@@ -102,6 +106,10 @@ class Hopper extends Spawnable implements InventoryHolder, Container, Nameable {
 
 			parent::close();
 		}
+	}
+
+	public function getInventory(){
+		return $this->inventory;
 	}
 
 	public function onUpdate(): bool{
@@ -255,26 +263,16 @@ class Hopper extends Spawnable implements InventoryHolder, Container, Nameable {
 		return true;
 	}
 
-
-	protected static function createAdditionalNBT(CompoundTag $nbt, Vector3 $pos, ?int $face = null, ?Item $item = null, ?Player $player = null): void{
-		$nbt->setTag(new ListTag("Items", [], NBT::TAG_Compound));
-
-		if($item !== null and $item->hasCustomName()){
-			$nbt->setString("CustomName", $item->getCustomName());
-		}
-	}
-
 	public function saveNBT(): CompoundTag{
-        $this->saveItems($this->nbt);
+		$this->saveItems($this->nbt);
+
 		return parent::saveNBT();
 	}
 
-    protected function readSaveData(CompoundTag $nbt): void
-    {
-        $this->nbt = $nbt;
-    }
+	protected function readSaveData(CompoundTag $nbt): void{
+		$this->nbt = $nbt;
+	}
 
-    protected function writeSaveData(CompoundTag $nbt): void
-    {
-    }
+	protected function writeSaveData(CompoundTag $nbt): void{
+	}
 }

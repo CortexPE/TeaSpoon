@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  *
@@ -34,14 +34,14 @@ use pocketmine\Player;
 
 class Weather {
 
-    /** @var int */
+	/** @var int */
 	public const
-        CLEAR = 0,
-        SUNNY = 0,
-        RAIN = 1,
-        RAINY = 1,
-        RAINY_THUNDER = 2,
-        THUNDER = 3;
+		CLEAR = 0,
+		SUNNY = 0,
+		RAIN = 1,
+		RAINY = 1,
+		RAINY_THUNDER = 2,
+		THUNDER = 3;
 
 	private $level;
 	private $weatherNow = 0;
@@ -137,7 +137,7 @@ class Weather {
 					$p = $players[array_rand($players)];
 					$x = $p->x + mt_rand(-64, 64);
 					$z = $p->z + mt_rand(-64, 64);
-					$y = $this->level->getHighestBlockAt((int) $x, (int) $z);
+					$y = $this->level->getHighestBlockAt((int)$x, (int)$z);
 
 					if(Main::$enableWeatherLightning){
 						$nbt = Entity::createBaseNBT(new Vector3($x, $y, $z));

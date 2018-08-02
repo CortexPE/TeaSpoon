@@ -85,6 +85,7 @@ class Minecart extends Vehicle {
 			$this->teleport($this->rider);
 			$this->rider->setMotion($mot);
 		}
+
 		return $parent;
 	}
 
@@ -97,6 +98,7 @@ class Minecart extends Vehicle {
 		$pk->link = $link;
 		$player->getServer()->broadcastPacket($this->getViewers(), $pk);
 		$this->rider->getDataPropertyManager()->setVector3(Entity::DATA_RIDER_SEAT_POSITION, new Vector3(0, 0, 0));*/
+
 		return true;
 	}
 }

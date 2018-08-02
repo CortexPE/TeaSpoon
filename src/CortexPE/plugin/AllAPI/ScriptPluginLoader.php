@@ -48,7 +48,7 @@ class ScriptPluginLoader extends PMScriptPluginLoader {
 		$this->server = $server;
 	}
 
-	public function getPluginDescription(string $file) : PluginDescription{
+	public function getPluginDescription(string $file): PluginDescription{
 		$content = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
 		$data = [];

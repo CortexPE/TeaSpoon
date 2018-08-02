@@ -98,7 +98,7 @@ class Portal extends Transparent {
 	 */
 	public function onBreak(Item $item, Player $player = null): bool{
 		$block = $this;
-		$temporalVector = new Vector3(0,0,0);
+		$temporalVector = new Vector3(0, 0, 0);
 		if($this->getLevel()->getBlock($temporalVector->setComponents($block->x - 1, $block->y, $block->z))->getId() == Block::PORTAL or
 			$this->getLevel()->getBlock($temporalVector->setComponents($block->x + 1, $block->y, $block->z))->getId() == Block::PORTAL
 		){//x方向
@@ -188,8 +188,8 @@ class Portal extends Transparent {
 								$z = (int)ceil($entity->getZ() / 8);
 
 								if(!Main::$netherLevel->getBlockAt($x, $y - 1, $z)->isSolid() ||
-									 Main::$netherLevel->getBlockAt($x, $y, $z)->isSolid() ||
-									 Main::$netherLevel->getBlockAt($x, $y + 1, $z)->isSolid()
+									Main::$netherLevel->getBlockAt($x, $y, $z)->isSolid() ||
+									Main::$netherLevel->getBlockAt($x, $y + 1, $z)->isSolid()
 								){
 									for($y2 = 125; $y2 >= 0; $y2--){ // 128 - 3
 										if(Main::$netherLevel->getBlockAt($x, $y2 - 1, $z, true, false)->isSolid() &&

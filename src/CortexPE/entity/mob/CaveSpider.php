@@ -41,7 +41,7 @@ use pocketmine\item\Item;
 use pocketmine\Player;
 
 class CaveSpider extends Monster {
-    
+
 	public const NETWORK_ID = self::CAVE_SPIDER;
 
 	public $width = 1;
@@ -54,10 +54,10 @@ class CaveSpider extends Monster {
 
 	public function getDrops(): array{
 		$drops = [
-			Item::get(Item::STRING, 0, mt_rand(0,2)),
+			Item::get(Item::STRING, 0, mt_rand(0, 2)),
 		];
 
-		if(mt_rand(1,3) == 2){
+		if(mt_rand(1, 3) == 2){
 			$lastDamage = $this->getLastDamageCause();
 			if($lastDamage instanceof EntityDamageByEntityEvent){
 				$ent = $lastDamage->getDamager();

@@ -111,7 +111,7 @@ class DragonEgg extends Fallable {
 			}
 		}
 
-		if(!$found)return true;
+		if(!$found) return true;
 		$level->setBlock($this, new Air(), true, true);
 		$oldpos = clone $this;
 		$pos = new Vector3($x, $y, $z);
