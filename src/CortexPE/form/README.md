@@ -1,6 +1,3 @@
-For use altay form plugins into pmmp do this
+For use altay form plugins into pmmp do this      
 
-use pocketmine\form\Form;
-|||||||||||||||||||||||||
-\/\/\/\/\/\/\/\/\/\/\/\/\/
-use CortexPE\form\Form;
+From:   use pocketmine\form\Form;   To:   use CortexPE\form\Form;
