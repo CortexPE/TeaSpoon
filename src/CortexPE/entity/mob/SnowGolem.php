@@ -78,7 +78,7 @@ class SnowGolem extends Monster {
 		if(Main::$shearableSnowGolem && $item->getId() == Item::SHEARS && $this->isWearingPumpkin()){
 			$this->setWearingPumpkin(false);
 			if($player->isSurvival()){
-				$item->useOn($this);
+				//$item->useOn($this); //todo: Find out this usage
 			}
 		}
 

@@ -76,7 +76,7 @@ class FishingLootTable {
 				$fishingRodLoots[] = base64_encode(serialize(self::$LOS3_ENCHANTED_LOOT));
 
 				Main::$cacheFile->set("fishingRodLoots", $fishingRodLoots);
-				Main::$cacheFile->save(true);
+				Main::$cacheFile->save();
 
 				return;
 			}else{

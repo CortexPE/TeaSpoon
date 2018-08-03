@@ -72,14 +72,14 @@ class FishingHook extends Projectile {
 		$hasUpdate = parent::onUpdate($currentTick);
 
 		if($this->isCollidedVertically){
-			$this->motionX = 0;
-			$this->motionY += 0.01;
-			$this->motionZ = 0;
+			$this->motion->x = 0;
+			$this->motion->y += 0.01;
+			$this->motion->z = 0;
 			$hasUpdate = true;
 		}elseif($this->isCollided && $this->keepMovement === true){
-			$this->motionX = 0;
-			$this->motionY = 0;
-			$this->motionZ = 0;
+			$this->motion->x = 0;
+			$this->motion->y = 0;
+			$this->motion->z = 0;
 			$this->keepMovement = false;
 			$hasUpdate = true;
 		}
