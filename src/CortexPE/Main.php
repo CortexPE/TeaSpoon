@@ -70,13 +70,7 @@ class Main extends PluginBase {
 		BASE_POCKETMINE_VERSION = "3.0.0",
 		TESTED_MIN_POCKETMINE_VERSION = "3.0.0",
 		TESTED_MAX_POCKETMINE_VERSION = "4.0.0";
-	/**
-	 * Dev Mode allows you to:
-	 * Run a TeaSpoon .phar not on poggit
-	 *
-	 * @var bool
-	 */
-	public const DEV_MODE = false;
+
 	///////////////////////////////// START OF INSTANCE VARIABLES /////////////////////////////////
 	/** @var Config */
 	public static $config;
@@ -316,12 +310,10 @@ class Main extends PluginBase {
 			$thisPhar = new \Phar(\Phar::running(false));
 			$meta = $thisPhar->getMetadata(); // https://github.com/poggit/poggit/blob/beta/src/poggit/ci/builder/ProjectBuilder.php#L227-L236
 			if(!isset($meta["builderName"]) || !is_array($meta)){
-				if(self::DEV_MODE === false){
-					$this->getLogger()->error("Only use TeaSpoon Builds from Poggit: https://poggit.pmmp.io/ci/CortexPE/TeaSpoon/~");
-					$this->disable = true;
+				$this->getLogger()->error("Only use TeaSpoon Builds from Poggit: https://poggit.pmmp.io/ci/CortexPE/TeaSpoon/~");
+				$this->disable = true;
 
-					return;
-				}
+				return;
 			}
 			self::$sixCharCommitHash = substr($meta["fromCommit"], 0, 6);
 		}else{
