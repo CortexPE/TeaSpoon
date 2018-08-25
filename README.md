@@ -12,7 +12,10 @@ A/N: If you don't like it / hate it, Then don't even bother using it. It's that 
 Contributions are very welcome :smile:<br />You may contribute by opening a Pull Request and if it has been proven to be correct & working, I'll surely merge it.
 
 __[Discord Group to 'talk-to-a-human-for-support' and for questions](https://discord.gg/t5NsTyj)__
- 
+
+# Keep the project alive!
+Help keep me motivated into making this massive thing... Maintaining it is sometimes a pain and I only find it a waste of time to update something I don't get anything in return for :/ I hope you all can understand. You can donate here: [![Donate](https://img.shields.io/badge/donate-PayPal-yellow.svg?style=flat-square)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MABFZPDR8F5UG)
+
 # Installation
 Installation is easy, Just download the latest phar from [Poggit](https://poggit.pmmp.io/ci/CortexPE/TeaSpoon/~) then put it to your ```./plugins/``` folder. Restart your server. And you're basically done.
 ***This plugin will only work on [this PocketMine-MP Version (PMMP Release 3.1.4)](https://github.com/pmmp/PocketMine-MP/releases/tag/3.1.4), Any issues regarding 4.0.0 (development builds) will be closed***
