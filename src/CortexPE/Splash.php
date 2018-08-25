@@ -45,6 +45,8 @@ class Splash {
 	// Some are removed due to how long they are, and some have vulgar / NSFW word(s).
 	// But still, Thanks to the author of the script for most of the random splashes...
 
+	public const VALENTINES_SPLASH = "Happy Valentines Day!";
+	/** @var string[] */
 	private static $RANDOM_NOUN = [
 		"The sky",
 		"Everything and more",
@@ -118,7 +120,7 @@ class Splash {
 		"The Audacity",
 		"da wae",
 	];
-
+	/** @var string[] */
 	private static $RANDOM_VERB = [
 		"runs through everything.",
 		"is ever present.",
@@ -179,9 +181,7 @@ class Splash {
 		"always strikes for the heart.",
 		"crawls the interwebs",
 	];
-
-	public const VALENTINES_SPLASH = "Happy Valentines Day!";
-
+	/** @var string[] */
 	private static $TEASPOON_SPLASHES = [
 		'Low-Calorie blend', // first ever teaspoon splash text... and that's why its in ' not " xd
 		"Don't panic! Have a cup of tea",
@@ -298,19 +298,20 @@ class Splash {
 		"b2ggbWFoIGdhaA==",
 	];
 
+	/** @var string[] */
 	private static $CHRISTMAS_SPLASHES = [
 		"Ho Ho Ho...",
 		"Merry Christmas",
 	];
 
 	public static function getRandomSplash(): string{
-		if(self::isWednesday() && mt_rand(1,2) == 1){
+		if(self::isWednesday() && mt_rand(1, 2) == 1){
 			return "It's WEDNESDAY my dudes.";
 		}
 		if(self::isChristmastide()){
 			return self::$CHRISTMAS_SPLASHES[array_rand(self::$CHRISTMAS_SPLASHES)];
 		}
-		if(self::isValentines() && mt_rand(1,2) == 2){
+		if(self::isValentines() && mt_rand(1, 2) == 2){
 			return self::VALENTINES_SPLASH;
 		}
 		if(self::isCortexsBirthday()){
@@ -329,26 +330,26 @@ class Splash {
 		return self::getRandomTSPSplash();
 	}
 
-	public static function isChristmastide() : bool {
+	public static function isWednesday(): bool{
+		return (date('w') == 3);
+	}
+
+	public static function isChristmastide(): bool{
 		$month = date('n');
 		$day = date('j');
 
 		return ($month == 12 && $day >= 25) || ($month == 1 && $day <= 6);
 	}
 
-	public static function isCortexsBirthday() : bool {
+	public static function isValentines(): bool{
+		return (date('n') == 2);
+	}
+
+	public static function isCortexsBirthday(): bool{
 		$month = date('n');
 		$day = date('j');
 
 		return ($month == 10 && $day == 10);
-	}
-
-	public static function isValentines() : bool {
-		return (date('n') == 2);
-	}
-
-	public static function isWednesday() : bool {
-		return (date('w') == 3);
 	}
 
 	public static function getRandomSentence(): string{

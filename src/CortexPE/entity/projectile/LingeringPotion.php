@@ -5,14 +5,14 @@ declare(strict_types = 1);
 namespace CortexPE\entity\projectile;
 
 use CortexPE\entity\object\AreaEffectCloud;
-use pocketmine\item\Potion;
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Throwable;
+use pocketmine\event\entity\ProjectileHitEvent;
 use pocketmine\item\Item as ItemItem;
+use pocketmine\item\Potion;
 use pocketmine\level\{
 	Level, particle\ItemBreakParticle
 };
-use pocketmine\math\RayTraceResult;
 use pocketmine\nbt\tag\{
 	CompoundTag, DoubleTag, FloatTag, ListTag, ShortTag
 };
@@ -21,17 +21,15 @@ use pocketmine\Server;
 
 class LingeringPotion extends Throwable {
 
-	const NETWORK_ID = self::LINGERING_POTION;
+	public const NETWORK_ID = self::LINGERING_POTION;
 
-	const DATA_POTION_ID = 16;//TODO: update this
-
+	public const DATA_POTION_ID = 16;//TODO: update this
+	public const TAG_POTION_ID = "PotionId";
 	public $width = 0.25;
 	public $length = 0.25;
 	public $height = 0.25;
 	protected $gravity = 0.1;
 	protected $drag = 0.05;
-
-	public const TAG_POTION_ID = "PotionId";
 
 	public function __construct(Level $level, CompoundTag $nbt, Entity $shootingEntity = null){
 		if(!$nbt->hasTag(self::TAG_POTION_ID, ShortTag::class)){
@@ -46,58 +44,51 @@ class LingeringPotion extends Throwable {
 		return $this->namedtag->getShort(self::TAG_POTION_ID);
 	}
 
-	public function onUpdate(int $currentTick): bool{
-		if($this->isCollided || $this->age > 1200){
-			$this->getLevel()->addParticle(new ItemBreakParticle($this, ItemItem::get(ItemItem::LINGERING_POTION)));
+	public function onHit(ProjectileHitEvent $event): void{
+		$this->getLevel()->addParticle(new ItemBreakParticle($this, ItemItem::get(ItemItem::LINGERING_POTION)));
 
-			$aec = null;
+		$aec = null;
 
-			$nbt = new CompoundTag("", [
-				new ListTag("Pos", [
-					new DoubleTag("", $this->getX()),
-					new DoubleTag("", $this->getY()),
-					new DoubleTag("", $this->getZ()),
-				]),
-				new ListTag("Motion", [
-					new DoubleTag("", 0),
-					new DoubleTag("", 0),
-					new DoubleTag("", 0),
-				]),
-				new ListTag("Rotation", [
-					new FloatTag("", 0),
-					new FloatTag("", 0),
-				]),
-			]);
-			$nbt->setInt(AreaEffectCloud::TAG_AGE,0);
-			$nbt->setShort(AreaEffectCloud::TAG_POTION_ID, $this->getPotionId());
-			$nbt->setFloat(AreaEffectCloud::TAG_RADIUS, 3);
-			$nbt->setFloat(AreaEffectCloud::TAG_RADIUS_ON_USE, -0.5);
-			$nbt->setFloat(AreaEffectCloud::TAG_RADIUS_PER_TICK, -0.005);
-			$nbt->setInt(AreaEffectCloud::TAG_WAIT_TIME, 10);
-			$nbt->setInt(AreaEffectCloud::TAG_TILE_X, intval(round($this->getX())));
-			$nbt->setInt(AreaEffectCloud::TAG_TILE_Y, intval(round($this->getY())));
-			$nbt->setInt(AreaEffectCloud::TAG_TILE_Z, intval(round($this->getZ())));
-			$nbt->setInt(AreaEffectCloud::TAG_DURATION, 600);
-			$nbt->setInt(AreaEffectCloud::TAG_DURATION_ON_USE, 0);
+		$nbt = new CompoundTag("", [
+			new ListTag("Pos", [
+				new DoubleTag("", $this->getX()),
+				new DoubleTag("", $this->getY()),
+				new DoubleTag("", $this->getZ()),
+			]),
+			new ListTag("Motion", [
+				new DoubleTag("", 0),
+				new DoubleTag("", 0),
+				new DoubleTag("", 0),
+			]),
+			new ListTag("Rotation", [
+				new FloatTag("", 0),
+				new FloatTag("", 0),
+			]),
+		]);
+		$nbt->setInt(AreaEffectCloud::TAG_AGE, 0);
+		$nbt->setShort(AreaEffectCloud::TAG_POTION_ID, $this->getPotionId());
+		$nbt->setFloat(AreaEffectCloud::TAG_RADIUS, 3);
+		$nbt->setFloat(AreaEffectCloud::TAG_RADIUS_ON_USE, -0.5);
+		$nbt->setFloat(AreaEffectCloud::TAG_RADIUS_PER_TICK, -0.005);
+		$nbt->setInt(AreaEffectCloud::TAG_WAIT_TIME, 10);
+		$nbt->setInt(AreaEffectCloud::TAG_TILE_X, intval(round($this->getX())));
+		$nbt->setInt(AreaEffectCloud::TAG_TILE_Y, intval(round($this->getY())));
+		$nbt->setInt(AreaEffectCloud::TAG_TILE_Z, intval(round($this->getZ())));
+		$nbt->setInt(AreaEffectCloud::TAG_DURATION, 600);
+		$nbt->setInt(AreaEffectCloud::TAG_DURATION_ON_USE, 0);
 
-			$aec = Entity::createEntity("AreaEffectCloud", $this->getLevel(), $nbt);
-			if($aec instanceof Entity){
-				$aec->spawnToAll();
-			}
-
-			$pk = new PlaySoundPacket();
-			$pk->soundName = "random.glass";
-			$pk->volume = 500;
-			$pk->pitch = 1;
-			Server::getInstance()->broadcastPacket($this->getViewers(), $pk);
-
-			$this->flagForDespawn();
+		$aec = Entity::createEntity("AreaEffectCloud", $this->getLevel(), $nbt);
+		if($aec instanceof Entity){
+			$aec->spawnToAll();
 		}
 
-		return parent::onUpdate($currentTick);
-	}
+		$pk = new PlaySoundPacket();
+		$pk->soundName = "random.glass";
+		$pk->volume = 500;
+		$pk->pitch = 1;
+		Server::getInstance()->broadcastPacket($this->getViewers(), $pk);
 
-	public function onHitEntity(Entity $entityHit, RayTraceResult $hitResult): void{
-		return;
+		$this->flagForDespawn();
+		parent::onHit($event);
 	}
 }

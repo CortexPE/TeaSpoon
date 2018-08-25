@@ -51,7 +51,7 @@ class FrostedIce extends Ice {
 		return "Frosted Ice";
 	}
 
-	public function onRandomTick() : void{
+	public function onRandomTick(): void{
 		$this->meta++;
 		$this->getLevel()->setBlock($this->asVector3(), $this, false, false);
 		if($this->meta > 3){

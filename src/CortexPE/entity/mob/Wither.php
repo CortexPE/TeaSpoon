@@ -39,7 +39,8 @@ use pocketmine\entity\Animal;
 use pocketmine\item\Item;
 
 class Wither extends Animal {
-	const NETWORK_ID = self::WITHER;
+
+	public const NETWORK_ID = self::WITHER;
 
 	public $width = 0.9;
 	public $height = 3.5;

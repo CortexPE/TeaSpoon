@@ -37,14 +37,17 @@ namespace CortexPE\tile;
 
 use CortexPE\Main;
 use CortexPE\Utils;
+use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\tile\Tile as PMTile;
 
 class Tile extends PMTile {
-	const BEACON = "Beacon";
-	const MOB_SPAWNER = "MobSpawner";
-	const SHULKER_BOX = "ShulkerBox";
-	const HOPPER = "Hopper";
-	const JUKEBOX = "Jukebox";
+	/** @var string */
+	public const
+		BEACON = "Beacon",
+		MOB_SPAWNER = "MobSpawner",
+		SHULKER_BOX = "ShulkerBox",
+		HOPPER = "Hopper",
+		JUKEBOX = "Jukebox";
 
 	public static function init(){
 		Main::getPluginLogger()->debug("Registering Tiles...");
@@ -57,5 +60,11 @@ class Tile extends PMTile {
 		if(!Utils::isPhared()){ // beta
 			self::registerTile(Jukebox::class);
 		}
+	}
+
+	protected function readSaveData(CompoundTag $nbt): void{
+	}
+
+	protected function writeSaveData(CompoundTag $nbt): void{
 	}
 }

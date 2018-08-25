@@ -38,7 +38,8 @@ namespace CortexPE\entity\mob;
 use pocketmine\entity\Zombie;
 
 class ZombieVillager extends Zombie {
-	const NETWORK_ID = self::ZOMBIE_VILLAGER;
+
+	public const NETWORK_ID = self::ZOMBIE_VILLAGER;
 
 	public $width = 0.6;
 	public $height = 1.95;

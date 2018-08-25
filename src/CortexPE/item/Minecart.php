@@ -50,6 +50,7 @@ class Minecart extends PMMinecart {
 		if($player->isSurvival()){
 			$this->count--;
 		}
+
 		return true;
 	}
 }

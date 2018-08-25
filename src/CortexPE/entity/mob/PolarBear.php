@@ -39,7 +39,8 @@ use pocketmine\entity\Monster;
 use pocketmine\item\Item;
 
 class PolarBear extends Monster {
-	const NETWORK_ID = self::POLAR_BEAR;
+
+	public const NETWORK_ID = self::POLAR_BEAR;
 
 	public $width = 1.3;
 	public $height = 1.4;

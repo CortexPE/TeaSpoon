@@ -45,7 +45,7 @@ class Bat extends Animal {
 
 	public const TAG_IS_RESTING = "isResting";
 
-	const NETWORK_ID = self::BAT;
+	public const NETWORK_ID = self::BAT;
 
 	public $width = 0.5;
 	public $height = 0.9;

@@ -38,7 +38,8 @@ namespace CortexPE\entity\mob;
 use pocketmine\entity\Monster;
 
 class Silverfish extends Monster {
-	const NETWORK_ID = self::SILVERFISH;
+
+	public const NETWORK_ID = self::SILVERFISH;
 
 	public $height = 0.3;
 	public $width = 0.4;

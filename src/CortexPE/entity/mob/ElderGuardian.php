@@ -39,7 +39,8 @@ use pocketmine\entity\Animal;
 use pocketmine\item\Item;
 
 class ElderGuardian extends Animal {
-	const NETWORK_ID = self::ELDER_GUARDIAN;
+
+	public const NETWORK_ID = self::ELDER_GUARDIAN;
 
 	public $width = 1.9975;
 	public $height = 1.9975;

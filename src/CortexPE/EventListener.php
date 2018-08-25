@@ -50,7 +50,16 @@ use pocketmine\event\entity\{
 	EntityDamageEvent, EntityDeathEvent
 };
 use pocketmine\event\player\{
-	cheat\PlayerIllegalMoveEvent, PlayerCommandPreprocessEvent, PlayerDropItemEvent, PlayerGameModeChangeEvent, PlayerInteractEvent, PlayerItemHeldEvent, PlayerJumpEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
+	cheat\PlayerIllegalMoveEvent,
+	PlayerCommandPreprocessEvent,
+	PlayerDropItemEvent,
+	PlayerGameModeChangeEvent,
+	PlayerInteractEvent,
+	PlayerItemHeldEvent,
+	PlayerJumpEvent,
+	PlayerLoginEvent,
+	PlayerQuitEvent,
+	PlayerRespawnEvent
 };
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
@@ -61,7 +70,7 @@ use pocketmine\Server as PMServer;
 
 class EventListener implements Listener {
 
-	const VERSION_COMMANDS = ["version", "ver", "about"];
+	public const VERSION_COMMANDS = ["version", "ver", "about"];
 
 	/** @var Plugin */
 	public $plugin;

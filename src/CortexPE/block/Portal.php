@@ -27,7 +27,7 @@ use CortexPE\Main;
 use CortexPE\task\DelayedCrossDimensionTeleportTask;
 use CortexPE\Utils;
 use pocketmine\{
-	Player, Server
+	Player
 };
 use pocketmine\block\{
 	Air, Block, BlockToolType, Transparent
@@ -98,7 +98,7 @@ class Portal extends Transparent {
 	 */
 	public function onBreak(Item $item, Player $player = null): bool{
 		$block = $this;
-		$temporalVector = new Vector3(0,0,0);
+		$temporalVector = new Vector3(0, 0, 0);
 		if($this->getLevel()->getBlock($temporalVector->setComponents($block->x - 1, $block->y, $block->z))->getId() == Block::PORTAL or
 			$this->getLevel()->getBlock($temporalVector->setComponents($block->x + 1, $block->y, $block->z))->getId() == Block::PORTAL
 		){//x方向
@@ -188,8 +188,8 @@ class Portal extends Transparent {
 								$z = (int)ceil($entity->getZ() / 8);
 
 								if(!Main::$netherLevel->getBlockAt($x, $y - 1, $z)->isSolid() ||
-									 Main::$netherLevel->getBlockAt($x, $y, $z)->isSolid() ||
-									 Main::$netherLevel->getBlockAt($x, $y + 1, $z)->isSolid()
+									Main::$netherLevel->getBlockAt($x, $y, $z)->isSolid() ||
+									Main::$netherLevel->getBlockAt($x, $y + 1, $z)->isSolid()
 								){
 									for($y2 = 125; $y2 >= 0; $y2--){ // 128 - 3
 										if(Main::$netherLevel->getBlockAt($x, $y2 - 1, $z, true, false)->isSolid() &&
@@ -210,11 +210,10 @@ class Portal extends Transparent {
 								}
 								$posNether->setComponents($x, $y, $z);
 							}
-
 							if($gm == Player::SURVIVAL || $gm == Player::ADVENTURE){
-								Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::NETHER, $posNether), 20 * 4);
+								Main::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::NETHER, $posNether), 20 * 4);
 							}else{
-								Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::NETHER, $posNether), 1);
+								Main::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::NETHER, $posNether), 1);
 							}
 						}else{ // NETHER -> OVERWORLD
 							$gm = $entity->getGamemode();
@@ -250,9 +249,9 @@ class Portal extends Transparent {
 							}
 
 							if($gm == Player::SURVIVAL || $gm == Player::ADVENTURE){
-								Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::OVERWORLD, $posOverworld), 20 * 4);
+								Main::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::OVERWORLD, $posOverworld), 20 * 4);
 							}else{
-								Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::OVERWORLD, $posOverworld), 1);
+								Main::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::OVERWORLD, $posOverworld), 1);
 							}
 						}
 					}

@@ -45,15 +45,14 @@ use pocketmine\nbt\tag\ShortTag;
 use pocketmine\Player;
 
 class Creeper extends Monster {
-	const NETWORK_ID = self::CREEPER;
 
-	public $height = 1.7;
-	public $width = 0.6;
-
+	public const NETWORK_ID = self::CREEPER;
 	public const TAG_POWERED = "powered";
 	public const TAG_IGNITED = "ignited";
 	public const TAG_FUSE = "Fuse";
 	public const TAG_EXPLOSION_RADIUS = "ExplosionRadius";
+	public $height = 1.7;
+	public $width = 0.6;
 
 	public function initEntity(): void{
 		parent::initEntity();
@@ -91,50 +90,16 @@ class Creeper extends Monster {
 		return $parent;
 	}
 
-	public function getName(): string{
-		return "Creeper";
-	}
-
-	public function getDrops(): array{
-		if(mt_rand(1, 10) < 3){
-			return [Item::get(Item::GUNPOWDER, 0, 1)];
-		}
-
-		return [];
-	}
-
 	public function isIgnited(): bool{
 		return ($this->getGenericFlag(self::DATA_FLAG_IGNITED) || boolval($this->namedtag->getByte(self::TAG_IGNITED, 0)));
 	}
 
-	public function setIgnited(bool $ignited): void{
-		$this->namedtag->setByte(self::TAG_IGNITED, intval($ignited));
-		$this->setGenericFlag(self::DATA_FLAG_IGNITED, $ignited);
-	}
-
-	public function isPowered(): bool{
-		return ($this->getGenericFlag(self::DATA_FLAG_POWERED) || boolval($this->namedtag->getByte(self::TAG_POWERED, 0)));
-	}
-
-	public function setPowered(bool $powered): void{
-		$this->namedtag->setByte(self::TAG_POWERED, intval($powered));
-		$this->setGenericFlag(self::DATA_FLAG_POWERED, $powered);
-	}
-
-	public function setExplosionRadius(int $explosionRadius): void{
-		$this->namedtag->setByte(self::TAG_EXPLOSION_RADIUS, $explosionRadius);
-	}
-
-	public function getExplosionRadius(): int{
-		return $this->namedtag->getByte(self::TAG_EXPLOSION_RADIUS, 3);
+	public function getFuse(): int{
+		return $this->namedtag->getShort(self::TAG_FUSE, 30);
 	}
 
 	public function setFuse(int $fuse): void{
 		$this->namedtag->setShort(self::TAG_FUSE, $fuse);
-	}
-
-	public function getFuse(): int{
-		return $this->namedtag->getShort(self::TAG_FUSE, 30);
 	}
 
 	public function explode(){
@@ -150,11 +115,45 @@ class Creeper extends Monster {
 		}
 	}
 
+	public function getExplosionRadius(): int{
+		return $this->namedtag->getByte(self::TAG_EXPLOSION_RADIUS, 3);
+	}
+
+	public function isPowered(): bool{
+		return ($this->getGenericFlag(self::DATA_FLAG_POWERED) || boolval($this->namedtag->getByte(self::TAG_POWERED, 0)));
+	}
+
+	public function getName(): string{
+		return "Creeper";
+	}
+
+	public function getDrops(): array{
+		if(mt_rand(1, 10) < 3){
+			return [Item::get(Item::GUNPOWDER, 0, 1)];
+		}
+
+		return [];
+	}
+
+	public function setPowered(bool $powered): void{
+		$this->namedtag->setByte(self::TAG_POWERED, intval($powered));
+		$this->setGenericFlag(self::DATA_FLAG_POWERED, $powered);
+	}
+
+	public function setExplosionRadius(int $explosionRadius): void{
+		$this->namedtag->setByte(self::TAG_EXPLOSION_RADIUS, $explosionRadius);
+	}
+
 	public function onInteract(Player $player, Item $item, int $slot, Vector3 $clickPos): bool{
 		if(Main::$ignitableCreepers && $item->getId() == Item::FLINT_AND_STEEL && !$this->isIgnited()){
 			$this->setIgnited(true);
 		}
 
 		return true;
+	}
+
+	public function setIgnited(bool $ignited): void{
+		$this->namedtag->setByte(self::TAG_IGNITED, intval($ignited));
+		$this->setGenericFlag(self::DATA_FLAG_IGNITED, $ignited);
 	}
 }

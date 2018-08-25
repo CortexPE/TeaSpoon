@@ -39,13 +39,14 @@ use pocketmine\Server as PMServer;
 use pocketmine\tile\Spawnable;
 
 class Beacon extends Spawnable implements InventoryHolder {
-	/**
-	 * @var BeaconInventory
-	 */
+	/** @var string */
+	public const
+		TAG_PRIMARY = "primary",
+		TAG_SECONDARY = "secondary";
+	/** @var BeaconInventory */
 	private $inventory;
-
-	public const TAG_PRIMARY = "primary";
-	public const TAG_SECONDARY = "secondary";
+	/** @var CompoundTag */
+	private $nbt;
 
 	public function __construct(Level $level, CompoundTag $nbt){
 		if(!$nbt->hasTag(self::TAG_PRIMARY, IntTag::class)){
@@ -59,14 +60,18 @@ class Beacon extends Spawnable implements InventoryHolder {
 		$this->scheduleUpdate();
 	}
 
-	public function saveNBT(): void{
-		parent::saveNBT();
+	public function saveNBT(): CompoundTag{
+		return parent::saveNBT();
 	}
 
 	public function addAdditionalSpawnData(CompoundTag $nbt): void{
-		$nbt->setInt(self::TAG_PRIMARY, $this->namedtag->getInt(self::TAG_PRIMARY));
-		$nbt->setInt(self::TAG_SECONDARY, $this->namedtag->getInt(self::TAG_SECONDARY));
+		$nbt->setInt(self::TAG_PRIMARY, $this->getNBT()->getInt(self::TAG_PRIMARY));
+		$nbt->setInt(self::TAG_SECONDARY, $this->getNBT()->getInt(self::TAG_SECONDARY));
 		//TODO: isMovable
+	}
+
+	public function getNBT(): CompoundTag{
+		return $this->nbt;
 	}
 
 	public function updateCompoundTag(CompoundTag $nbt, Player $player): bool{
@@ -77,45 +82,19 @@ class Beacon extends Spawnable implements InventoryHolder {
 	}
 
 	public function setPrimaryEffect(int $effectId){
-		$this->namedtag->setInt(self::TAG_PRIMARY, $effectId);
+		$this->getNBT()->setInt(self::TAG_PRIMARY, $effectId);
 	}
 
 	public function setSecondaryEffect(int $effectId){
-		$this->namedtag->setInt(self::TAG_SECONDARY, $effectId);
+		$this->getNBT()->setInt(self::TAG_SECONDARY, $effectId);
 	}
 
 	public function isPaymentItem(Item $item){//TODO: When FloatingInv implemented, remove item
 		return in_array($item->getId(), [Item::DIAMOND, Item::IRON_INGOT, Item::GOLD_INGOT, Item::EMERALD]);
 	}
 
-	public function getPrimaryEffect(){
-		return $this->namedtag->getInt(self::TAG_PRIMARY);
-	}
-
 	public function isSecondaryAvailable(){
 		return $this->getLayers() >= 4 && !$this->solidAbove();
-	}
-
-	public function isEffectAvailable(int $effectId){
-		switch($effectId){
-			case Effect::SPEED:
-			case Effect::HASTE:
-				return $this->getLayers() >= 1 && !$this->solidAbove();
-				break;
-			case Effect::DAMAGE_RESISTANCE:
-			case Effect::JUMP:
-				return $this->getLayers() >= 2 && !$this->solidAbove();
-				break;
-			case Effect::STRENGTH:
-				return $this->getLayers() >= 3 && !$this->solidAbove();
-				break;
-			case Effect::REGENERATION:
-				//this case is for secondary effect only
-				return $this->getLayers() >= 4 && !$this->solidAbove();
-				break;
-			default:
-				return false;
-		}
 	}
 
 	public function getLayers(){
@@ -159,6 +138,14 @@ class Beacon extends Spawnable implements InventoryHolder {
 		return [$this->getPrimaryEffect(), $this->getSecondaryEffect()];
 	}
 
+	public function getPrimaryEffect(){
+		return $this->getNBT()->getInt(self::TAG_PRIMARY);
+	}
+
+	public function getSecondaryEffect(){
+		return $this->getNBT()->getInt(self::TAG_SECONDARY);
+	}
+
 	public function getTierEffects(){
 	}
 
@@ -195,8 +182,26 @@ class Beacon extends Spawnable implements InventoryHolder {
 			}
 	}
 
-	public function getSecondaryEffect(){
-		return $this->namedtag->getInt(self::TAG_SECONDARY);
+	public function isEffectAvailable(int $effectId){
+		switch($effectId){
+			case Effect::SPEED:
+			case Effect::HASTE:
+				return $this->getLayers() >= 1 && !$this->solidAbove();
+				break;
+			case Effect::DAMAGE_RESISTANCE:
+			case Effect::JUMP:
+				return $this->getLayers() >= 2 && !$this->solidAbove();
+				break;
+			case Effect::STRENGTH:
+				return $this->getLayers() >= 3 && !$this->solidAbove();
+				break;
+			case Effect::REGENERATION:
+				//this case is for secondary effect only
+				return $this->getLayers() >= 4 && !$this->solidAbove();
+				break;
+			default:
+				return false;
+		}
 	}
 
 	/**
@@ -206,5 +211,14 @@ class Beacon extends Spawnable implements InventoryHolder {
 	 */
 	public function getInventory(){
 		return $this->inventory;
+	}
+
+	protected function readSaveData(CompoundTag $nbt): void{
+		$this->nbt = $nbt;
+	}
+
+	protected function writeSaveData(CompoundTag $nbt): void{
+		$nbt->setInt(self::TAG_PRIMARY, $this->getNBT()->getInt(self::TAG_PRIMARY));
+		$nbt->setInt(self::TAG_SECONDARY, $this->getNBT()->getInt(self::TAG_SECONDARY));
 	}
 }

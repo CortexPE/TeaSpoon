@@ -188,6 +188,15 @@ class BrewingManager extends CraftingManager {
 	}
 
 	/**
+	 * @param BrewingRecipe $recipe
+	 */
+	public function registerBrewingRecipe(BrewingRecipe $recipe){
+		$input = $recipe->getInput();
+		$potion = $recipe->getPotion();
+		$this->brewingRecipes[$input->getId() . ":" . ($input->getDamage() === null ? "0" : $input->getDamage()) . ":" . $potion->getId() . ":" . ($potion->getDamage() === null ? "0" : $potion->getDamage())] = $recipe;
+	}
+
+	/**
 	 * @param Item $input
 	 * @param Item $potion
 	 *
@@ -200,14 +209,5 @@ class BrewingManager extends CraftingManager {
 		}
 
 		return null;
-	}
-
-	/**
-	 * @param BrewingRecipe $recipe
-	 */
-	public function registerBrewingRecipe(BrewingRecipe $recipe){
-		$input = $recipe->getInput();
-		$potion = $recipe->getPotion();
-		$this->brewingRecipes[$input->getId() . ":" . ($input->getDamage() === null ? "0" : $input->getDamage()) . ":" . $potion->getId() . ":" . ($potion->getDamage() === null ? "0" : $potion->getDamage())] = $recipe;
 	}
 }

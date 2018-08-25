@@ -47,6 +47,7 @@ class Bucket extends PMBucket {
 		if(Utils::getDimension($player->getLevel()) == DimensionIds::NETHER && ($this->meta + 1) == Block::WATER){
 			return false;
 		}
+
 		return parent::onActivate($player, $blockReplace, $blockClicked, $face, $clickVector);
 	}
 }

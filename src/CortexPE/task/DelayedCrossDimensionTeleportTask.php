@@ -43,10 +43,9 @@ use pocketmine\network\mcpe\protocol\{
 	ChangeDimensionPacket, PlayStatusPacket
 };
 use pocketmine\Player;
-use pocketmine\plugin\Plugin;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 
-class DelayedCrossDimensionTeleportTask extends PluginTask {
+class DelayedCrossDimensionTeleportTask extends Task {
 	/** @var Player */
 	protected $player;
 
@@ -59,8 +58,7 @@ class DelayedCrossDimensionTeleportTask extends PluginTask {
 	/** @var bool */
 	protected $respawn;
 
-	public function __construct(Plugin $owner, Player $player, int $dimension, Vector3 $position, bool $respawn = false){
-		parent::__construct($owner);
+	public function __construct(Player $player, int $dimension, Vector3 $position, bool $respawn = false){
 		$this->player = $player;
 		$this->dimension = $dimension;
 		$this->position = $position;

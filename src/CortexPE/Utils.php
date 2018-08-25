@@ -64,16 +64,18 @@ class Utils {
 
 			return self::$phared;
 		}
+
 		return self::$phared;
 	}
 
-	public static function isServerPhared() : bool {
+	public static function isServerPhared(): bool{
 		if(self::$serverPhared == null){
 			$ref = new \ReflectionClass(Server::class);
 			self::$serverPhared = ((strpos($ref->getFileName(), "phar://") !== false) ? true : false);
 
 			return self::$serverPhared;
 		}
+
 		return self::$serverPhared;
 	}
 

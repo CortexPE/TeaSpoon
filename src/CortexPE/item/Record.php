@@ -36,6 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\item;
 
 use pocketmine\item\Item;
+use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 
 class Record extends Item {
 	public function __construct(int $id, int $meta = 0, string $name){
@@ -46,17 +47,19 @@ class Record extends Item {
 		return 1;
 	}
 
-	public function isValid():bool{
+	public function isValid(): bool{
 		return ($this->getId() >= 500 && $this->getId() <= 511);
+	}
+
+	public function getSoundId(){
+		$cal = LevelSoundEventPacket::SOUND_RECORD_13 + ($this->getRecordId() - 2255);
+		$cal -= 1;
+
+		return $cal;
 	}
 
 	public function getRecordId(): int{
 		return 1756 + $this->getId(); // so that it matches the wiki...
-	}
-
-	public function getSoundId(){
-		// see LevelSoundEventPacket L#125-136
-		return 90 + ($this->getRecordId() - 2255);
 	}
 
 	public function getRecordName(): string{

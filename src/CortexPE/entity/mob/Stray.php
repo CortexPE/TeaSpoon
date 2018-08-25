@@ -51,7 +51,8 @@ declare(strict_types = 1);
 namespace CortexPE\entity\mob;
 
 class Stray extends Skeleton {
-	const NETWORK_ID = self::STRAY;
+
+	public const NETWORK_ID = self::STRAY;
 
 	public function getName(): string{
 		return "Stray";

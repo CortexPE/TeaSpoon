@@ -50,7 +50,9 @@ use pocketmine\Player;
 use pocketmine\Server as PMServer;
 
 class FishingHook extends Projectile {
-	const NETWORK_ID = self::FISHING_HOOK;
+
+	public const NETWORK_ID = self::FISHING_HOOK;
+
 	public $width = 0.25;
 	public $length = 0.25;
 	public $height = 0.25;
@@ -70,14 +72,14 @@ class FishingHook extends Projectile {
 		$hasUpdate = parent::onUpdate($currentTick);
 
 		if($this->isCollidedVertically){
-			$this->motionX = 0;
-			$this->motionY += 0.01;
-			$this->motionZ = 0;
+			$this->motion->x = 0;
+			$this->motion->y += 0.01;
+			$this->motion->z = 0;
 			$hasUpdate = true;
 		}elseif($this->isCollided && $this->keepMovement === true){
-			$this->motionX = 0;
-			$this->motionY = 0;
-			$this->motionZ = 0;
+			$this->motion->x = 0;
+			$this->motion->y = 0;
+			$this->motion->z = 0;
 			$this->keepMovement = false;
 			$hasUpdate = true;
 		}
@@ -137,7 +139,7 @@ class FishingHook extends Projectile {
 		}
 	}
 
-	public function onHitEntity(Entity $entityHit, RayTraceResult $hitResult): void {
+	public function onHitEntity(Entity $entityHit, RayTraceResult $hitResult): void{
 		$this->server->getPluginManager()->callEvent(new ProjectileHitEntityEvent($this, $hitResult, $entityHit));
 
 		$damage = $this->getResultDamage();

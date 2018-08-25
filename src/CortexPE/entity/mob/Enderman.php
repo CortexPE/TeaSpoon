@@ -39,7 +39,8 @@ use pocketmine\entity\Monster;
 use pocketmine\item\Item;
 
 class Enderman extends Monster {
-	const NETWORK_ID = self::ENDERMAN;
+
+	public const NETWORK_ID = self::ENDERMAN;
 
 	public $width = 0.3;
 	public $length = 0.9;
@@ -49,9 +50,9 @@ class Enderman extends Monster {
 		return "Enderman";
 	}
 
-	public function getDrops() : array {
+	public function getDrops(): array{
 		return [
-			Item::get(Item::ENDER_PEARL,0, mt_rand(0,1))
+			Item::get(Item::ENDER_PEARL, 0, mt_rand(0, 1)),
 		];
 	}
 }

@@ -39,7 +39,8 @@ use pocketmine\entity\Animal;
 use pocketmine\item\Item;
 
 class IronGolem extends Animal {
-	const NETWORK_ID = self::IRON_GOLEM;
+
+	public const NETWORK_ID = self::IRON_GOLEM;
 
 	public $width = 1.4;
 	public $height = 2.7;

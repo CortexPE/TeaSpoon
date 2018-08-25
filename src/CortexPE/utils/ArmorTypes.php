@@ -38,29 +38,31 @@ namespace CortexPE\utils;
 use pocketmine\item\Item;
 
 class ArmorTypes {
-	const HELMET = [
+	/** @var int[] */
+	public const
+		HELMET = [
 		Item::LEATHER_HELMET,
 		Item::CHAIN_HELMET,
 		Item::IRON_HELMET,
 		Item::GOLD_HELMET,
 		Item::DIAMOND_HELMET,
-	];
-	const CHESTPLATE = [
+	],
+		CHESTPLATE = [
 		Item::LEATHER_CHESTPLATE,
 		Item::CHAIN_CHESTPLATE,
 		Item::IRON_CHESTPLATE,
 		Item::GOLD_CHESTPLATE,
 		Item::DIAMOND_CHESTPLATE,
 		Item::ELYTRA,
-	];
-	const LEGGINGS = [
+	],
+		LEGGINGS = [
 		Item::LEATHER_LEGGINGS,
 		Item::CHAIN_LEGGINGS,
 		Item::IRON_LEGGINGS,
 		Item::GOLD_LEGGINGS,
 		Item::DIAMOND_LEGGINGS,
-	];
-	const BOOTS = [
+	],
+		BOOTS = [
 		Item::LEATHER_BOOTS,
 		Item::CHAIN_BOOTS,
 		Item::IRON_BOOTS,
@@ -68,14 +70,16 @@ class ArmorTypes {
 		Item::DIAMOND_BOOTS,
 	];
 
-	const TYPE_HELMET = "HELMET";
-	const TYPE_CHESTPLATE = "CHESTPLATE";
-	const TYPE_LEGGINGS = "LEGGINGS";
-	const TYPE_BOOTS = "BOOTS";
-	const TYPE_NULL = "NIL";
+	/** @var string */
+	public const
+		TYPE_HELMET = "HELMET",
+		TYPE_CHESTPLATE = "CHESTPLATE",
+		TYPE_LEGGINGS = "LEGGINGS",
+		TYPE_BOOTS = "BOOTS",
+		TYPE_NULL = "NIL";
 
 	public static function getType(Item $armor): string{
-		if(in_array($armor->getId(), self::HELMET)){
+		if(in_array($armor->getId(), $type = self::HELMET)){
 			return self::TYPE_HELMET;
 		}
 		if(in_array($armor->getId(), self::CHESTPLATE)){

@@ -42,7 +42,8 @@ use pocketmine\item\Item;
 use pocketmine\Player;
 
 class Sheep extends Animal {
-	const NETWORK_ID = self::SHEEP;
+
+	public const NETWORK_ID = self::SHEEP;
 
 	public $width = 0.9;
 	public $height = 1.3;

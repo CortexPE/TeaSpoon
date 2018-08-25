@@ -47,7 +47,6 @@ use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\Player;
-use pocketmine\Server;
 use pocketmine\utils\Random;
 
 class Fireworks extends Item {
@@ -124,7 +123,7 @@ class Fireworks extends Item {
 					$player->setMotion($dir->multiply($flight * 1.25));
 					$player->getLevel()->broadcastLevelSoundEvent($player->asVector3(), LevelSoundEventPacket::SOUND_LAUNCH);
 					if(Main::$elytraBoostParticles){
-						Server::getInstance()->getScheduler()->scheduleRepeatingTask(new ElytraRocketBoostTrackingTask(Main::getInstance(), $player, 6), 4);
+						Main::getInstance()->getScheduler()->scheduleRepeatingTask(new ElytraRocketBoostTrackingTask($player, 6), 4);
 					}
 
 					if($damage > 0){

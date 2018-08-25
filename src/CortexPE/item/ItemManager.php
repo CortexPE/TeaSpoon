@@ -63,7 +63,7 @@ class ItemManager {
 		ItemFactory::registerItem(new BlazeRod(), true);
 		ItemFactory::registerItem(new DragonBreath(), true);
 		ItemFactory::registerItem(new GlassBottle(), true);
-		//ItemFactory::registerItem(new Trident(), true);
+		ItemFactory::registerItem(new Trident(), true);
 
 		ItemFactory::registerItem(new Record(Item::RECORD_13, 0, "Music Disc 13"), true);
 		ItemFactory::registerItem(new Record(Item::RECORD_CAT, 0, "Music Disc cat"), true);

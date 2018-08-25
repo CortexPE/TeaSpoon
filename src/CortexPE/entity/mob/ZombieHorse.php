@@ -39,7 +39,8 @@ use pocketmine\entity\Animal;
 use pocketmine\item\Item;
 
 class ZombieHorse extends Animal {
-	const NETWORK_ID = self::ZOMBIE_HORSE;
+
+	public const NETWORK_ID = self::ZOMBIE_HORSE;
 
 	public $width = 0.3;
 	public $length = 0.9;

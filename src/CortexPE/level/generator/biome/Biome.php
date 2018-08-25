@@ -36,36 +36,38 @@ declare(strict_types = 1);
 namespace CortexPE\level\generator\biome;
 
 use CortexPE\level\generator\ender\biome\EnderBiome;
-use pocketmine\level\generator\hell\HellBiome;
+use pocketmine\level\biome\HellBiome;
 
 abstract class Biome extends \pocketmine\level\biome\Biome {
 
-	const END = 9;
-	const FROZEN_OCEAN = 10;
-	const FROZEN_RIVER = 11;
+	/** @var int */
+	public const
+		END = 9,
+		FROZEN_OCEAN = 10,
+		FROZEN_RIVER = 11,
 
-	const ICE_MOUNTAINS = 13;
-	const MUSHROOM_ISLAND = 14;
-	const MUSHROOM_ISLAND_SHORE = 15;
-	const BEACH = 16;
-	const DESERT_HILLS = 17;
-	const FOREST_HILLS = 18;
-	const TAIGA_HILLS = 19;
+		ICE_MOUNTAINS = 13,
+		MUSHROOM_ISLAND = 14,
+		MUSHROOM_ISLAND_SHORE = 15,
+		BEACH = 16,
+		DESERT_HILLS = 17,
+		FOREST_HILLS = 18,
+		TAIGA_HILLS = 19,
 
-	const BIRCH_FOREST_HILLS = 28;
-	const ROOFED_FOREST = 29;
-	const COLD_TAIGA = 30;
-	const COLD_TAIGA_HILLS = 31;
-	const MEGA_TAIGA = 32;
-	const MEGA_TAIGA_HILLS = 33;
-	const EXTREME_HILLS_PLUS = 34;
-	const SAVANNA = 35;
-	const SAVANNA_PLATEAU = 36;
-	const MESA = 37;
-	const MESA_PLATEAU_F = 38;
-	const MESA_PLATEAU = 39;
+		BIRCH_FOREST_HILLS = 28,
+		ROOFED_FOREST = 29,
+		COLD_TAIGA = 30,
+		COLD_TAIGA_HILLS = 31,
+		MEGA_TAIGA = 32,
+		MEGA_TAIGA_HILLS = 33,
+		EXTREME_HILLS_PLUS = 34,
+		SAVANNA = 35,
+		SAVANNA_PLATEAU = 36,
+		MESA = 37,
+		MESA_PLATEAU_F = 38,
+		MESA_PLATEAU = 39,
 
-	const VOID = 127;
+		VOID = 127;
 
 	public static function init(){
 		parent::init();

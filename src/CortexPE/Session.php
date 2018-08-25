@@ -102,6 +102,7 @@ class Session {
 		if(!Main::$elytraEnabled){
 			return false;
 		}
+
 		return ($this->player->getArmorInventory()->getChestplate() instanceof Elytra);
 	}
 }

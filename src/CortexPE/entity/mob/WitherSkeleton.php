@@ -38,7 +38,8 @@ namespace CortexPE\entity\mob;
 use pocketmine\item\Item;
 
 class WitherSkeleton extends Skeleton {
-	const NETWORK_ID = self::WITHER_SKELETON;
+
+	public const NETWORK_ID = self::WITHER_SKELETON;
 
 	public $width = 0.7;
 	public $height = 2.4;

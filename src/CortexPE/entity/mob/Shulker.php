@@ -41,7 +41,8 @@ use pocketmine\entity\{
 use pocketmine\item\Item;
 
 class Shulker extends Monster {
-	const NETWORK_ID = self::SHULKER;
+
+	public const NETWORK_ID = self::SHULKER;
 
 	public $width = 1;
 	public $height = 1;

@@ -50,6 +50,7 @@ class Bow extends PMBow {
 	public function onReleaseUsing(Player $player): bool{
 		if($player->isSurvival() and !$player->getInventory()->contains(Item::get(Item::ARROW, 0, 1))){
 			$player->getInventory()->sendContents($player);
+
 			return \false;
 		}
 		$skipcheckItem = false;
@@ -59,7 +60,7 @@ class Bow extends PMBow {
 
 		if(!$skipcheckItem){
 			$first = $player->getInventory()->getItem($player->getInventory()->first(Item::get(Item::ARROW, -1, 1), false));
-		} else {
+		}else{
 			$first = Item::get(Item::ARROW, 0, 1);
 		}
 

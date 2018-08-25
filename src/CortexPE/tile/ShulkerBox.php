@@ -55,11 +55,13 @@ class ShulkerBox extends Spawnable implements InventoryHolder, Container, Nameab
 
 	/** @var ShulkerBoxInventory */
 	protected $inventory;
+	/** @var CompoundTag */
+	private $nbt;
 
 	public function __construct(Level $level, CompoundTag $nbt){
-		parent::__construct($level, $nbt);
 		$this->inventory = new ShulkerBoxInventory($this);
-		$this->loadItems();
+		$this->loadItems($nbt);
+		parent::__construct($level, $nbt);
 	}
 
 	protected static function createAdditionalNBT(CompoundTag $nbt, Vector3 $pos, ?int $face = null, ?Item $item = null, ?Player $player = null): void{
@@ -72,21 +74,22 @@ class ShulkerBox extends Spawnable implements InventoryHolder, Container, Nameab
 
 	public function addAdditionalSpawnData(CompoundTag $nbt): void{
 		if($this->hasName()){
-			$nbt->setTag($this->namedtag->getTag("CustomName"));
+			$nbt->setTag($this->getNBT()->getTag("CustomName"));
 		}
 	}
 
-	public function saveNBT(): void{
-		parent::saveNBT();
-		$this->saveItems();
+	public function getNBT(): CompoundTag{
+		return $this->nbt;
+	}
+
+	public function saveNBT(): CompoundTag{
+		$this->saveItems($this->getNBT());
+
+		return parent::saveNBT();
 	}
 
 	public function getSize(): int{
 		return 27;
-	}
-
-	public function getRealInventory(){
-		return $this->inventory;
 	}
 
 	public function getInventory(){
@@ -104,5 +107,22 @@ class ShulkerBox extends Spawnable implements InventoryHolder, Container, Nameab
 
 			parent::close();
 		}
+	}
+
+	protected function readSaveData(CompoundTag $nbt): void{
+		$this->nbt = $nbt;
+	}
+
+	protected function writeSaveData(CompoundTag $nbt): void{
+		$itembase = [];
+		/** @var Item $content */
+		foreach($this->getRealInventory()->getContents() as $slot => $content){
+			$itembase[] = $content->nbtSerialize($slot);
+		}
+		$nbt->setTag(new ListTag("Items", $itembase, NBT::TAG_Compound));
+	}
+
+	public function getRealInventory(){
+		return $this->inventory;
 	}
 }

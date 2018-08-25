@@ -39,7 +39,8 @@ use pocketmine\entity\Monster;
 use pocketmine\item\Item;
 
 class PigZombie extends Monster {
-	const NETWORK_ID = self::ZOMBIE_PIGMAN;
+
+	public const NETWORK_ID = self::ZOMBIE_PIGMAN;
 
 	public $width = 0.6;
 	public $height = 1.95;

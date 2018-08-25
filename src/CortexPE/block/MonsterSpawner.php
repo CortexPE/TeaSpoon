@@ -128,9 +128,10 @@ class MonsterSpawner extends SpawnerPM {
 		if(Main::$silkSpawners && $item->hasEnchantment(Enchantment::SILK_TOUCH)){
 			$tile = $this->getLevel()->getTile($this->asVector3());
 			if($tile instanceof MobSpawner){
-				$this->getLevel()->dropItem($this->add(0.5, 0.5,0.5), Item::get(Item::MOB_SPAWNER, $tile->getEntityId(), 1));
+				$this->getLevel()->dropItem($this->add(0.5, 0.5, 0.5), Item::get(Item::MOB_SPAWNER, $tile->getEntityId(), 1));
 			}
 		}
+
 		return $parent;
 	}
 }

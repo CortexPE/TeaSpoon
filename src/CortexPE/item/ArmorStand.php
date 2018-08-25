@@ -57,31 +57,32 @@ class ArmorStand extends Item {
 			}
 			$entity->spawnToAll();
 		}
+
 		return true;
 	}
 
-	public function getDirection($yaw) : float {
+	public function getDirection($yaw): float{
 		$rotation = $yaw % 360;
 		if($rotation < 0){
 			$rotation += 360;
 		}
-		if ((0 <= $rotation && $rotation < 22.5) || (337.5 <= $rotation && $rotation < 360)) {
+		if((0 <= $rotation && $rotation < 22.5) || (337.5 <= $rotation && $rotation < 360)){
 			return 180;
-		} else if (22.5 <= $rotation && $rotation < 67.5) {
+		}elseif(22.5 <= $rotation && $rotation < 67.5){
 			return 225;
-		} else if (67.5 <= $rotation && $rotation < 112.5) {
+		}elseif(67.5 <= $rotation && $rotation < 112.5){
 			return 270;
-		} else if (112.5 <= $rotation && $rotation < 157.5) {
+		}elseif(112.5 <= $rotation && $rotation < 157.5){
 			return 315;
-		} else if (157.5 <= $rotation && $rotation < 202.5) {
+		}elseif(157.5 <= $rotation && $rotation < 202.5){
 			return 0;
-		} else if (202.5 <= $rotation && $rotation < 247.5) {
+		}elseif(202.5 <= $rotation && $rotation < 247.5){
 			return 45;
-		} else if (247.5 <= $rotation && $rotation < 292.5) {
+		}elseif(247.5 <= $rotation && $rotation < 292.5){
 			return 90;
-		} else if (292.5 <= $rotation && $rotation < 337.5) {
+		}elseif(292.5 <= $rotation && $rotation < 337.5){
 			return 135;
-		} else {
+		}else{
 			return 0;
 		}
 	}

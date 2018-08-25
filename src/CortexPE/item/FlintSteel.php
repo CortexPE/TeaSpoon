@@ -50,7 +50,7 @@ class FlintSteel extends PMFlintSteel {
 		parent::onActivate($player, $blockReplace, $blockClicked, $face, $facePos);
 		$level = $player->getLevel();
 		if($blockClicked->getId() === Block::OBSIDIAN){
-			$temporalVector = new Vector3(0,0,0);
+			$temporalVector = new Vector3(0, 0, 0);
 			$tx = $blockClicked->getX();
 			$ty = $blockClicked->getY();
 			$tz = $blockClicked->getZ();

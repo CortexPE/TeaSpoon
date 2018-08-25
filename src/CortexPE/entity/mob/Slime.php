@@ -41,7 +41,8 @@ use pocketmine\item\Item;
 use pocketmine\Player;
 
 class Slime extends Living {
-	const NETWORK_ID = self::SLIME;
+
+	public const NETWORK_ID = self::SLIME;
 
 	public $width = 2.04;
 	public $height = 2.04;

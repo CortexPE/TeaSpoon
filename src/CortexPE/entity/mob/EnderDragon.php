@@ -38,7 +38,8 @@ namespace CortexPE\entity\mob;
 use pocketmine\entity\Monster;
 
 class EnderDragon extends Monster {
-	const NETWORK_ID = self::ENDER_DRAGON;
+
+	public const NETWORK_ID = self::ENDER_DRAGON;
 
 	public function getName(): string{
 		return "Ender Dragon";

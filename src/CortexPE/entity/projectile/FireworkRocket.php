@@ -29,7 +29,9 @@ use pocketmine\Player;
 use pocketmine\utils\Random;
 
 class FireworkRocket extends Projectile {
-	const NETWORK_ID = self::FIREWORKS_ROCKET;
+
+	public const NETWORK_ID = self::FIREWORKS_ROCKET;
+
 	public $width = 0.25;
 	public $height = 0.25;
 	public $gravity = 0.0;

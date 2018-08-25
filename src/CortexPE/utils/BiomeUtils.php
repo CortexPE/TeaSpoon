@@ -40,41 +40,42 @@ use CortexPE\Utils;
 use pocketmine\level\Level;
 
 class BiomeUtils extends Utils {
-	public const OCEAN = 0;
-	public const PLAINS = 1;
-	public const DESERT = 2;
-	public const MOUNTAINS = 3;
-	public const FOREST = 4;
-	public const TAIGA = 5;
-	public const SWAMP = 6;
-	public const RIVER = 7;
-	public const HELL = 8;
-	public const END = 9;
-	public const FROZEN_OCEAN = 10;
-	public const FROZEN_RIVER = 11;
-	public const ICE_PLAINS = 12;
-	public const ICE_MOUNTAINS = 13;
-	public const MUSHROOM_ISLAND = 14;
-	public const MUSHROOM_ISLAND_SHORE = 15;
-	public const BEACH = 16;
-	public const DESERT_HILLS = 17;
-	public const FOREST_HILLS = 18;
-	public const TAIGA_HILLS = 19;
-	public const SMALL_MOUNTAINS = 20;
-	public const COLD_BEACH = 26;
-	public const BIRCH_FOREST = 27;
-	public const BIRCH_FOREST_HILLS = 28;
-	public const ROOFED_FOREST = 29;
-	public const COLD_TAIGA = 30;
-	public const COLD_TAIGA_HILLS = 31;
-	public const MEGA_TAIGA = 32;
-	public const MEGA_TAIGA_HILLS = 33;
-	public const EXTREME_HILLS_PLUS = 34;
-	public const SAVANNA = 35;
-	public const SAVANNA_PLATEAU = 36;
-	public const MESA = 37;
-	public const MESA_PLATEAU_F = 38;
-	public const MESA_PLATEAU = 39;
+	public const
+		OCEAN = 0,
+		PLAINS = 1,
+		DESERT = 2,
+		MOUNTAINS = 3,
+		FOREST = 4,
+		TAIGA = 5,
+		SWAMP = 6,
+		RIVER = 7,
+		HELL = 8,
+		END = 9,
+		FROZEN_OCEAN = 10,
+		FROZEN_RIVER = 11,
+		ICE_PLAINS = 12,
+		ICE_MOUNTAINS = 13,
+		MUSHROOM_ISLAND = 14,
+		MUSHROOM_ISLAND_SHORE = 15,
+		BEACH = 16,
+		DESERT_HILLS = 17,
+		FOREST_HILLS = 18,
+		TAIGA_HILLS = 19,
+		SMALL_MOUNTAINS = 20,
+		COLD_BEACH = 26,
+		BIRCH_FOREST = 27,
+		BIRCH_FOREST_HILLS = 28,
+		ROOFED_FOREST = 29,
+		COLD_TAIGA = 30,
+		COLD_TAIGA_HILLS = 31,
+		MEGA_TAIGA = 32,
+		MEGA_TAIGA_HILLS = 33,
+		EXTREME_HILLS_PLUS = 34,
+		SAVANNA = 35,
+		SAVANNA_PLATEAU = 36,
+		MESA = 37,
+		MESA_PLATEAU_F = 38,
+		MESA_PLATEAU = 39;
 
 	/** @var float[] */
 	public const BIOME_ID_TO_TEMPERATURE = [
@@ -115,15 +116,6 @@ class BiomeUtils extends Utils {
 		self::MESA_PLATEAU          => 2.0,
 	];
 
-	public static function getBiomeTemperature(int $x, int $z, Level $level): float{
-		$id = $level->getBiomeId($x, $z);
-		if(isset(self::BIOME_ID_TO_TEMPERATURE[$id])){
-			return self::BIOME_ID_TO_TEMPERATURE[$id];
-		}
-
-		return 0.0;
-	}
-
 	public static function getTemperature(int $x, int $y, int $z, Level $level): float{
 		$temp = self::getBiomeTemperature($x, $z, $level);
 		$seaLevel = 64; // default sea level
@@ -133,6 +125,15 @@ class BiomeUtils extends Utils {
 		}
 
 		return $temp;
+	}
+
+	public static function getBiomeTemperature(int $x, int $z, Level $level): float{
+		$id = $level->getBiomeId($x, $z);
+		if(isset(self::BIOME_ID_TO_TEMPERATURE[$id])){
+			return self::BIOME_ID_TO_TEMPERATURE[$id];
+		}
+
+		return 0.0;
 	}
 
 }

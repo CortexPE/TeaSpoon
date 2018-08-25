@@ -40,6 +40,7 @@ use pocketmine\network\mcpe\protocol\PacketPool;
 
 class PacketManager {
 	private static $initialized;
+
 	public static function init(){
 		if(!self::$initialized){
 			self::$initialized = true;

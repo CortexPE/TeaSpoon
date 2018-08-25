@@ -40,38 +40,41 @@ use pocketmine\item\Item;
 class ArmorDurability {
 	// Just to make it more organized...
 	// VALUES ARE BASED FROM: https://minecraft.gamepedia.com/Helmet, https://minecraft.gamepedia.com/Chestplate, https://minecraft.gamepedia.com/Leggings, https://minecraft.gamepedia.com/Boots
-	const LEATHER_DURABILITY = [
+	/** @var int[] */
+	public const
+		LEATHER_DURABILITY = [
 		Item::LEATHER_HELMET     => 56,
 		Item::LEATHER_CHESTPLATE => 81,
 		Item::LEATHER_LEGGINGS   => 76,
 		Item::LEATHER_BOOTS      => 66,
-	];
-	const CHAIN_DURABILITY = [
+	],
+		CHAIN_DURABILITY = [
 		Item::CHAIN_HELMET     => 166,
 		Item::CHAIN_CHESTPLATE => 241,
 		Item::CHAIN_LEGGINGS   => 226,
 		Item::CHAIN_BOOTS      => 196,
-	];
-	const IRON_DURABILITY = [
+	],
+		IRON_DURABILITY = [
 		Item::IRON_HELMET     => 166,
 		Item::IRON_CHESTPLATE => 241,
 		Item::IRON_LEGGINGS   => 226,
 		Item::IRON_BOOTS      => 196,
-	];
-	const GOLD_DURABILITY = [
+	],
+		GOLD_DURABILITY = [
 		Item::GOLD_HELMET     => 78,
 		Item::GOLD_CHESTPLATE => 113,
 		Item::GOLD_LEGGINGS   => 102,
 		Item::GOLD_BOOTS      => 92,
-	];
-	const DIAMOND_DURABILITY = [
+	],
+		DIAMOND_DURABILITY = [
 		Item::DIAMOND_HELMET     => 364,
 		Item::DIAMOND_CHESTPLATE => 529,
 		Item::DIAMOND_LEGGINGS   => 496,
 		Item::DIAMOND_BOOTS      => 430,
 	];
 
-	const DURABILITY = [
+	/** @var int */
+	public const DURABILITY = [
 		Item::LEATHER_HELMET     => 56,
 		Item::LEATHER_CHESTPLATE => 81,
 		Item::LEATHER_LEGGINGS   => 76,
@@ -100,14 +103,15 @@ class ArmorDurability {
 		Item::ELYTRA => 431,
 	];
 
-	const OTHERS = [
+	/** @var int */
+	public const OTHERS = [
 		Item::ELYTRA => 431,
 	];
 
-	const NON_ARMOR_WEARABLES = [
+	/** @var int[] */
+	public const NON_ARMOR_WEARABLES = [
 		Item::MOB_HEAD,
 		Item::PUMPKIN,
-
 		Item::AIR, // whenever the player isn't wearing something for that inventory slot...
 	];
 

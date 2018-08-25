@@ -49,7 +49,7 @@ class PharPluginLoader extends PMPharPluginLoader {
 		$this->server = $server;
 	}
 
-	public function getPluginDescription(string $file){
+	public function getPluginDescription(string $file): PluginDescription{
 		$phar = new \Phar($file);
 		if(isset($phar["plugin.yml"])){
 			$pluginYml = $phar["plugin.yml"];
@@ -65,6 +65,6 @@ class PharPluginLoader extends PMPharPluginLoader {
 			}
 		}
 
-		return null;
+		return null; //Cause crash fix
 	}
 }

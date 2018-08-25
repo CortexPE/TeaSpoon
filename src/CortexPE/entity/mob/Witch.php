@@ -38,7 +38,8 @@ namespace CortexPE\entity\mob;
 use pocketmine\entity\Monster;
 
 class Witch extends Monster {
-	const NETWORK_ID = self::WITCH;
+
+	public const NETWORK_ID = self::WITCH;
 
 	public $width = 0.6;
 	public $height = 1.95;

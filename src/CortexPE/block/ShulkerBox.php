@@ -61,6 +61,7 @@ class ShulkerBox extends Transparent {
 	 */
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
+		parent::__construct($this->id, $meta);
 	}
 
 	/**
@@ -106,14 +107,15 @@ class ShulkerBox extends Transparent {
 		$nbt = TileShulkerBox::createNBT($this->asVector3());
 		if($item->getNamedTag()->hasTag("Items", ListTag::class)){
 			$nbt->setTag($item->getNamedTag()->getListTag("Items"));
-		} else {
+		}else{
 			$nbt->setTag(new ListTag("Items", []));
 		}
 		if($item->hasCustomName()){
 			$nbt->setString("CustomName", $item->getCustomName());
 		}
 		/** @var TileShulkerBox $tile */
-		Tile::createTile(Tile::SHULKER_BOX, $this->getLevel(), $nbt);
+		Tile::createTile(Tile::SHULKER_BOX, $this->getLevel(), TileShulkerBox::createNBT($this, $face, $item, $player));
+
 		$player->getInventory()->setItemInHand(Item::get(Item::AIR));
 
 		return true;
@@ -157,7 +159,7 @@ class ShulkerBox extends Transparent {
 				$nbt->setTag(new ListTag("Items", []));
 				$sb = Tile::createTile(Tile::SHULKER_BOX, $this->getLevel(), $nbt);
 			}
-			if(!($this->getSide(Vector3::SIDE_UP)->isTransparent()) or ($sb->namedtag->hasTag("Lock", StringTag::class) and $sb->namedtag->getString("Lock") !== $item->getCustomName())){
+			if(!($this->getSide(Vector3::SIDE_UP)->isTransparent()) or ($sb->getNBT()->hasTag("Lock", StringTag::class) and $sb->getNBT()->getString("Lock") !== $item->getCustomName())){
 				return true;
 			}
 			if($player->isCreative() and Main::$limitedCreative){
@@ -166,6 +168,7 @@ class ShulkerBox extends Transparent {
 			$player->addWindow($sb->getInventory());
 
 		}
+
 		return true;
 	}
 

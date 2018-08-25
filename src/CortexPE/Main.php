@@ -64,9 +64,12 @@ class Main extends PluginBase {
 
 	// self explanatory constants
 	public const CONFIG_VERSION = 27;
-	public const BASE_POCKETMINE_VERSION = "1.7dev"; // The PocketMine version before Jenkins builds it... (Can be found on PocketMine.php as the 'VERSION' constant)
-	public const TESTED_MIN_POCKETMINE_VERSION = "1.7dev-1014"; // The minimum build this was tested working
-	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-1034"; // The current build this was actually tested
+
+	/** @var string */
+	public const
+		BASE_POCKETMINE_VERSION = "3.0.0",
+		TESTED_MIN_POCKETMINE_VERSION = "3.0.0",
+		TESTED_MAX_POCKETMINE_VERSION = "4.0.0";
 
 	///////////////////////////////// START OF INSTANCE VARIABLES /////////////////////////////////
 	/** @var Config */
@@ -75,21 +78,8 @@ class Main extends PluginBase {
 	public static $cacheFile;
 	/** @var int[] */
 	public static $onPortal = [];
-	/** @var Main */
-	private static $instance;
-	/** @var Session[] */
-	private $sessions = [];
-	/** @var bool */
-	private $disable = false;
 	/** @var string */
-	private static $sixCharCommitHash = "";
-	/** @var BrewingManager */
-	private $brewingManager = null;
-	////////////////////////////////// END OF INSTANCE VARIABLES //////////////////////////////////
-
-	///////////////////////////////// START OF CONFIGS VARIABLES /////////////////////////////////
-	/** @var string */
-	public static $netherName = "nether";
+	public static $netherName = "teanether";
 	/** @var Level */
 	public static $netherLevel;
 	/** @var string */
@@ -98,6 +88,9 @@ class Main extends PluginBase {
 	public static $endLevel;
 	/** @var bool */
 	public static $lightningFire = false;
+	////////////////////////////////// END OF INSTANCE VARIABLES //////////////////////////////////
+
+	///////////////////////////////// START OF CONFIGS VARIABLES /////////////////////////////////
 	/** @var int */
 	public static $ePearlDamage = 5;
 	/** @var int */
@@ -202,10 +195,41 @@ class Main extends PluginBase {
 	public static $snowLayerMelts = true;
 	/** @var bool */
 	public static $brewingStandsEnabled = true;
+	/** @var Main */
+	private static $instance;
+	/** @var string */
+	private static $sixCharCommitHash = "";
+	/** @var Session[] */
+	private $sessions = [];
+	/** @var bool */
+	private $disable = false;
+	/** @var BrewingManager */
+	private $brewingManager = null;
+
 	////////////////////////////////// END OF CONFIGS VARIABLES //////////////////////////////////
 
 	public static function getInstance(): Main{
 		return self::$instance;
+	}
+
+	public static function sendVersion(CommandSender $sender){
+		$sender->getServer()->dispatchCommand($sender, "ver");
+		$sender->sendMessage("\x2d\x2d\x2d\x20\x2b\x20\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x20\x2b\x20\x2d\x2d\x2d");
+		$logo = TextFormat::DARK_GREEN . "\x54\x65\x61" . TextFormat::GREEN . "\x53\x70\x6f\x6f\x6e";
+		if(Splash::isValentines()){
+			$logo = TextFormat::RED . "\x44\x65\x73\x73\x65\x72\x74" . TextFormat::DARK_RED . "\x53\x70\x6f\x6f\x6e";
+		}
+		$sender->sendMessage("\x54\x68\x69\x73\x20\x73\x65\x72\x76\x65\x72\x20\x69\x73\x20\x72\x75\x6e\x6e\x69\x6e\x67\x20" . $logo . TextFormat::WHITE . "\x20\x76" . self::$instance->getDescription()->getVersion() . (Utils::isPhared() ? "" : "-dev") . "\x20\x66\x6f\x72\x20\x50\x6f\x63\x6b\x65\x74\x4d\x69\x6e\x65\x2d\x4d\x50\x20" . (self::TESTED_MIN_POCKETMINE_VERSION != self::TESTED_MAX_POCKETMINE_VERSION ? self::TESTED_MIN_POCKETMINE_VERSION . "\x20\x2d\x20" . self::TESTED_MAX_POCKETMINE_VERSION : self::TESTED_MAX_POCKETMINE_VERSION));
+
+		if(self::$sixCharCommitHash != ""){
+			$sender->sendMessage("\x43\x6f\x6d\x6d\x69\x74\x3a\x20" . self::$sixCharCommitHash);
+		}
+		$sender->sendMessage("\x52\x65\x70\x6f\x73\x69\x74\x6f\x72\x79\x3a\x20\x68\x74\x74\x70\x73\x3a\x2f\x2f\x67\x69\x74\x68\x75\x62\x2e\x63\x6f\x6d\x2f\x43\x6f\x72\x74\x65\x78\x50\x45\x2f\x54\x65\x61\x53\x70\x6f\x6f\x6e");
+		$sender->sendMessage("\x57\x65\x62\x73\x69\x74\x65\x3a\x20\x68\x74\x74\x70\x73\x3a\x2f\x2f\x43\x6f\x72\x74\x65\x78\x50\x45\x2e\x78\x79\x7a");
+	}
+
+	public static function getPluginLogger(): PluginLogger{ // 2 lazy
+		return self::$instance->getLogger();
 	}
 
 	public function onLoad(){
@@ -288,11 +312,11 @@ class Main extends PluginBase {
 			if(!isset($meta["builderName"]) || !is_array($meta)){
 				$this->getLogger()->error("Only use TeaSpoon Builds from Poggit: https://poggit.pmmp.io/ci/CortexPE/TeaSpoon/~");
 				$this->disable = true;
+
 				return;
 			}
-
 			self::$sixCharCommitHash = substr($meta["fromCommit"], 0, 6);
-		} else {
+		}else{
 			$this->getLogger()->warning("You're using a developer's build of TeaSpoon. For better performance and stability, please get a pre-packaged version here: https://poggit.pmmp.io/ci/CortexPE/TeaSpoon/~");
 		}
 
@@ -307,6 +331,7 @@ class Main extends PluginBase {
 		// Yes compatibility checks (the ones with setEnabled(false)) are repeated because they should still look good in CLI...
 		if($this->disable){
 			$this->setEnabled(false);
+
 			return;
 		}
 
@@ -321,12 +346,33 @@ class Main extends PluginBase {
 
 		if(!$this->checkServer()){
 			$this->setEnabled(false);
+
 			return;
 		}
 
 		$this->loadEverythingElse();
 		$this->getLogger()->info("TeaSpoon is distributed under the AGPL License");
 		$this->checkConfigVersion();
+	}
+
+	private function checkServer(): bool{
+		if(Utils::isServerPhared()){
+			$serverVersion = $this->getServer()->getPocketMineVersion();
+			$versionMinComp = version_compare($serverVersion, self::TESTED_MIN_POCKETMINE_VERSION);
+			$versionMaxComp = version_compare($serverVersion, self::TESTED_MAX_POCKETMINE_VERSION);
+
+			if($versionMinComp < 0){
+				// PocketMine version is older than minimum tested version
+				$this->getLogger()->alert(TextFormat::RED . "This plugin has been tested on PocketMine version: " . self::TESTED_MAX_POCKETMINE_VERSION . ", running it on older PocketMine versions is very unstable. To prevent any futher in-compatibility issues, TeaSpoon will now disable itself."); // I still put the max version so that patches will be included...
+
+				return false;
+			}
+			if($versionMaxComp > 0){
+				$this->getLogger()->info(TextFormat::GREEN . "You're using a newer PocketMine build than the highest tested version (" . self::TESTED_MAX_POCKETMINE_VERSION . "). Please report bugs if there's any. ;)");
+			}
+		}
+
+		return true;
 	}
 
 	private function loadEverythingElse(){
@@ -352,7 +398,7 @@ class Main extends PluginBase {
 
 		// Task(s)
 		if(self::$weatherEnabled){
-			$this->getServer()->getScheduler()->scheduleRepeatingTask(new TickLevelsTask($this), 1);
+			$this->getScheduler()->scheduleRepeatingTask(new TickLevelsTask(), 1);
 		}
 
 		// Load other API plugins at last (too still look gud)
@@ -373,25 +419,6 @@ class Main extends PluginBase {
 		if(self::$cacheFile->get("date", "") != strval(date("d-m-y"))){
 			self::$cacheFile->set("date", strval(date("d-m-y")));
 		}
-	}
-
-	private function checkServer() : bool {
-		if(Utils::isServerPhared()){
-			$serverVersion = $this->getServer()->getPocketMineVersion();
-			$versionMinComp = version_compare($serverVersion, self::TESTED_MIN_POCKETMINE_VERSION);
-			$versionMaxComp = version_compare($serverVersion, self::TESTED_MAX_POCKETMINE_VERSION);
-
-			if($versionMinComp < 0){
-				// PocketMine version is older than minimum tested version
-				$this->getLogger()->alert("This plugin has been tested on PocketMine version: " . self::TESTED_MAX_POCKETMINE_VERSION . ", running it on older PocketMine versions is very unstable. To prevent any futher in-compatibility issues, TeaSpoon will now disable itself."); // I still put the max version so that patches will be included...
-				return false;
-			}
-
-			if($versionMaxComp > 0){
-				$this->getLogger()->info("You're using a newer PocketMine build than the highest tested version (" . self::TESTED_MAX_POCKETMINE_VERSION . "). Please report bugs if there's any. ;)");
-			}
-		}
-		return true;
 	}
 
 	public function onDisable(){
@@ -436,26 +463,6 @@ class Main extends PluginBase {
 		}
 
 		return null;
-	}
-
-	public static function sendVersion(CommandSender $sender){
-		$sender->getServer()->dispatchCommand($sender, "ver");
-		$sender->sendMessage("\x2d\x2d\x2d\x20\x2b\x20\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x20\x2b\x20\x2d\x2d\x2d");
-		$logo = TextFormat::DARK_GREEN . "\x54\x65\x61" . TextFormat::GREEN . "\x53\x70\x6f\x6f\x6e";
-		if(Splash::isValentines()){
-			$logo = TextFormat::RED . "\x44\x65\x73\x73\x65\x72\x74" . TextFormat::DARK_RED . "\x53\x70\x6f\x6f\x6e";
-		}
-		$sender->sendMessage("\x54\x68\x69\x73\x20\x73\x65\x72\x76\x65\x72\x20\x69\x73\x20\x72\x75\x6e\x6e\x69\x6e\x67\x20" . $logo . TextFormat::WHITE . "\x20\x76" . self::$instance->getDescription()->getVersion() . (Utils::isPhared() ? "" : "-dev") . "\x20\x66\x6f\x72\x20\x50\x6f\x63\x6b\x65\x74\x4d\x69\x6e\x65\x2d\x4d\x50\x20" . (self::TESTED_MIN_POCKETMINE_VERSION != self::TESTED_MAX_POCKETMINE_VERSION ? self::TESTED_MIN_POCKETMINE_VERSION . "\x20\x2d\x20" . self::TESTED_MAX_POCKETMINE_VERSION : self::TESTED_MAX_POCKETMINE_VERSION));
-
-		if(self::$sixCharCommitHash != ""){
-			$sender->sendMessage("\x43\x6f\x6d\x6d\x69\x74\x3a\x20" . self::$sixCharCommitHash);
-		}
-		$sender->sendMessage("\x52\x65\x70\x6f\x73\x69\x74\x6f\x72\x79\x3a\x20\x68\x74\x74\x70\x73\x3a\x2f\x2f\x67\x69\x74\x68\x75\x62\x2e\x63\x6f\x6d\x2f\x43\x6f\x72\x74\x65\x78\x50\x45\x2f\x54\x65\x61\x53\x70\x6f\x6f\x6e");
-		$sender->sendMessage("\x57\x65\x62\x73\x69\x74\x65\x3a\x20\x68\x74\x74\x70\x73\x3a\x2f\x2f\x43\x6f\x72\x74\x65\x78\x50\x45\x2e\x78\x79\x7a");
-	}
-
-	public static function getPluginLogger() : PluginLogger { // 2 lazy
-		return self::$instance->getLogger();
 	}
 
 	public function getBrewingManager(): BrewingManager{

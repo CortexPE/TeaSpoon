@@ -39,7 +39,8 @@ use pocketmine\entity\Monster;
 use pocketmine\item\Item;
 
 class Blaze extends Monster {
-	const NETWORK_ID = self::BLAZE;
+
+	public const NETWORK_ID = self::BLAZE;
 
 	public $width = 0.6;
 	public $height = 1.8;

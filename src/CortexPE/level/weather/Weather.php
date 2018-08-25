@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /*
  *
  *  _____   _____   __   _   _   _____  __    __  _____
@@ -31,12 +33,15 @@ use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\Player;
 
 class Weather {
-	const CLEAR = 0;
-	const SUNNY = 0;
-	const RAIN = 1;
-	const RAINY = 1;
-	const RAINY_THUNDER = 2;
-	const THUNDER = 3;
+
+	/** @var int */
+	public const
+		CLEAR = 0,
+		SUNNY = 0,
+		RAIN = 1,
+		RAINY = 1,
+		RAINY_THUNDER = 2,
+		THUNDER = 3;
 
 	private $level;
 	private $weatherNow = 0;
@@ -132,7 +137,7 @@ class Weather {
 					$p = $players[array_rand($players)];
 					$x = $p->x + mt_rand(-64, 64);
 					$z = $p->z + mt_rand(-64, 64);
-					$y = $this->level->getHighestBlockAt($x, $z);
+					$y = $this->level->getHighestBlockAt((int)$x, (int)$z);
 
 					if(Main::$enableWeatherLightning){
 						$nbt = Entity::createBaseNBT(new Vector3($x, $y, $z));

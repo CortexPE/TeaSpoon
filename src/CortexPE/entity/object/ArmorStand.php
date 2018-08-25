@@ -53,16 +53,14 @@ use pocketmine\Player;
 
 class ArmorStand extends Entity {
 
-	protected $gravity = 0.04;
-	public $height = 1.975;
-	public $width = 0.5;
-
-	// TODO: Poses...
-	const NETWORK_ID = self::ARMOR_STAND;
-
+	public const NETWORK_ID = self::ARMOR_STAND;
 	public const TAG_HAND_ITEMS = "HandItems";
 	public const TAG_ARMOR_ITEMS = "ArmorItems";
 
+	// TODO: Poses...
+	public $height = 1.975;
+	public $width = 0.5;
+	protected $gravity = 0.04;
 	/** @var Item */
 	protected $itemInHand;
 	/** @var Item */
@@ -143,24 +141,24 @@ class ArmorStand extends Entity {
 						$this->setChestplate($item);
 						$playerInv->setItemInHand(Item::get(Item::AIR));
 						$playerInv->addItem($ASchestplate);
-					} else {
+					}else{
 						$ASiteminhand = clone $this->getItemInHand();
 						$this->setItemInHand($item);
 						$playerInv->setItemInHand(Item::get(Item::AIR));
 						$playerInv->addItem($ASiteminhand);
 					}
-				} else {
+				}else{
 					$old = clone $this->get($clicked);
 					$this->set($clicked, $item);
 					$playerInv->setItemInHand(Item::get(Item::AIR));
 					$playerInv->addItem($old);
 				}
-			} else {
+			}else{
 				if($type == ArmorTypes::TYPE_NULL){
 					if($this->getItemInHand()->equals($item)){
 						$playerInv->addItem(clone $this->getItemInHand());
 						$this->setItemInHand(Item::get(Item::AIR));
-					} else {
+					}else{
 						$playerInv->addItem(clone $this->getItemInHand());
 
 						$ic = clone $item;
@@ -168,7 +166,7 @@ class ArmorStand extends Entity {
 						$this->setItemInHand((clone $ic)->setCount(1));
 						$playerInv->setItemInHand($ic);
 					}
-				} else {
+				}else{
 					$old = clone $this->get($type);
 					$this->set($type, $item);
 					$playerInv->setItemInHand(Item::get(Item::AIR));
@@ -179,10 +177,29 @@ class ArmorStand extends Entity {
 			//$playerInv->sendContents($playerInv->getViewers()); WTF why doesn't it work when these are included?
 			$this->sendAll();
 		}
+
 		return true;
 	}
 
-	private function get(string $armorType) : Item { // pure laziness xD
+	public function getItemInHand(): Item{
+		return $this->itemInHand;
+	}
+
+	public function setItemInHand(Item $item){
+		$this->itemInHand = $item;
+		$this->sendAll();
+	}
+
+	public function getChestplate(): Item{
+		return $this->chestplate;
+	}
+
+	public function setChestplate(Item $item){
+		$this->chestplate = $item;
+		$this->sendAll();
+	}
+
+	private function get(string $armorType): Item{ // pure laziness xD
 		switch($armorType){
 			case ArmorTypes::TYPE_HELMET:
 				return $this->getHelmet();
@@ -197,7 +214,44 @@ class ArmorStand extends Entity {
 			case "OFFHAND":
 				return $this->getItemOffHand();
 		}
+
 		return Item::get(Item::AIR);
+	}
+
+	public function getHelmet(): Item{
+		return $this->helmet;
+	}
+
+	public function setHelmet(Item $item){
+		$this->helmet = $item;
+		$this->sendAll();
+	}
+
+	public function getLeggings(): Item{
+		return $this->leggings;
+	}
+
+	public function setLeggings(Item $item){
+		$this->leggings = $item;
+		$this->sendAll();
+	}
+
+	public function getBoots(): Item{
+		return $this->boots;
+	}
+
+	public function setBoots(Item $item){
+		$this->boots = $item;
+		$this->sendAll();
+	}
+
+	public function getItemOffHand(): Item{
+		return $this->itemOffHand;
+	}
+
+	public function setItemOffHand(Item $item){
+		$this->itemOffHand = $item;
+		$this->sendAll();
 	}
 
 	private function set(string $armorType, Item $item){ // pure laziness aswell xD
@@ -223,21 +277,11 @@ class ArmorStand extends Entity {
 		}
 	}
 
-	public function kill(): void{
-		$this->level->dropItem($this, Item::get(Item::ARMOR_STAND));
-		$this->level->dropItem($this, $this->getItemInHand());
-		$this->level->dropItem($this, $this->getItemOffHand());
-		$this->level->dropItem($this, $this->getHelmet());
-		$this->level->dropItem($this, $this->getChestplate());
-		$this->level->dropItem($this, $this->getLeggings());
-		$this->level->dropItem($this, $this->getBoots());
-		parent::kill();
-	}
-
-	public function spawnTo(Player $player): void{
-		parent::spawnTo($player);
-		$this->sendArmorItems($player);
-		$this->sendHandItems($player);
+	public function sendAll(){
+		foreach($this->getViewers() as $player){
+			$this->sendHandItems($player);
+			$this->sendArmorItems($player);
+		}
 	}
 
 	public function sendHandItems(Player $player){
@@ -261,11 +305,21 @@ class ArmorStand extends Entity {
 		$player->dataPacket($pk);
 	}
 
-	public function sendAll(){
-		foreach($this->getViewers() as $player){
-			$this->sendHandItems($player);
-			$this->sendArmorItems($player);
-		}
+	public function kill(): void{
+		$this->level->dropItem($this, Item::get(Item::ARMOR_STAND));
+		$this->level->dropItem($this, $this->getItemInHand());
+		$this->level->dropItem($this, $this->getItemOffHand());
+		$this->level->dropItem($this, $this->getHelmet());
+		$this->level->dropItem($this, $this->getChestplate());
+		$this->level->dropItem($this, $this->getLeggings());
+		$this->level->dropItem($this, $this->getBoots());
+		parent::kill();
+	}
+
+	public function spawnTo(Player $player): void{
+		parent::spawnTo($player);
+		$this->sendArmorItems($player);
+		$this->sendHandItems($player);
 	}
 
 	public function saveNBT(): void{
@@ -282,61 +336,8 @@ class ArmorStand extends Entity {
 		], NBT::TAG_Compound));
 	}
 
-	public function getItemInHand(): Item{
-		return $this->itemInHand;
-	}
-
-	public function setItemInHand(Item $item){
-		$this->itemInHand = $item;
-		$this->sendAll();
-	}
-
-	public function getItemOffHand(): Item{
-		return $this->itemOffHand;
-	}
-
-	public function setItemOffHand(Item $item){
-		$this->itemOffHand = $item;
-		$this->sendAll();
-	}
-
-	public function getHelmet(): Item{
-		return $this->helmet;
-	}
-
-	public function setHelmet(Item $item){
-		$this->helmet = $item;
-		$this->sendAll();
-	}
-
-	public function getChestplate(): Item{
-		return $this->chestplate;
-	}
-
-	public function setChestplate(Item $item){
-		$this->chestplate = $item;
-		$this->sendAll();
-	}
-
-	public function getLeggings(): Item{
-		return $this->leggings;
-	}
-
-	public function setLeggings(Item $item){
-		$this->leggings = $item;
-		$this->sendAll();
-	}
-
-	public function getBoots(): Item{
-		return $this->boots;
-	}
-
-	public function setBoots(Item $item){
-		$this->boots = $item;
-		$this->sendAll();
-	}
-
 	// A E S T H E T I C S  --  from Altay
+
 	public function applyGravity(): void{
 		$this->level->broadcastLevelEvent($this, LevelEventPacket::EVENT_SOUND_ARMOR_STAND_FALL);
 		parent::applyGravity();

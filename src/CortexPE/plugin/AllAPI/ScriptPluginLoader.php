@@ -45,11 +45,10 @@ class ScriptPluginLoader extends PMScriptPluginLoader {
 	private $server;
 
 	public function __construct(Server $server){
-		parent::__construct($server);
 		$this->server = $server;
 	}
 
-	public function getPluginDescription(string $file){
+	public function getPluginDescription(string $file): PluginDescription{
 		$content = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
 		$data = [];
@@ -86,6 +85,6 @@ class ScriptPluginLoader extends PMScriptPluginLoader {
 			}
 		}
 
-		return null;
+		return null; //Cause crash fix
 	}
 }

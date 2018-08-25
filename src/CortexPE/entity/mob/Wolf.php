@@ -38,7 +38,8 @@ namespace CortexPE\entity\mob;
 use pocketmine\entity\Animal;
 
 class Wolf extends Animal {
-	const NETWORK_ID = self::WOLF;
+
+	public const NETWORK_ID = self::WOLF;
 
 	public $width = 0.6;
 	public $height = 0.85;
