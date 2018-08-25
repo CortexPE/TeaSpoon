@@ -1,7 +1,7 @@
-## Address the issue
+## Description
 Describe the problem this Pull Request fixes and if applicable, mention an existing opened issue.
 
-## Explain the changes
+## Changes
 Explain your changes so that we can easily determine what this pull request does and what your initial method is.
 
 ## Tests
