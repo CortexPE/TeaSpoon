@@ -61,6 +61,21 @@ class ThrownTrident extends Projectile {
 		parent::__construct($level, $nbt, $shootingEntity);
 	}
 
+	public function entityBaseTick(int $tickDiff = 1): bool{
+		if($this->closed){
+			return false;
+		}
+
+		$hasUpdate = parent::entityBaseTick($tickDiff);
+
+		if($this->age > 1200){
+			$this->flagForDespawn();
+			$hasUpdate = true;
+		}
+
+		return $hasUpdate;
+	}
+
 	public function onCollideWithPlayer(Player $player): void{
 		if($this->blockHit === \null){
 			return;
