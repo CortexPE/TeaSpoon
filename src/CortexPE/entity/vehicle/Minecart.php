@@ -79,6 +79,7 @@ class Minecart extends Vehicle {
 	public function onUpdate(int $currentTick): bool{
 		$parent = parent::onUpdate($currentTick);
 		if($this->rider !== null){
+			// Ooof, seriously cortex?
 			$mot = $this->rider->getDirectionVector()->multiply(2);
 			$mot->y = -$this->gravity;
 			//$mot->y = 0;
