@@ -219,7 +219,7 @@ class Main extends PluginBase {
 		if(Splash::isValentines()){
 			$logo = TextFormat::RED . "\x44\x65\x73\x73\x65\x72\x74" . TextFormat::DARK_RED . "\x53\x70\x6f\x6f\x6e";
 		}
-		$sender->sendMessage("\x54\x68\x69\x73\x20\x73\x65\x72\x76\x65\x72\x20\x69\x73\x20\x72\x75\x6e\x6e\x69\x6e\x67\x20" . $logo . TextFormat::WHITE . "\x20\x76" . self::$instance->getDescription()->getVersion() . (Utils::isPhared() ? "" : "-dev") . "\x20\x66\x6f\x72\x20\x50\x6f\x63\x6b\x65\x74\x4d\x69\x6e\x65\x2d\x4d\x50\x20" . (self::TESTED_MIN_POCKETMINE_VERSION != self::TESTED_MAX_POCKETMINE_VERSION ? self::TESTED_MIN_POCKETMINE_VERSION . "\x20\x2d\x20" . self::TESTED_MAX_POCKETMINE_VERSION : self::TESTED_MAX_POCKETMINE_VERSION));
+		$sender->sendMessage("\x54\x68\x69\x73\x20\x73\x65\x72\x76\x65\x72\x20\x69\x73\x20\x72\x75\x6e\x6e\x69\x6e\x67\x20" . $logo . TextFormat::WHITE . "\x20\x76" . self::$instance->getDescription()->getVersion() . (Utils::isPhared() ? "" : "-dev") . "\x20\x66\x6f\x72\x20\x50\x6f\x63\x6b\x65\x74\x4d\x69\x6e\x65\x2d\x4d\x50\x20" . $this->getServer()->getApiVersion());
 
 		if(self::$sixCharCommitHash != ""){
 			$sender->sendMessage("\x43\x6f\x6d\x6d\x69\x74\x3a\x20" . self::$sixCharCommitHash);
@@ -304,8 +304,6 @@ class Main extends PluginBase {
 		self::$brewingStandsEnabled = self::$config->getNested("blocks.brewingStands", self::$brewingStandsEnabled);
 
 		// Pre-Enable Checks //
-
-		// Phars Force Poggit Builds only //
 		if(Utils::isPhared()){ // unphared = dev
 			$thisPhar = new \Phar(\Phar::running(false));
 			$meta = $thisPhar->getMetadata(); // https://github.com/poggit/poggit/blob/beta/src/poggit/ci/builder/ProjectBuilder.php#L227-L236
@@ -318,10 +316,6 @@ class Main extends PluginBase {
 			self::$sixCharCommitHash = substr($meta["fromCommit"], 0, 6);
 		}else{
 			$this->getLogger()->warning("You're using a developer's build of TeaSpoon. For better performance and stability, please get a pre-packaged version here: https://poggit.pmmp.io/ci/CortexPE/TeaSpoon/~");
-		}
-
-		if(!Utils::isServerPhared() || $this->getServer()->getPocketMineVersion() == self::BASE_POCKETMINE_VERSION){
-			$this->getLogger()->warning("Non-Packaged / Unsupported PocketMine installation detected. Some of TeaSpoon's protective functions are now disabled.");
 		}
 
 		self::$instance = $this;
@@ -344,38 +338,12 @@ class Main extends PluginBase {
 		}
 		$this->getLogger()->info("Loading..." . $stms);
 
-		if(!$this->checkServer()){
-			$this->setEnabled(false);
-
-			return;
-		}
-
-		$this->loadEverythingElse();
+		$this->loadEverythingElseThatMakesThisPluginFunctionalAndNotBrokLMAO();
 		$this->getLogger()->info("TeaSpoon is distributed under the AGPL License");
 		$this->checkConfigVersion();
 	}
 
-	private function checkServer(): bool{
-		if(Utils::isServerPhared()){
-			$serverVersion = $this->getServer()->getPocketMineVersion();
-			$versionMinComp = version_compare($serverVersion, self::TESTED_MIN_POCKETMINE_VERSION);
-			$versionMaxComp = version_compare($serverVersion, self::TESTED_MAX_POCKETMINE_VERSION);
-
-			if($versionMinComp < 0){
-				// PocketMine version is older than minimum tested version
-				$this->getLogger()->alert(TextFormat::RED . "This plugin has been tested on PocketMine version: " . self::TESTED_MAX_POCKETMINE_VERSION . ", running it on older PocketMine versions is very unstable. To prevent any futher in-compatibility issues, TeaSpoon will now disable itself."); // I still put the max version so that patches will be included...
-
-				return false;
-			}
-			if($versionMaxComp > 0){
-				$this->getLogger()->info(TextFormat::GREEN . "You're using a newer PocketMine build than the highest tested version (" . self::TESTED_MAX_POCKETMINE_VERSION . "). Please report bugs if there's any. ;)");
-			}
-		}
-
-		return true;
-	}
-
-	private function loadEverythingElse(){
+	private function loadEverythingElseThatMakesThisPluginFunctionalAndNotBrokLMAO(){
 		// Initialize ze managars //
 		CommandManager::init();
 		Enchantment::init();
