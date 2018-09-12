@@ -36,6 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\entity\vehicle;
 
 use CortexPE\Main;
+use CortexPE\utils\Rail;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
 use pocketmine\entity\Vehicle;
@@ -45,9 +46,28 @@ use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\Player;
 
+/**
+ * The main class for the entity minecart.
+ *
+ * @author larryTheCoder
+ * @author CortexPE
+ */
 class Minecart extends Vehicle {
 
 	public const NETWORK_ID = self::MINECART;
+
+	private $matrix = [
+		[[0, 0, -1], [0, 0, 1]],
+		[[-1, 0, 0], [1, 0, 0]],
+		[[-1, -1, 0], [1, 0, 0]],
+		[[-1, 0, 0], [1, -1, 0]],
+		[[0, 0, -1], [0, -1, 1]],
+		[[0, -1, -1], [0, 0, 1]],
+		[[0, 0, 1], [1, 0, 0]],
+		[[0, 0, 1], [-1, 0, 0]],
+		[[0, 0, -1], [-1, 0, 0]],
+		[[0, 0, -1], [1, 0, 0]],
+	];
 
 	public $height = 0.8;
 	public $width = 0.98;
@@ -88,6 +108,58 @@ class Minecart extends Vehicle {
 		}
 
 		return $parent;
+	}
+
+	private function getNextRail($dx, $dy, $dz): Vector3{
+		$checkX = $dx;
+		$checkY = $dy;
+		$checkZ = $dz;
+
+		if(Rail::isRailBlock($this->level->getBlockIdAt($checkX, $checkY - 1, $checkZ))){
+			--$checkY;
+		}
+
+		$block = $this->level->getBlock(new Vector3($checkX, $checkY, $checkZ));
+
+		if(Rail::isRailBlock($block)){
+			$facing = $this->matrix[$block->getDamage()];
+			// Genisys mistake (Doesn't check surrounding more exactly)
+			$nextOne = $checkX + 0.5 + $facing[0][0] * 0.5;
+			$nextTwo = $checkY + 0.5 + $facing[0][1] * 0.5;
+			$nextThree = $checkZ + 0.5 + $facing[0][2] * 0.5;
+			$nextFour = $checkX + 0.5 + $facing[1][0] * 0.5;
+			$nextFive = $checkY + 0.5 + $facing[1][1] * 0.5;
+			$nextSix = $checkZ + 0.5 + $facing[1][2] * 0.5;
+			$nextSeven = $nextFour - $nextOne;
+			$nextEight = ($nextFive - $nextTwo) * 2;
+			$nextMax = $nextSix - $nextThree;
+
+			if($nextSeven == 0){
+				$rail = $dz - $checkZ;
+			}elseif($nextMax == 0){
+				$rail = $dx - $checkX;
+			}else{
+				$whatOne = $dx - $nextOne;
+				$whatTwo = $dz - $nextThree;
+
+				$rail = ($whatOne * $nextSeven + $whatTwo * $nextMax) * 2;
+			}
+
+			$dx = $nextOne + $nextSeven * $rail;
+			$dy = $nextTwo + $nextEight * $rail;
+			$dz = $nextThree + $nextMax * $rail;
+			if($nextEight < 0){
+				++$dy;
+			}
+
+			if($nextEight > 0){
+				$dy += 0.5;
+			}
+
+			return new Vector3($dx, $dy, $dz);
+		}else{
+			return null;
+		}
 	}
 
 	public function onInteract(Player $player, Item $item, int $slot, Vector3 $clickPos): bool{

@@ -51,7 +51,7 @@ use pocketmine\Player;
 abstract class Vehicle extends PMVehicle {
 
 	/** @var Entity */
-	private $linkedEntity;
+	private $linkedEntity = null;
 
 	public function __construct(Level $level, CompoundTag $nbt){
 		parent::__construct($level, $nbt);
@@ -84,6 +84,10 @@ abstract class Vehicle extends PMVehicle {
 
 	public function getInteractButtonText(): string{
 		return "Mount";
+	}
+
+	public function getLinkedEntity(): Entity{
+		return $this->linkedEntity;
 	}
 
 	public function canDoInteraction(){
