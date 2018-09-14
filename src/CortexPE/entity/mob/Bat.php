@@ -79,11 +79,6 @@ class Bat extends Animal {
 
 	public function onUpdate(int $currentTick): bool{
 		if($this->age > 1200){
-			// I have reached the lifespan of my species...
-
-			// Existance is pain.
-			// I JUST WANT TO DIE
-			// ~ Mr. Meeseeks
 			$this->kill();
 		}
 
