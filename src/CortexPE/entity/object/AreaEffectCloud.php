@@ -61,6 +61,7 @@ class AreaEffectCloud extends Entity {
 	private $TileZ = 0;
 	private $Duration = 600;
 	private $DurationOnUse = 0;
+	protected $age = 0;
 
 	public function initEntity(): void{
 		parent::initEntity();
