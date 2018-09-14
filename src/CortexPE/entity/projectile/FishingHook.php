@@ -63,7 +63,7 @@ class FishingHook extends Projectile {
 	protected $touchedWater = false;
 
 	public function onUpdate(int $currentTick): bool{
-		if($this->isClosed() || !$this->isAlive()){
+		if($this->isFlaggedForDespawn() || !$this->isAlive()){
 			return false;
 		}
 
@@ -155,7 +155,7 @@ class FishingHook extends Projectile {
 		$entityHit->setMotion($this->getOwningEntity()->getDirectionVector()->multiply(-0.3)->add(0, 0.3, 0));
 
 		$this->isCollided = true;
-		$this->close();
+		$this->flagForDespawn();
 	}
 
 	public function getResultDamage(): int{

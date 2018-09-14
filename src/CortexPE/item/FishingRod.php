@@ -111,7 +111,6 @@ class FishingRod extends Durable {
 				}else{
 					$projectile = $session->fishingHook;
 					if($projectile instanceof FishingHook){
-
 						$session->unsetFishing();
 
 						if($player->getLevel()->getBlock($projectile->asVector3())->getId() == Block::WATER || $player->getLevel()->getBlock($projectile)->getId() == Block::WATER){
@@ -140,8 +139,6 @@ class FishingRod extends Durable {
 
 							$player->addXp(mt_rand(1, 6));
 						}
-
-						$projectile->flagForDespawn();
 					}
 				}
 			}

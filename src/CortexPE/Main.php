@@ -367,12 +367,13 @@ class Main extends PluginBase {
 	}
 
 	private function checkConfigVersion(){
-		$ver = self::$config->get("version");
-
-		if($ver === null || $ver === false || $ver < self::CONFIG_VERSION){
-			$this->getLogger()->critical("Your configuration file is Outdated! Keep a backup of it and delete the outdated file.");
-		}elseif($ver > self::CONFIG_VERSION){
-			$this->getLogger()->critical("Your configuration file is from a higher version of TeaSpoon! Please update the plugin from https://github.com/CortexPE/TeaSpoon");
+		if(Utils::isPhared()){
+			$ver = self::$config->get("version");
+			if($ver === null || $ver === false || $ver < self::CONFIG_VERSION){
+				$this->getLogger()->critical("Your configuration file is Outdated! Keep a backup of it and delete the outdated file.");
+			}elseif($ver > self::CONFIG_VERSION){
+				$this->getLogger()->critical("Your configuration file is from a higher version of TeaSpoon! Please update the plugin from https://github.com/CortexPE/TeaSpoon");
+			}
 		}
 
 		if(self::$cacheFile->get("date", "") != strval(date("d-m-y"))){
