@@ -56,6 +56,7 @@ class ThrownTrident extends Projectile {
 	public $gravity = 0.10;
 
 	protected $damage = 8;
+	protected $age = 0;
 
 	public function __construct(Level $level, CompoundTag $nbt, ?Entity $shootingEntity = \null){
 		parent::__construct($level, $nbt, $shootingEntity);
