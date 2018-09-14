@@ -49,6 +49,7 @@ class Bat extends Animal {
 
 	public $width = 0.5;
 	public $height = 0.9;
+	protected $age = 0;
 
 	public function __construct(Level $level, CompoundTag $nbt){
 		if(!$nbt->hasTag(self::TAG_IS_RESTING, ByteTag::class)){
