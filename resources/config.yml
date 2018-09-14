@@ -10,7 +10,7 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 27
+version: 28
 
 entities:
  # Weather to register Vanilla Entities (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...) or not
@@ -84,7 +84,7 @@ weather:
 
 player:
  # Enable to dis-allow container interactions & item dropping when in creative
- limitedCreative: true
+ limitedCreative: false
  # In vanilla, this is false... In Genisys, its true
  clearInventoryOnGameModeChange: false
  instantArmor:

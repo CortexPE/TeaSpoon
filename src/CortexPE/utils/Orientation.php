@@ -31,11 +31,12 @@
  *
  */
 
+declare(strict_types = 1);
+
 namespace CortexPE\utils;
 
-use pocketmine\block\Block;
+
 use pocketmine\math\Vector3;
-use pocketmine\Server;
 
 /**
  * INTERNAL helper for Railway
@@ -44,32 +45,6 @@ use pocketmine\Server;
  * Rewrite by larryTheCoder
  * @package CortexPE\utils
  */
-class Rail {
-
-	public static function isRailBlock($block): bool{
-		if(is_null($block)){
-			Server::getInstance()->getLogger()->error("Rail block predicate can not accept null block");
-
-			return false;
-		}
-		$id = $block;
-		if($block instanceof Block){
-			$id = $block->getId();
-		}
-
-		switch($id){
-			case Block::RAIL:
-			case Block::POWERED_RAIL:
-			case Block::ACTIVATOR_RAIL:
-			case Block::DETECTOR_RAIL:
-				return true;
-			default:
-				return false;
-		}
-	}
-
-}
-
 class Orientation {
 
 	/** @var int Stores the direction of the rail */
@@ -97,7 +72,7 @@ class Orientation {
 	private $connectingDirections;
 	private $ascendingDirection;
 
-	public function __construct(int $meta, int $state, int $from, int $to, int $ascendingDirection){
+	public function __construct(int $meta, int $state, int $from, int $to, ?int $ascendingDirection){
 		$this->meta = $meta;
 		$this->state = $state;
 		$this->connectingDirections[] = $from;

@@ -47,7 +47,6 @@ use CortexPE\item\{
 };
 use CortexPE\level\weather\Weather;
 use CortexPE\network\PacketManager;
-use CortexPE\plugin\AllAPILoaderManager;
 use CortexPE\task\TickLevelsTask;
 use CortexPE\tile\Tile;
 use CortexPE\utils\{
@@ -64,7 +63,7 @@ use pocketmine\utils\Config;
 class Main extends PluginBase {
 
 	// self explanatory constants
-	public const CONFIG_VERSION = 27;
+	public const CONFIG_VERSION = 28;
 
 	/** @var string */
 	public const
@@ -107,8 +106,6 @@ class Main extends PluginBase {
 	/** @var Weather[] */
 	public static $weatherData = [];
 	/** @var bool */
-	public static $loadAllAPIs = false;
-	/** @var bool */
 	public static $weatherEnabled = true;
 	/** @var int */
 	public static $weatherMinTime = 6000;
@@ -117,7 +114,7 @@ class Main extends PluginBase {
 	/** @var bool */
 	public static $enableWeatherLightning = true;
 	/** @var bool */
-	public static $limitedCreative = true;
+	public static $limitedCreative = false;
 	/** @var bool */
 	public static $randomFishingLootTables = false;
 	/** @var bool */
@@ -251,7 +248,6 @@ class Main extends PluginBase {
 		// Load Configuration //
 		self::$netherName = self::$config->getNested("dimensions.nether.levelName", self::$netherName);
 		self::$endName = self::$config->getNested("dimensions.end.levelName", self::$endName);
-		self::$loadAllAPIs = self::$config->getNested("misc.loadAllAPIs", self::$loadAllAPIs);
 		self::$lightningFire = self::$config->getNested("entities.lightningFire", self::$lightningFire);
 		self::$enderPearlCooldown = self::$config->getNested("enderPearl.cooldown", self::$enderPearlCooldown);
 		self::$ePearlDamage = self::$config->getNested("enderPearl.damage", self::$ePearlDamage);
@@ -367,11 +363,6 @@ class Main extends PluginBase {
 		// Task(s)
 		if(self::$weatherEnabled){
 			$this->getScheduler()->scheduleRepeatingTask(new TickLevelsTask(), 1);
-		}
-
-		// Load other API plugins at last (too still look gud)
-		if(self::$loadAllAPIs){
-			AllAPILoaderManager::init();
 		}
 	}
 

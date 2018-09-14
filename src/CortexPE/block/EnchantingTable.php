@@ -48,7 +48,7 @@ use pocketmine\tile\Tile;
 class EnchantingTable extends PMEnchantingTable {
 
 	public function onActivate(Item $item, Player $player = null): bool{
-		if(Main::$EnchantingTableEnabled){
+		if(Main::$EnchantingTableEnabled && !(Main::$limitedCreative && $player->isCreative())){
 			if($player instanceof Player){
 				$this->getLevel()->setBlock($this, $this, true, true);
 				Tile::createTile(Tile::ENCHANT_TABLE, $this->getLevel(), EnchantTable::createNBT($this));

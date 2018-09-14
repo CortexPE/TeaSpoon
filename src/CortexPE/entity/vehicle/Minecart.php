@@ -36,7 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\entity\vehicle;
 
 use CortexPE\Main;
-use CortexPE\utils\Rail;
+use CortexPE\utils\RailUtils;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
 use pocketmine\entity\Vehicle;
@@ -115,13 +115,13 @@ class Minecart extends Vehicle {
 		$checkY = $dy;
 		$checkZ = $dz;
 
-		if(Rail::isRailBlock($this->level->getBlockIdAt($checkX, $checkY - 1, $checkZ))){
+		if(RailUtils::isRailBlock($this->level->getBlockIdAt($checkX, $checkY - 1, $checkZ))){
 			--$checkY;
 		}
 
 		$block = $this->level->getBlock(new Vector3($checkX, $checkY, $checkZ));
 
-		if(Rail::isRailBlock($block)){
+		if(RailUtils::isRailBlock($block)){
 			$facing = $this->matrix[$block->getDamage()];
 			// Genisys mistake (Doesn't check surrounding more exactly)
 			$nextOne = $checkX + 0.5 + $facing[0][0] * 0.5;
