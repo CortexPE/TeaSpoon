@@ -44,7 +44,7 @@ use CortexPE\utils\Xp;
 use pocketmine\block\Block;
 use pocketmine\entity\Entity;
 use pocketmine\event\{
-	level\LevelLoadEvent, Listener, server\RemoteServerCommandEvent, server\ServerCommandEvent
+	level\LevelLoadEvent, Listener, server\CommandEvent
 };
 use pocketmine\event\entity\{
 	EntityDamageEvent, EntityDeathEvent
@@ -223,27 +223,13 @@ class EventListener implements Listener {
 	}
 
 	/**
-	 * @param ServerCommandEvent $ev
+	 * @param CommandEvent $ev
 	 *
 	 * @priority HIGHEST
 	 */
-	public function onServerCommand(ServerCommandEvent $ev){
+	public function onServerCommand(CommandEvent $ev){
 		if($ev->isCancelled()) return;
 		if(Utils::in_arrayi($ev->getCommand(), self::VERSION_COMMANDS) && !$ev->isCancelled()){
-			$ev->setCancelled();
-			Main::sendVersion($ev->getSender());
-		}
-	}
-
-	/**
-	 * @param RemoteServerCommandEvent $ev
-	 *
-	 * @priority HIGHEST
-	 */
-	public function onRemoteServerCommand(RemoteServerCommandEvent $ev){
-		if($ev->isCancelled()) return;
-		if(Utils::in_arrayi($ev->getCommand(), self::VERSION_COMMANDS) && !$ev->isCancelled()){
-			$ev->setCancelled();
 			Main::sendVersion($ev->getSender());
 		}
 	}

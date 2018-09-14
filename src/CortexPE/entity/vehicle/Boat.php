@@ -44,6 +44,7 @@ class Boat extends Vehicle {
 
 	/** @var Entity */
 	public $linkedEntity = null;
+	protected $age = 0;
 
 	public function __construct(Level $level, CompoundTag $nbt){
 		if(!$nbt->hasTag(self::TAG_WOOD_ID, ByteTag::class)){

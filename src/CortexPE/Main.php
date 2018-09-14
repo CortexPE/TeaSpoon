@@ -47,7 +47,6 @@ use CortexPE\item\{
 };
 use CortexPE\level\weather\Weather;
 use CortexPE\network\PacketManager;
-use CortexPE\plugin\AllAPILoaderManager;
 use CortexPE\task\TickLevelsTask;
 use CortexPE\tile\Tile;
 use CortexPE\utils\{
@@ -56,6 +55,7 @@ use CortexPE\utils\{
 use pocketmine\command\CommandSender;
 use pocketmine\level\Level;
 use pocketmine\Player;
+use pocketmine\Server;
 use pocketmine\plugin\PluginBase;
 use pocketmine\plugin\PluginLogger;
 use pocketmine\utils\Config;
@@ -63,7 +63,7 @@ use pocketmine\utils\Config;
 class Main extends PluginBase {
 
 	// self explanatory constants
-	public const CONFIG_VERSION = 27;
+	public const CONFIG_VERSION = 28;
 
 	/** @var string */
 	public const
@@ -106,8 +106,6 @@ class Main extends PluginBase {
 	/** @var Weather[] */
 	public static $weatherData = [];
 	/** @var bool */
-	public static $loadAllAPIs = false;
-	/** @var bool */
 	public static $weatherEnabled = true;
 	/** @var int */
 	public static $weatherMinTime = 6000;
@@ -116,7 +114,7 @@ class Main extends PluginBase {
 	/** @var bool */
 	public static $enableWeatherLightning = true;
 	/** @var bool */
-	public static $limitedCreative = true;
+	public static $limitedCreative = false;
 	/** @var bool */
 	public static $randomFishingLootTables = false;
 	/** @var bool */
@@ -213,19 +211,18 @@ class Main extends PluginBase {
 	}
 
 	public static function sendVersion(CommandSender $sender){
-		$sender->getServer()->dispatchCommand($sender, "ver");
-		$sender->sendMessage("\x2d\x2d\x2d\x20\x2b\x20\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x20\x2b\x20\x2d\x2d\x2d");
 		$logo = TextFormat::DARK_GREEN . "\x54\x65\x61" . TextFormat::GREEN . "\x53\x70\x6f\x6f\x6e";
 		if(Splash::isValentines()){
 			$logo = TextFormat::RED . "\x44\x65\x73\x73\x65\x72\x74" . TextFormat::DARK_RED . "\x53\x70\x6f\x6f\x6e";
 		}
-		$sender->sendMessage("\x54\x68\x69\x73\x20\x73\x65\x72\x76\x65\x72\x20\x69\x73\x20\x72\x75\x6e\x6e\x69\x6e\x67\x20" . $logo . TextFormat::WHITE . "\x20\x76" . self::$instance->getDescription()->getVersion() . (Utils::isPhared() ? "" : "-dev") . "\x20\x66\x6f\x72\x20\x50\x6f\x63\x6b\x65\x74\x4d\x69\x6e\x65\x2d\x4d\x50\x20" . (self::TESTED_MIN_POCKETMINE_VERSION != self::TESTED_MAX_POCKETMINE_VERSION ? self::TESTED_MIN_POCKETMINE_VERSION . "\x20\x2d\x20" . self::TESTED_MAX_POCKETMINE_VERSION : self::TESTED_MAX_POCKETMINE_VERSION));
+		$sender->sendMessage("\x54\x68\x69\x73\x20\x73\x65\x72\x76\x65\x72\x20\x69\x73\x20\x72\x75\x6e\x6e\x69\x6e\x67\x20" . $logo . TextFormat::WHITE . "\x20\x76" . self::$instance->getDescription()->getVersion() . (Utils::isPhared() ? "" : "-dev") . "\x20\x66\x6f\x72\x20\x50\x6f\x63\x6b\x65\x74\x4d\x69\x6e\x65\x2d\x4d\x50\x20" . Server::getInstance()->getApiVersion());
 
 		if(self::$sixCharCommitHash != ""){
 			$sender->sendMessage("\x43\x6f\x6d\x6d\x69\x74\x3a\x20" . self::$sixCharCommitHash);
 		}
 		$sender->sendMessage("\x52\x65\x70\x6f\x73\x69\x74\x6f\x72\x79\x3a\x20\x68\x74\x74\x70\x73\x3a\x2f\x2f\x67\x69\x74\x68\x75\x62\x2e\x63\x6f\x6d\x2f\x43\x6f\x72\x74\x65\x78\x50\x45\x2f\x54\x65\x61\x53\x70\x6f\x6f\x6e");
 		$sender->sendMessage("\x57\x65\x62\x73\x69\x74\x65\x3a\x20\x68\x74\x74\x70\x73\x3a\x2f\x2f\x43\x6f\x72\x74\x65\x78\x50\x45\x2e\x78\x79\x7a");
+		$sender->sendMessage("\x2d\x2d\x2d\x20\x2b\x20\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x20\x2b\x20\x2d\x2d\x2d");
 	}
 
 	public static function getPluginLogger(): PluginLogger{ // 2 lazy
@@ -251,7 +248,6 @@ class Main extends PluginBase {
 		// Load Configuration //
 		self::$netherName = self::$config->getNested("dimensions.nether.levelName", self::$netherName);
 		self::$endName = self::$config->getNested("dimensions.end.levelName", self::$endName);
-		self::$loadAllAPIs = self::$config->getNested("misc.loadAllAPIs", self::$loadAllAPIs);
 		self::$lightningFire = self::$config->getNested("entities.lightningFire", self::$lightningFire);
 		self::$enderPearlCooldown = self::$config->getNested("enderPearl.cooldown", self::$enderPearlCooldown);
 		self::$ePearlDamage = self::$config->getNested("enderPearl.damage", self::$ePearlDamage);
@@ -304,8 +300,6 @@ class Main extends PluginBase {
 		self::$brewingStandsEnabled = self::$config->getNested("blocks.brewingStands", self::$brewingStandsEnabled);
 
 		// Pre-Enable Checks //
-
-		// Phars Force Poggit Builds only //
 		if(Utils::isPhared()){ // unphared = dev
 			$thisPhar = new \Phar(\Phar::running(false));
 			$meta = $thisPhar->getMetadata(); // https://github.com/poggit/poggit/blob/beta/src/poggit/ci/builder/ProjectBuilder.php#L227-L236
@@ -318,10 +312,6 @@ class Main extends PluginBase {
 			self::$sixCharCommitHash = substr($meta["fromCommit"], 0, 6);
 		}else{
 			$this->getLogger()->warning("You're using a developer's build of TeaSpoon. For better performance and stability, please get a pre-packaged version here: https://poggit.pmmp.io/ci/CortexPE/TeaSpoon/~");
-		}
-
-		if(!Utils::isServerPhared() || $this->getServer()->getPocketMineVersion() == self::BASE_POCKETMINE_VERSION){
-			$this->getLogger()->warning("Non-Packaged / Unsupported PocketMine installation detected. Some of TeaSpoon's protective functions are now disabled.");
 		}
 
 		self::$instance = $this;
@@ -344,38 +334,12 @@ class Main extends PluginBase {
 		}
 		$this->getLogger()->info("Loading..." . $stms);
 
-		if(!$this->checkServer()){
-			$this->setEnabled(false);
-
-			return;
-		}
-
-		$this->loadEverythingElse();
+		$this->loadEverythingElseThatMakesThisPluginFunctionalAndNotBrokLMAO();
 		$this->getLogger()->info("TeaSpoon is distributed under the AGPL License");
 		$this->checkConfigVersion();
 	}
 
-	private function checkServer(): bool{
-		if(Utils::isServerPhared()){
-			$serverVersion = $this->getServer()->getPocketMineVersion();
-			$versionMinComp = version_compare($serverVersion, self::TESTED_MIN_POCKETMINE_VERSION);
-			$versionMaxComp = version_compare($serverVersion, self::TESTED_MAX_POCKETMINE_VERSION);
-
-			if($versionMinComp < 0){
-				// PocketMine version is older than minimum tested version
-				$this->getLogger()->alert(TextFormat::RED . "This plugin has been tested on PocketMine version: " . self::TESTED_MAX_POCKETMINE_VERSION . ", running it on older PocketMine versions is very unstable. To prevent any futher in-compatibility issues, TeaSpoon will now disable itself."); // I still put the max version so that patches will be included...
-
-				return false;
-			}
-			if($versionMaxComp > 0){
-				$this->getLogger()->info(TextFormat::GREEN . "You're using a newer PocketMine build than the highest tested version (" . self::TESTED_MAX_POCKETMINE_VERSION . "). Please report bugs if there's any. ;)");
-			}
-		}
-
-		return true;
-	}
-
-	private function loadEverythingElse(){
+	private function loadEverythingElseThatMakesThisPluginFunctionalAndNotBrokLMAO(){
 		// Initialize ze managars //
 		CommandManager::init();
 		Enchantment::init();
@@ -399,11 +363,6 @@ class Main extends PluginBase {
 		// Task(s)
 		if(self::$weatherEnabled){
 			$this->getScheduler()->scheduleRepeatingTask(new TickLevelsTask(), 1);
-		}
-
-		// Load other API plugins at last (too still look gud)
-		if(self::$loadAllAPIs){
-			AllAPILoaderManager::init();
 		}
 	}
 

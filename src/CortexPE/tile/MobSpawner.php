@@ -35,6 +35,8 @@ class MobSpawner extends Spawnable {
 
 	public function __construct(Level $level, CompoundTag $nbt){
 		if($nbt->hasTag(self::TAG_SPAWN_COUNT, ShortTag::class) || $nbt->hasTag(self::TAG_ENTITY_ID, StringTag::class)){ // duct-tape fix for #206
+			// NUKE EM. REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+			$nbt->removeTag(self::TAG_ENTITY_ID);
 			$nbt->removeTag(self::TAG_SPAWN_COUNT);
 			$nbt->removeTag(self::TAG_SPAWN_RANGE);
 			$nbt->removeTag(self::TAG_MIN_SPAWN_DELAY);

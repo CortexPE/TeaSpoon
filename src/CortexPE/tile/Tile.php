@@ -57,9 +57,7 @@ class Tile extends PMTile {
 		self::registerTile(Hopper::class);
 		self::registerTile(BrewingStand::class);
 
-		if(!Utils::isPhared()){ // beta
-			self::registerTile(Jukebox::class);
-		}
+		//self::registerTile(Jukebox::class);
 	}
 
 	protected function readSaveData(CompoundTag $nbt): void{

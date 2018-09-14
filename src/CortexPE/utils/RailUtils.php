@@ -33,55 +33,41 @@
 
 declare(strict_types = 1);
 
-namespace CortexPE\entity\mob;
+namespace CortexPE\utils;
 
-use pocketmine\entity\Animal;
-use pocketmine\level\Level;
-use pocketmine\nbt\tag\{
-	ByteTag, CompoundTag
-};
+use CortexPE\Main;
+use pocketmine\block\Block;
 
-class Bat extends Animal {
+/**
+ * INTERNAL helper for Railway
+ * <p>
+ * By lmlstarqaq http://snake1999.com/
+ * Rewrite by larryTheCoder
+ * @package CortexPE\utils
+ */
+class RailUtils {
 
-	public const TAG_IS_RESTING = "isResting";
+	public static function isRailBlock($block): bool{
+		if(is_null($block)){
+			Main::getPluginLogger()->error("Rail block predicate can not accept null block");
 
-	public const NETWORK_ID = self::BAT;
-
-	public $width = 0.5;
-	public $height = 0.9;
-	protected $age = 0;
-
-	public function __construct(Level $level, CompoundTag $nbt){
-		if(!$nbt->hasTag(self::TAG_IS_RESTING, ByteTag::class)){
-			$nbt->setByte(self::TAG_IS_RESTING, 0);
+			return false;
 		}
-		parent::__construct($level, $nbt);
-
-		$this->setDataFlag(self::DATA_FLAGS, self::DATA_FLAG_RESTING, boolval($nbt->getByte(self::TAG_IS_RESTING)));
-	}
-
-	public function isResting(): bool{
-		return boolval($this->namedtag->getByte(self::TAG_IS_RESTING));
-	}
-
-	public function getName(): string{
-		return "Bat";
-	}
-
-	public function initEntity(): void{
-		$this->setMaxHealth(6);
-		parent::initEntity();
-	}
-
-	public function setResting(bool $resting){
-		$this->namedtag->setByte(self::TAG_IS_RESTING, intval($resting));
-	}
-
-	public function onUpdate(int $currentTick): bool{
-		if($this->age > 1200){
-			$this->kill();
+		$id = $block;
+		if($block instanceof Block){
+			$id = $block->getId();
 		}
 
-		return parent::onUpdate($currentTick);
+		switch($id){
+			case Block::RAIL:
+			case Block::POWERED_RAIL:
+			case Block::ACTIVATOR_RAIL:
+			case Block::DETECTOR_RAIL:
+				return true;
+			default:
+				return false;
+		}
 	}
+
 }
+

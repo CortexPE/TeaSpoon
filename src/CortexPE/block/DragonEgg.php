@@ -22,6 +22,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\block;
 
+use CortexPE\Main;
 use pocketmine\block\{
 	Air, Fallable
 };
@@ -98,30 +99,33 @@ class DragonEgg extends Fallable {
 	 * @return bool
 	 */
 	public function onActivate(Item $item, Player $player = null): bool{
-		$found = false;
-		$level = $this->getLevel();
-		$x = $y = $z = 0;
-		for($c = 0; $c <= 16; $c++){
-			$x = $this->getX() + self::RAND_HORIZONTAL[array_rand(self::RAND_HORIZONTAL)];
-			$y = $this->getY() + self::RAND_VERTICAL[array_rand(self::RAND_VERTICAL)];
-			$z = $this->getZ() + self::RAND_HORIZONTAL[array_rand(self::RAND_HORIZONTAL)];
-			if($level->getBlockIdAt($x, $y, $z) == 0 && $y < Level::Y_MAX && $y > 0){
-				$found = true;
-				break;
+		if(Main::$dragonEggTeleport){
+			$found = false;
+			$level = $this->getLevel();
+			$x = $y = $z = 0;
+			for($c = 0; $c <= 16; $c++){
+				$x = $this->getX() + self::RAND_HORIZONTAL[array_rand(self::RAND_HORIZONTAL)];
+				$y = $this->getY() + self::RAND_VERTICAL[array_rand(self::RAND_VERTICAL)];
+				$z = $this->getZ() + self::RAND_HORIZONTAL[array_rand(self::RAND_HORIZONTAL)];
+				if($level->getBlockIdAt($x, $y, $z) == 0 && $y < Level::Y_MAX && $y > 0){
+					$found = true;
+					break;
+				}
 			}
-		}
 
-		if(!$found) return true;
-		$level->setBlock($this, new Air(), true, true);
-		$oldpos = clone $this;
-		$pos = new Vector3($x, $y, $z);
-		$newpos = clone $pos;
-		$level->setBlock($pos, $this, true, true);
-		$posdistance = new Vector3($newpos->x - $oldpos->x, $newpos->y - $oldpos->y, $newpos->z - $oldpos->z);
-		$intdistance = $oldpos->distance($newpos);
-		for($c = 0; $c <= $intdistance; $c++){
-			$progress = $c / $intdistance;
-			$this->getLevel()->addSound(new GenericSound(new Position($oldpos->x + $posdistance->x * $progress, 1.62 + $oldpos->y + $posdistance->y * $progress, $oldpos->z + $posdistance->z * $progress, $this->getLevel()), 2010));
+			if($found){
+				$level->setBlock($this, new Air(), true, true);
+				$oldpos = clone $this;
+				$pos = new Vector3($x, $y, $z);
+				$newpos = clone $pos;
+				$level->setBlock($pos, $this, true, true);
+				$posdistance = new Vector3($newpos->x - $oldpos->x, $newpos->y - $oldpos->y, $newpos->z - $oldpos->z);
+				$intdistance = $oldpos->distance($newpos);
+				for($c = 0; $c <= $intdistance; $c++){
+					$progress = $c / $intdistance;
+					$this->getLevel()->addSound(new GenericSound(new Position($oldpos->x + $posdistance->x * $progress, 1.62 + $oldpos->y + $posdistance->y * $progress, $oldpos->z + $posdistance->z * $progress, $this->getLevel()), 2010));
+				}
+			}
 		}
 
 		return true;
