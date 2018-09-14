@@ -18,7 +18,7 @@ Help keep me motivated into making this massive thing... Maintaining it is somet
 
 # Installation
 Installation is easy, Just download the latest phar from [Poggit](https://poggit.pmmp.io/ci/CortexPE/TeaSpoon/~) then put it to your ```./plugins/``` folder. Restart your server. And you're basically done.
-***This plugin will only work on [this PocketMine-MP Version (PMMP Release 3.1.4)](https://github.com/pmmp/PocketMine-MP/releases/tag/3.1.4), Any issues regarding 4.0.0 (development builds) will be closed***
+***This plugin will only work on stable PMMP releases, Any issues regarding 4.0.0 (development builds) will be closed***
 
 # Issue Reporting
  - ALWAYS use the [LATEST PocketMine-MP Build](https://jenkins.pmmp.io/job/PocketMine-MP/lastSuccessfulBuild/artifact/) to use this plugin
