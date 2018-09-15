@@ -352,20 +352,4 @@ class EventListener implements Listener {
 			$ev->setCancelled();
 		}
 	}
-
-	/**
-	 * @param PlayerJumpEvent $ev
-	 *
-	 * @priority HIGHEST
-	 */
-	public function onJump(PlayerJumpEvent $ev){
-		if(Main::$cars){ // this hasck is used since linking the entity makes em a fucking ghost -_-
-			$session = Main::getInstance()->getSessionById($ev->getPlayer()->getId());
-			if($session instanceof Session){
-				if($session->vehicle instanceof Minecart && $session->vehicle->isAlive()){
-					$session->vehicle->rider = null;
-				}
-			}
-		}
-	}
 }

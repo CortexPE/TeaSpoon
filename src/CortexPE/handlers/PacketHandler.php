@@ -35,6 +35,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\handlers;
 
+use CortexPE\entity\vehicle\Minecart;
 use CortexPE\Main;
 use CortexPE\network\InventoryTransactionPacket;
 use CortexPE\Session;
@@ -43,7 +44,7 @@ use pocketmine\event\{
 	Listener, server\DataPacketReceiveEvent, server\DataPacketSendEvent
 };
 use pocketmine\network\mcpe\protocol\{
-	PlayerActionPacket, StartGamePacket
+	PlayerActionPacket, PlayerInputPacket, StartGamePacket
 };
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
@@ -119,23 +120,13 @@ class PacketHandler implements Listener {
 					}
 				}
 				break;
-			/*case ($pk instanceof InteractPacket):
-				$session = Main::getInstance()->getSessionById($p->getId());
-				if($pk->action == InteractPacket::ACTION_LEAVE_VEHICLE){
-					if($session instanceof Session){
-						if($session->vehicle instanceof Vehicle){
-							$pk = new SetEntityLinkPacket();
-							$link = new EntityLink($session->vehicle->getId(), $p->getId(), 0, true); // todo: figure out what that last boolean is
-							$pk->link = $link;
-							$p->getServer()->broadcastPacket($session->vehicle->getViewers(), $pk);
-							$p->getDataPropertyManager()->removeProperty(Entity::DATA_RIDER_SEAT_POSITION);
-							if($session->vehicle instanceof Minecart){
-								$session->vehicle->rider = null;
-							}
-						}
-					}
+			case ($pk instanceof PlayerInputPacket):
+				if(isset($p->riding) && $p->riding instanceof Minecart){
+					/** @var $riding Minecart */
+					$riding = $p->riding;
+					$riding->setCurrentSpeed($pk->motionY);
 				}
-				break;*/
+				break;
 		}
 	}
 

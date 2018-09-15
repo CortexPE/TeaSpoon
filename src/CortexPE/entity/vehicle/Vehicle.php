@@ -97,10 +97,10 @@ abstract class Vehicle extends PMVehicle {
 	/**
 	 * Mount or Dismounts an Entity from a vehicle
 	 *
-	 * @param Player $entity The target Entity
+	 * @param Entity $entity The target Entity
 	 * @return boolean {@code true} if the mounting successful
 	 */
-	public function mountEntity(Player $entity): bool{
+	public function mountEntity(Entity $entity): bool{
 		if(is_null($entity)){
 			$this->server->getInstance()->getLogger()->error("The target of the mounting entity can't be null or must be player");
 
@@ -120,11 +120,13 @@ abstract class Vehicle extends PMVehicle {
 			$this->server->broadcastPacket($this->hasSpawned, $pk);
 
 			// Second packet, need to be send to player
-			$pk = new SetEntityLinkPacket();
-			$riding->fromEntityUniqueId = $this->getId(); //Weird Weird Weird
-			$riding->toEntityUniqueId = $entity->getId();
-			$riding->type = EntityLink::TYPE_REMOVE;
-			$entity->dataPacket($pk);
+			if($entity instanceof Player){
+				$pk = new SetEntityLinkPacket();
+				$riding->fromEntityUniqueId = $this->getId(); //Weird Weird Weird
+				$riding->toEntityUniqueId = $entity->getId();
+				$riding->type = EntityLink::TYPE_REMOVE;
+				$entity->dataPacket($pk);
+			}
 
 			$entity->riding = null;
 			$this->linkedEntity = null;
@@ -141,16 +143,54 @@ abstract class Vehicle extends PMVehicle {
 		$this->server->broadcastPacket($this->hasSpawned, $pk);
 
 		// Send the other packet to the player
-		$pk = new SetEntityLinkPacket();
-		$riding->fromEntityUniqueId = $this->getId();
-		$riding->toEntityUniqueId = 0;
-		$riding->type = EntityLink::TYPE_REMOVE;
-		$entity->dataPacket($pk);
+		if($entity instanceof Player){
+			$pk = new SetEntityLinkPacket();
+			$riding->fromEntityUniqueId = $this->getId();
+			$riding->toEntityUniqueId = 0;
+			$riding->type = EntityLink::TYPE_REMOVE;
+			$entity->dataPacket($pk);
+		}
 
 		$entity->riding = $this;
 		$this->linkedEntity = $entity;
 		$entity->setDataFlag(self::DATA_FLAGS, self::DATA_FLAG_RIDING, true);
 		$this->propertyManager->setVector3(self::DATA_RIDER_SEAT_POSITION, new Vector3(0, $this->baseOffset, 0));
+
+		return true;
+	}
+
+	public function onUpdate(int $currentTick): bool{
+		// The rolling amplitude
+		if($this->getRollingAmplitude() > 0){
+			$this->setRollingAmplitude($this->getRollingAmplitude() - 1);
+		}
+		// The damage token
+		if($this->getDamage() > 0){
+			$this->setDamage($this->getDamage() - 1);
+		}
+		// A killer task
+		if($this->y < -16){
+			$this->kill();
+		}
+		// Movement code
+		$this->updateMovement();
+
+		return true;
+	}
+
+	protected $rollingDirection = true;
+
+	protected function performHurtAnimation(float $damage){
+		if($damage >= $this->getHealth()){
+			return false;
+		}
+
+		// Vehicle does not respond hurt animation on packets
+		// It only respond on vehicle data flags. Such as these
+		$this->setRollingAmplitude(10);
+		$this->setRollingDirection($this->rollingDirection ? 1 : -1);
+		$this->rollingDirection = !$this->rollingDirection;
+		$this->setDamage($this->getDamage() + $damage);
 
 		return true;
 	}

@@ -42,4 +42,8 @@ class Math extends Utils {
 	public static function getPercentage(float $min, float $max){
 		return ((min($min, $max) / max($min, $max)) * 100);
 	}
+
+	public static function clamp($value, $min, $max){
+		return $value < $min ? $min : ($value > $max ? $max : $value);
+	}
 }
