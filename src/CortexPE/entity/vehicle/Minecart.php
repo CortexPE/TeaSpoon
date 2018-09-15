@@ -122,7 +122,7 @@ class Minecart extends Vehicle {
 		$block = $this->level->getBlock(new Vector3($checkX, $checkY, $checkZ));
 
 		if(RailUtils::isRailBlock($block)){
-			$facing = $this->matrix[$block->getDamage()];
+			$facing = $this->matrix[$block->getVariant()];
 			// Genisys mistake (Doesn't check surrounding more exactly)
 			$nextOne = $checkX + 0.5 + $facing[0][0] * 0.5;
 			$nextTwo = $checkY + 0.5 + $facing[0][1] * 0.5;

@@ -154,7 +154,7 @@ class EntityManager extends Entity {
 		self::registerEntity(Boat::class, true, ['Boat', 'minecraft:boat']);
 		self::registerEntity(ArmorStand::class, true, ['ArmorStand', 'minecraft:armor_stand']);
 		if(Main::$cars){
-			self::registerEntity(Minecart::class, true, ['Minecart', 'minecraft:minecart']);
+			//self::registerEntity(Minecart::class, true, ['Minecart', 'minecraft:minecart']);
 		}
 	}
 }
