@@ -11,7 +11,7 @@ use pocketmine\event\entity\ProjectileHitEvent;
 use pocketmine\item\Item as ItemItem;
 use pocketmine\item\Potion;
 use pocketmine\level\{
-	Level, particle\ItemBreakParticle
+	particle\ItemBreakParticle
 };
 use pocketmine\nbt\tag\{
 	CompoundTag, DoubleTag, FloatTag, ListTag, ShortTag
@@ -31,13 +31,14 @@ class LingeringPotion extends Throwable {
 	protected $gravity = 0.1;
 	protected $drag = 0.05;
 
-	public function __construct(Level $level, CompoundTag $nbt, Entity $shootingEntity = null){
-		if(!$nbt->hasTag(self::TAG_POTION_ID, ShortTag::class)){
-			$nbt->setShort(self::TAG_POTION_ID, Potion::AWKWARD);
+	public function initEntity(): void{
+		if(!$this->namedtag->hasTag(self::TAG_POTION_ID, ShortTag::class)){
+			$this->namedtag->setShort(self::TAG_POTION_ID, Potion::AWKWARD);
 		}
-		parent::__construct($level, $nbt, $shootingEntity);
 		$this->getDataPropertyManager()->setShort(self::DATA_VARIANT, $this->getPotionId());
 		$this->setDataFlag(self::DATA_FLAGS, self::DATA_FLAG_LINGER);
+
+		parent::initEntity();
 	}
 
 	public function getPotionId(){

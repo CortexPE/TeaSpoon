@@ -41,10 +41,8 @@ use pocketmine\entity\Entity;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
-use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\NBT;
-use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\network\mcpe\protocol\MobArmorEquipmentPacket;
@@ -74,19 +72,17 @@ class ArmorStand extends Entity {
 	/** @var Item */
 	protected $boots;
 
-	public function __construct(Level $level, CompoundTag $nbt){
-		parent::__construct($level, $nbt);
-
+	public function initEntity(): void{
 		$air = Item::get(Item::AIR)->nbtSerialize();
-		if(!$nbt->hasTag(self::TAG_HAND_ITEMS, ListTag::class)){
-			$nbt->setTag(new ListTag(self::TAG_HAND_ITEMS, [
+		if(!$this->namedtag->hasTag(self::TAG_HAND_ITEMS, ListTag::class)){
+			$this->namedtag->setTag(new ListTag(self::TAG_HAND_ITEMS, [
 				$air, // itemInHand
 				$air  // itemOffHand
 			], NBT::TAG_Compound));
 		}
 
-		if(!$nbt->hasTag(self::TAG_ARMOR_ITEMS, ListTag::class)){
-			$nbt->setTag(new ListTag(self::TAG_ARMOR_ITEMS, [
+		if(!$this->namedtag->hasTag(self::TAG_ARMOR_ITEMS, ListTag::class)){
+			$this->namedtag->setTag(new ListTag(self::TAG_ARMOR_ITEMS, [
 				$air, // boots
 				$air, // leggings
 				$air, // chestplate
@@ -94,8 +90,8 @@ class ArmorStand extends Entity {
 			], NBT::TAG_Compound));
 		}
 
-		$handItems = $nbt->getListTag(self::TAG_HAND_ITEMS);
-		$armorItems = $nbt->getListTag(self::TAG_ARMOR_ITEMS);
+		$handItems = $this->namedtag->getListTag(self::TAG_HAND_ITEMS);
+		$armorItems = $this->namedtag->getListTag(self::TAG_ARMOR_ITEMS);
 
 		$this->itemInHand = Item::nbtDeserialize($handItems[0]);
 		$this->itemOffHand = Item::nbtDeserialize($handItems[1]);
@@ -107,6 +103,8 @@ class ArmorStand extends Entity {
 
 		$this->setHealth(6);
 		$this->setMaxHealth(6);
+
+		parent::initEntity();
 	}
 
 	public function canCollideWith(Entity $entity): bool{

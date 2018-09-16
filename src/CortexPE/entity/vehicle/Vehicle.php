@@ -35,9 +35,7 @@ namespace CortexPE\entity\vehicle;
 
 use pocketmine\entity\Entity;
 use pocketmine\entity\Vehicle as PMVehicle;
-use pocketmine\level\Level;
 use pocketmine\math\Vector3;
-use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\SetEntityLinkPacket;
 use pocketmine\network\mcpe\protocol\types\EntityLink;
 use pocketmine\Player;
@@ -52,10 +50,6 @@ abstract class Vehicle extends PMVehicle {
 
 	/** @var Entity */
 	private $linkedEntity = null;
-
-	public function __construct(Level $level, CompoundTag $nbt){
-		parent::__construct($level, $nbt);
-	}
 
 	public function getRollingAmplitude(): int{
 		return $this->propertyManager->getInt(self::DATA_HURT_TIME);

@@ -87,7 +87,6 @@ use CortexPE\entity\projectile\{
 	Arrow, FireworkRocket, FishingHook, LingeringPotion, ThrownTrident
 };
 use CortexPE\entity\vehicle\Boat;
-use CortexPE\entity\vehicle\Minecart;
 use CortexPE\Main;
 use pocketmine\entity\Entity;
 

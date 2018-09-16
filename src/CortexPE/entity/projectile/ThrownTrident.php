@@ -40,9 +40,7 @@ use pocketmine\block\Block;
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\item\Item;
-use pocketmine\level\Level;
 use pocketmine\math\RayTraceResult;
-use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\network\mcpe\protocol\TakeItemEntityPacket;
 use pocketmine\Player;
@@ -57,10 +55,6 @@ class ThrownTrident extends Projectile {
 
 	protected $damage = 8;
 	protected $age = 0;
-
-	public function __construct(Level $level, CompoundTag $nbt, ?Entity $shootingEntity = \null){
-		parent::__construct($level, $nbt, $shootingEntity);
-	}
 
 	public function entityBaseTick(int $tickDiff = 1): bool{
 		if($this->closed){

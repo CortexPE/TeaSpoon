@@ -41,9 +41,8 @@ use pocketmine\event\entity\{
 	EntityDamageByEntityEvent, EntityDamageEvent
 };
 use pocketmine\item\Item;
-use pocketmine\level\Level;
 use pocketmine\nbt\tag\{
-	CompoundTag, IntTag
+	IntTag
 };
 use pocketmine\Player;
 
@@ -69,14 +68,15 @@ class Rabbit extends Animal {
 	public $width = 0.4;
 	public $height = 0.5;
 
-	public function __construct(Level $level, CompoundTag $nbt){
+	public function initEntity(): void{
 		$type = $this->getRandomRabbitType();
-		if(!$nbt->hasTag(self::TAG_RABBIT_TYPE, IntTag::class)){
-			$nbt->setInt(self::TAG_RABBIT_TYPE, $type);
+		if(!$this->namedtag->hasTag(self::TAG_RABBIT_TYPE, IntTag::class)){
+			$this->namedtag->setInt(self::TAG_RABBIT_TYPE, $type);
 		}
-		parent::__construct($level, $nbt);
 
+		$this->setMaxHealth(3);
 		$this->getDataPropertyManager()->setByte(self::DATA_RABBIT_TYPE, $type);
+		parent::initEntity();
 	}
 
 	public function getRandomRabbitType(): int{
@@ -91,11 +91,6 @@ class Rabbit extends Animal {
 
 	public function getName(): string{
 		return "Rabbit";
-	}
-
-	public function initEntity(): void{
-		$this->setMaxHealth(3);
-		parent::initEntity();
 	}
 
 	public function setRabbitType(int $type){

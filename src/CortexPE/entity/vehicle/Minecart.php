@@ -44,9 +44,7 @@ use pocketmine\entity\Living;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
-use pocketmine\level\Level;
 use pocketmine\math\Vector3;
-use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\Player;
 
 /**
@@ -88,10 +86,6 @@ class Minecart extends Vehicle {
 
 	/** @var float */
 	private $currentSpeed;
-
-	public function __construct(Level $level, CompoundTag $nbt){
-		parent::__construct($level, $nbt);
-	}
 
 	public function initEntity(): void{
 		parent::initEntity();

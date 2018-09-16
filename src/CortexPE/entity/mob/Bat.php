@@ -51,13 +51,14 @@ class Bat extends Animal {
 	public $height = 0.9;
 	protected $age = 0;
 
-	public function __construct(Level $level, CompoundTag $nbt){
-		if(!$nbt->hasTag(self::TAG_IS_RESTING, ByteTag::class)){
-			$nbt->setByte(self::TAG_IS_RESTING, 0);
+	public function initEntity(): void{
+		if(!$this->namedtag->hasTag(self::TAG_IS_RESTING, ByteTag::class)){
+			$this->namedtag->setByte(self::TAG_IS_RESTING, 0);
 		}
-		parent::__construct($level, $nbt);
+		$this->setDataFlag(self::DATA_FLAGS, self::DATA_FLAG_RESTING, boolval($this->namedtag->getByte(self::TAG_IS_RESTING)));
+		$this->setMaxHealth(6);
 
-		$this->setDataFlag(self::DATA_FLAGS, self::DATA_FLAG_RESTING, boolval($nbt->getByte(self::TAG_IS_RESTING)));
+		parent::initEntity();
 	}
 
 	public function isResting(): bool{
@@ -66,11 +67,6 @@ class Bat extends Animal {
 
 	public function getName(): string{
 		return "Bat";
-	}
-
-	public function initEntity(): void{
-		$this->setMaxHealth(6);
-		parent::initEntity();
 	}
 
 	public function setResting(bool $resting){

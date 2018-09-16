@@ -43,10 +43,9 @@ use pocketmine\block\SnowLayer;
 use pocketmine\entity\Monster;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
-use pocketmine\level\Level;
+use pocketmine\item\Shears;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\ByteTag;
-use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\Player;
 
 class SnowGolem extends Monster {
@@ -56,26 +55,24 @@ class SnowGolem extends Monster {
 	public $width = 0.7;
 	public $height = 1.9;
 
-	public function __construct(Level $level, CompoundTag $nbt){
-		parent::__construct($level, $nbt);
-
-		if(!$nbt->hasTag(self::TAG_PUMPKIN, ByteTag::class)){
-			$nbt->setByte(self::TAG_PUMPKIN, 1);
-		}
-	}
-
 	public function getName(): string{
 		return "Snow Golem";
 	}
 
 	public function initEntity(): void{
+		if(!$this->namedtag->hasTag(self::TAG_PUMPKIN, ByteTag::class)){
+			$this->namedtag->setByte(self::TAG_PUMPKIN, 1);
+		}
+
 		$this->setMaxHealth(4);
 		$this->setHealth(4);
+
 		parent::initEntity();
 	}
 
 	public function onInteract(Player $player, Item $item, int $slot, Vector3 $clickPos): bool{
 		if(Main::$shearableSnowGolem && $item->getId() == Item::SHEARS && $this->isWearingPumpkin()){
+			/** @var $item Shears */
 			$this->setWearingPumpkin(false);
 			if($player->isSurvival()){
 				$item->applyDamage(1);

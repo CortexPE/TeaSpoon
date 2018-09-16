@@ -24,9 +24,8 @@ use pocketmine\entity\Entity;
 use pocketmine\entity\Vehicle;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item as ItemItem;
-use pocketmine\level\Level;
 use pocketmine\nbt\tag\{
-	ByteTag, CompoundTag
+	ByteTag
 };
 use pocketmine\network\mcpe\protocol\EntityEventPacket;
 use pocketmine\Server as PMServer;
@@ -46,15 +45,12 @@ class Boat extends Vehicle {
 	public $linkedEntity = null;
 	protected $age = 0;
 
-	public function __construct(Level $level, CompoundTag $nbt){
-		if(!$nbt->hasTag(self::TAG_WOOD_ID, ByteTag::class)){
-			$nbt->setByte(self::TAG_WOOD_ID, 0);
-		}
-		parent::__construct($level, $nbt);
-	}
-
 	public function initEntity(): void{
+		if(!$this->namedtag->hasTag(self::TAG_WOOD_ID, ByteTag::class)){
+			$this->namedtag->setByte(self::TAG_WOOD_ID, 0);
+		}
 		$this->setMaxHealth(4);
+
 		parent::initEntity();
 	}
 

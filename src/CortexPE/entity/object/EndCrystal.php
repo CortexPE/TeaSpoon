@@ -39,10 +39,8 @@ use CortexPE\Main;
 use pocketmine\entity\Entity;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\level\Explosion;
-use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\ByteTag;
-use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\DoubleTag;
 use pocketmine\nbt\tag\ListTag;
 
@@ -55,13 +53,13 @@ class EndCrystal extends Entity {
 	public $height = 0.98;
 	public $width = 0.98;
 
-	public function __construct(Level $level, CompoundTag $nbt){
-		if(!$nbt->hasTag(self::TAG_SHOW_BOTTOM, ByteTag::class)){
-			$nbt->setByte(self::TAG_SHOW_BOTTOM, 0);
+	public function initEntity(): void{
+		if(!$this->namedtag->hasTag(self::TAG_SHOW_BOTTOM, ByteTag::class)){
+			$this->namedtag->setByte(self::TAG_SHOW_BOTTOM, 0);
 		}
-		parent::__construct($level, $nbt);
 
 		// TODO: The data flag for showing bottom & beam? maybe... I still haven't decompiled the MCPE Source code... takes a long time.
+		parent::initEntity();
 	}
 
 	public function isShowingBottom(): bool{
