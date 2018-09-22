@@ -54,9 +54,6 @@ dimensions:
  overrideOverworldLevel: ""
 
 misc:
- # !!!   ONLY ENABLE THIS IF YOU ARE SURE THAT ALL YOUR    !!!
- # !!! PLUGINS ARE COMPATIBLE WITH YOUR CURRENT PMMP BUILD !!!
- loadAllAPIs: false
  # Enable to generate new Fishing LootTables everyday
  randomFishingLootTables: false
  # Minecart Cars! Flying Cars! just for fun xD
