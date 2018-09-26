@@ -73,6 +73,30 @@ class KillCommand extends VanillaCommand {
 			}
 
 			switch($args[0]){
+				case '@a':
+					$players = $sender->getServer()->getOnlinePlayers();
+					if(count($players) > 0){
+						foreach($players as $player){
+							if($player instanceof Player){
+								$sender->getServer()->getPluginManager()->callEvent($ev = new EntityDamageEvent($player, EntityDamageEvent::CAUSE_SUICIDE, 1000));
+
+								if($ev->isCancelled()){
+									return true;
+								}
+
+								$player->setLastDamageCause($ev);
+								$player->setHealth(0);
+
+								$sender->sendMessage("Killed everybody !");
+							}
+						}
+					}else{
+						$sender->sendMessage("No players online");
+
+						return true;
+					}
+
+					return true;
 				case '@r':
 					$players = $sender->getServer()->getOnlinePlayers();
 					if(count($players) > 0){
