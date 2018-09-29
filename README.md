@@ -132,6 +132,8 @@ Installation is easy, Just download the latest phar from [Poggit](https://poggit
    - [X] World Command
    - [X] Clear Command
    - [X] PlaySound Command
+ - Mechanics
+   - [X] Swimming
  - Utils
    - [X] TextFormat::center like PC or MiNET. (Credits: [Turanic](https://github.com/TuranicTeam/Turanic))
 <br />***More to do...***
