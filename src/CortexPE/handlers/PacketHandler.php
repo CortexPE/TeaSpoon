@@ -93,6 +93,12 @@ class PacketHandler implements Listener {
 								$session->damageElytra();
 							}
 							break;
+						case PlayerActionPacket::ACTION_START_SWIMMING:
+							$p->setGenericFlag(PMPlayer::DATA_FLAG_SWIMMING, true);
+							break;
+						case PlayerActionPacket::ACTION_STOP_SWIMMING:
+							$p->setGenericFlag(PMPlayer::DATA_FLAG_SWIMMING, false);
+							break;
 					}
 				}
 				break;
