@@ -51,14 +51,14 @@ class Bat extends Animal {
 	public $height = 0.9;
 	protected $age = 0;
 
-	public function initEntity(): void{
+	public function initEntity(CompoundTag $nbt): void{
 		if(!$this->namedtag->hasTag(self::TAG_IS_RESTING, ByteTag::class)){
 			$this->namedtag->setByte(self::TAG_IS_RESTING, 0);
 		}
 		$this->setDataFlag(self::DATA_FLAGS, self::DATA_FLAG_RESTING, boolval($this->namedtag->getByte(self::TAG_IS_RESTING)));
 		$this->setMaxHealth(6);
 
-		parent::initEntity();
+		parent::initEntity($nbt);
 	}
 
 	public function isResting(): bool{

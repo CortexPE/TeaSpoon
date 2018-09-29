@@ -27,6 +27,7 @@ use CortexPE\network\types\NetworkInventoryAction;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket as PMInventoryTransactionPacket;
 use pocketmine\network\mcpe\protocol\ProtocolInfo;
+use pocketmine\network\mcpe\handler\SessionHandler;
 
 class InventoryTransactionPacket extends PMInventoryTransactionPacket {
 	public const NETWORK_ID = ProtocolInfo::INVENTORY_TRANSACTION_PACKET;
@@ -77,7 +78,7 @@ class InventoryTransactionPacket extends PMInventoryTransactionPacket {
 	/** @var \stdClass */
 	public $trData;
 
-	public function handle(NetworkSession $session): bool{
+	public function handle(SessionHandler $session): bool{
 		return $session->handleInventoryTransaction($this);
 	}
 

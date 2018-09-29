@@ -29,6 +29,7 @@ namespace CortexPE\level\generator\ender;
 use CortexPE\level\generator\{
 	biome\Biome, ender\populator\EnderPilar
 };
+use CortexPE\Main;
 use pocketmine\block\Block;
 use pocketmine\level\{
 	ChunkManager, generator\Generator, generator\noise\Simplex, generator\populator\Populator
@@ -54,11 +55,17 @@ class Ender extends Generator {
 	private $generationPopulators = [];
 	/** @var Simplex */
 	private $noiseBase;
+	/** @var int */
+	protected $seed;
 
-	public function __construct(array $options = []){
+	public function __construct(ChunkManager $level, int $seed, array $options = []){
 		if(self::$GAUSSIAN_KERNEL === null){
 			self::generateKernel();
 		}
+		$this->seed = $seed;
+		$this->level = $level;
+		$this->random = new Random($seed);
+		$this->init();
 	}
 
 	private static function generateKernel(){
@@ -90,12 +97,11 @@ class Ender extends Generator {
 		return [];
 	}
 
-	public function init(ChunkManager $level, Random $random): void{
-		$this->level = $level;
-		$this->random = $random;
-		$this->random->setSeed($this->level->getSeed());
+	public function init(): void{
+		Main::debug("§bInit ender started");
+		$this->random->setSeed($this->seed);
 		$this->noiseBase = new Simplex($this->random, 4, 1 / 4, 1 / 64);
-		$this->random->setSeed($this->level->getSeed());
+		$this->random->setSeed($this->seed); // Redudancy ???
 		$pilar = new EnderPilar();
 		$pilar->setBaseAmount(0);
 		$pilar->setRandomAmount(0);
@@ -103,7 +109,8 @@ class Ender extends Generator {
 	}
 
 	public function generateChunk(int $chunkX, int $chunkZ): void{
-		$this->random->setSeed(0xa6fe78dc ^ ($chunkX << 8) ^ $chunkZ ^ $this->level->getSeed());
+		
+		$this->random->setSeed(0xa6fe78dc ^ ($chunkX << 8) ^ $chunkZ ^ $this->seed);
 
 		$noise = $this->noiseBase->getFastNoise3D(16, 128, 16, 4, 8, 4, $chunkX * 16, 0, $chunkZ * 16);
 
@@ -140,7 +147,7 @@ class Ender extends Generator {
 	}
 
 	public function populateChunk(int $chunkX, int $chunkZ): void{
-		$this->random->setSeed(0xa6fe78dc ^ ($chunkX << 8) ^ $chunkZ ^ $this->level->getSeed());
+		$this->random->setSeed(0xa6fe78dc ^ ($chunkX << 8) ^ $chunkZ ^ $this->seed);
 		foreach($this->populators as $populator){
 			$populator->populate($this->level, $chunkX, $chunkZ, $this->random);
 		}

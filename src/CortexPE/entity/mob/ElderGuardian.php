@@ -37,6 +37,7 @@ namespace CortexPE\entity\mob;
 
 use pocketmine\entity\Animal;
 use pocketmine\item\Item;
+use pocketmine\nbt\tag\CompoundTag;
 
 class ElderGuardian extends Animal {
 
@@ -49,10 +50,10 @@ class ElderGuardian extends Animal {
 		return "Elder Guardian";
 	}
 
-	public function initEntity(): void{
+	public function initEntity(CompoundTag $nbt): void{
 		$this->setMaxHealth(80);
 		$this->setGenericFlag(self::DATA_FLAG_ELDER, true);
-		parent::initEntity();
+		parent::initEntity($nbt);
 	}
 
 	public function getDrops(): array{

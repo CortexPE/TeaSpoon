@@ -28,9 +28,9 @@ use pocketmine\entity\Living;
 use pocketmine\item\Potion;
 use pocketmine\level\particle\Particle;
 use pocketmine\math\AxisAlignedBB;
-use pocketmine\nbt\tag\FloatTag;
-use pocketmine\nbt\tag\IntTag;
-use pocketmine\nbt\tag\ShortTag;
+use pocketmine\nbt\tag\{
+	FloatTag, IntTag, ShortTag, CompoundTag
+};
 
 class AreaEffectCloud extends Entity {
 
@@ -63,7 +63,7 @@ class AreaEffectCloud extends Entity {
 	private $DurationOnUse = 0;
 	protected $age = 0;
 
-	public function initEntity(): void{
+	public function initEntity(CompoundTag $nbt): void{
 		parent::initEntity();
 
 		if(!$this->namedtag->hasTag(self::TAG_POTION_ID, ShortTag::class)){

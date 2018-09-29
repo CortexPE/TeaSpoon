@@ -42,7 +42,7 @@ use pocketmine\event\entity\{
 };
 use pocketmine\item\Item;
 use pocketmine\nbt\tag\{
-	IntTag
+	IntTag, CompoundTag
 };
 use pocketmine\Player;
 
@@ -68,7 +68,7 @@ class Rabbit extends Animal {
 	public $width = 0.4;
 	public $height = 0.5;
 
-	public function initEntity(): void{
+	public function initEntity(CompoundTag $nbt): void{
 		$type = $this->getRandomRabbitType();
 		if(!$this->namedtag->hasTag(self::TAG_RABBIT_TYPE, IntTag::class)){
 			$this->namedtag->setInt(self::TAG_RABBIT_TYPE, $type);

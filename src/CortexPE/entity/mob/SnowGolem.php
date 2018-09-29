@@ -45,7 +45,9 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
 use pocketmine\item\Shears;
 use pocketmine\math\Vector3;
-use pocketmine\nbt\tag\ByteTag;
+use pocketmine\nbt\tag\{
+	ByteTag, CompoundTag
+};
 use pocketmine\Player;
 
 class SnowGolem extends Monster {
@@ -59,7 +61,7 @@ class SnowGolem extends Monster {
 		return "Snow Golem";
 	}
 
-	public function initEntity(): void{
+	public function initEntity(CompoundTag $nbt): void{
 		if(!$this->namedtag->hasTag(self::TAG_PUMPKIN, ByteTag::class)){
 			$this->namedtag->setByte(self::TAG_PUMPKIN, 1);
 		}

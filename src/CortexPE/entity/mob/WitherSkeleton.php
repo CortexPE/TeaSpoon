@@ -36,6 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\entity\mob;
 
 use pocketmine\item\Item;
+use pocketmine\nbt\tag\CompoundTag;
 
 class WitherSkeleton extends Skeleton {
 
@@ -48,9 +49,9 @@ class WitherSkeleton extends Skeleton {
 		return "Wither Skeleton";
 	}
 
-	public function initEntity(): void{
+	public function initEntity(CompoundTag $nbt): void{
 		$this->setMaxHealth(20);
-		parent::initEntity();
+		parent::initEntity($nbt);
 	}
 
 	public function getDrops(): array{

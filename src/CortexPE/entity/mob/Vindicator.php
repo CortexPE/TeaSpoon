@@ -39,6 +39,7 @@ namespace CortexPE\entity\mob;
 
 use pocketmine\entity\Monster;
 use pocketmine\item\Item;
+use pocketmine\nbt\tag\CompoundTag;
 
 class Vindicator extends Monster {
 
@@ -51,9 +52,9 @@ class Vindicator extends Monster {
 		return "Vindicator";
 	}
 
-	public function initEntity(): void{
+	public function initEntity(CompoundTag $nbt): void{
 		$this->setMaxHealth(24);
-		parent::initEntity();
+		parent::initEntity($nbt);
 	}
 
 	public function getDrops(): array{

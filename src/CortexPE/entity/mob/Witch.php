@@ -36,6 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\entity\mob;
 
 use pocketmine\entity\Monster;
+use pocketmine\nbt\tag\CompoundTag;
 
 class Witch extends Monster {
 
@@ -48,9 +49,9 @@ class Witch extends Monster {
 		return "Witch";
 	}
 
-	public function initEntity(): void{
+	public function initEntity(CompoundTag $nbt): void{
 		$this->setMaxHealth(26);
-		parent::initEntity();
+		parent::initEntity($nbt);
 	}
 
 	public function getDrops(): array{

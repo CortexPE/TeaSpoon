@@ -37,6 +37,7 @@ namespace CortexPE\entity\mob;
 
 use pocketmine\entity\Animal;
 use pocketmine\item\Item;
+use pocketmine\nbt\tag\CompoundTag;
 
 class Mule extends Animal {
 
@@ -49,7 +50,7 @@ class Mule extends Animal {
 		return "Mule";
 	}
 
-	public function initEntity(): void{
+	public function initEntity(CompoundTag $nbt): void{
 		$this->setMaxHealth(20);
 		parent::initEntity();
 	}

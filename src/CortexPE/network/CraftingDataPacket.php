@@ -33,6 +33,7 @@ use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\CraftingDataPacket as PMCraftingDataPacket;
 use pocketmine\network\mcpe\protocol\ProtocolInfo;
+use pocketmine\network\mcpe\handler\SessionHandler;
 
 class CraftingDataPacket extends PMCraftingDataPacket {
 	public const NETWORK_ID = ProtocolInfo::CRAFTING_DATA_PACKET;
@@ -72,7 +73,7 @@ class CraftingDataPacket extends PMCraftingDataPacket {
 		$this->entries[] = $recipe;
 	}
 
-	public function handle(NetworkSession $session): bool{
+	public function handle(SessionHandler $session): bool{
 		return $session->handleCraftingData($this);
 	}
 

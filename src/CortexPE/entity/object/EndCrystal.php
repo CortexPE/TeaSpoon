@@ -40,9 +40,9 @@ use pocketmine\entity\Entity;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\level\Explosion;
 use pocketmine\math\Vector3;
-use pocketmine\nbt\tag\ByteTag;
-use pocketmine\nbt\tag\DoubleTag;
-use pocketmine\nbt\tag\ListTag;
+use pocketmine\nbt\tag\{
+	ByteTag, DoubleTag, ListTag, CompoundTag
+};
 
 class EndCrystal extends Entity {
 
@@ -53,7 +53,7 @@ class EndCrystal extends Entity {
 	public $height = 0.98;
 	public $width = 0.98;
 
-	public function initEntity(): void{
+	public function initEntity(CompoundTag $nbt): void{
 		if(!$this->namedtag->hasTag(self::TAG_SHOW_BOTTOM, ByteTag::class)){
 			$this->namedtag->setByte(self::TAG_SHOW_BOTTOM, 0);
 		}

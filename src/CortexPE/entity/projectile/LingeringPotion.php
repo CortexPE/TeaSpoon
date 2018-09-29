@@ -31,7 +31,7 @@ class LingeringPotion extends Throwable {
 	protected $gravity = 0.1;
 	protected $drag = 0.05;
 
-	public function initEntity(): void{
+	public function initEntity(CompoundTag $nbt): void{
 		if(!$this->namedtag->hasTag(self::TAG_POTION_ID, ShortTag::class)){
 			$this->namedtag->setShort(self::TAG_POTION_ID, Potion::AWKWARD);
 		}

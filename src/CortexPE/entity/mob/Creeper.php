@@ -40,8 +40,9 @@ use pocketmine\entity\Monster;
 use pocketmine\item\Item;
 use pocketmine\level\Explosion;
 use pocketmine\math\Vector3;
-use pocketmine\nbt\tag\ByteTag;
-use pocketmine\nbt\tag\ShortTag;
+use pocketmine\nbt\tag\{
+	ByteTag, ShortTag, CompoundTag
+};
 use pocketmine\Player;
 
 class Creeper extends Monster {
@@ -54,8 +55,8 @@ class Creeper extends Monster {
 	public $height = 1.7;
 	public $width = 0.6;
 
-	public function initEntity(): void{
-		parent::initEntity();
+	public function initEntity(CompoundTag $nbt): void{
+		parent::initEntity($nbt);
 
 		if(!$this->namedtag->hasTag(self::TAG_POWERED, ByteTag::class)){
 			$this->namedtag->setByte(self::TAG_POWERED, 0);

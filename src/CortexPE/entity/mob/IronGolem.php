@@ -37,6 +37,7 @@ namespace CortexPE\entity\mob;
 
 use pocketmine\entity\Animal;
 use pocketmine\item\Item;
+use pocketmine\nbt\tag\CompoundTag;
 
 class IronGolem extends Animal {
 
@@ -45,7 +46,7 @@ class IronGolem extends Animal {
 	public $width = 1.4;
 	public $height = 2.7;
 
-	public function initEntity(): void{
+	public function initEntity(CompoundTag $nbt): void{
 		$this->setMaxHealth(100);
 		parent::initEntity();
 	}

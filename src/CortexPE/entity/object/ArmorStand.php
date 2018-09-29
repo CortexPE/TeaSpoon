@@ -43,10 +43,12 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\NBT;
-use pocketmine\nbt\tag\ListTag;
-use pocketmine\network\mcpe\protocol\LevelEventPacket;
-use pocketmine\network\mcpe\protocol\MobArmorEquipmentPacket;
-use pocketmine\network\mcpe\protocol\MobEquipmentPacket;
+use pocketmine\nbt\tag\{
+	ListTag, CompoundTag
+};
+use pocketmine\network\mcpe\protocol\{
+	LevelEventPacket, MobArmorEquipmentPacket, MobEquipmentPacket
+};
 use pocketmine\Player;
 
 class ArmorStand extends Entity {
@@ -72,7 +74,7 @@ class ArmorStand extends Entity {
 	/** @var Item */
 	protected $boots;
 
-	public function initEntity(): void{
+	public function initEntity(CompoundTag $nbt): void{
 		$air = Item::get(Item::AIR)->nbtSerialize();
 		if(!$this->namedtag->hasTag(self::TAG_HAND_ITEMS, ListTag::class)){
 			$this->namedtag->setTag(new ListTag(self::TAG_HAND_ITEMS, [
@@ -320,8 +322,7 @@ class ArmorStand extends Entity {
 		$this->sendHandItems($player);
 	}
 
-	public function saveNBT(): void{
-		parent::saveNBT();
+	public function saveNBT(): CompoundTag{
 		$this->namedtag->setTag(new ListTag(self::TAG_ARMOR_ITEMS, [
 			$this->boots->nbtSerialize(),
 			$this->leggings->nbtSerialize(),
@@ -332,6 +333,7 @@ class ArmorStand extends Entity {
 			$this->getItemInHand()->nbtSerialize(),
 			$this->getItemOffHand()->nbtSerialize(),
 		], NBT::TAG_Compound));
+		return parent::saveNBT();
 	}
 
 	// A E S T H E T I C S  --  from Altay

@@ -230,6 +230,8 @@ class Main extends PluginBase {
 	}
 
 	public function onLoad(){
+		self::$instance = $this;
+
 		if(Utils::checkSpoon()){
 			$this->getLogger()->error("This plugin is for PMMP only. It is meant to extend PMMP's functionality.");
 			$this->getLogger()->error("The plugin will disable itself after being later enabled by the server to prevent any interference with the existing Spoon features.");
@@ -314,7 +316,6 @@ class Main extends PluginBase {
 			$this->getLogger()->warning("You're using a developer's build of TeaSpoon. For better performance and stability, please get a pre-packaged version here: https://poggit.pmmp.io/ci/CortexPE/TeaSpoon/~");
 		}
 
-		self::$instance = $this;
 	}
 
 	public function onEnable(){
@@ -406,6 +407,13 @@ class Main extends PluginBase {
 
 		return false;
 	}
+
+	/**
+   * @param string $debug
+   */
+  public static function debug(string $debug) {
+      //self::getInstance()->getLogger()->debug($debug);
+  }
 
 	public function getSessionById(int $id){
 		if(isset($this->sessions[$id])){

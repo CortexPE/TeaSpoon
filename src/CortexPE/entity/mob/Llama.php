@@ -39,6 +39,7 @@ use pocketmine\entity\{
 	Animal, Entity
 };
 use pocketmine\item\Item;
+use pocketmine\nbt\tag\CompoundTag;
 
 class Llama extends Animal {
 	public const NETWORK_ID = self::LLAMA;
@@ -55,7 +56,7 @@ class Llama extends Animal {
 		return "Llama";
 	}
 
-	public function initEntity(): void{
+	public function initEntity(CompoundTag $nbt): void{
 		$this->setMaxHealth(30);
 		$this->getDataPropertyManager()->setInt(Entity::DATA_VARIANT, rand(0, 3));
 		parent::initEntity();

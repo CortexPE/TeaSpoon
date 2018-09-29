@@ -1,9 +1,8 @@
 name: TeaSpoon
 main: CortexPE\Main
 version: 1.0.1
-api: 3.2.3
+api: 4.0.0
 load: STARTUP
 author: CortexPE
 description: A PLUGIN to Extend PMMP's Functionality without completely changing it.
 website: https://CortexPE.xyz
-

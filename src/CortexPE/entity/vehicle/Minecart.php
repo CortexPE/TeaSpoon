@@ -46,6 +46,7 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
+use pocketmine\nbt\tag\CompoundTag;
 
 /**
  * The main class for the entity minecart.
@@ -87,7 +88,7 @@ class Minecart extends Vehicle {
 	/** @var float */
 	private $currentSpeed;
 
-	public function initEntity(): void{
+	public function initEntity(CompoundTag $nbt): void{
 		parent::initEntity();
 
 		$this->setRollingAmplitude(0);

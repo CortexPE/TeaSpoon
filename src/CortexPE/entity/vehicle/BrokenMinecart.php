@@ -39,6 +39,7 @@ use pocketmine\block\Rail;
 use pocketmine\math\Math;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
+use pocketmine\nbt\tag\CompoundTag;
 
 
 /**
@@ -71,7 +72,7 @@ class BrokenMinecart extends Vehicle {
 	private $direction = -1;
 	private $moveVector = [];
 
-	public function initEntity(): void{
+	public function initEntity(CompoundTag $nbt): void{
 		$this->setMaxHealth(1);
 		$this->setHealth($this->getMaxHealth());
 		$this->moveVector[Vector3::SIDE_NORTH] = new Vector3(-1, 0, 0);

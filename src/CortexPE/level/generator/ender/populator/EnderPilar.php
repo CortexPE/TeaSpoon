@@ -47,7 +47,7 @@ class EnderPilar extends Populator {
 		$this->baseAmount = $amount;
 	}
 
-	public function populate(ChunkManager $level, $chunkX, $chunkZ, Random $random){
+	public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random): void{
 		// todo: only spawn within 50 blocks from spawn point at a circle (Usual Amount: 10-15 [in my pov])
 		if(mt_rand(0, 100) <= 50){
 			$this->level = $level;

@@ -108,7 +108,7 @@ class FireworkRocket extends Projectile {
 		}
 	}
 
-	protected function initEntity(): void{
+	protected function initEntity(CompoundTag $nbt): void{
 		parent::initEntity();
 		$random = $this->random ?? new Random();
 		$this->setGenericFlag(self::DATA_FLAG_HAS_COLLISION, true);
