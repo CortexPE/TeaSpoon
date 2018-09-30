@@ -87,11 +87,14 @@ use CortexPE\entity\projectile\{
 	Arrow, FireworkRocket, FishingHook, LingeringPotion, ThrownTrident
 };
 use CortexPE\entity\vehicle\Boat;
+use CortexPE\entity\vehicle\BrokenMinecart;
+use CortexPE\entity\vehicle\Minecart;
 use CortexPE\Main;
 use pocketmine\entity\Entity;
 
 class EntityManager extends Entity {
 	public static function init(): void{
+		// TODO: MobAI...
 		Main::getPluginLogger()->debug("Registering Entities...");
 		if(Main::$registerVanillaEntities){
 			self::registerEntity(Bat::class, true, ['Bat', 'minecraft:bat']);
@@ -152,8 +155,12 @@ class EntityManager extends Entity {
 		self::registerEntity(EndCrystal::class, true, ['EnderCrystal', 'minecraft:ender_crystal']);
 		self::registerEntity(Boat::class, true, ['Boat', 'minecraft:boat']);
 		self::registerEntity(ArmorStand::class, true, ['ArmorStand', 'minecraft:armor_stand']);
-		if(Main::$cars){
-			//self::registerEntity(Minecart::class, true, ['Minecart', 'minecraft:minecart']);
+		if(strtolower(Main::$cars) === "true"){
+			Main::getPluginLogger()->debug("Using Minecart Vanilla");
+			self::registerEntity(Minecart::class, true, ['Minecart', 'minecraft:minecart']);
+		} else if(strtolower(Main::$cars) === "false") {
+			Main::getPluginLogger()->debug("Using Minecart Genisys");
+			self::registerEntity(BrokenMinecart::class, true, ['Minecart', 'minecraft:minecart']);
 		}
 	}
 }

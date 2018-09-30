@@ -10,7 +10,7 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 28
+version: 29
 
 entities:
  # Weather to register Vanilla Entities (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...) or not
@@ -56,8 +56,11 @@ dimensions:
 misc:
  # Enable to generate new Fishing LootTables everyday
  randomFishingLootTables: false
- # Minecart Cars! Flying Cars! just for fun xD
- cars: false
+ # Minecart! We have 2 minecart,
+ # Broken ones = false      More fun, trust me ;)
+ # Vanilla ones = true      Classic minecart behaviour
+ # Set it to 'none' if you don't want to use them
+ vanilla-minecarts: 'false'
  # Toggle Lightning Rods (BlazeRods)
  lightningRods: false
  

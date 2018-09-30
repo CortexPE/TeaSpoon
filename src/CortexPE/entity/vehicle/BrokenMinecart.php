@@ -36,6 +36,7 @@ namespace CortexPE\entity\vehicle;
 use CortexPE\utils\Orientation;
 use pocketmine\block\Block;
 use pocketmine\block\Rail;
+use pocketmine\item\Item;
 use pocketmine\math\Math;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
@@ -43,7 +44,8 @@ use pocketmine\Player;
 
 /**
  * A request for dummy and crappy minecart
- * from genisys by larryTheCoder
+ * from genisys by larryTheCoder.
+ * Its truly CRAP than USUAL
  *
  * @package CortexPE\entity\vehicle
  */
@@ -89,32 +91,45 @@ class BrokenMinecart extends Vehicle {
 		return self::TYPE_NORMAL;
 	}
 
-	public function onUpdate($currentTick): bool{
-		if($this->closed !== false){
+	public function onInteract(Player $player, Item $item, int $slot, Vector3 $clickPos): bool{
+		if($this->linkedEntity != null){
 			return false;
 		}
+
+		// Simple
+		return parent::mountEntity($player);
+	}
+
+	public function onUpdate($currentTick): bool{
+		if($this->closed){
+			return false;
+		}
+
 		$tickDiff = $currentTick - $this->lastUpdate;
 		if($tickDiff <= 1){
 			return false;
 		}
+
 		$this->lastUpdate = $currentTick;
 		$this->timings->startTiming();
-		$hasUpdate = false;
-		//parent::onUpdate($currentTick);
+
+		parent::onUpdate($currentTick);
+
 		if($this->isAlive()){
 			$p = $this->getLinkedEntity();
 			if($p instanceof Player){
 				if($this->state === BrokenMinecart::STATE_INITIAL){
 					$this->checkIfOnRail();
 				}elseif($this->state === BrokenMinecart::STATE_ON_RAIL){
-					$hasUpdate = $this->forwardOnRail($p);
+					$this->forwardOnRail($p);
 					$this->updateMovement();
 				}
 			}
 		}
+
 		$this->timings->stopTiming();
 
-		return $hasUpdate or !$this->onGround or abs($this->motion->x) > 0.00001 or abs($this->motion->y) > 0.00001 or abs($this->motion->z) > 0.00001;
+		return true;
 	}
 
 	/**
@@ -202,7 +217,7 @@ class BrokenMinecart extends Vehicle {
 	 */
 	private function getDirectionToMove($railType, $candidateDirection){
 		switch($railType){
-			case Orientation::STRAIGHT_NORTH_SOUTH:
+			case Rail::STRAIGHT_NORTH_SOUTH:
 			case Orientation::ASCENDING_NORTH:
 			case Orientation::ASCENDING_SOUTH:
 				switch($candidateDirection){

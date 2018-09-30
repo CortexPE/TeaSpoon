@@ -160,7 +160,7 @@ class Orientation {
 	}
 
 
-	public function metadata(): int{
+	public function getDamage(): int{
 		return $this->meta;
 	}
 

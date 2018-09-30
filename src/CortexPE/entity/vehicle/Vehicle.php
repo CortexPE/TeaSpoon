@@ -33,8 +33,11 @@
 
 namespace CortexPE\entity\vehicle;
 
+use CortexPE\utils\Math;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Vehicle as PMVehicle;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\SetEntityLinkPacket;
 use pocketmine\network\mcpe\protocol\types\EntityLink;
@@ -49,7 +52,7 @@ use pocketmine\Player;
 abstract class Vehicle extends PMVehicle {
 
 	/** @var Entity */
-	private $linkedEntity = null;
+	protected $linkedEntity = null;
 
 	public function getRollingAmplitude(): int{
 		return $this->propertyManager->getInt(self::DATA_HURT_TIME);
@@ -80,12 +83,43 @@ abstract class Vehicle extends PMVehicle {
 		return "Mount";
 	}
 
-	public function getLinkedEntity(): Entity{
+	public function getLinkedEntity(): ?Entity{
 		return $this->linkedEntity;
 	}
 
 	public function canDoInteraction(){
 		return $this->linkedEntity == null;
+	}
+
+	public function initEntity(): void{
+		parent::initEntity();
+
+		$this->setRollingAmplitude(0);
+		$this->setDamage(0);
+		$this->setRollingDirection(0);
+	}
+
+	public function attack(EntityDamageEvent $source): void{
+		$damage = null;
+		$instantKill = false;
+		if($source instanceof EntityDamageByEntityEvent){
+			$damage = $source->getDamager();
+			$instantKill = $damage instanceof Player && $damage->isCreative();
+		}
+
+		if(!$instantKill) $this->performHurtAnimation(rand(4, 8)); // Random is fun
+
+		if($instantKill || $this->getDamage() <= 0){
+			if($this->linkedEntity != null){
+				$this->mountEntity($this->linkedEntity);
+			}
+
+			if($instantKill){
+				$this->kill();
+			}else{
+				$this->close();
+			}
+		}
 	}
 
 	/**
@@ -119,6 +153,7 @@ abstract class Vehicle extends PMVehicle {
 				$riding->fromEntityUniqueId = $this->getId(); //Weird Weird Weird
 				$riding->toEntityUniqueId = $entity->getId();
 				$riding->type = EntityLink::TYPE_REMOVE;
+				$pk->link = $riding;
 				$entity->dataPacket($pk);
 			}
 
@@ -132,7 +167,7 @@ abstract class Vehicle extends PMVehicle {
 		$pk = new SetEntityLinkPacket();
 		$riding->fromEntityUniqueId = $this->getId();
 		$riding->toEntityUniqueId = $entity->getId();
-		$riding->type = EntityLink::TYPE_REMOVE;
+		$riding->type = EntityLink::TYPE_PASSENGER;
 		$pk->link = $riding;
 		$this->server->broadcastPacket($this->hasSpawned, $pk);
 
@@ -141,7 +176,8 @@ abstract class Vehicle extends PMVehicle {
 			$pk = new SetEntityLinkPacket();
 			$riding->fromEntityUniqueId = $this->getId();
 			$riding->toEntityUniqueId = 0;
-			$riding->type = EntityLink::TYPE_REMOVE;
+			$riding->type = EntityLink::TYPE_PASSENGER;
+			$pk->link = $riding;
 			$entity->dataPacket($pk);
 		}
 
@@ -153,21 +189,25 @@ abstract class Vehicle extends PMVehicle {
 		return true;
 	}
 
-	public function onUpdate(int $currentTick): bool{
+	public function onUpdate(int $currentTick): bool {
+		 $this->entityBaseTick($currentTick - $this->lastUpdate);
+
 		// The rolling amplitude
 		if($this->getRollingAmplitude() > 0){
 			$this->setRollingAmplitude($this->getRollingAmplitude() - 1);
 		}
 		// The damage token
-		if($this->getDamage() > 0){
-			$this->setDamage($this->getDamage() - 1);
+		// Now mojang just fudge this up by reversing this
+		if($this->getDamage() >= -10 && $this->getDamage() <= 40){
+			$this->setDamage($this->getDamage() + 1);
+		}else{
+			$this->setDamage(40);
 		}
+
 		// A killer task
 		if($this->y < -16){
 			$this->kill();
 		}
-		// Movement code
-		$this->updateMovement();
 
 		return true;
 	}
@@ -175,17 +215,43 @@ abstract class Vehicle extends PMVehicle {
 	protected $rollingDirection = true;
 
 	protected function performHurtAnimation(float $damage){
-		if($damage >= $this->getHealth()){
-			return false;
-		}
-
 		// Vehicle does not respond hurt animation on packets
 		// It only respond on vehicle data flags. Such as these
 		$this->setRollingAmplitude(10);
 		$this->setRollingDirection($this->rollingDirection ? 1 : -1);
 		$this->rollingDirection = !$this->rollingDirection;
-		$this->setDamage($this->getDamage() + $damage);
+		$this->setDamage($this->getDamage() - $damage);
+		var_dump($this->getDamage());
 
 		return true;
+	}
+
+	public function applyEntityCollision(Entity $to){
+		if((!isset($to->riding) || $to->riding != $this) && (!isset($to->linkedEntity) || $to->linkedEntity != $this)){
+			$dx = $this->x - $to->x;
+			$dy = $this->z - $to->z;
+			$dz = Math::getDirection($dx, $dy);
+
+			if($dz >= 0.01){
+				$dz = sqrt($dz);
+				$dx /= $dz;
+				$dy /= $dz;
+				$d3 = 1 / $dz;
+
+				if($d3 > 1){
+					$d3 = 1;
+				}
+
+				$dx *= $d3;
+				$dy *= $d3;
+				$dx *= 0.05;
+				$dy *= 0.05;
+				if(!isset($to->riding) || $to->riding != null){
+					$this->motion->x -= $dx;
+					$this->motion->z -= $dz;
+					var_dump($dx . ":" . $dz);
+				}
+			}
+		}
 	}
 }

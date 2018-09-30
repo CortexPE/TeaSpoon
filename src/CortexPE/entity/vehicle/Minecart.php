@@ -35,16 +35,18 @@ declare(strict_types = 1);
 
 namespace CortexPE\entity\vehicle;
 
+use CortexPE\Main;
 use CortexPE\utils\Math;
 use CortexPE\utils\RailUtils;
 use pocketmine\block\Block;
 use pocketmine\block\Rail;
 use pocketmine\entity\Entity;
+use pocketmine\entity\Human;
 use pocketmine\entity\Living;
-use pocketmine\event\entity\EntityDamageByEntityEvent;
-use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\event\TimingsHandler;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
+use pocketmine\nbt\tag\ByteTag;
 use pocketmine\Player;
 
 /**
@@ -75,12 +77,6 @@ class Minecart extends Vehicle {
 	public $gravity = 1.5; // idk but I'm pretty sure this isnt like this in vanilla. Minecarts are just cars for now anyways xD
 	public $drag = 0.1;
 
-	/** @var Living */
-	public $rider = null;
-
-	/** @var Entity */
-	public $linkedEntity = null;
-
 	/** @var Block */
 	public $blockInside = null;
 
@@ -90,13 +86,10 @@ class Minecart extends Vehicle {
 	public function initEntity(): void{
 		parent::initEntity();
 
-		$this->setRollingAmplitude(0);
-		$this->setRollingDirection(1);
-		$this->setDamage(0);
-
 		// Now with the custom block data
-		if(!is_null($this->namedtag->getByte("CustomDisplayTile"))){
-			$display = $this->namedtag->getInt("DisplayTile");
+		if($this->namedtag->hasTag("CustomDisplayTile", ByteTag::class)
+			&& $this->namedtag->getByte("CustomDisplayTile") === 1){
+			$display = $this->namedtag->getByte("DisplayTile");
 			$offSet = $this->namedtag->getInt("DisplayOffset");
 			$this->propertyManager->setByte(self::DATA_MINECART_HAS_DISPLAY, 1);
 			$this->propertyManager->setInt(self::DATA_MINECART_DISPLAY_BLOCK, $display);
@@ -114,6 +107,8 @@ class Minecart extends Vehicle {
 			$this->propertyManager->setInt(self::DATA_MINECART_DISPLAY_BLOCK, $display);
 			$this->propertyManager->setInt(self::DATA_MINECART_DISPLAY_OFFSET, 6);
 		}
+
+		var_dump($this->getId());
 	}
 
 	public function saveNBT(): void{
@@ -139,30 +134,8 @@ class Minecart extends Vehicle {
 		];
 	}
 
-	public function attack(EntityDamageEvent $source): void{
-		$damage = null;
-		$instantKill = false;
-		if($source instanceof EntityDamageByEntityEvent){
-			$damage = $source->getDamager();
-			$instantKill = $damage instanceof Player && $damage->isCreative();
-		}
-
-		if(!$instantKill) $this->performHurtAnimation($source->getFinalDamage());
-
-		if($instantKill || $this->getDamage() > 40){
-			if($this->linkedEntity != null){
-				$this->mountEntity($this->linkedEntity);
-			}
-
-			if($instantKill){
-				$this->kill();
-			}else{
-				$this->close();
-			}
-		}
-	}
-
 	public function onUpdate(int $currentTick): bool{
+		$this->printTimings();
 		if($this->closed){
 			return false;
 		}
@@ -180,15 +153,17 @@ class Minecart extends Vehicle {
 			return false;
 		}
 
+		$this->timings->startTiming();
+
 		$this->lastUpdate = $currentTick;
 
 		if($this->isAlive()){
 			parent::onUpdate($currentTick);
 
 			$this->motion->y -= 0.03999999910593033;
-			$dx = $this->x;
-			$dy = $this->y;
-			$dz = $this->z;
+			$dx = $this->getFloorX();
+			$dy = $this->getFloorY();
+			$dz = $this->getFloorZ();
 
 			if(RailUtils::isRailBlock($this->level->getBlockIdAt($dx, $dy - 1, $dz))){
 				--$dy;
@@ -200,10 +175,9 @@ class Minecart extends Vehicle {
 				/** @var $block Rail */
 				$this->processMovement($dx, $dy, $dz, $block);
 			}else{
+				// THIS IS USING 50% CPU USAGE
 				$this->setFalling();
 			}
-
-			$this->checkBlockCollision();
 
 			$pitch = 0;
 			$diffX = $this->lastX - $this->x;
@@ -222,46 +196,125 @@ class Minecart extends Vehicle {
 			$this->setRotation($yawToChange, $pitch);
 
 			// Collisions
-			foreach($this->level->getNearbyEntities($this->boundingBox->grow(0.2, 0, 0.2), $this) as $entity){
-				if($entity->getId() != $this->linkedEntity->getId() && $entity instanceof Minecart){
-					// TODO: Add this crappy dang thingy
-					//$entity->applyEntityCollision($this);
+			foreach($this->level->getNearbyEntities($this->boundingBox->expand(0.2, 0, 0.2), $this) as $entity){
+				// Okay a player is having collision with the minecart
+				if($entity instanceof Living){
+					$this->applyEntityCollision($entity);
+				}
+				// Hmm, the minecart colliding each other like a mohron
+				if($entity !== $this->linkedEntity && $entity instanceof Minecart){
+					$this->applyEntityCollision($this);
 				}
 			}
-
 		}
+		$this->timings->stopTiming();
 
-		return true;
+		return !$this->onGround or abs($this->motion->x) > 0.00001 or abs($this->motion->y) > 0.00001 or abs($this->motion->z) > 0.00001;
+	}
+
+	public function applyEntityCollision(Entity $entity){
+		if($entity !== $this->linkedEntity){
+			if($entity instanceof Living
+				&& !($entity instanceof Human)
+				&& $this->motion->x ^ 2 + $this->motion->z ^ 2 > 0.1
+				&& $this->linkedEntity === null
+				&& (!isset($entity->riding) || $entity->riding === null)){
+				// This is the place to keep shits inside the minecart
+				// Beware of bloatware-entities
+			}
+
+			$radX = $entity->x - $this->x;
+			$radZ = $entity->z - $this->z;
+			$distance = $radX ^ 2 + $radZ ^ 2;
+
+			if($distance >= 9.999999747378752E-5){
+				$distance = sqrt($distance);
+				$radX /= $distance;
+				$radZ /= $distance;
+				$limit = 1 / $distance;
+
+				if($limit > 1){
+					$limit = 1;
+				}
+
+				$radX *= $limit;
+				$radZ *= $limit;
+				$radX *= 0.6;
+				$radZ *= 0.6;
+
+				if($entity instanceof Minecart){
+					$distX = $entity->x - $this->x;
+					$distZ = $entity->z - $this->z;
+
+					$vector = new Vector3($distX, 0, $distZ);
+					$vector = $vector->normalize();
+					// Note to self: cos = Adjacent/Opposite which it should be (cos = x, tan = y, sin = z)
+					// xyz = cartesian table
+					$vec = new Vector3(cos($this->yaw * 0.017453292), 0, sin($this->yaw * 0.017453292));
+					$vec = $vec->normalize();
+					$distXZ = abs($vector->dot($vec));
+
+					if($distXZ < 0.8){
+						return;
+					}
+
+					$motX = $entity->motion->x + $this->motion->x;
+					$motZ = $entity->motion->z + $this->motion->z;
+
+					// TODO: Furnaces has their own weight to reproduce its collision, implement it
+					$motX /= 2;
+					$motZ /= 2;
+					$this->motion->x *= 0.20000000298023224;
+					$this->motion->z *= 0.20000000298023224;
+					$this->motion->x += $motX - $radX;
+					$this->motion->z += $motZ - $radZ;
+					$entity->motion->x *= 0.2;
+					$entity->motion->z *= 0.2;
+					$entity->motion->x += $motX + $radX;
+					$entity->motion->z += $motZ + $radZ;
+				}else{
+					$this->motion->x -= $radX;
+					$this->motion->z -= $radZ;
+				}
+				var_dump($this->motion);
+			}
+		}
 	}
 
 	private function processMovement(int $dx, int $dy, int $dz, Rail $block){
 
 	}
 
-	private $hasUpdated = false;
+	private $ticks = 0;
 
 	private function setFalling(){
-		$this->motion->x = Math::clamp($this->motion->x, -0.4, 0.4);
-		$this->motion->z = Math::clamp($this->motion->z, -0.4, 0.4);
+		// Not sure what is causing the performance issue on this
+		// But ticking this slowly will fix it
+		if($this->ticks >= 6){
+			$motionX = $this->motion->x;
+			$motionY = $this->motion->y;
+			$motionZ = $this->motion->z;
 
-		if($this->linkedEntity != null && !$this->hasUpdated){
-			$this->propertyManager->setVector3(self::DATA_RIDER_SEAT_POSITION, new Vector3(0, $this->baseOffset, 0));
-			$this->hasUpdated = true;
+			$motionX = Math::clamp($motionX, -0.4, 0.4);
+			$motionZ = Math::clamp($motionZ, -0.4, 0.4);
+
+			if($this->onGround){
+				$motionX *= 0.5;
+				$motionY *= 0.5;
+				$motionZ *= 0.5;
+			}
+
+			$this->move($motionX, $motionY, $motionZ);
+			if(!$this->onGround){
+				$motionX *= 0.95;
+				$motionY *= 0.95;
+				$motionZ *= 0.95;
+			}
+
+			$this->setMotion(new Vector3($motionX, $motionY, $motionZ));
+			$this->ticks = 0;
 		}else{
-			$this->hasUpdated = false;
-		}
-
-		if($this->onGround){
-			$this->motion->x *= 0.5;
-			$this->motion->y *= 0.5;
-			$this->motion->z *= 0.5;
-		}
-
-		$this->move($this->motion->x, $this->motion->y, $this->motion->z);
-		if(!$this->onGround){
-			$this->motion->x *= 0.95;
-			$this->motion->y *= 0.95;
-			$this->motion->z *= 0.95;
+			$this->ticks++;
 		}
 	}
 
@@ -272,6 +325,15 @@ class Minecart extends Vehicle {
 	 */
 	public function setCurrentSpeed(float $speed){
 		$this->currentSpeed = $speed;
+	}
+
+	public function onInteract(Player $player, Item $item, int $slot, Vector3 $clickPos): bool{
+		if($this->linkedEntity != null){
+			return false;
+		}
+
+		// Simple
+		return parent::mountEntity($player);
 	}
 
 	private function getNextRail($dx, $dy, $dz): Vector3{
@@ -326,12 +388,9 @@ class Minecart extends Vehicle {
 		}
 	}
 
-	public function onInteract(Player $player, Item $item, int $slot, Vector3 $clickPos): bool{
-		if($this->linkedEntity != null){
-			return false;
-		}
-
-		// Simple
-		return parent::mountEntity($player);
+	private function printTimings(){
+		$resource = fopen(Main::getInstance()->getDataFolder() . "timings-{$this->ticksLived}.txt", "w");
+		TimingsHandler::printTimings($resource);
+		fclose($resource);
 	}
 }

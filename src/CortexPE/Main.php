@@ -50,7 +50,7 @@ use CortexPE\network\PacketManager;
 use CortexPE\task\TickLevelsTask;
 use CortexPE\tile\Tile;
 use CortexPE\utils\{
-	FishingLootTable, TextFormat
+	FishingLootTable, Orientation, TextFormat
 };
 use pocketmine\command\CommandSender;
 use pocketmine\level\Level;
@@ -63,7 +63,7 @@ use pocketmine\utils\Config;
 class Main extends PluginBase {
 
 	// self explanatory constants
-	public const CONFIG_VERSION = 28;
+	public const CONFIG_VERSION = 30;
 
 	/** @var string */
 	public const
@@ -169,8 +169,8 @@ class Main extends PluginBase {
 	public static $dragonEggTeleport = true;
 	/** @var float */
 	public static $endCrystalPower = 6;
-	/** @var bool */
-	public static $cars = false;
+	/** @var string */
+	public static $cars = "";
 	/** @var bool */
 	public static $creepersExplodes = false;
 	/** @var bool */
@@ -286,7 +286,7 @@ class Main extends PluginBase {
 		self::$AnvilEnabled = self::$config->getNested("anvil.enable", self::$AnvilEnabled);
 		self::$dragonEggTeleport = self::$config->getNested("blocks.dragonEggTeleport", self::$dragonEggTeleport);
 		self::$endCrystalPower = self::$config->getNested("entities.endCrystalPower", self::$endCrystalPower);
-		self::$cars = self::$config->getNested("misc.cars", self::$cars);
+		self::$cars = self::$config->getNested("misc.vanilla-minecarts", self::$cars);
 		self::$creepersExplodes = self::$config->getNested("entities.creeper.enableExplosions", self::$creepersExplodes);
 		self::$ignitableCreepers = self::$config->getNested("entities.creeper.enableIgnitedCreepers", self::$ignitableCreepers);
 		self::$chargedCreepers = self::$config->getNested("entities.creeper.enableChargedCreepers", self::$chargedCreepers);
@@ -341,6 +341,7 @@ class Main extends PluginBase {
 
 	private function loadEverythingElseThatMakesThisPluginFunctionalAndNotBrokLMAO(){
 		// Initialize ze managars //
+		Orientation::startup();
 		CommandManager::init();
 		Enchantment::init();
 		BlockManager::init();

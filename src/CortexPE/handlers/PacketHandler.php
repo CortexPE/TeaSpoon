@@ -132,6 +132,8 @@ class PacketHandler implements Listener {
 					$riding = $p->riding;
 					$riding->setCurrentSpeed($pk->motionY);
 				}
+				// Cancer this event, this avoid the packet being unhandled
+				$ev->setCancelled();
 				break;
 		}
 	}
