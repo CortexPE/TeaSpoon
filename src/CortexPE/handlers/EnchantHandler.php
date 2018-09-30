@@ -57,45 +57,20 @@ use pocketmine\plugin\Plugin;
 class EnchantHandler implements Listener {
 	/**
 	 * TO-DO:
-	 * [X] Protection (PMMP)
-	 * [X] Fire Protection (PMMP)
-	 * [X] Feather Falling (PMMP)
-	 * [X] Blast protection (PMMP)
-	 * [X] Projectile protection (PMMP)
-	 * [X] Thorns
-	 * [X] Respiration (PMMP)
-	 * [X] Depth strider (Client Side)
-	 * [X] Aqua affinity (Client Side)
-	 * [X] Sharpness
 	 * [X] Smite
 	 * [X] Bane of athropods
 	 * [X] Knockback
-	 * [X] Fire aspect
 	 * [X] Looting
-	 * [X] Efficiency (PMMP)
-	 * [X] Silk touch (PMMP)
-	 * [X] Unbreaking (PMMP)
 	 * [X] Fortune
-	 * [X] Power
-	 * [X] Punch
-	 * [X] Flame
-	 * [X] Infinity
 	 * [X] Luck of the sea
 	 * [X] Lure
 	 * [ ] Frost walker (Very laggy as of now)
-	 * [ ] Mending
 	 */
 
 	/** @var string */
 	public const BANE_OF_ARTHROPODS_AFFECTED_ENTITIES = [ // Based on https://minecraft.gamepedia.com/Enchanting#Bane_of_Arthropods ^_^
 		"Spider", "Cave Spider",
 		"Silverfish", "Endermite",
-	];
-
-	/** @var int[] */
-	public const WATER_IDS = [
-		Block::STILL_WATER,
-		Block::FLOWING_WATER,
 	];
 
 	/** @var Plugin */
@@ -123,88 +98,17 @@ class EnchantHandler implements Listener {
 			if($d instanceof PMPlayer && $e instanceof Living){
 				$i = $d->getInventory()->getItemInHand();
 				$damage = $ev->getModifier(EntityDamageEvent::MODIFIER_ARMOR);
-				$knockback = $ev->getKnockBack();
 				foreach(Utils::getEnchantments($i) as $ench){
 					$lvl = $ench->getLevel();
 					switch($ench->getId()){
-						case Enchantment::FIRE_ASPECT:
-							$e->setOnFire(($lvl * 4) * 20);
-							break;
-						case Enchantment::KNOCKBACK:
-							$ev->setKnockBack(($knockback + 0.3) * $lvl);
-							break;
-						case Enchantment::PUNCH:
-							if($d->getInventory()->getItemInHand()->getId() == Item::BOW){
-								$ev->setKnockBack(($knockback + 0.2) * $lvl);
-							}
-							break;
 						case Enchantment::BANE_OF_ARTHROPODS:
 							if(Utils::in_arrayi($e->getName(), self::BANE_OF_ARTHROPODS_AFFECTED_ENTITIES)){
 								$ev->setModifier($damage + ($lvl * 2.5), EntityDamageEvent::MODIFIER_ARMOR);
 							}
 							break;
-						case Enchantment::POWER:
-							if($i->getId() == Item::BOW){
-								$ev->setModifier($damage + ((($damage * 0.25) * $lvl) + 1), EntityDamageEvent::MODIFIER_ARMOR);
-							}
-							break;
 						case Enchantment::SMITE:
 							$ev->setModifier($damage + ($lvl * 2.5), EntityDamageEvent::MODIFIER_ARMOR);
 							break;
-						case Enchantment::SHARPNESS:
-							$ev->setModifier($damage + (($lvl * 0.4) + 1), EntityDamageEvent::MODIFIER_ARMOR);
-							break;
-					}
-				}
-				if($e instanceof PMPlayer){
-					foreach($e->getArmorInventory()->getContents() as $armorContent){
-						if($armorContent->hasEnchantment(Enchantment::THORNS)){
-							$enchantment = $armorContent->getEnchantment(Enchantment::THORNS);
-							if($d instanceof PMPlayer){
-								$armor = $d->getArmorInventory()->getHelmet();
-								if(mt_rand(1, 2) == 1 && $armor->getId() !== Block::AIR){
-									$armorClone = clone $armor;
-									if($armorClone->getDamage() - 3 > 0){
-										$armorClone->setDamage($armorClone->getDamage() - 3);
-									}else{
-										$armorClone->setDamage(0);
-									}
-									$d->getArmorInventory()->setHelmet($armorClone);
-								}
-								$armor = $d->getArmorInventory()->getChestplate();
-								if(mt_rand(1, 2) == 1 && $armor->getId() !== Block::AIR){
-									$armorClone = clone $armor;
-									if($armorClone->getDamage() - 3 > 0){
-										$armorClone->setDamage($armorClone->getDamage() - 3);
-									}else{
-										$armorClone->setDamage(0);
-									}
-									$d->getArmorInventory()->setChestplate($armorClone);
-								}
-								$armor = $d->getArmorInventory()->getLeggings();
-								if(mt_rand(1, 2) == 1 && $armor->getId() !== Block::AIR){
-									$armorClone = clone $armor;
-									if($armorClone->getDamage() - 3 > 0){
-										$armorClone->setDamage($armorClone->getDamage() - 3);
-									}else{
-										$armorClone->setDamage(0);
-									}
-									$d->getArmorInventory()->setLeggings($armorClone);
-								}
-								$armor = $d->getArmorInventory()->getBoots();
-								if(mt_rand(1, 2) == 1 && $armor->getId() !== Block::AIR){
-									$armorClone = clone $armor;
-									if($armorClone->getDamage() - 3 > 0){
-										$armorClone->setDamage($armorClone->getDamage() - 3);
-									}else{
-										$armorClone->setDamage(0);
-									}
-									$d->getArmorInventory()->setBoots($armorClone);
-								}
-								$d->attack(new EntityDamageEvent($e, EntityDamageEvent::CAUSE_CUSTOM, mt_rand($enchantment->getLevel(), 4 + $enchantment->getLevel())));
-							}
-							break; // do this only once...
-						}
 					}
 				}
 			}
