@@ -221,7 +221,6 @@ abstract class Vehicle extends PMVehicle {
 		$this->setRollingDirection($this->rollingDirection ? 1 : -1);
 		$this->rollingDirection = !$this->rollingDirection;
 		$this->setDamage($this->getDamage() - $damage);
-		var_dump($this->getDamage());
 
 		return true;
 	}
@@ -249,7 +248,7 @@ abstract class Vehicle extends PMVehicle {
 				if(!isset($to->riding) || $to->riding != null){
 					$this->motion->x -= $dx;
 					$this->motion->z -= $dz;
-					var_dump($dx . ":" . $dz);
+					//var_dump($dx . ":" . $dz);
 				}
 			}
 		}

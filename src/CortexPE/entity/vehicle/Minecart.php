@@ -108,7 +108,7 @@ class Minecart extends Vehicle {
 			$this->propertyManager->setInt(self::DATA_MINECART_DISPLAY_OFFSET, 6);
 		}
 
-		var_dump($this->getId());
+		//var_dump($this->getId());
 	}
 
 	public function saveNBT(): void{
@@ -135,7 +135,7 @@ class Minecart extends Vehicle {
 	}
 
 	public function onUpdate(int $currentTick): bool{
-		$this->printTimings();
+		//$this->printTimings();
 		if($this->closed){
 			return false;
 		}
@@ -276,7 +276,7 @@ class Minecart extends Vehicle {
 					$this->motion->x -= $radX;
 					$this->motion->z -= $radZ;
 				}
-				var_dump($this->motion);
+				//var_dump($this->motion);
 			}
 		}
 	}
