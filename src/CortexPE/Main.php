@@ -63,7 +63,7 @@ use pocketmine\utils\Config;
 class Main extends PluginBase {
 
 	// self explanatory constants
-	public const CONFIG_VERSION = 30;
+	public const CONFIG_VERSION = 29;
 
 	/** @var string */
 	public const
