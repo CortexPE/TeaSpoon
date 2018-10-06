@@ -10,7 +10,7 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 29
+version: 30
 
 entities:
  # Weather to register Vanilla Entities (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...) or not
@@ -119,7 +119,7 @@ blocks:
  snowLayerMelts: true
 
 hopper:
- itemTransferEnable: true
+ enable: true
 
 beacon:
  # You can only disable effects (if it has any effect at all) because beacons are rendered client-side
