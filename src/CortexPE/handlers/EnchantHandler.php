@@ -59,7 +59,6 @@ class EnchantHandler implements Listener {
 	 * TO-DO:
 	 * [X] Smite
 	 * [X] Bane of athropods
-	 * [X] Knockback
 	 * [X] Looting
 	 * [X] Fortune
 	 * [X] Luck of the sea
