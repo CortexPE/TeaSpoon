@@ -54,7 +54,7 @@ class Tile extends PMTile {
 		self::registerTile(Beacon::class);
 		self::registerTile(MobSpawner::class);
 		self::registerTile(ShulkerBox::class);
-		self::registerTile(Hopper::class);
+		//self::registerTile(Hopper::class);
 		self::registerTile(BrewingStand::class);
 
 		//self::registerTile(Jukebox::class);
