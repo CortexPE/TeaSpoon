@@ -74,7 +74,10 @@ class Session {
 		if($this->fishingHook instanceof FishingHook){
 			$this->fishingHook->broadcastEntityEvent(EntityEventPacket::FISH_HOOK_TEASE, null, $this->fishingHook->getViewers());
 
-			$this->fishingHook->flagForDespawn();
+			if(!$this->fishingHook->isClosed()){
+				$this->fishingHook->flagForDespawn();
+			}
+
 			$this->fishingHook = null;
 		}
 	}
