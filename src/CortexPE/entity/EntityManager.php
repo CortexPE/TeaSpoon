@@ -81,7 +81,7 @@ use CortexPE\entity\mob\{
 	ZombieVillager
 };
 use CortexPE\entity\object\{
-	AreaEffectCloud, ArmorStand, EndCrystal, Lightning
+	AreaEffectCloud, ArmorStand, EndCrystal, ItemEntity, Lightning
 };
 use CortexPE\entity\projectile\{
 	Arrow, FireworkRocket, FishingHook, LingeringPotion, ThrownTrident
@@ -155,6 +155,7 @@ class EntityManager extends Entity {
 		self::registerEntity(EndCrystal::class, true, ['EnderCrystal', 'minecraft:ender_crystal']);
 		self::registerEntity(Boat::class, true, ['Boat', 'minecraft:boat']);
 		self::registerEntity(ArmorStand::class, true, ['ArmorStand', 'minecraft:armor_stand']);
+		self::registerEntity(ItemEntity::class, true, ['Item', 'minecraft:item']);
 		if(strtolower(Main::$cars) === "true"){
 			Main::getPluginLogger()->debug("Using Minecart Vanilla");
 			self::registerEntity(Minecart::class, true, ['Minecart', 'minecraft:minecart']);
