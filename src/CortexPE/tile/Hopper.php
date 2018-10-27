@@ -201,37 +201,17 @@ class Hopper extends Spawnable implements InventoryHolder, Container, Nameable {
 						$targetItem = clone $item;
 						$targetItem->setCount(1);
 
-						// Its not accurate but hey, at least you could use it
+						// Its now accurate
 						if($inv instanceof DoubleChestInventory){
 							/** @var $left ChestInventory */
 							/** @var $right ChestInventory */
-							$left = null;
-							$right = null;
+							$left = $inv->getLeftSide();
+							$right = $inv->getRightSide();
 
-							// I hate this way, blame pmmp, BLAME *$/@# PMMP
-							try{
-								$reflection = new \ReflectionClass(get_class($inv));
-								$rightChest = $reflection->getProperty('left');
-								$leftChest = $reflection->getProperty('right');
-
-								$rightChest->setAccessible(true);
-								$leftChest->setAccessible(true);
-
-								$right = $rightChest->getValue($inv);
-								$left = $leftChest->getValue($inv);
-							}catch(\ReflectionException $e){
-								// This should never be happens
-							}
-
-							// Common sense
-							if(is_null($left) && is_null($right)){
-								continue;
-							}
-
-							if(!is_null($left)){
-								$inv = $left;
-							}else{
+							if($right->canAddItem($targetItem)){
 								$inv = $right;
+							}else{
+								$inv = $left;
 							}
 						}
 
