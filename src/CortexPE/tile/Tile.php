@@ -36,7 +36,6 @@ declare(strict_types = 1);
 namespace CortexPE\tile;
 
 use CortexPE\Main;
-use CortexPE\Utils;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\tile\Tile as PMTile;
 
@@ -54,7 +53,7 @@ class Tile extends PMTile {
 		self::registerTile(Beacon::class);
 		self::registerTile(MobSpawner::class);
 		self::registerTile(ShulkerBox::class);
-		//self::registerTile(Hopper::class);
+		self::registerTile(Hopper::class);
 		self::registerTile(BrewingStand::class);
 
 		//self::registerTile(Jukebox::class);

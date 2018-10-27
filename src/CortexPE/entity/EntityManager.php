@@ -156,12 +156,12 @@ class EntityManager extends Entity {
 		self::registerEntity(Boat::class, true, ['Boat', 'minecraft:boat']);
 		self::registerEntity(ArmorStand::class, true, ['ArmorStand', 'minecraft:armor_stand']);
 		self::registerEntity(ItemEntity::class, true, ['Item', 'minecraft:item']);
-		if(strtolower(Main::$cars) === "true"){
-			Main::getPluginLogger()->debug("Using Minecart Vanilla");
-			self::registerEntity(Minecart::class, true, ['Minecart', 'minecraft:minecart']);
-		} else if(strtolower(Main::$cars) === "false") {
-			Main::getPluginLogger()->debug("Using Minecart Genisys");
-			self::registerEntity(BrokenMinecart::class, true, ['Minecart', 'minecraft:minecart']);
-		}
+//		if(strtolower(Main::$cars) === "true"){
+//			Main::getPluginLogger()->debug("Using Minecart Vanilla");
+//			self::registerEntity(Minecart::class, true, ['Minecart', 'minecraft:minecart']);
+//		} else if(strtolower(Main::$cars) === "false") {
+//			Main::getPluginLogger()->debug("Using Minecart Genisys");
+//			self::registerEntity(BrokenMinecart::class, true, ['Minecart', 'minecraft:minecart']);
+//		}
 	}
 }
