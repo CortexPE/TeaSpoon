@@ -47,7 +47,7 @@ use pocketmine\event\{
 	level\LevelLoadEvent, Listener, server\CommandEvent
 };
 use pocketmine\event\entity\{
-	EntityDamageEvent, EntityDeathEvent
+	EntityDamageEvent, EntityDeathEvent, EntityTeleportEvent
 };
 use pocketmine\event\player\{
 	cheat\PlayerIllegalMoveEvent,
@@ -64,6 +64,8 @@ use pocketmine\event\player\{
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
 use pocketmine\level\Level;
+use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
+use pocketmine\network\mcpe\protocol\PlayStatusPacket;
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
 use pocketmine\Server as PMServer;
@@ -350,6 +352,27 @@ class EventListener implements Listener {
 	public function onPlayerDropItem(PlayerDropItemEvent $ev){
 		if(!$ev->isCancelled() && Main::$limitedCreative && $ev->getPlayer()->isCreative()){
 			$ev->setCancelled();
+		}
+	}
+
+	/**
+	 * @param EntityTeleportEvent $ev
+	 *
+	 * @priority LOWEST
+	 */
+	public function onTeleport(EntityTeleportEvent $ev){
+		if(Main::$registerDimensions && ($from = $ev->getFrom())->getLevel() !== ($to = $ev->getTo())->getLevel()){
+			if(Utils::getDimension($from->getLevel()) != ($dim = Utils::getDimension($to->getLevel()))){
+				$p = $ev->getEntity();
+				if($p instanceof PMPlayer){
+					$pk = new ChangeDimensionPacket();
+					$pk->dimension = $dim;
+					$pk->position = $to;
+					$pk->respawn = false;
+					$p->sendDataPacket($pk);
+					$p->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
+				}
+			}
 		}
 	}
 }
