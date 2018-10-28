@@ -1,38 +1,38 @@
 <?php
 /**
- * BSD 3-Clause License
  *
- * Copyright (c) 2018, Adam Matthew, Hyrule Minigame Division
- * All rights reserved.
+ * MMP""MM""YMM               .M"""bgd
+ * P'   MM   `7              ,MI    "Y
+ *      MM  .gP"Ya   ,6"Yb.  `MMb.   `7MMpdMAo.  ,pW"Wq.   ,pW"Wq.`7MMpMMMb.
+ *      MM ,M'   Yb 8)   MM    `YMMNq. MM   `Wb 6W'   `Wb 6W'   `Wb MM    MM
+ *      MM 8M""""""  ,pm9MM  .     `MM MM    M8 8M     M8 8M     M8 MM    MM
+ *      MM YM.    , 8M   MM  Mb     dM MM   ,AP YA.   ,A9 YA.   ,A9 MM    MM
+ *    .JMML.`Mbmmd' `Moo9^Yo.P"Ybmmd"  MMbmmd'   `Ybmd9'   `Ybmd9'.JMML  JMML.
+ *                                     MM
+ *                                   .JMML.
+ * This file is part of TeaSpoon.
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ * TeaSpoon is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
+ * TeaSpoon is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
  *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with TeaSpoon.  If not, see <http://www.gnu.org/licenses/>.
  *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
+ * @author CortexPE
+ * @link https://CortexPE.xyz
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace CortexPE\block;
+declare(strict_types = 1);
 
+namespace CortexPE\block;
 
 use CortexPE\utils\Orientation;
 use pocketmine\block\Block;
@@ -41,166 +41,269 @@ use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 
+/**
+ * One stop wiki-page: http://minecraft.gamepedia.com/Rail
+ * This is the class where the block being checking to
+ * intersect with the other rail. This follows the minecraft
+ * vanilla rails.
+ *
+ * @author larryTheCoder
+ * @package CortexPE\block
+ */
 class Rail extends PMRail {
+
+	// Rail curves and orientation
+	const STRAIGHT_NORTH_SOUTH = 0;
+	const STRAIGHT_EAST_WEST = 1;
+	const ASCENDING_EAST = 2;
+	const ASCENDING_WEST = 3;
+	const ASCENDING_NORTH = 4;
+	const ASCENDING_SOUTH = 5;
+	const CURVED_SOUTH_EAST = 6;
+	const CURVED_SOUTH_WEST = 7;
+	const CURVED_NORTH_WEST = 8;
+	const CURVED_NORTH_EAST = 9;
+
+	/** @var Orientation[] */
+	public static $railMetadata;
 
 	protected $id = self::RAIL;
 
-	// Credits: Nukkit
-	// Actually this is a project of mine
-	// But the other wrote it so ¯\_(ツ)_/¯
 	protected $canBePowered = false;
 
-	// One stop wiki-page: http://minecraft.gamepedia.com/Rail
+	public function __construct(int $meta = 0){
+		parent::__construct($meta);
+
+		self::$railMetadata = Orientation::getMetadata();
+	}
+
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null): bool{
 		$down = $this->getSide(Vector3::SIDE_DOWN);
 		if(is_null($down) || $down->isTransparent()){
 			return false;
 		}
+
+		// Horizontal rules
 		$railsAround = $this->checkRailsAroundAffected();
+		$railSides = count($railsAround);
+
+		/** @var int[] $sides */
+		$sides = array_keys($railsAround);
 		/** @var Rail[] $rails */
 		$rails = array_values($railsAround);
-		/** @var int[] $faces */
-		$faces = array_keys($railsAround);
-		var_dump($railsAround);
-		var_dump($rails);
-		var_dump($faces);
-		if(count($railsAround) == 1){
-			/** @var Rail $other */
-			$other = $rails[0];
-			$this->setDamage($this->connect($other, $faces[0])->getDamage());
-		}elseif(count($railsAround) == 4){
-			if($this->isNormalRail()){
-				$this->setDamage($this->connect(
-					$rails[array_search(Vector3::SIDE_SOUTH, $faces)], Vector3::SIDE_SOUTH,
-					$rails[array_search(Vector3::SIDE_EAST, $faces)], Vector3::SIDE_EAST)->getDamage());
+
+		if($railSides === 1){
+			// only 1 sides
+			$damage = $this->connectTo($rails[0], $sides[0]);
+			$this->setDamage($damage->getDamage());
+		}elseif($railSides === 4){
+			// Multiple intersect 4-rails within railway
+			if($this->canBeCurved()){
+				$railSouth = $railsAround[Vector3::SIDE_SOUTH];
+				$railEast = $railsAround[Vector3::SIDE_EAST];
+				$damage = $this->connectMultiples($railSouth, Vector3::SIDE_SOUTH, $railEast, Vector3::SIDE_EAST);
+				$this->setDamage($damage->getDamage());
 			}else{
-				$this->setDamage($this->connect(
-					$rails[array_search(Vector3::SIDE_EAST, $faces)], Vector3::SIDE_EAST,
-					$rails[array_search(Vector3::SIDE_SOUTH, $faces)], Vector3::SIDE_SOUTH)->getDamage());
+				$railSouth = $railsAround[Vector3::SIDE_EAST];
+				$railEast = $railsAround[Vector3::SIDE_WEST];
+				$damage = $this->connectMultiples($railSouth, Vector3::SIDE_EAST, $railEast, Vector3::SIDE_WEST);
+				$this->setDamage($damage->getDamage());
 			}
-		}elseif(!empty($railsAround)){
+		}elseif($railSides !== 0){
+			if($this->canBeCurved()){
+				// 2 Rails been placed
+				// - + -   => '+' is the placed block
+				if($railSides === 2){
+					$rail1 = $rails[0];
+					$rail2 = $rails[1];
+					$damage = $this->connectMultiples($rail1, $sides[0], $rail2, $sides[1]);
+					$this->setDamage($damage->getDamage());
+				}else{
+					$rail = [];
 
+					// Curves see: wiki#Placement
+					$curves = [self::CURVED_SOUTH_EAST, self::CURVED_NORTH_EAST, self::CURVED_SOUTH_WEST, self::CURVED_NORTH_WEST];
+					foreach($curves as $side){
+						$railTemp = [];
+						$origin = Orientation::byMetadata($side);
+						foreach($origin->connectingDirections() as $sided){
+							if(!isset($railsAround[$sided])){
+								$railTemp = [];
+								break;
+							}else{
+								$railTemp = array_values($origin->connectingDirections());
+							}
+						}
+						if(!empty($railTemp)){
+							$rail = $railTemp;
+						}
+					}
+
+					$railSouth = $railsAround[$rail[0]];
+					$railEast = $railsAround[$rail[1]];
+					$damage = $this->connectMultiples($railSouth, $rail[0], $railEast, $rail[1]);
+					$this->setDamage($damage->getDamage());
+				}
+			}else{
+				// TODO: Support redstone powered rails
+			}
 		}
-		$this->level->setBlock($this, $this, true, true);
 
+		// If there are no other rails adjacent it will be
+		// placed as a straight track oriented north-south.
+		$this->getLevel()->setBlock($this, $this);
 		return true;
 	}
 
 	/**
-	 * Get all the rails that effected to this
-	 * affected to this rail.
+	 * Get the rails around the adjacent block.
+	 * This will only return the blocks that with its
+	 * horizontal sides.
 	 *
 	 * @return Rail[]
 	 */
-	public function checkRailsAroundAffected(){
-		$railsAround = $this->checkRailsAround([Vector3::SIDE_SOUTH, Vector3::SIDE_EAST, Vector3::SIDE_WEST, Vector3::SIDE_NORTH]);
-		if(count($this->checkRailsConnected()) != 2){
-			return [];
+	private function checkRailsAroundAffected(): array{
+		$array = [];
+		$sides = [Vector3::SIDE_NORTH, Vector3::SIDE_SOUTH, Vector3::SIDE_WEST, Vector3::SIDE_EAST];
+		$railsAround = $this->checkRailsAround($sides);
+		foreach($railsAround as $side => $rail){
+			if(count($rail->checkRailsConnected()) != 2){
+				$array[$side] = $rail;
+			}
 		}
 
-		return $railsAround;
+		return $array;
 	}
 
 	/**
-	 * @param int[] $directions
+	 * @param array $faces
 	 * @return Rail[]
 	 */
-	public function checkRailsAround(array $directions){
-		$list = [];
-		foreach($directions as $dir){
-			// TODO: Improve the array keys to make it more easier access them
-			$b = $this->getSide($dir);
-			if(!($b instanceof Rail)){
-				continue;
+	private function checkRailsAround(array $faces){
+		$result = [];
+		foreach($faces as $side){
+			$block = $this->getSide($side);
+			$up = $block->getSide(Vector3::SIDE_UP);
+			$down = $block->getSide(Vector3::SIDE_DOWN);
+			if($up instanceof Rail){
+				$result[$side] = $up;
 			}
-			$list[$dir] = $b;
+			if($down instanceof Rail){
+				$result[$side] = $down;
+			}
+			if($block instanceof Rail){
+				$result[$side] = $block;
+			}
 		}
 
-		return $list;
+		return $result;
 	}
 
 	/**
 	 * @return Rail[]
 	 */
-	private function checkRailsConnected(){
-		$railsAround = $this->checkRailsAround($this->getOrientation()->connectingDirections());
-		$connectedRails = [];
+	public function checkRailsConnected(): array{
+		$result = [];
+		$origin = $this->getOrientation()->connectingDirections();
+		$railsAround = $this->checkRailsAround($origin);
 
-		foreach($railsAround as $dir => $rail){
-			if(!$rail->getOrientation()->hasConnectingDirections(Vector3::getOppositeSide($dir))){
-				continue;
+		foreach($railsAround as $side => $rail){
+			if($rail->getOrientation()->hasConnectingDirections(Vector3::getOppositeSide($side))){
+				$result[$side] = $rail;
 			}
-			$connectedRails[$dir] = $rail;
 		}
 
-		return $connectedRails;
+		return $result;
 	}
 
-	public function getOrientation(){
-		return Orientation::byMetadata($this->getVariant());
+
+	public function getOrientation(): Orientation{
+		return self::$railMetadata[$this->getDamage()];
 	}
 
-	private function connect(Rail $rail1, int $face1, Rail $rail2 = null, int $face2 = -1): Orientation{
-		if(!is_null($rail2)){
-			$this->connect($rail1, $face1);
-			$this->connect($rail2, $face2);
-
-			if(Vector3::getOppositeSide($face1) == $face2){
-				$delta1 = $this->y - $rail1->y;
-				$delta2 = $this->y - $rail2->y;
-
-				if($delta1 == -1){
-					return Orientation::ascending($face1);
-				}elseif($delta2 == -1){
-					return Orientation::ascending($face2);
-				}
-			}
-
-			return Orientation::straightOrCurved($face1, $face2);
-		}
-		$delta = $this->y - $rail1->y;
-		$rails = $rail1->checkRailsConnected();
+	/**
+	 * Connects to a rail and return the specific orientation
+	 * for the connection.
+	 *
+	 * @param Rail $other The rail class itself
+	 * @param int $face Faces of the rail
+	 * @return Orientation The orientation that should be changed with this rail.
+	 */
+	private function connectTo(Rail $other, int $face): Orientation{
+		$delta = $this->y - $other->y;
+		$rails = $other->checkRailsConnected();
 		if(empty($rails)){
-			$ori = $delta == 1 ? Orientation::ascending(Vector3::getOppositeSide($face1)) : Orientation::straight($face1);
-			$rail1->setOrientation($ori);
+			$other->setOrientation($delta === 1 ? Orientation::getAscendingData(Vector3::getOppositeSide($face)) : Orientation::getNormalRail($face));
 
-			return $delta == -1 ? Orientation::ascending($face1) : Orientation::straight($face1);
-		}elseif(count($rails) == 1){
-			$faceConnected = array_rand($rails); // Pick a random rails
+			return $delta === -1 ? Orientation::getAscendingData($face) : Orientation::getNormalRail($face);
+		}elseif(count($rails) === 1){
+			foreach($rails as $faceConnected => $railData){
+				// Set the rail to be curved
+				if($other->canBeCurved() && $faceConnected !== $face){
+					$other->setOrientation(Orientation::getCurvedState(Vector3::getOppositeSide($face), $faceConnected));
 
-			// If you have sensitive butts, close them, because
-			// I am going to do some DAMAGE, ready?
-			if($rail1->isNormalRail() && $faceConnected != $face1){ // Curve them
-				$ori = $delta == -1 ? Orientation::ascending($face1) : Orientation::straight($face1);
-				$rail1->setOrientation(Orientation::curved(Vector3::getOppositeSide($face1), $faceConnected));
+					return $delta === -1 ? Orientation::getAscendingData($face) : Orientation::getNormalRail($face);
+				}elseif($faceConnected === $face){
+					if(!$other->getOrientation()->isAscending()){
+						$other->setOrientation($delta === 1 ? Orientation::getAscendingData(Vector3::getOppositeSide($face)) : Orientation::getNormalRail($face));
+					}
 
-				return $ori;
-			}elseif($faceConnected == $face1){
-				if(!$rail1->getOrientation()->isAscending()){
-					$rail1->setOrientation($delta == 1 ? Orientation::ascending(Vector3::getOppositeSide($face1)) : Orientation::straight($face1));
+					return $delta === -1 ? Orientation::getAscendingData($face) : Orientation::getNormalRail($face);
+				}elseif($other->getOrientation()->hasConnectingDirections(Vector3::SIDE_NORTH, Vector3::SIDE_NORTH)){
+					$other->setOrientation($delta === 1 ? Orientation::getAscendingData(Vector3::getOppositeSide($face)) : Orientation::getNormalRail($face));
+
+					return $delta === -1 ? Orientation::getAscendingData($face) : Orientation::getNormalRail($face);
 				}
-
-				return $delta == -1 ? Orientation::ascending($face1) : Orientation::straight($face1);
-			}elseif($rail1->getOrientation()->hasConnectingDirections(Vector3::SIDE_NORTH, Vector3::SIDE_SOUTH)){
-				$ori = $delta == 1 ? Orientation::ascending(Vector3::getOppositeSide($face1)) : Orientation::straight($face1);
-				$rail1->setOrientation($ori);
-
-				return $delta == -1 ? Orientation::ascending($face1) : Orientation::straight($face1);
+				break;
 			}
 		}
 
-		return Orientation::byMetadata(Orientation::STRAIGHT_NORTH_SOUTH);
+		return self::$railMetadata[self::STRAIGHT_NORTH_SOUTH];
 	}
 
-	public function setOrientation(Orientation $ori){
-		if($ori->getDamage() != $this->getVariant()){
-			$this->setDamage($ori->getDamage());
-			$this->level->setBlock($this, $this, false, true);
+	public function setOrientation(Orientation $origin){
+		if($origin->getDamage() != $this->getDamage()){
+			$this->setDamage($origin->getDamage());
+			$this->getLevel()->setBlock($this, $this, true, true);
 		}
 	}
 
-	public function isNormalRail(){
-		return $this->getId() === self::RAIL;
+	/**
+	 * This checks if the rail could be
+	 * curved or not.
+	 *
+	 * @return bool
+	 */
+	public function canBeCurved(): bool{
+		return true;
 	}
 
+	/**
+	 * Connect to a multiple rail once at a time.
+	 * And return an orientation that should be intersect with
+	 * these rails.
+	 *
+	 * @param Rail $rail1 The rail class itself
+	 * @param int $face1 The rail1 orientation
+	 * @param Rail $rail2 The rail class itself
+	 * @param int $face2 The rail2 orientation
+	 * @return Orientation The orientation that should be given after the intersection.
+	 */
+	public function connectMultiples(Rail $rail1, int $face1, Rail $rail2, int $face2): Orientation{
+		$this->connectTo($rail1, $face1);
+		$this->connectTo($rail2, $face2);
+
+		if(Vector3::getOppositeSide($face1) === $face2){
+			$delta1 = $this->y = $rail1->y;
+			$delta2 = $this->y = $rail2->y;
+
+			if($delta1 === -1){
+				return Orientation::getAscendingData($face1);
+			}elseif($delta2 === -2){
+				return Orientation::getAscendingData($face2);
+			}
+		}
+
+		return Orientation::getConnectedState($face1, $face2);
+	}
 }

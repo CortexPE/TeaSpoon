@@ -182,7 +182,7 @@ class Portal extends Transparent {
 							$gm = $entity->getGamemode();
 
 							$posNether = Main::$netherLevel->getSafeSpawn();
-							if(Main::$vanillaNetherTranfer){ //imperfect
+							if(Main::$vanillaNetherTransfer){ //imperfect
 								$x = (int)ceil($entity->getX() / 8);
 								$y = (int)ceil($entity->getY() / 8);
 								$z = (int)ceil($entity->getZ() / 8);
@@ -219,7 +219,7 @@ class Portal extends Transparent {
 							$gm = $entity->getGamemode();
 
 							$posOverworld = Main::$overworldLevel->getSafeSpawn();
-							if(Main::$vanillaNetherTranfer){
+							if(Main::$vanillaNetherTransfer){
 								$x = (int)ceil($entity->getX() * 8);
 								$y = (int)ceil($entity->getY() * 8);
 								$z = (int)ceil($entity->getZ() * 8);

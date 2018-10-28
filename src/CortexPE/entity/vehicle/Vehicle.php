@@ -38,7 +38,9 @@ use pocketmine\entity\Entity;
 use pocketmine\entity\Vehicle as PMVehicle;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\level\Level;
 use pocketmine\math\Vector3;
+use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\SetEntityLinkPacket;
 use pocketmine\network\mcpe\protocol\types\EntityLink;
 use pocketmine\Player;
@@ -53,6 +55,12 @@ abstract class Vehicle extends PMVehicle {
 
 	/** @var Entity */
 	protected $linkedEntity = null;
+	/** @var bool */
+	protected $canInteract;
+
+	public function __construct(Level $level, CompoundTag $nbt){
+		parent::__construct($level, $nbt);
+	}
 
 	public function getRollingAmplitude(): int{
 		return $this->propertyManager->getInt(self::DATA_HURT_TIME);
@@ -76,6 +84,9 @@ abstract class Vehicle extends PMVehicle {
 	}
 
 	public function setDamage(int $damage){
+		if($damage > 40 || $damage < -20){
+			$damage = 40;
+		}
 		$this->propertyManager->setInt(self::DATA_HEALTH, $damage);
 	}
 
@@ -88,7 +99,7 @@ abstract class Vehicle extends PMVehicle {
 	}
 
 	public function canDoInteraction(){
-		return $this->linkedEntity == null;
+		return $this->linkedEntity == null && $this->canInteract;
 	}
 
 	public function initEntity(): void{
@@ -97,6 +108,8 @@ abstract class Vehicle extends PMVehicle {
 		$this->setRollingAmplitude(0);
 		$this->setDamage(0);
 		$this->setRollingDirection(0);
+
+		$this->y += $this->baseOffset;
 	}
 
 	public function attack(EntityDamageEvent $source): void{
@@ -184,32 +197,32 @@ abstract class Vehicle extends PMVehicle {
 		$entity->riding = $this;
 		$this->linkedEntity = $entity;
 		$entity->setDataFlag(self::DATA_FLAGS, self::DATA_FLAG_RIDING, true);
-		$this->propertyManager->setVector3(self::DATA_RIDER_SEAT_POSITION, new Vector3(0, $this->baseOffset, 0));
+		$this->propertyManager->setVector3(self::DATA_RIDER_SEAT_POSITION, new Vector3(0, $this->baseOffset * 2, 0));
 
 		return true;
 	}
 
 	public function onUpdate(int $currentTick): bool {
-		 $this->entityBaseTick($currentTick - $this->lastUpdate);
+		$hasUpdated = parent::onUpdate($currentTick);
+
+		if($this->closed || !$this->isAlive()){
+			return false;
+		}
 
 		// The rolling amplitude
 		if($this->getRollingAmplitude() > 0){
 			$this->setRollingAmplitude($this->getRollingAmplitude() - 1);
+			$hasUpdated = true;
 		}
+
 		// The damage token
 		// Now mojang just fudge this up by reversing this
 		if($this->getDamage() >= -10 && $this->getDamage() <= 40){
 			$this->setDamage($this->getDamage() + 1);
-		}else{
-			$this->setDamage(40);
+			$hasUpdated = true;
 		}
 
-		// A killer task
-		if($this->y < -16){
-			$this->kill();
-		}
-
-		return true;
+		return $hasUpdated;
 	}
 
 	protected $rollingDirection = true;

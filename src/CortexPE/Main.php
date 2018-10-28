@@ -50,7 +50,7 @@ use CortexPE\network\PacketManager;
 use CortexPE\task\TickLevelsTask;
 use CortexPE\tile\Tile;
 use CortexPE\utils\{
-	FishingLootTable, Orientation, TextFormat
+	FishingLootTable, TextFormat
 };
 use pocketmine\command\CommandSender;
 use pocketmine\level\Level;
@@ -118,7 +118,7 @@ class Main extends PluginBase {
 	/** @var bool */
 	public static $randomFishingLootTables = false;
 	/** @var bool */
-	public static $vanillaNetherTranfer = false;
+	public static $vanillaNetherTransfer = false;
 	/** @var string */
 	public static $overworldLevelName = "";
 	/** @var Level */
@@ -229,6 +229,13 @@ class Main extends PluginBase {
 		return self::$instance->getLogger();
 	}
 
+	/**
+	 * @return int
+	 */
+	public static function getChorusFruitCooldown(): int{
+		return self::$chorusFruitCooldown;
+	}
+
 	public function onLoad(){
 		if(Utils::checkSpoon()){
 			$this->getLogger()->error("This plugin is for PMMP only. It is meant to extend PMMP's functionality.");
@@ -261,7 +268,7 @@ class Main extends PluginBase {
 		self::$enableWeatherLightning = self::$config->getNested("weather.lightning", self::$enableWeatherLightning);
 		self::$limitedCreative = self::$config->getNested("player.limitedCreative", self::$limitedCreative);
 		self::$randomFishingLootTables = self::$config->getNested("misc.randomFishingLootTables", self::$randomFishingLootTables);
-		self::$vanillaNetherTranfer = self::$config->getNested("dimensions.nether.vanillaNetherTranfer", self::$vanillaNetherTranfer);
+		self::$vanillaNetherTransfer = self::$config->getNested("dimensions.nether.vanillaNetherTranfer", self::$vanillaNetherTransfer);
 		self::$overworldLevelName = self::$config->getNested("dimensions.overrideOverworldLevel", self::$overworldLevelName);
 		self::$instantArmorReplace = self::$config->getNested("player.instantArmor.replace", self::$instantArmorReplace);
 		self::$elytraEnabled = self::$config->getNested("player.elytra.enable", self::$elytraEnabled);
@@ -341,7 +348,6 @@ class Main extends PluginBase {
 
 	private function loadEverythingElseThatMakesThisPluginFunctionalAndNotBrokLMAO(){
 		// Initialize ze managars //
-		Orientation::startup();
 		CommandManager::init();
 		Enchantment::init();
 		BlockManager::init();

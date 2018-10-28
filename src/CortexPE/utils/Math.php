@@ -58,4 +58,16 @@ class Math extends Utils {
 
 		return $d0 > $d1 ? $d0 : $d1;
 	}
+
+	public static function wrapDegrees(float $yaw){
+		$yaw %= 360.0;
+		if($yaw >= 180.0){
+			$yaw -= 360.0;
+		}
+		if($yaw < -180.0){
+			$yaw += 360.0;
+		}
+
+		return $yaw;
+	}
 }
