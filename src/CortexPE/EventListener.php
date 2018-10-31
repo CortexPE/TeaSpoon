@@ -361,8 +361,10 @@ class EventListener implements Listener {
 	 * @priority LOWEST
 	 */
 	public function onTeleport(EntityTeleportEvent $ev){
-		if(Main::$registerDimensions && ($from = $ev->getFrom())->getLevel() !== ($to = $ev->getTo())->getLevel()){
-			if(Utils::getDimension($from->getLevel()) != ($dim = Utils::getDimension($to->getLevel()))){
+		$frLvl = ($from = $ev->getFrom())->getLevel();
+		$toLvl = ($to = $ev->getTo())->getLevel();
+		if(Main::$registerDimensions && $frLvl instanceof Level && $toLvl instanceof Level && $frLvl !== $toLvl){
+			if(Utils::getDimension($frLvl) != ($dim = Utils::getDimension($toLvl))){
 				$p = $ev->getEntity();
 				if($p instanceof PMPlayer){
 					$pk = new ChangeDimensionPacket();
