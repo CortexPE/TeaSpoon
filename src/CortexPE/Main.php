@@ -152,6 +152,8 @@ class Main extends PluginBase {
 	/** @var bool */
 	public static $hoppersEnabled = true;
 	/** @var bool */
+	public static $cauldronEnabled = true;
+	/** @var bool */
 	public static $beaconEnabled = true;
 	/** @var bool */
 	public static $beaconEffectsEnabled = true;
@@ -284,6 +286,7 @@ class Main extends PluginBase {
 		self::$mobSpawnerEnable = self::$config->getNested("mobSpawner.enable", self::$mobSpawnerEnable);
 		self::$mobSpawnerDamageAsEID = self::$config->getNested("mobSpawner.enable", self::$mobSpawnerDamageAsEID);
 		self::$hoppersEnabled = self::$config->getNested("hopper.enable", self::$hoppersEnabled);
+		self::$cauldronEnabled = self::$config->getNested("cauldron.enable", self::$cauldronEnabled);
 		self::$beaconEnabled = self::$config->getNested("beacon.enable", self::$beaconEnabled);
 		self::$beaconEffectsEnabled = self::$config->getNested("beacon.effectsEnabled", self::$beaconEffectsEnabled);
 		self::$shulkerBoxEnabled = self::$config->getNested("shulkerBox.enable", self::$shulkerBoxEnabled);
