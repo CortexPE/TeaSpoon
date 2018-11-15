@@ -118,6 +118,9 @@ blocks:
  enableSnowGolem: true
  snowLayerMelts: true
 
+cauldron:
+ enable: true
+
 hopper:
  enable: true
 
