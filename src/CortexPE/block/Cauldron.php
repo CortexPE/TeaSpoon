@@ -291,5 +291,4 @@ class Cauldron extends Solid {
     }
     return true;
     }
-  return true;
 }
