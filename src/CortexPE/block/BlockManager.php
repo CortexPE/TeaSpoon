@@ -56,6 +56,7 @@ class BlockManager {
 		BlockFactory::registerBlock(new FrostedIce(), true);
 		BlockFactory::registerBlock(new ShulkerBox(), true);
 		BlockFactory::registerBlock(new Hopper(), true);
+		BlockFactory::registerBlock(new Cauldron(), true);
 		BlockFactory::registerBlock(new EnchantingTable(), true);
 		BlockFactory::registerBlock(new Anvil(), true);
 		BlockFactory::registerBlock(new Pumpkin(), true);
