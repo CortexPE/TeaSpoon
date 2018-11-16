@@ -160,12 +160,12 @@ class Splash {
 	/** @var string[] */
 	private static $CHRISTMAS_SPLASHES = [
 		"Ho Ho Ho...",
-		"Merry Christmas",
+		"Merry Christmas!",
 	];
 
 	public static function getRandomSplash(): string{
-		if(self::isWednesday() && mt_rand(1, 2) == 1){
-			return "It's WEDNESDAY my dudes.";
+		if(self::isCortexsBirthday()){
+			return (mt_rand(1, 2) == 1 ? "Cortex's biological age is now " . strval(intval(date('Y')) - 1999) . "!" : "Happy birthday Cortex!"); // lolz
 		}
 		if(self::isChristmastide()){
 			return self::$CHRISTMAS_SPLASHES[array_rand(self::$CHRISTMAS_SPLASHES)];
@@ -173,8 +173,8 @@ class Splash {
 		if(self::isValentines() && mt_rand(1, 2) == 2){
 			return self::VALENTINES_SPLASH;
 		}
-		if(self::isCortexsBirthday()){
-			return (mt_rand(1, 2) == 1 ? "Cortex's biological age is now " . strval(intval(date('Y')) - 1999) . "!" : "Happy birthday Cortex!"); // lolz
+		if(self::isWednesday() && mt_rand(1, 2) == 1){
+			return "It's WEDNESDAY my dudes.";
 		}
 
 		return self::getRandomTSPSplash();

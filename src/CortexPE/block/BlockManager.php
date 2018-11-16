@@ -63,6 +63,7 @@ class BlockManager {
 		BlockFactory::registerBlock(new SnowLayer(), true);
 		BlockFactory::registerBlock(new BrewingStand(), true);
 		BlockFactory::registerBlock(new Rail(), true);
+		BlockFactory::registerBlock(new Cauldron(), true);
 		//BlockFactory::registerBlock(new Jukebox(), true);
 	}
 }

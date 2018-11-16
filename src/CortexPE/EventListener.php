@@ -37,7 +37,6 @@ declare(strict_types = 1);
 
 namespace CortexPE;
 
-use CortexPE\entity\vehicle\Minecart;
 use CortexPE\level\weather\Weather;
 use CortexPE\utils\ArmorTypes;
 use CortexPE\utils\Xp;
@@ -50,16 +49,7 @@ use pocketmine\event\entity\{
 	EntityDamageEvent, EntityDeathEvent, EntityTeleportEvent
 };
 use pocketmine\event\player\{
-	cheat\PlayerIllegalMoveEvent,
-	PlayerCommandPreprocessEvent,
-	PlayerDropItemEvent,
-	PlayerGameModeChangeEvent,
-	PlayerInteractEvent,
-	PlayerItemHeldEvent,
-	PlayerJumpEvent,
-	PlayerLoginEvent,
-	PlayerQuitEvent,
-	PlayerRespawnEvent
+	cheat\PlayerIllegalMoveEvent, PlayerCommandPreprocessEvent, PlayerDropItemEvent, PlayerGameModeChangeEvent, PlayerInteractEvent, PlayerItemHeldEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
 };
 use pocketmine\item\Armor;
 use pocketmine\item\Item;

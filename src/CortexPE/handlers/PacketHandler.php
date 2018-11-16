@@ -35,7 +35,6 @@ declare(strict_types = 1);
 
 namespace CortexPE\handlers;
 
-use CortexPE\entity\vehicle\Minecart;
 use CortexPE\Main;
 use CortexPE\network\InventoryTransactionPacket;
 use CortexPE\Session;
@@ -44,7 +43,7 @@ use pocketmine\event\{
 	Listener, server\DataPacketReceiveEvent, server\DataPacketSendEvent
 };
 use pocketmine\network\mcpe\protocol\{
-	PlayerActionPacket, PlayerInputPacket, StartGamePacket
+	PlayerActionPacket, StartGamePacket
 };
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
@@ -79,7 +78,7 @@ class PacketHandler implements Listener {
 
 						case PlayerActionPacket::ACTION_START_GLIDE:
 							if(Main::$elytraEnabled){
-								$p->setGenericFlag(PMPlayer::DATA_FLAG_GLIDING, true); // Why isn't the datatype a byte?
+								$p->setGenericFlag(PMPlayer::DATA_FLAG_GLIDING, true);
 
 								$session->usingElytra = $session->allowCheats = true;
 							}
@@ -126,15 +125,14 @@ class PacketHandler implements Listener {
 					}
 				}
 				break;
-			case ($pk instanceof PlayerInputPacket):
+			/*case ($pk instanceof PlayerInputPacket):
 				if(isset($p->riding) && $p->riding instanceof Minecart){
-					/** @var $riding Minecart */
 					$riding = $p->riding;
 					$riding->setCurrentSpeed($pk->motionY);
 				}
-				// Cancer this event, this avoid the packet being unhandled
+				// Cancel this event, this avoid the packet being unhandled
 				$ev->setCancelled();
-				break;
+				break;*/
 		}
 	}
 

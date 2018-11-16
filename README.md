@@ -58,6 +58,7 @@ Installation is easy, Just download the latest phar from [Poggit](https://poggit
    - [X] SnowLayer (Affected by rain and temperature)
    - [X] Pumpkin / Jack o' Lantern (Spawns Golems)
    - [X] Brewing Stand
+   - [X] Cauldron
  - Items
    - [X] Vanilla Enchants (Progress: 98% | Credits to [TheAz928](https://github.com/TheAz928) for some of the values)
    - [X] Armor Damage

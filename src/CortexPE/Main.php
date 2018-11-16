@@ -63,7 +63,7 @@ use pocketmine\utils\Config;
 class Main extends PluginBase {
 
 	// self explanatory constants
-	public const CONFIG_VERSION = 30;
+	public const CONFIG_VERSION = 31;
 
 	/** @var string */
 	public const
@@ -88,6 +88,18 @@ class Main extends PluginBase {
 	public static $endLevel;
 	/** @var bool */
 	public static $lightningFire = false;
+	/** @var Session[] */
+	private $sessions = [];
+	/** @var bool */
+	private $disable = false;
+	/** @var BrewingManager */
+	private $brewingManager = null;
+	/** @var Weather[] */
+	public static $weatherData = [];
+	/** @var Main */
+	private static $instance;
+	/** @var string */
+	private static $sixCharCommitHash = "";
 	////////////////////////////////// END OF INSTANCE VARIABLES //////////////////////////////////
 
 	///////////////////////////////// START OF CONFIGS VARIABLES /////////////////////////////////
@@ -103,8 +115,6 @@ class Main extends PluginBase {
 	public static $registerVanillaEnchantments = true;
 	/** @var bool */
 	public static $registerDimensions = true;
-	/** @var Weather[] */
-	public static $weatherData = [];
 	/** @var bool */
 	public static $weatherEnabled = true;
 	/** @var int */
@@ -193,16 +203,8 @@ class Main extends PluginBase {
 	public static $snowLayerMelts = true;
 	/** @var bool */
 	public static $brewingStandsEnabled = true;
-	/** @var Main */
-	private static $instance;
-	/** @var string */
-	private static $sixCharCommitHash = "";
-	/** @var Session[] */
-	private $sessions = [];
 	/** @var bool */
-	private $disable = false;
-	/** @var BrewingManager */
-	private $brewingManager = null;
+	public static $cauldronsEnabled = true;
 
 	////////////////////////////////// END OF CONFIGS VARIABLES //////////////////////////////////
 
@@ -225,15 +227,8 @@ class Main extends PluginBase {
 		$sender->sendMessage("\x2d\x2d\x2d\x20\x2b\x20\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x20\x2b\x20\x2d\x2d\x2d");
 	}
 
-	public static function getPluginLogger(): PluginLogger{ // 2 lazy
+	public static function getPluginLogger(): PluginLogger{ // 2 lazy (#blameLarry)
 		return self::$instance->getLogger();
-	}
-
-	/**
-	 * @return int
-	 */
-	public static function getChorusFruitCooldown(): int{
-		return self::$chorusFruitCooldown;
 	}
 
 	public function onLoad(){
@@ -305,11 +300,11 @@ class Main extends PluginBase {
 		self::$snowGolemMelts = self::$config->getNested("entities.snowGolem.melting", self::$snowGolemMelts);
 		self::$snowLayerMelts = self::$config->getNested("blocks.snowLayerMelts", self::$snowLayerMelts);
 		self::$brewingStandsEnabled = self::$config->getNested("blocks.brewingStands", self::$brewingStandsEnabled);
+		self::$cauldronsEnabled = self::$config->getNested("cauldron.enable", self::$brewingStandsEnabled);
 
 		// Pre-Enable Checks //
 		if(Utils::isPhared()){ // unphared = dev
-			$thisPhar = new \Phar(\Phar::running(false));
-			$meta = $thisPhar->getMetadata(); // https://github.com/poggit/poggit/blob/beta/src/poggit/ci/builder/ProjectBuilder.php#L227-L236
+			$meta = (new \Phar(\Phar::running(false)))->getMetadata(); // https://github.com/poggit/poggit/blob/beta/src/poggit/ci/builder/ProjectBuilder.php#L227-L236
 			if(!isset($meta["builderName"]) || !is_array($meta)){
 				$this->getLogger()->error("Only use TeaSpoon Builds from Poggit: https://poggit.pmmp.io/ci/CortexPE/TeaSpoon/~");
 				$this->disable = true;

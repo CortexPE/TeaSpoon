@@ -10,7 +10,7 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 30
+version: 31
 
 entities:
  # Weather to register Vanilla Entities (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...) or not
@@ -130,4 +130,7 @@ shulkerBox:
  enable: true
 
 anvil:
+ enable: true
+
+cauldron:
  enable: true

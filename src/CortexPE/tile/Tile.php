@@ -36,32 +36,31 @@ declare(strict_types = 1);
 namespace CortexPE\tile;
 
 use CortexPE\Main;
-use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\tile\Tile as PMTile;
 
-class Tile extends PMTile {
+abstract class Tile extends PMTile {
 	/** @var string */
 	public const
 		BEACON = "Beacon",
 		MOB_SPAWNER = "MobSpawner",
 		SHULKER_BOX = "ShulkerBox",
 		HOPPER = "Hopper",
-		JUKEBOX = "Jukebox";
+		JUKEBOX = "Jukebox",
+		CAULDRON = "Cauldron";
 
 	public static function init(){
 		Main::getPluginLogger()->debug("Registering Tiles...");
-		self::registerTile(Beacon::class);
-		self::registerTile(MobSpawner::class);
-		self::registerTile(ShulkerBox::class);
-		self::registerTile(Hopper::class);
-		self::registerTile(BrewingStand::class);
+		try {
+			self::registerTile(Beacon::class);
+			self::registerTile(MobSpawner::class);
+			self::registerTile(ShulkerBox::class);
+			self::registerTile(Hopper::class);
+			self::registerTile(BrewingStand::class);
+			self::registerTile(Cauldron::class);
 
-		//self::registerTile(Jukebox::class);
-	}
-
-	protected function readSaveData(CompoundTag $nbt): void{
-	}
-
-	protected function writeSaveData(CompoundTag $nbt): void{
+			//self::registerTile(Jukebox::class);
+		} catch(\ReflectionException $e){
+			Main::getInstance()->getLogger()->error($e); // stfu phpstorm
+		}
 	}
 }
