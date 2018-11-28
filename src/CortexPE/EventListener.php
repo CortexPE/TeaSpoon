@@ -49,7 +49,7 @@ use pocketmine\event\entity\{
 	EntityDamageEvent, EntityDeathEvent, EntityTeleportEvent
 };
 use pocketmine\event\player\{
-	cheat\PlayerIllegalMoveEvent, PlayerCommandPreprocessEvent, PlayerDropItemEvent, PlayerGameModeChangeEvent, PlayerInteractEvent, PlayerItemHeldEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
+	cheat\PlayerIllegalMoveEvent, PlayerDropItemEvent, PlayerGameModeChangeEvent, PlayerInteractEvent, PlayerItemHeldEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
 };
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
@@ -62,8 +62,6 @@ use pocketmine\Server as PMServer;
 
 class EventListener implements Listener {
 
-	public const VERSION_COMMANDS = ["version", "ver", "about"];
-
 	/** @var Plugin */
 	public $plugin;
 
@@ -73,7 +71,6 @@ class EventListener implements Listener {
 
 	/**
 	 * @param LevelLoadEvent $ev
-	 * @return bool
 	 *
 	 * @priority LOWEST
 	 */
@@ -102,17 +99,16 @@ class EventListener implements Listener {
 			}
 		}
 
-		return true;
+		return;
 	}
 
 	/**
 	 * @param EntityDamageEvent $ev
-	 * @return bool
 	 *
 	 * @priority HIGHEST
+	 * @ignoreCancelled true
 	 */
 	public function onDamage(EntityDamageEvent $ev){
-		if($ev->isCancelled()) return false;
 		$v = $ev->getEntity();
 		$session = null;
 		if($v instanceof PMPlayer){
@@ -128,7 +124,7 @@ class EventListener implements Listener {
 			}
 		}
 
-		return true;
+		return;
 	}
 
 	/**
@@ -147,7 +143,6 @@ class EventListener implements Listener {
 	 */
 	public function onLogin(PlayerLoginEvent $ev){
 		Main::getInstance()->createSession($ev->getPlayer());
-
 
 		// derpy as fvck but this works...
 		if(Main::$overworldLevelName != "" && !(Main::$overworldLevel instanceof Level) && PMServer::getInstance()->getDefaultLevel() instanceof Level){
@@ -202,26 +197,13 @@ class EventListener implements Listener {
 	}
 
 	/**
-	 * @param PlayerCommandPreprocessEvent $ev
-	 *
-	 * @priority HIGHEST
-	 */
-	public function onPlayerCommandPreProcess(PlayerCommandPreprocessEvent $ev){
-		if($ev->isCancelled()) return;
-		if(in_array(substr($ev->getMessage(), 1), self::VERSION_COMMANDS) && !$ev->isCancelled()){
-			$ev->setCancelled();
-			Main::sendVersion($ev->getPlayer());
-		}
-	}
-
-	/**
 	 * @param CommandEvent $ev
 	 *
 	 * @priority HIGHEST
+	 * @ignoreCancelled true
 	 */
 	public function onServerCommand(CommandEvent $ev){
-		if($ev->isCancelled()) return;
-		if(Utils::in_arrayi($ev->getCommand(), self::VERSION_COMMANDS) && !$ev->isCancelled()){
+		if(in_array($ev->getCommand(), ["\x76\x65\x72\x73\x69\x6f\x6e", "\x76\x65\x72", "\x61\x62\x6f\x75\x74"])){
 			Main::sendVersion($ev->getSender());
 		}
 	}
@@ -230,9 +212,9 @@ class EventListener implements Listener {
 	 * @param PlayerItemHeldEvent $ev
 	 *
 	 * @priority HIGHEST
+	 * @ignoreCancelled true
 	 */
 	public function onItemHeld(PlayerItemHeldEvent $ev){
-		if($ev->isCancelled()) return;
 		$session = Main::getInstance()->getSessionById($ev->getPlayer()->getId());
 		if($session instanceof Session){
 			if($session->fishing){
@@ -249,9 +231,9 @@ class EventListener implements Listener {
 	 * @param PlayerInteractEvent $ev
 	 *
 	 * @priority HIGHEST
+	 * @ignoreCancelled true
 	 */
 	public function onInteract(PlayerInteractEvent $ev){
-		if($ev->isCancelled()) return;
 		if(Main::$instantArmorEnabled){
 			// MCPE(BE) does this client-side... we just have to do the same server-side.
 			$item = clone $ev->getItem();
@@ -325,12 +307,11 @@ class EventListener implements Listener {
 	 * @param PlayerGameModeChangeEvent $ev
 	 *
 	 * @priority HIGHEST
+	 * @ignoreCancelled true
 	 */
 	public function onGameModeChange(PlayerGameModeChangeEvent $ev){
-		if(!$ev->isCancelled()){
-			if(Main::$clearInventoryOnGMChange){
-				$ev->getPlayer()->getInventory()->clearAll();
-			}
+		if(Main::$clearInventoryOnGMChange){
+			$ev->getPlayer()->getInventory()->clearAll();
 		}
 	}
 
@@ -338,9 +319,10 @@ class EventListener implements Listener {
 	 * @param PlayerDropItemEvent $ev
 	 *
 	 * @priority HIGHEST
+	 * @ignoreCancelled true
 	 */
 	public function onPlayerDropItem(PlayerDropItemEvent $ev){
-		if(!$ev->isCancelled() && Main::$limitedCreative && $ev->getPlayer()->isCreative()){
+		if(Main::$limitedCreative && $ev->getPlayer()->isCreative()){
 			$ev->setCancelled();
 		}
 	}
@@ -349,6 +331,7 @@ class EventListener implements Listener {
 	 * @param EntityTeleportEvent $ev
 	 *
 	 * @priority LOWEST
+	 * @ignoreCancelled true
 	 */
 	public function onTeleport(EntityTeleportEvent $ev){
 		$frLvl = ($from = $ev->getFrom())->getLevel();

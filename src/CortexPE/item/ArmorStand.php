@@ -53,7 +53,7 @@ class ArmorStand extends Item {
 
 		if($entity instanceof ArmorStandEntity){
 			if($player->isSurvival()){
-				$this->count--;
+				$this->pop();
 			}
 			$entity->spawnToAll();
 		}

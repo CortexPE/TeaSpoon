@@ -60,6 +60,20 @@ class TestCommand extends VanillaCommand {
 					case "actionbar":
 						$sender->addActionBarMessage("ACTIONBAR");
 						break;
+					case "skin2b64":
+						$data = '';
+						$image = imagecreatefrompng("skin.png");
+						for($y = 0, $height = imagesy($image); $y < $height; $y++){
+							for($x = 0, $width = imagesx($image); $x < $width; $x++){
+								$color = imagecolorat($image, $x, $y);
+								$data .= pack("c", ($color >> 16) & 0xFF) //red
+									. pack("c", ($color >> 8) & 0xFF) //green
+									. pack("c", $color & 0xFF) //blue
+									. pack("c", 255 - (($color & 0x7F000000) >> 23)); //alpha
+							}
+						}
+						file_put_contents("skin.txt", base64_encode(zlib_encode($data, ZLIB_ENCODING_GZIP)));
+						break;
 				}
 			}
 		}

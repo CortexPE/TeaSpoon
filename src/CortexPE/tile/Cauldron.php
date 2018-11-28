@@ -31,6 +31,8 @@
  *
  */
 
+declare(strict_types = 1);
+
 namespace CortexPE\tile;
 
 use pocketmine\nbt\tag\ByteTag;
@@ -135,9 +137,9 @@ class Cauldron extends Spawnable {
 		$this->potionID = $nbt->getShort(self::TAG_POTION_ID, $this->potionID);
 
 		if(!$nbt->hasTag(self::TAG_SPLASH_POTION, ByteTag::class)){
-			$nbt->setByte(self::TAG_SPLASH_POTION, $this->splashPotion);
+			$nbt->setByte(self::TAG_SPLASH_POTION, (int)$this->splashPotion);
 		}
-		$this->splashPotion = (bool)$nbt->getByte(self::TAG_SPLASH_POTION, $this->splashPotion);
+		$this->splashPotion = (bool)$nbt->getByte(self::TAG_SPLASH_POTION, (int)$this->splashPotion);
 
 		if($nbt->hasTag(self::TAG_CUSTOM_COLOR, IntTag::class)){
 			$this->customColor = Color::fromARGB($nbt->getInt(self::TAG_CUSTOM_COLOR));

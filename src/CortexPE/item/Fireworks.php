@@ -102,7 +102,7 @@ class Fireworks extends Item {
 			if($session instanceof Session){
 				if($session->usingElytra && !$player->isOnGround()){
 					if($player->getGamemode() != Player::CREATIVE && $player->getGamemode() != Player::SPECTATOR){
-						$this->count--;
+						$this->pop();
 					}
 
 					$damage = 0;

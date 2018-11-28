@@ -93,12 +93,6 @@ class ShulkerBoxInventory extends ContainerInventory {
 			$this->broadcastBlockEventPacket($this->getHolder(), false);
 			$level->broadcastLevelSoundEvent($this->getHolder()->add(0.5, 0.5, 0.5), LevelSoundEventPacket::SOUND_SHULKERBOX_CLOSED);
 		}
-		$this->getHolder()->saveNBT();
 		parent::onClose($who);
-	}
-
-	public function sendContents($target): void{
-		parent::sendContents($target);
-		$this->getHolder()->saveNBT();
 	}
 }

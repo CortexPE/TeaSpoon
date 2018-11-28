@@ -37,13 +37,7 @@ namespace CortexPE\tile;
 
 use CortexPE\inventory\ShulkerBoxInventory;
 use pocketmine\inventory\InventoryHolder;
-use pocketmine\item\Item;
-use pocketmine\level\Level;
-use pocketmine\math\Vector3;
-use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\nbt\tag\ListTag;
-use pocketmine\Player;
 use pocketmine\tile\Container;
 use pocketmine\tile\ContainerTrait;
 use pocketmine\tile\Nameable;
@@ -55,74 +49,35 @@ class ShulkerBox extends Spawnable implements InventoryHolder, Container, Nameab
 
 	/** @var ShulkerBoxInventory */
 	protected $inventory;
-	/** @var CompoundTag */
-	private $nbt;
-
-	public function __construct(Level $level, CompoundTag $nbt){
-		$this->inventory = new ShulkerBoxInventory($this);
-		$this->loadItems($nbt);
-		parent::__construct($level, $nbt);
-	}
-
-	protected static function createAdditionalNBT(CompoundTag $nbt, Vector3 $pos, ?int $face = null, ?Item $item = null, ?Player $player = null): void{
-		$nbt->setTag(new ListTag("Items", [], NBT::TAG_Compound));
-
-		if($item !== null and $item->hasCustomName()){
-			$nbt->setString("CustomName", $item->getCustomName());
-		}
-	}
-
-	public function addAdditionalSpawnData(CompoundTag $nbt): void{
-		if($this->hasName()){
-			$nbt->setTag($this->getNBT()->getTag("CustomName"));
-		}
-	}
-
-	public function getNBT(): CompoundTag{
-		return $this->nbt;
-	}
-
-	public function saveNBT(): CompoundTag{
-		$this->saveItems($this->getNBT());
-
-		return parent::saveNBT();
-	}
-
-	public function getSize(): int{
-		return 27;
-	}
-
-	public function getInventory(){
-		return $this->inventory;
-	}
 
 	public function getDefaultName(): string{
 		return "Shulker Box";
 	}
 
 	public function close(): void{
-		if($this->closed === false){
+		if(!$this->isClosed()){
 			$this->inventory->removeAllViewers(true);
 			$this->inventory = null;
-
 			parent::close();
 		}
 	}
 
+	public function getRealInventory(){
+		return $this->inventory;
+	}
+
+	public function getInventory(){
+		return $this->inventory;
+	}
+
 	protected function readSaveData(CompoundTag $nbt): void{
-		$this->nbt = $nbt;
+		$this->loadName($nbt);
+		$this->inventory = new ShulkerBoxInventory($this);
+		$this->loadItems($nbt);
 	}
 
 	protected function writeSaveData(CompoundTag $nbt): void{
-		$itembase = [];
-		/** @var Item $content */
-		foreach($this->getRealInventory()->getContents() as $slot => $content){
-			$itembase[] = $content->nbtSerialize($slot);
-		}
-		$nbt->setTag(new ListTag("Items", $itembase, NBT::TAG_Compound));
-	}
-
-	public function getRealInventory(){
-		return $this->inventory;
+		$this->saveName($nbt);
+		$this->saveItems($nbt);
 	}
 }

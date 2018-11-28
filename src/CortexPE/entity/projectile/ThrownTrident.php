@@ -99,7 +99,9 @@ class ThrownTrident extends Projectile {
 		if($entityHit === $this->getOwningEntity()){
 			return;
 		}
+		$this->applyGravity();
 		parent::onHitEntity($entityHit, $hitResult);
+
 		$pk = new PlaySoundPacket();
 		$pk->x = $this->x;
 		$pk->y = $this->y;

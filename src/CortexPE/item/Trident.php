@@ -36,6 +36,8 @@ declare(strict_types = 1);
 namespace CortexPE\item;
 
 use pocketmine\entity\Entity;
+use pocketmine\item\Item;
+use pocketmine\item\ItemFactory;
 use pocketmine\item\Tool;
 use pocketmine\Player;
 
@@ -52,25 +54,26 @@ class Trident extends Tool {
 	}
 
 	public function onReleaseUsing(Player $player): bool{
-		if($player->getItemUseDuration() < 10){ // release is half a second I think...
+		$diff = $player->getItemUseDuration();
+		$p = $diff / 10;
+		$force = \min((($p ** 2) + $p * 2) / 3, 1) * 2;
+		if($force < 0.15 or $diff < 2){
 			return false;
 		}
 		$nbt = Entity::createBaseNBT(
 			$player->add(0, $player->getEyeHeight(), 0),
-			$player->getDirectionVector()->multiply(4),
+			$player->getDirectionVector()->multiply($force),
 			($player->yaw > 180 ? 360 : 0) - $player->yaw,
 			-$player->pitch
 		);
-		$asNBT = $this->nbtSerialize();
-		$asNBT->setName(self::TAG_TRIDENT);
-		$nbt->setTag($asNBT);
 		if($player->isSurvival()){
 			$this->applyDamage(1);
 		}
-		$entity = Entity::createEntity("Thrown Trident", $player->getLevel(), $nbt, $player, $this);
+		$nbt->setTag($this->nbtSerialize(-1, self::TAG_TRIDENT));
+		$entity = Entity::createEntity(Entity::TRIDENT, $player->getLevel(), $nbt, $player, $this);
 		$entity->spawnToAll();
 		if($player->isSurvival()){
-			$player->getInventory()->removeItem(clone $this);
+			$this->setCount(0);
 		}
 
 		return true;

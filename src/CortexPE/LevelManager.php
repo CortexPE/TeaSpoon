@@ -54,8 +54,9 @@ class LevelManager {
 
 	private static function registerGenerators(){
 		Main::getPluginLogger()->debug("Registering Generators...");
-		GeneratorManager::addGenerator(Ender::class, "ender");
-		GeneratorManager::addGenerator(VoidGenerator::class, "void");
+		if(Main::$registerDimensions){
+			GeneratorManager::addGenerator(Ender::class, "ender");
+		}
 	}
 
 	private static function loadAndGenerateLevels(){

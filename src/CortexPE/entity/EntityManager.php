@@ -147,7 +147,7 @@ class EntityManager extends Entity {
 		self::registerEntity(FishingHook::class, true, ['FishingHook', 'minecraft:fishinghook']);
 		self::registerEntity(Arrow::class, true, ['Arrow', 'minecraft:arrow']);
 		self::registerEntity(FireworkRocket::class, true, ['Firework', 'minecraft:firework']);
-		self::registerEntity(ThrownTrident::class, true, ['Thrown Trident', 'minecraft:thrown_trident']);
+		self::registerEntity(ThrownTrident::class, true, ['Trident', 'minecraft:trident']);
 
 		// Other Entities ////
 		self::registerEntity(AreaEffectCloud::class, true, ['AreaEffectCloud', 'minecraft:areaeffectcloud']);

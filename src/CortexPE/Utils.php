@@ -70,8 +70,12 @@ class Utils {
 
 	public static function isServerPhared(): bool{
 		if(self::$serverPhared == null){
-			$ref = new \ReflectionClass(Server::class);
-			self::$serverPhared = ((strpos($ref->getFileName(), "phar://") !== false) ? true : false);
+			try{
+				$ref = new \ReflectionClass(Server::class);
+				self::$serverPhared = ((strpos($ref->getFileName(), "phar://") !== false) ? true : false);
+			}catch(\Exception $e){
+				Main::getInstance()->getLogger()->error($e);
+			}
 
 			return self::$serverPhared;
 		}
