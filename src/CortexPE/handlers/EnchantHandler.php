@@ -35,12 +35,14 @@ declare(strict_types = 1);
 
 namespace CortexPE\handlers;
 
+use CortexPE\entity\mob\Undead;
 use CortexPE\item\enchantment\Enchantment;
 use CortexPE\Utils;
 use pocketmine\block\Block;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Human;
 use pocketmine\entity\Living;
+use pocketmine\entity\Zombie;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -106,7 +108,7 @@ class EnchantHandler implements Listener {
 							}
 							break;
 						case Enchantment::SMITE:
-							$ev->setModifier($damage + ($lvl * 2.5), EntityDamageEvent::MODIFIER_ARMOR);
+							if($e instanceof Undead || $e instanceof Zombie) $ev->setModifier($damage + ($lvl * 2.5), EntityDamageEvent::MODIFIER_ARMOR);
 							break;
 					}
 				}
