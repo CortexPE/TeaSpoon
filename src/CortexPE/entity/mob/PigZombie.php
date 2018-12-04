@@ -35,10 +35,9 @@ declare(strict_types = 1);
 
 namespace CortexPE\entity\mob;
 
-use pocketmine\entity\Monster;
 use pocketmine\item\Item;
 
-class PigZombie extends Monster {
+class PigZombie extends Undead {
 
 	public const NETWORK_ID = self::ZOMBIE_PIGMAN;
 
