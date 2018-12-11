@@ -63,7 +63,7 @@ use pocketmine\utils\Config;
 class Main extends PluginBase {
 
 	// self explanatory constants
-	public const CONFIG_VERSION = 31;
+	public const CONFIG_VERSION = 32;
 
 	/** @var string */
 	public const
@@ -103,12 +103,6 @@ class Main extends PluginBase {
 	////////////////////////////////// END OF INSTANCE VARIABLES //////////////////////////////////
 
 	///////////////////////////////// START OF CONFIGS VARIABLES /////////////////////////////////
-	/** @var int */
-	public static $ePearlDamage = 5;
-	/** @var int */
-	public static $enderPearlCooldown = 2;
-	/** @var int */
-	public static $chorusFruitCooldown = 2;
 	/** @var bool */
 	public static $registerVanillaEntities = true;
 	/** @var bool */
@@ -157,8 +151,6 @@ class Main extends PluginBase {
 	public static $clearInventoryOnGMChange = false;
 	/** @var bool */
 	public static $mobSpawnerEnable = true;
-	/** @var bool */
-	public static $mobSpawnerDamageAsEID = false;
 	/** @var bool */
 	public static $hoppersEnabled = true;
 	/** @var bool */
@@ -255,9 +247,6 @@ class Main extends PluginBase {
 		self::$netherName = self::$config->getNested("dimensions.nether.levelName", self::$netherName);
 		self::$endName = self::$config->getNested("dimensions.end.levelName", self::$endName);
 		self::$lightningFire = self::$config->getNested("entities.lightningFire", self::$lightningFire);
-		self::$enderPearlCooldown = self::$config->getNested("enderPearl.cooldown", self::$enderPearlCooldown);
-		self::$ePearlDamage = self::$config->getNested("enderPearl.damage", self::$ePearlDamage);
-		self::$chorusFruitCooldown = self::$config->getNested("chorusFruit.cooldown", self::$chorusFruitCooldown);
 		self::$registerVanillaEntities = self::$config->getNested("entities.register", self::$registerVanillaEntities);
 		self::$registerVanillaEnchantments = self::$config->getNested("enchantments.register", self::$registerVanillaEnchantments);
 		self::$registerDimensions = self::$config->getNested("dimensions.enable", self::$registerDimensions);
@@ -281,7 +270,6 @@ class Main extends PluginBase {
 		self::$fishingEnabled = self::$config->getNested("player.fishing", self::$fishingEnabled);
 		self::$clearInventoryOnGMChange = self::$config->getNested("player.clearInventoryOnGameModeChange", self::$clearInventoryOnGMChange);
 		self::$mobSpawnerEnable = self::$config->getNested("mobSpawner.enable", self::$mobSpawnerEnable);
-		self::$mobSpawnerDamageAsEID = self::$config->getNested("mobSpawner.enable", self::$mobSpawnerDamageAsEID);
 		self::$hoppersEnabled = self::$config->getNested("hopper.enable", self::$hoppersEnabled);
 		self::$beaconEnabled = self::$config->getNested("beacon.enable", self::$beaconEnabled);
 		self::$beaconEffectsEnabled = self::$config->getNested("beacon.effectsEnabled", self::$beaconEffectsEnabled);

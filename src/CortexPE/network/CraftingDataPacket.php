@@ -30,51 +30,14 @@ use pocketmine\inventory\ShapelessRecipe;
 use pocketmine\item\enchantment\EnchantmentList;
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\NetworkBinaryStream;
-use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\CraftingDataPacket as PMCraftingDataPacket;
-use pocketmine\network\mcpe\protocol\ProtocolInfo;
 
 class CraftingDataPacket extends PMCraftingDataPacket {
-	public const NETWORK_ID = ProtocolInfo::CRAFTING_DATA_PACKET;
 
 	/** @var int */
 	public const
-		ENTRY_SHAPELESS = 0,
-		ENTRY_SHAPED = 1,
-		ENTRY_FURNACE = 2,
-		ENTRY_FURNACE_DATA = 3,
 		ENTRY_ENCHANT_LIST = 4, //TODO
 		ENTRY_SHULKER_BOX = 5; //TODO
-
-	/** @var object[] */
-	public $entries = [];
-	/** @var bool */
-	public $cleanRecipes = false;
-
-	public $decodedEntries = [];
-
-	public function clean(){
-		$this->entries = [];
-		$this->decodedEntries = [];
-
-		return parent::clean();
-	}
-
-	public function addShapelessRecipe(ShapelessRecipe $recipe): void{
-		$this->entries[] = $recipe;
-	}
-
-	public function addShapedRecipe(ShapedRecipe $recipe): void{
-		$this->entries[] = $recipe;
-	}
-
-	public function addFurnaceRecipe(FurnaceRecipe $recipe): void{
-		$this->entries[] = $recipe;
-	}
-
-	public function handle(NetworkSession $session): bool{
-		return $session->handleCraftingData($this);
-	}
 
 	protected function decodePayload(): void{
 		$this->decodedEntries = [];

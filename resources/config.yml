@@ -10,7 +10,7 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 31
+version: 32
 
 entities:
  # Weather to register Vanilla Entities (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...) or not
@@ -39,6 +39,7 @@ entities:
 enchantments:
  # Weather to enable & register Vanilla Enchantments (Set to false if you're going to use VanillaEnchantments plugin etc...) or not
  register: true
+ # WARNING: This is handled client-side... and has no verification yet, meaning this can be used to exploit items.
  enchantingTableEnabled: true
 
 dimensions:
@@ -63,15 +64,6 @@ misc:
  vanilla-minecarts: 'false'
  # Toggle Lightning Rods (BlazeRods)
  lightningRods: false
- 
-enderPearl:
- enable: true
- cooldown: 2
- damage: 5
-
-chorusFruit:
- enable: true
- cooldown: 2
 
 weather: 
  enable: true
@@ -102,8 +94,6 @@ mobSpawner:
  enable: true
  # Drop spawners on silk touch (damageAsEID needs to be enabled)
  silkTouchSpawners: false
- # Use MonsterSpawner Damage Value as the Entity ID -- False in vanilla minecraft
- damageAsEID: false
 
 fireworks:
  enable: true
@@ -130,6 +120,7 @@ shulkerBox:
  enable: true
 
 anvil:
+ # WARNING: This is handled client-side... and has no verification yet, meaning this can be used to exploit items.
  enable: true
 
 cauldron:

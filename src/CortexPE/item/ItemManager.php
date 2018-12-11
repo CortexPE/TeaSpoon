@@ -48,7 +48,6 @@ class ItemManager {
 		ItemFactory::registerItem(new FireCharge(), true);
 		ItemFactory::registerItem(new Elytra(), true);
 		ItemFactory::registerItem(new Fireworks(), true);
-		ItemFactory::registerItem(new ChorusFruit(), true);
 		ItemFactory::registerItem(new FishingRod(), true);
 		ItemFactory::registerItem(new EyeOfEnder(), true);
 		ItemFactory::registerItem(new SpawnEgg(), true);

@@ -55,15 +55,6 @@ class Cauldron extends Spawnable {
 	/** @var Color */
 	protected $customColor = null;
 
-	public function getPotionID(): int{
-		return $this->potionID;
-	}
-
-	public function setPotionID(int $potionID): void{
-		$this->potionID = $potionID;
-		$this->onChanged();
-	}
-
 	public function isSplashPotion(): bool{
 		return $this->splashPotion;
 	}
@@ -87,24 +78,37 @@ class Cauldron extends Spawnable {
 		$this->onChanged();
 	}
 
-	public function resetPotion():void{
+	public function resetPotion(): void{
 		$this->setPotionID(-1);
 	}
 
-	public function hasCustomColor() : bool {
+	public function hasCustomColor(): bool{
 		return $this->customColor instanceof Color;
 	}
 
-	public function hasPotion() : bool {
+	public function hasPotion(): bool{
 		return $this->getPotionID() != -1;
 	}
 
+	public function getPotionID(): int{
+		return $this->potionID;
+	}
+
+	public function setPotionID(int $potionID): void{
+		$this->potionID = $potionID;
+		$this->onChanged();
+	}
+
 	protected function writeSaveData(CompoundTag $nbt): void{
+		$this->applyBaseNBT($nbt);
+	}
+
+	private function applyBaseNBT(CompoundTag $nbt): void{
 		$nbt->setShort(self::TAG_POTION_ID, $this->potionID);
 		$nbt->setByte(self::TAG_SPLASH_POTION, (int)$this->splashPotion);
 		if($this->customColor instanceof Color){
 			$nbt->setInt(self::TAG_CUSTOM_COLOR, $this->customColor->toARGB());
-		} else {
+		}else{
 			if($nbt->hasTag(self::TAG_CUSTOM_COLOR, IntTag::class)){
 				$nbt->removeTag(self::TAG_CUSTOM_COLOR);
 			}
@@ -112,15 +116,7 @@ class Cauldron extends Spawnable {
 	}
 
 	protected function addAdditionalSpawnData(CompoundTag $nbt): void{
-		$nbt->setShort(self::TAG_POTION_ID, $this->potionID);
-		$nbt->setByte(self::TAG_SPLASH_POTION, (int)$this->splashPotion);
-		if($this->customColor instanceof Color){
-			$nbt->setInt(self::TAG_CUSTOM_COLOR, $this->customColor->toARGB());
-		} else {
-			if($nbt->hasTag(self::TAG_CUSTOM_COLOR, IntTag::class)){
-				$nbt->removeTag(self::TAG_CUSTOM_COLOR);
-			}
-		}
+		$this->applyBaseNBT($nbt);
 	}
 
 	protected function readSaveData(CompoundTag $nbt): void{

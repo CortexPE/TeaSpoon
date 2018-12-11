@@ -84,13 +84,11 @@ class EnchantHandler implements Listener {
 	/**
 	 * @param EntityDamageEvent $ev
 	 *
-	 * @priority HIGHEST
+	 * @priority LOWEST
+	 * @ignoreCancelled true
 	 */
 	public function onDamage(EntityDamageEvent $ev){
 		$e = $ev->getEntity();
-		if($ev->isCancelled()){
-			return;
-		}
 		if($ev instanceof EntityDamageByEntityEvent){
 			$d = $ev->getDamager();
 			if(!($d instanceof Entity) || !$d->isAlive()){
@@ -117,97 +115,89 @@ class EnchantHandler implements Listener {
 	}
 
 	/**
+	 * @param Item[] $drops
+	 * @param int $amount
+	 * @return Item[]
+	 */
+	private function increaseDrops(array $drops, int $amount = 1) {
+		$newDrops = [];
+		foreach($drops as $drop){
+			$newDrops[] = $drop->setCount(1 + $amount);
+		}
+		return $newDrops;
+	}
+
+	/**
 	 * @param BlockBreakEvent $ev
 	 *
 	 * Attribution:
 	 *  - Big thanks to @TheAz928 for the values... It really helped a lot! :D
 	 *  - The onBreak function below is a refactored, bare-bones and more-human friendly version of his Fortune enchant handler...
 	 *
-	 * @priority HIGHEST
+	 * @priority LOWEST
+	 * @ignoreCancelled true
 	 */
 	public function onBreak(BlockBreakEvent $ev){
-		if($ev->isCancelled()){
-			return;
-		}
 		$block = $ev->getBlock();
 		$item = $ev->getItem();
 		$fortuneEnchantment = $item->getEnchantment(Enchantment::FORTUNE);
-		if(!($fortuneEnchantment instanceof EnchantmentInstance)){ // all this method handles is the fortune enchant
-			return;
-		}
-		$level = $fortuneEnchantment->getLevel() + 1;
-		$rand = rand(1, $level);
-		if($item instanceof TieredTool){
-			switch($block->getId()){
-				case Block::COAL_ORE:
-					if($item instanceof Pickaxe){
-						$ev->setDrops([Item::get(Item::COAL, 0, 1 + $rand)]);
-					}
-					break;
-				case Block::LAPIS_ORE:
-					if($item instanceof Pickaxe && $item->getTier() > TieredTool::TIER_WOODEN){
-						$ev->setDrops([Item::get(Item::DYE, 4, rand(1, 4) + $rand)]);
-					}
-					break;
-				case Block::GLOWING_REDSTONE_ORE:
-				case Block::REDSTONE_ORE:
-					if($item instanceof Pickaxe && $item->getTier() > TieredTool::TIER_WOODEN){
-						$ev->setDrops([Item::get(Item::REDSTONE, 0, rand(2, 3) + $rand)]);
-					}
-					break;
-				case Block::NETHER_QUARTZ_ORE:
-					if($item instanceof Pickaxe && $item->getTier() > TieredTool::TIER_WOODEN){
-						$ev->setDrops([Item::get(Item::QUARTZ, 0, rand(1, 2) + $rand)]);
-					}
-					break;
-				case Block::DIAMOND_ORE:
-					if($item instanceof Pickaxe && $item->getTier() == TieredTool::TIER_IRON){
-						$ev->setDrops([Item::get(Item::DIAMOND, 0, 1 + $rand)]);
-					}
-					break;
-				case Block::EMERALD_ORE:
-					if($item instanceof Pickaxe && $item->getTier() == TieredTool::TIER_IRON){
-						$ev->setDrops([Item::get(Item::EMERALD, 0, 1 + $rand)]);
-					}
-					break;
-				case Block::POTATO_BLOCK:
-					if($item instanceof Axe || $item instanceof Pickaxe){
-						if($block->getDamage() >= 7){
-							$ev->setDrops([Item::get(Item::POTATO, 0, rand(1, 3) + $rand)]);
+		if($fortuneEnchantment instanceof EnchantmentInstance){
+			$level = $fortuneEnchantment->getLevel() + 1;
+			$rand = rand(1, $level);
+			if($item instanceof TieredTool){
+				switch($block->getId()){
+					case Block::COAL_ORE:
+						if($item instanceof Pickaxe){
+							$ev->setDrops($this->increaseDrops($ev->getDrops(), $rand));
 						}
-					}
-					break;
-				case Block::CARROT_BLOCK:
-					if($item instanceof Axe || $item instanceof Pickaxe){
-						if($block->getDamage() >= 7){
-							$ev->setDrops([Item::get(Item::CARROT, 0, rand(1, 3) + $rand)]);
+						break;
+					case Block::LAPIS_ORE:
+						if($item instanceof Pickaxe && $item->getTier() > TieredTool::TIER_WOODEN){
+							$ev->setDrops($this->increaseDrops($ev->getDrops(), rand(0, 3) + $rand));
 						}
-					}
-					break;
-				case Block::BEETROOT_BLOCK:
-					if($item instanceof Axe || $item instanceof Pickaxe){
-						if($block->getDamage() >= 7){
-							$ev->setDrops([Item::get(Item::BEETROOT, 0, rand(1, 3) + $rand)]);
+						break;
+					case Block::GLOWING_REDSTONE_ORE:
+					case Block::REDSTONE_ORE:
+						if($item instanceof Pickaxe && $item->getTier() > TieredTool::TIER_WOODEN){
+							$ev->setDrops($this->increaseDrops($ev->getDrops(), rand(1, 2) + $rand));
 						}
-					}
-					break;
-				case Block::WHEAT_BLOCK:
-					if($item instanceof Axe || $item instanceof Pickaxe){
-						if($block->getDamage() >= 7){
-							$ev->setDrops([Item::get(Item::SEEDS, 0, rand(1, 3) + $rand), Item::get(Item::WHEAT, 0, 1)]);
+						break;
+					case Block::NETHER_QUARTZ_ORE:
+						if($item instanceof Pickaxe && $item->getTier() > TieredTool::TIER_WOODEN){
+							$ev->setDrops($this->increaseDrops($ev->getDrops(), rand(0, 1) + $rand));
 						}
-					}
-					break;
-				case Block::MELON_BLOCK:
-					if($item instanceof Axe || $item instanceof Pickaxe){
-						$ev->setDrops([Item::get(Item::MELON, 0, rand(3, 9) + $rand)]);
-					}
-					break;
-				case Block::LEAVES:
-					if(rand(1, 100) <= 10 + $level * 2){
-						$ev->setDrops([Item::get(Item::APPLE, 0, 1)]);
-					}
-					break;
+						break;
+					case Block::DIAMOND_ORE:
+						if($item instanceof Pickaxe && $item->getTier() >= TieredTool::TIER_IRON){
+							$ev->setDrops($this->increaseDrops($ev->getDrops(), $rand));
+						}
+						break;
+					case Block::EMERALD_ORE:
+						if($item instanceof Pickaxe && $item->getTier() >= TieredTool::TIER_IRON){
+							$ev->setDrops($this->increaseDrops($ev->getDrops(), $rand));
+						}
+						break;
+					case Block::CARROT_BLOCK:
+					case Block::POTATO_BLOCK:
+					case Block::BEETROOT_BLOCK:
+					case Block::WHEAT_BLOCK:
+						if($item instanceof Axe || $item instanceof Pickaxe){
+							if($block->getDamage() >= 7){
+								$ev->setDrops($this->increaseDrops($ev->getDrops(), rand(1, 3) + $rand));
+							}
+						}
+						break;
+					case Block::MELON_BLOCK:
+						if($item instanceof Axe || $item instanceof Pickaxe){
+							$ev->setDrops($this->increaseDrops($ev->getDrops(), rand(3, 9) + $rand));
+						}
+						break;
+					case Block::LEAVES:
+						if(rand(1, 100) <= 10 + $level * 2){
+							$ev->setDrops([Item::get(Item::APPLE, 0, 1)]);
+						}
+						break;
+				}
 			}
 		}
 	}
@@ -215,7 +205,7 @@ class EnchantHandler implements Listener {
 	/**
 	 * @param EntityDeathEvent $ev
 	 *
-	 * @priority HIGHEST
+	 * @priority LOWEST
 	 */
 	public function onEntityDeath(EntityDeathEvent $ev){
 		$ent = $ev->getEntity();
@@ -226,16 +216,9 @@ class EnchantHandler implements Listener {
 		if($cause instanceof EntityDamageByEntityEvent){
 			$damager = $cause->getDamager();
 			if($damager instanceof PMPlayer){
-				$item = $damager->getInventory()->getItemInHand();
-				$enchantment = $item->getEnchantment(Enchantment::LOOTING);
+				$enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(Enchantment::LOOTING);
 				if($enchantment instanceof EnchantmentInstance){
-					$drops = [];
-					foreach($ev->getDrops() as $drop){
-						$rand = rand(1, $enchantment->getLevel() + 1);
-						$drop->setCount($drop->getCount() + $rand);
-						$drops[] = $drop;
-					}
-					$ev->setDrops($drops);
+					$ev->setDrops($this->increaseDrops($ev->getDrops(), rand(1, $enchantment->getLevel() + 1)));
 				}
 			}
 		}

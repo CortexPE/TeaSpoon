@@ -1,8 +1,35 @@
 <?php
 
-/*
- * Credits: https://github.com/thebigsmileXD/SimpleSpawner
-*/
+/**
+ *
+ * MMP""MM""YMM               .M"""bgd
+ * P'   MM   `7              ,MI    "Y
+ *      MM  .gP"Ya   ,6"Yb.  `MMb.   `7MMpdMAo.  ,pW"Wq.   ,pW"Wq.`7MMpMMMb.
+ *      MM ,M'   Yb 8)   MM    `YMMNq. MM   `Wb 6W'   `Wb 6W'   `Wb MM    MM
+ *      MM 8M""""""  ,pm9MM  .     `MM MM    M8 8M     M8 8M     M8 MM    MM
+ *      MM YM.    , 8M   MM  Mb     dM MM   ,AP YA.   ,A9 YA.   ,A9 MM    MM
+ *    .JMML.`Mbmmd' `Moo9^Yo.P"Ybmmd"  MMbmmd'   `Ybmd9'   `Ybmd9'.JMML  JMML.
+ *                                     MM
+ *                                   .JMML.
+ * This file is part of TeaSpoon.
+ *
+ * TeaSpoon is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * TeaSpoon is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with TeaSpoon.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author CortexPE
+ * @link https://CortexPE.xyz
+ *
+ */
 
 declare(strict_types = 1);
 
@@ -11,7 +38,6 @@ namespace CortexPE\tile;
 use CortexPE\Main;
 use pocketmine\entity\Entity;
 use pocketmine\item\Item;
-use pocketmine\level\Level;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\ShortTag;
@@ -29,73 +55,18 @@ class MobSpawner extends Spawnable {
 		TAG_MIN_SPAWN_DELAY = "MinSpawnDelay",
 		TAG_MAX_SPAWN_DELAY = "MaxSpawnDelay",
 		TAG_DELAY = "Delay";
-
-	/** @var CompoundTag */
-	private $nbt;
-
-	public function __construct(Level $level, CompoundTag $nbt){
-		if($nbt->hasTag(self::TAG_SPAWN_COUNT, ShortTag::class) || $nbt->hasTag(self::TAG_ENTITY_ID, StringTag::class)){ // duct-tape fix for #206
-			// NUKE EM. REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-			$nbt->removeTag(self::TAG_ENTITY_ID);
-			$nbt->removeTag(self::TAG_SPAWN_COUNT);
-			$nbt->removeTag(self::TAG_SPAWN_RANGE);
-			$nbt->removeTag(self::TAG_MIN_SPAWN_DELAY);
-			$nbt->removeTag(self::TAG_MAX_SPAWN_DELAY);
-			$nbt->removeTag(self::TAG_DELAY);
-		}
-		if(!$nbt->hasTag(self::TAG_ENTITY_ID, IntTag::class)){
-			$nbt->setInt(self::TAG_ENTITY_ID, 0);
-		}
-		if(!$nbt->hasTag(self::TAG_SPAWN_COUNT, IntTag::class)){
-			$nbt->setInt(self::TAG_SPAWN_COUNT, 4);
-		}
-		if(!$nbt->hasTag(self::TAG_SPAWN_RANGE, IntTag::class)){
-			$nbt->setInt(self::TAG_SPAWN_RANGE, 4);
-		}
-		if(!$nbt->hasTag(self::TAG_MIN_SPAWN_DELAY, IntTag::class)){
-			$nbt->setInt(self::TAG_MIN_SPAWN_DELAY, 200);
-		}
-		if(!$nbt->hasTag(self::TAG_MAX_SPAWN_DELAY, IntTag::class)){
-			$nbt->setInt(self::TAG_MAX_SPAWN_DELAY, 800);
-		}
-		if(!$nbt->hasTag(self::TAG_DELAY, IntTag::class)){
-			$nbt->setInt(self::TAG_DELAY, mt_rand($nbt->getInt(self::TAG_MIN_SPAWN_DELAY), $nbt->getInt(self::TAG_MAX_SPAWN_DELAY)));
-		}
-		parent::__construct($level, $nbt);
-		if($this->getEntityId() > 0){
-			$this->scheduleUpdate();
-		}
-	}
-
-	public function getEntityId(){
-		return $this->getNBT()->getInt(self::TAG_ENTITY_ID);
-	}
-
-	public function getNBT(): CompoundTag{
-		return $this->nbt;
-	}
-
-	public function setEntityId(int $id){
-		$this->getNBT()->setInt(self::TAG_ENTITY_ID, $id);
-		$this->onChanged();
-		$this->scheduleUpdate();
-	}
-
-	public function setSpawnCount(int $value){
-		$this->getNBT()->setInt(self::TAG_SPAWN_COUNT, $value);
-	}
-
-	public function setSpawnRange(int $value){
-		$this->getNBT()->setInt(self::TAG_SPAWN_RANGE, $value);
-	}
-
-	public function setMinSpawnDelay(int $value){
-		$this->getNBT()->setInt(self::TAG_MIN_SPAWN_DELAY, $value);
-	}
-
-	public function setMaxSpawnDelay(int $value){
-		$this->getNBT()->setInt(self::TAG_MAX_SPAWN_DELAY, $value);
-	}
+	/** @var int */
+	protected $entityId = 0;
+	/** @var int */
+	protected $spawnCount = 4;
+	/** @var int */
+	protected $spawnRange = 4;
+	/** @var int */
+	protected $minSpawnDelay = 200;
+	/** @var int */
+	protected $maxSpawnDelay = 800;
+	/** @var int */
+	protected $delay;
 
 	public function getName(): string{
 		return "Monster Spawner";
@@ -109,24 +80,24 @@ class MobSpawner extends Spawnable {
 		$this->timings->startTiming();
 
 		if($this->canUpdate() && Main::$mobSpawnerEnable){
-			if($this->getDelay() <= 0){
-				$success = 0;
-				for($i = 0; $i < $this->getSpawnCount(); $i++){
-					$pos = $this->add(mt_rand() / mt_getrandmax() * $this->getSpawnRange(), mt_rand(-1, 1), mt_rand() / mt_getrandmax() * $this->getSpawnRange());
+			if($this->delay <= 0){
+				$success = false;
+				for($i = 0; $i < $this->spawnCount; $i++){
+					$pos = $this->add(mt_rand() / mt_getrandmax() * $this->spawnRange, mt_rand(-1, 1), mt_rand() / mt_getrandmax() * $this->spawnRange);
 					$target = $this->getLevel()->getBlock($pos);
 					if($target->getId() == Item::AIR){
-						$success++;
-						$entity = Entity::createEntity($this->getEntityId(), $this->getLevel(), Entity::createBaseNBT($target->add(0.5, 0, 0.5), null, lcg_value() * 360, 0));
+						$success = true;
+						$entity = Entity::createEntity($this->entityId, $this->getLevel(), Entity::createBaseNBT($target->add(0.5, 0, 0.5), null, lcg_value() * 360, 0));
 						if($entity instanceof Entity){
 							$entity->spawnToAll();
 						}
 					}
 				}
-				if($success > 0){
-					$this->setDelay(mt_rand($this->getMinSpawnDelay(), $this->getMaxSpawnDelay()));
+				if($success){
+					$this->generateRandomDelay();
 				}
 			}else{
-				$this->setDelay($this->getDelay() - 1);
+				$this->delay--;
 			}
 		}
 
@@ -136,67 +107,174 @@ class MobSpawner extends Spawnable {
 	}
 
 	public function canUpdate(): bool{
-		if(!$this->getLevel()->isChunkLoaded($this->getX() >> 4, $this->getZ() >> 4)) return false;
-		if($this->getEntityId() === 0) return false;
-		$hasPlayer = false;
-		$count = 0;
-		foreach($this->getLevel()->getEntities() as $e){
-			if($e instanceof Player){
-				if($e->distance($this->getBlock()) <= 15) $hasPlayer = true;
+		if($this->entityId !== 0 && $this->getLevel()->isChunkLoaded($this->getX() >> 4, $this->getZ() >> 4)){
+			$hasPlayer = false;
+			$count = 0;
+			foreach($this->getLevel()->getEntities() as $e){
+				if($e instanceof Player && $e->distance($this) <= 15){
+					$hasPlayer = true;
+				}
+				if($e::NETWORK_ID == $this->entityId){
+					$count++;
+				}
 			}
-			if($e::NETWORK_ID == $this->getEntityId()){
-				$count++;
-			}
-		}
-		if($hasPlayer and $count < 15){ // Spawn limit = 15
-			return true;
+
+			return ($hasPlayer && $count < 15);
 		}
 
 		return false;
 	}
 
-	public function getDelay(){
-		return $this->getNBT()->getInt(self::TAG_DELAY);
-	}
-
-	public function getSpawnCount(){
-		return $this->getNBT()->getInt(self::TAG_SPAWN_COUNT);
-	}
-
-	public function getSpawnRange(){
-		return $this->getNBT()->getInt(self::TAG_SPAWN_RANGE);
-	}
-
-	public function setDelay(int $value){
-		$this->getNBT()->setInt(self::TAG_DELAY, $value);
-	}
-
-	public function getMinSpawnDelay(){
-		return $this->getNBT()->getInt(self::TAG_MIN_SPAWN_DELAY);
-	}
-
-	public function getMaxSpawnDelay(){
-		return $this->getNBT()->getInt(self::TAG_MAX_SPAWN_DELAY);
+	protected function generateRandomDelay(): int{
+		return ($this->delay = mt_rand($this->minSpawnDelay, $this->maxSpawnDelay));
 	}
 
 	public function addAdditionalSpawnData(CompoundTag $nbt): void{
-		$this->baseData($nbt);
+		$this->applyBaseNBT($nbt);
 	}
 
-	private function baseData(CompoundTag $nbt): void{
-		$nbt->setInt(self::TAG_ENTITY_ID, $this->getNBT()->getInt(self::TAG_ENTITY_ID));
-		$nbt->setInt(self::TAG_DELAY, $this->getNBT()->getInt(self::TAG_DELAY));
-		$nbt->setInt(self::TAG_SPAWN_COUNT, $this->getNBT()->getInt(self::TAG_SPAWN_COUNT));
-		$nbt->setInt(self::TAG_SPAWN_RANGE, $this->getNBT()->getInt(self::TAG_SPAWN_RANGE));
-		$nbt->setInt(self::TAG_MIN_SPAWN_DELAY, $this->getNBT()->getInt(self::TAG_MIN_SPAWN_DELAY));
-		$nbt->setInt(self::TAG_MAX_SPAWN_DELAY, $this->getNBT()->getInt(self::TAG_MAX_SPAWN_DELAY));
+	private function applyBaseNBT(CompoundTag &$nbt): void{
+		$nbt->setInt(self::TAG_ENTITY_ID, $this->entityId);
+		$nbt->setInt(self::TAG_SPAWN_COUNT, $this->spawnCount);
+		$nbt->setInt(self::TAG_SPAWN_RANGE, $this->spawnRange);
+		$nbt->setInt(self::TAG_MIN_SPAWN_DELAY, $this->minSpawnDelay);
+		$nbt->setInt(self::TAG_MAX_SPAWN_DELAY, $this->maxSpawnDelay);
+		$nbt->setInt(self::TAG_DELAY, $this->delay);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getEntityId(): int{
+		return $this->entityId;
+	}
+
+	/**
+	 * @param int $entityId
+	 */
+	public function setEntityId(int $entityId): void{
+		$this->entityId = $entityId;
+		$this->onChanged(); // this needs to be sent to the client so the entity animation updates too
+		$this->scheduleUpdate();
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getSpawnCount(): int{
+		return $this->spawnCount;
+	}
+
+	/**
+	 * @param int $spawnCount
+	 */
+	public function setSpawnCount(int $spawnCount): void{
+		$this->spawnCount = $spawnCount;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getSpawnRange(): int{
+		return $this->spawnRange;
+	}
+
+	/**
+	 * @param int $spawnRange
+	 */
+	public function setSpawnRange(int $spawnRange): void{
+		$this->spawnRange = $spawnRange;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getMinSpawnDelay(): int{
+		return $this->minSpawnDelay;
+	}
+
+	/**
+	 * @param int $minSpawnDelay
+	 */
+	public function setMinSpawnDelay(int $minSpawnDelay): void{
+		$this->minSpawnDelay = $minSpawnDelay;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getMaxSpawnDelay(): int{
+		return $this->maxSpawnDelay;
+	}
+
+	/**
+	 * @param int $maxSpawnDelay
+	 */
+	public function setMaxSpawnDelay(int $maxSpawnDelay): void{
+		$this->maxSpawnDelay = $maxSpawnDelay;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getDelay(): int{
+		return $this->delay;
+	}
+
+	/**
+	 * @param int $delay
+	 */
+	public function setDelay(int $delay): void{
+		$this->delay = $delay;
 	}
 
 	protected function readSaveData(CompoundTag $nbt): void{
-		$this->nbt = $nbt;
+		if($this->delay === null){
+			$this->generateRandomDelay();
+		}
+		if($nbt->hasTag(self::TAG_SPAWN_COUNT, ShortTag::class) || $nbt->hasTag(self::TAG_ENTITY_ID, StringTag::class)){ // duct-tape fix for #206
+			// NUKE THE OUTDATED TILE NBT. REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+			$nbt->removeTag(self::TAG_ENTITY_ID);
+			$nbt->removeTag(self::TAG_SPAWN_COUNT);
+			$nbt->removeTag(self::TAG_SPAWN_RANGE);
+			$nbt->removeTag(self::TAG_MIN_SPAWN_DELAY);
+			$nbt->removeTag(self::TAG_MAX_SPAWN_DELAY);
+			$nbt->removeTag(self::TAG_DELAY);
+		}
+
+		if(!$nbt->hasTag(self::TAG_ENTITY_ID, IntTag::class)){
+			$nbt->setInt(self::TAG_ENTITY_ID, $this->entityId);
+		}
+		$this->entityId = $nbt->getInt(self::TAG_ENTITY_ID, $this->entityId);
+
+		if(!$nbt->hasTag(self::TAG_SPAWN_COUNT, IntTag::class)){
+			$nbt->setInt(self::TAG_SPAWN_COUNT, $this->spawnCount);
+		}
+		$this->spawnCount = $nbt->getInt(self::TAG_SPAWN_COUNT, $this->spawnCount);
+
+		if(!$nbt->hasTag(self::TAG_SPAWN_RANGE, IntTag::class)){
+			$nbt->setInt(self::TAG_SPAWN_RANGE, $this->spawnRange);
+		}
+		$this->spawnRange = $nbt->getInt(self::TAG_SPAWN_RANGE, $this->spawnRange);
+
+		if(!$nbt->hasTag(self::TAG_MIN_SPAWN_DELAY, IntTag::class)){
+			$nbt->setInt(self::TAG_MIN_SPAWN_DELAY, $this->minSpawnDelay);
+		}
+		$this->minSpawnDelay = $nbt->getInt(self::TAG_MIN_SPAWN_DELAY, $this->minSpawnDelay);
+
+		if(!$nbt->hasTag(self::TAG_MAX_SPAWN_DELAY, IntTag::class)){
+			$nbt->setInt(self::TAG_MAX_SPAWN_DELAY, $this->maxSpawnDelay);
+		}
+		$this->maxSpawnDelay = $nbt->getInt(self::TAG_MAX_SPAWN_DELAY, $this->maxSpawnDelay);
+
+		if(!$nbt->hasTag(self::TAG_DELAY, IntTag::class)){
+			$nbt->setInt(self::TAG_DELAY, $this->delay);
+		}
+		$this->delay = $nbt->getInt(self::TAG_MAX_SPAWN_DELAY, $this->delay);
+		$this->scheduleUpdate();
 	}
 
 	protected function writeSaveData(CompoundTag $nbt): void{
-		$this->baseData($nbt);
+		$this->applyBaseNBT($nbt);
 	}
 }

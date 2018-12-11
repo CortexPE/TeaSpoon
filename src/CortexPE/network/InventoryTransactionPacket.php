@@ -24,63 +24,9 @@ declare(strict_types = 1);
 namespace CortexPE\network;
 
 use CortexPE\network\types\NetworkInventoryAction;
-use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket as PMInventoryTransactionPacket;
-use pocketmine\network\mcpe\protocol\ProtocolInfo;
 
 class InventoryTransactionPacket extends PMInventoryTransactionPacket {
-	public const NETWORK_ID = ProtocolInfo::INVENTORY_TRANSACTION_PACKET;
-
-	/** @var int */
-	public const
-		TYPE_NORMAL = 0,
-		TYPE_MISMATCH = 1,
-		TYPE_USE_ITEM = 2,
-		TYPE_USE_ITEM_ON_ENTITY = 3,
-		TYPE_RELEASE_ITEM = 4;
-
-	/** @var int */
-	public const
-		USE_ITEM_ACTION_CLICK_BLOCK = 0,
-		USE_ITEM_ACTION_CLICK_AIR = 1,
-		USE_ITEM_ACTION_BREAK_BLOCK = 2;
-
-	/** @var int */
-	public const
-		RELEASE_ITEM_ACTION_RELEASE = 0, //bow shoot
-		RELEASE_ITEM_ACTION_CONSUME = 1; //eat food, drink potion
-
-	/** @var int */
-	public const
-		USE_ITEM_ON_ENTITY_ACTION_INTERACT = 0,
-		USE_ITEM_ON_ENTITY_ACTION_ATTACK = 1;
-
-	/** @var int */
-	public $transactionType;
-
-	/**
-	 * @var bool
-	 * NOTE: THIS FIELD DOES NOT EXIST IN THE PROTOCOL, it's merely used for convenience for PocketMine-MP to easily
-	 * determine whether we're doing a crafting transaction.
-	 */
-	public $isCraftingPart = false;
-	/**
-	 * @var bool
-	 * NOTE: THIS FIELD DOES NOT EXIST IN THE PROTOCOL, it's merely used for convenience for PocketMine-MP to easily
-	 * determine whether we're doing a crafting transaction.
-	 */
-	public $isFinalCraftingPart = false;
-
-	/** @var NetworkInventoryAction[] */
-	public $actions = [];
-
-	/** @var \stdClass */
-	public $trData;
-
-	public function handle(NetworkSession $session): bool{
-		return $session->handleInventoryTransaction($this);
-	}
-
 	protected function decodePayload(): void{
 		$this->transactionType = $this->getUnsignedVarInt();
 
