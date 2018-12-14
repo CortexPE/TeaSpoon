@@ -54,18 +54,17 @@ use pocketmine\item\Item;
 use pocketmine\item\Pickaxe;
 use pocketmine\item\TieredTool;
 use pocketmine\Player as PMPlayer;
-use pocketmine\plugin\Plugin;
 
 class EnchantHandler implements Listener {
 	/**
-	 * TO-DO:
-	 * [X] Smite
-	 * [X] Bane of athropods
-	 * [X] Looting
-	 * [X] Fortune
-	 * [X] Luck of the sea
-	 * [X] Lure
-	 * [ ] Frost walker (Very laggy as of now)
+	 * TODO:
+	 *  - [X] Smite
+	 *  - [X] Bane of athropods
+	 *  - [X] Looting
+	 *  - [X] Fortune
+	 *  - [X] Luck of the sea
+	 *  - [X] Lure
+	 *  - [ ] Frost walker (Very laggy as of now)
 	 */
 
 	/** @var string */
@@ -73,13 +72,6 @@ class EnchantHandler implements Listener {
 		"Spider", "Cave Spider",
 		"Silverfish", "Endermite",
 	];
-
-	/** @var Plugin */
-	public $plugin;
-
-	public function __construct(Plugin $plugin){
-		$this->plugin = $plugin;
-	}
 
 	/**
 	 * @param EntityDamageEvent $ev
@@ -106,7 +98,9 @@ class EnchantHandler implements Listener {
 							}
 							break;
 						case Enchantment::SMITE:
-							if($e instanceof Undead || $e instanceof Zombie) $ev->setModifier($damage + ($lvl * 2.5), EntityDamageEvent::MODIFIER_ARMOR);
+							if($e instanceof Undead || $e instanceof Zombie){
+								$ev->setModifier($damage + ($lvl * 2.5), EntityDamageEvent::MODIFIER_ARMOR);
+							}
 							break;
 					}
 				}
@@ -206,19 +200,19 @@ class EnchantHandler implements Listener {
 	 * @param EntityDeathEvent $ev
 	 *
 	 * @priority LOWEST
+	 * @ignoreCancelled true
 	 */
 	public function onEntityDeath(EntityDeathEvent $ev){
 		$ent = $ev->getEntity();
-		if($ent instanceof Human){
-			return;
-		}
-		$cause = $ent->getLastDamageCause();
-		if($cause instanceof EntityDamageByEntityEvent){
-			$damager = $cause->getDamager();
-			if($damager instanceof PMPlayer){
-				$enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(Enchantment::LOOTING);
-				if($enchantment instanceof EnchantmentInstance){
-					$ev->setDrops($this->increaseDrops($ev->getDrops(), rand(1, $enchantment->getLevel() + 1)));
+		if(!($ent instanceof Human)){
+			$cause = $ent->getLastDamageCause();
+			if($cause instanceof EntityDamageByEntityEvent){
+				$damager = $cause->getDamager();
+				if($damager instanceof PMPlayer){
+					$enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(Enchantment::LOOTING);
+					if($enchantment instanceof EnchantmentInstance){
+						$ev->setDrops($this->increaseDrops($ev->getDrops(), rand(1, $enchantment->getLevel() + 1)));
+					}
 				}
 			}
 		}
