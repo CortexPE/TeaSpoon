@@ -40,7 +40,6 @@ use CortexPE\Main;
 use pocketmine\block\Block;
 use pocketmine\block\EnchantingTable as PMEnchantingTable;
 use pocketmine\item\Item;
-use pocketmine\network\mcpe\protocol\types\WindowTypes;
 use pocketmine\Player;
 use pocketmine\tile\EnchantTable;
 use pocketmine\tile\Tile;
@@ -54,7 +53,7 @@ class EnchantingTable extends PMEnchantingTable {
 				Tile::createTile(Tile::ENCHANT_TABLE, $this->getLevel(), EnchantTable::createNBT($this));
 			}
 
-			$player->addWindow(new EnchantInventory($this), WindowTypes::ENCHANTMENT);
+			$player->addWindow(new EnchantInventory($this));
 		}
 
 		return true;
