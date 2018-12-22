@@ -84,8 +84,9 @@ class MonsterSpawner extends SpawnerPM {
 
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = \null): bool{
 		parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player);
+		$eID = null;
+		$nbt = MobSpawner::createNBT($this, $face, $item, $player);
 		if($item->getNamedTag()->getTag(MobSpawner::TAG_ENTITY_ID) !== null){
-			$nbt = MobSpawner::createNBT($this, $face, $item, $player);
 			foreach(
 				[
 					MobSpawner::TAG_ENTITY_ID,
@@ -100,8 +101,12 @@ class MonsterSpawner extends SpawnerPM {
 					$nbt->setTag($tag);
 				}
 			}
-			Tile::createTile(Tile::MOB_SPAWNER, $this->getLevel(), $nbt);
+		} elseif(($meta = $item->getDamage()) != 0){
+			$nbt->setInt(MobSpawner::TAG_ENTITY_ID, $meta);
+		} else {
+			return true;
 		}
+		Tile::createTile(Tile::MOB_SPAWNER, $this->getLevel(), $nbt);
 
 		return true;
 	}

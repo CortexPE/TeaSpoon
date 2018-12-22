@@ -230,9 +230,9 @@ class NetworkInventoryAction{
 								$this->inventorySlot = 1;
 								break;
 							case self::SOURCE_TYPE_ENCHANT_OUTPUT:
-								$inv->sendSlot(0, $player);
+								//$inv->sendSlot(0, $player);
 
-								return null;
+								break;
 						}
 
 						return new SlotChangeAction($inv, $this->inventorySlot, $this->oldItem, $this->newItem);
