@@ -172,7 +172,7 @@ class Minecart extends Vehicle {
 	public function onUpdate(int $currentTick): bool{
 		parent::onUpdate($currentTick);
 
-		if($this->closed || !$this->isAlive()){
+		if($this->isFlaggedForDespawn() || !$this->isAlive()){
 			return false;
 		}
 

@@ -14,6 +14,9 @@ Contributions are very welcome :smile:<br />You may contribute by opening a Pull
 __[Discord Group to 'talk-to-a-human-for-support' and for questions](https://discord.gg/t5NsTyj)__
 
 # Keep the project alive!
+<p align="center"><strong>Big thanks to RedCraftGH for supporting the project :smile:</strong></p>
+
+
 Help keep me motivated into making this massive thing... Maintaining it is sometimes a pain and I only find it a waste of time to update something I don't get anything in return for :/ I hope you all can understand. You can donate here: [![Donate](https://img.shields.io/badge/donate-PayPal-yellow.svg?style=flat-square)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MABFZPDR8F5UG)
 
 # Installation

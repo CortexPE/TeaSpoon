@@ -52,6 +52,7 @@ use pocketmine\event\player\{
 	cheat\PlayerIllegalMoveEvent, PlayerDropItemEvent, PlayerGameModeChangeEvent, PlayerInteractEvent, PlayerItemHeldEvent, PlayerLoginEvent, PlayerQuitEvent, PlayerRespawnEvent
 };
 use pocketmine\item\Armor;
+use pocketmine\item\BlazeRod;
 use pocketmine\item\Item;
 use pocketmine\level\Level;
 use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
@@ -93,8 +94,8 @@ class EventListener implements Listener {
 
 		foreach($lvl->getEntities() as $entity){
 			if(in_array($entity::NETWORK_ID, $TEMPORARY_ENTITIES)){
-				if(!$entity->isClosed()){
-					$entity->close();
+				if(!$entity->isFlaggedForDespawn()){
+					$entity->flagForDespawn();
 				}
 			}
 		}
@@ -301,6 +302,10 @@ class EventListener implements Listener {
 				}
 			}
 		}
+		/*if($ev->getItem() instanceof BlazeRod && $ev->getAction() == PlayerInteractEvent::RIGHT_CLICK_BLOCK){
+			$ev->setCancelled();
+			($player = $ev->getPlayer())->getLevel()->setBlockDataAt(($blockClicked = $ev->getBlock())->x, $blockClicked->y, $blockClicked->z, ($player->getLevel()->getBlock($blockClicked)->getDamage() + 1) % 16);
+		}*/
 	}
 
 	/**

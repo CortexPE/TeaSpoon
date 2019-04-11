@@ -94,7 +94,7 @@ class Boat extends Vehicle {
 		$this->updateMovement();
 		if(!($this->linkedEntity instanceof Entity)){
 			if($this->age > 1500){
-				$this->close();
+				$this->flagForDespawn();
 				$hasUpdate = true;
 				//$this->scheduleUpdate();
 				$this->age = 0;

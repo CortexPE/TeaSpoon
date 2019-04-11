@@ -25,6 +25,8 @@ namespace CortexPE\network\types;
 
 use CortexPE\inventory\AnvilInventory;
 use CortexPE\inventory\EnchantInventory;
+use CortexPE\inventory\transaction\action\CraftingTakeResultAction;
+use CortexPE\inventory\transaction\action\CraftingTransferMaterialAction;
 use CortexPE\Main;
 use CortexPE\network\InventoryTransactionPacket;
 use pocketmine\inventory\transaction\action\CreativeInventoryAction;
@@ -155,7 +157,7 @@ class NetworkInventoryAction{
 				$packet->putVarInt($this->windowId);
 				break;
 			default:
-				throw new \UnexpectedValueException("Unknown inventory action source type $this->sourceType");
+				throw new \InvalidArgumentException("Unknown inventory action source type $this->sourceType");
 		}
 
 		$packet->putUnsignedVarInt($this->inventorySlot);
@@ -167,6 +169,8 @@ class NetworkInventoryAction{
 	 * @param Player $player
 	 *
 	 * @return InventoryAction|null
+	 *
+	 * @throws \UnexpectedValueException
 	 */
 	public function createInventoryAction(Player $player){
 		switch($this->sourceType){
@@ -176,7 +180,7 @@ class NetworkInventoryAction{
 					return new SlotChangeAction($window, $this->inventorySlot, $this->oldItem, $this->newItem);
 				}
 
-				throw new \InvalidStateException("Player " . $player->getName() . " has no open container with window ID $this->windowId");
+				throw new \UnexpectedValueException("Player " . $player->getName() . " has no open container with window ID $this->windowId");
 			case self::SOURCE_WORLD:
 				if($this->inventorySlot !== self::ACTION_MAGIC_SLOT_DROP_ITEM){
 					throw new \UnexpectedValueException("Only expecting drop-item world actions from the client!");
@@ -206,15 +210,18 @@ class NetworkInventoryAction{
 					case self::SOURCE_TYPE_CONTAINER_DROP_CONTENTS: //TODO: this type applies to all fake windows, not just crafting
 						return new SlotChangeAction($player->getCraftingGrid(), $this->inventorySlot, $this->oldItem, $this->newItem);
 					case self::SOURCE_TYPE_CRAFTING_RESULT:
+						return new CraftingTakeResultAction($this->oldItem, $this->newItem);
 					case self::SOURCE_TYPE_CRAFTING_USE_INGREDIENT:
-						return null;
+						return new CraftingTransferMaterialAction($this->oldItem, $this->newItem, $this->inventorySlot);
 
+					// Creds: NukkitX
 					case self::SOURCE_TYPE_ENCHANT_INPUT:
 					case self::SOURCE_TYPE_ENCHANT_MATERIAL:
 					case self::SOURCE_TYPE_ENCHANT_OUTPUT:
-						$inv = $player->getWindow(WindowTypes::ENCHANTMENT);
+						// TODO: Know why tf doesn't the lapiz' deduction get applied server-side
+						$inv = $player->getWindow(WindowIds::ENCHANT);
 						if(!($inv instanceof EnchantInventory)){
-							Main::getInstance()->getLogger()->debug("Player " . $player->getName() . " has no open enchant container");
+							Main::getInstance()->getLogger()->debug("Player " . $player->getName() . " has no open enchant inventory");
 
 							return null;
 						}
@@ -228,54 +235,62 @@ class NetworkInventoryAction{
 								break;
 							case self::SOURCE_TYPE_ENCHANT_MATERIAL:
 								$this->inventorySlot = 1;
+								$inv->setItem(1, $this->oldItem);
 								break;
 							case self::SOURCE_TYPE_ENCHANT_OUTPUT:
-								//$inv->sendSlot(0, $player);
-
 								break;
 						}
 
+						return new SlotChangeAction($inv, $this->inventorySlot, $this->oldItem, $this->newItem);
+
+					case self::SOURCE_TYPE_BEACON:
+						$inv = $player->getWindow(WindowIds::BEACON);
+						if(!($inv instanceof EnchantInventory)){
+							Main::getInstance()->getLogger()->debug("Player " . $player->getName() . " has no open beacon inventory");
+
+							return null;
+						}
+						$this->inventorySlot = 0;
 						return new SlotChangeAction($inv, $this->inventorySlot, $this->oldItem, $this->newItem);
 
 					case self::SOURCE_TYPE_ANVIL_INPUT:
 					case self::SOURCE_TYPE_ANVIL_MATERIAL:
 					case self::SOURCE_TYPE_ANVIL_RESULT:
 					case self::SOURCE_TYPE_ANVIL_OUTPUT:
-						$inv = $player->getWindow(WindowTypes::ANVIL);
+						$inv = $player->getWindow(WindowIds::ANVIL);
 						if(!($inv instanceof AnvilInventory)){
-							Main::getInstance()->getLogger()->debug("Player " . $player->getName() . " has no open anvil container");
+							Main::getInstance()->getLogger()->debug("Player " . $player->getName() . " has no open anvil inventory");
 
 							return null;
 						}
 						switch($this->windowId){
 							case self::SOURCE_TYPE_ANVIL_INPUT:
 								$this->inventorySlot = 0;
-
-								return new SlotChangeAction($inv, $this->inventorySlot, $this->oldItem, $this->newItem);
 								break;
 							case self::SOURCE_TYPE_ANVIL_MATERIAL:
 								$this->inventorySlot = 1;
-
-								return new SlotChangeAction($inv, $this->inventorySlot, $this->oldItem, $this->newItem);
 								break;
 							case self::SOURCE_TYPE_ANVIL_OUTPUT:
+								$inv->sendSlot(2, $inv->getViewers());
 								break;
 							case self::SOURCE_TYPE_ANVIL_RESULT:
 								$this->inventorySlot = 2;
-								$cost = $this->oldItem->getNamedTag()->getInt("RepairCost", 1);
-								if($player->getXpLevel() < $cost){
-									break;
+								$cost = $inv->getItem(2)->getNamedTag()->getInt("RepairCost", 1); // todo
+								if($player->isSurvival() && $player->getXpLevel() < $cost){
+									return null;
 								}
 								$inv->clear(0);
-								$inv->clear(1);
+								if(!($material = $inv->getItem(1))->isNull()){
+									$material = clone $material;
+									$material->count -= 1;
+									$inv->setItem(1, $material);
+								}
 								$inv->setItem(2, $this->oldItem);
 								if($player->isSurvival()){
 									$player->subtractXpLevels($cost);
 								}
-
-								return new SlotChangeAction($inv, $this->inventorySlot, $this->oldItem, $this->newItem);
-								break;
 						}
+						return new SlotChangeAction($inv, $this->inventorySlot, $this->oldItem, $this->newItem);
 				}
 
 				//TODO: more stuff

@@ -136,7 +136,7 @@ class KillCommand extends VanillaCommand {
 									}
 								}
 							}else{
-								$entity->close();
+								$entity->flagForDespawn();
 								$count++;
 							}
 						}
@@ -154,7 +154,7 @@ class KillCommand extends VanillaCommand {
 										}
 									}
 								}else{
-									$entity->close();
+									$entity->flagForDespawn();
 									$count++;
 								}
 							}

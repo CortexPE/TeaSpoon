@@ -70,6 +70,9 @@ class EntityUtils extends Utils {
 	}
 
 	public static function isInsideOfPortal(Entity $entity): bool{
+		if($entity->level === null){
+			return false;
+		}
 		$block = $entity->getLevel()->getBlock($entity->floor());
 		if($block instanceof Portal){
 			return true;
@@ -79,6 +82,9 @@ class EntityUtils extends Utils {
 	}
 
 	public static function isInsideOfEndPortal(Entity $entity): bool{
+		if($entity->level === null){
+			return false;
+		}
 		$block = $entity->getLevel()->getBlock($entity);
 		if($block instanceof EndPortal){
 			return true;

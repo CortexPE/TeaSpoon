@@ -205,7 +205,7 @@ abstract class Vehicle extends PMVehicle {
 	public function onUpdate(int $currentTick): bool {
 		$hasUpdated = parent::onUpdate($currentTick);
 
-		if($this->closed || !$this->isAlive()){
+		if($this->isFlaggedForDespawn() || !$this->isAlive()){
 			return false;
 		}
 

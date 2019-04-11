@@ -91,7 +91,7 @@ class SnowGolem extends Monster {
 	}
 
 	public function onUpdate(int $currentTick): bool{
-		if($this->isClosed() || !$this->isAlive()){
+		if($this->isFlaggedForDespawn() || !$this->isAlive()){
 			return false;
 		}
 		$parent = parent::onUpdate($currentTick);

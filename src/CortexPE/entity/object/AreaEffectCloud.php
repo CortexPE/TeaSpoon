@@ -125,7 +125,7 @@ class AreaEffectCloud extends Entity {
 	}
 
 	public function entityBaseTick(int $tickDiff = 1): bool{
-		if($this->closed){
+		if($this->isFlaggedForDespawn()){
 			return false;
 		}
 
@@ -134,13 +134,13 @@ class AreaEffectCloud extends Entity {
 		$hasUpdate = parent::entityBaseTick($tickDiff);
 
 		if($this->age > $this->Duration || $this->PotionId == 0 || $this->Radius <= 0){
-			$this->close();
+			$this->flagForDespawn();
 			$hasUpdate = true;
 		}else{
 			/** @var EffectInstance[] $effects */
 			$effects = Potion::getPotionEffectsById($this->PotionId);
 			if(count($effects) <= 0){
-				$this->close();
+				$this->flagForDespawn();
 				$this->timings->stopTiming();
 
 				return true;

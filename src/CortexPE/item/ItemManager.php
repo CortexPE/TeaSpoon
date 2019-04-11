@@ -44,7 +44,6 @@ class ItemManager {
 	public static function init(){
 		ItemFactory::registerItem(new Boat(), true);
 		ItemFactory::registerItem(new LingeringPotion(), true);
-		ItemFactory::registerItem(new FlintSteel(), true);
 		ItemFactory::registerItem(new FireCharge(), true);
 		ItemFactory::registerItem(new Elytra(), true);
 		ItemFactory::registerItem(new Fireworks(), true);
@@ -62,6 +61,7 @@ class ItemManager {
 		ItemFactory::registerItem(new BlazeRod(), true);
 		ItemFactory::registerItem(new DragonBreath(), true);
 		ItemFactory::registerItem(new GlassBottle(), true);
+		ItemFactory::registerItem(new EnchantedBook(), true);
 		//ItemFactory::registerItem(new Trident(), true);
 
 		//ItemFactory::registerItem(new Record(Item::RECORD_13, 0, "Music Disc 13"), true);

@@ -55,7 +55,11 @@ class Weather {
 
 	private $lastUpdate = 0;
 
-	private $randomWeatherData = [0, 1, 0, 1, 0, 1, 0, 2, 0];
+	private $randomWeatherData = [
+		self::CLEAR,
+		self::RAIN,
+		self::RAINY_THUNDER,
+	];
 
 	/**
 	 * Weather constructor.

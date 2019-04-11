@@ -8,11 +8,16 @@ declare(strict_types = 1);
 
 namespace CortexPE\commands;
 
+use CortexPE\item\EnchantedBook;
 use CortexPE\tile\Beacon;
 use pocketmine\command\{
 	CommandSender, defaults\VanillaCommand
 };
 use pocketmine\entity\Effect;
+use pocketmine\item\enchantment\Enchantment;
+use pocketmine\item\enchantment\EnchantmentInstance;
+use pocketmine\item\Item;
+use pocketmine\item\ItemFactory;
 use pocketmine\network\mcpe\protocol\PacketPool;
 use pocketmine\Player;
 use pocketmine\tile\Tile;
@@ -59,6 +64,20 @@ class TestCommand extends VanillaCommand {
 						break;
 					case "actionbar":
 						$sender->addActionBarMessage("ACTIONBAR");
+						break;
+					case "opEnchBook":
+						$i = ItemFactory::get(Item::ENCHANTED_BOOK);
+						if($i instanceof EnchantedBook){
+							foreach([
+								new EnchantmentInstance(Enchantment::getEnchantment(Enchantment::SHARPNESS), 32767),
+								new EnchantmentInstance(Enchantment::getEnchantment(Enchantment::KNOCKBACK), 32767),
+								new EnchantmentInstance(Enchantment::getEnchantment(Enchantment::UNBREAKING), 32767),
+								new EnchantmentInstance(Enchantment::getEnchantment(Enchantment::LOOTING), 32767),
+							] as $enchantment){
+								$i->addEnchantment($enchantment);
+							}
+							$sender->getInventory()->addItem($i);
+						}
 						break;
 					case "skin2b64":
 						$data = '';

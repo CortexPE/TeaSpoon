@@ -37,6 +37,7 @@ namespace CortexPE\block;
 
 use CortexPE\inventory\AnvilInventory;
 use CortexPE\Main;
+use CortexPE\network\types\WindowIds;
 use pocketmine\block\Anvil as PMAnvil;
 use pocketmine\item\Item;
 use pocketmine\Player;
@@ -45,7 +46,7 @@ class Anvil extends PMAnvil {
 	public function onActivate(Item $item, Player $player = null): bool{
 		if(Main::$AnvilEnabled){
 			if($player instanceof Player){
-				$player->addWindow(new AnvilInventory($this));
+				$player->addWindow(new AnvilInventory($this), WindowIds::ANVIL);
 			}
 		}
 

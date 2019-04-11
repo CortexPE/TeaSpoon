@@ -73,7 +73,7 @@ class MobSpawner extends Spawnable {
 	}
 
 	public function onUpdate(): bool{
-		if($this->closed === true){
+		if($this->isClosed()){
 			return false;
 		}
 

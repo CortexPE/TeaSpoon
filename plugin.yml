@@ -1,6 +1,6 @@
 name: TeaSpoon
 main: CortexPE\Main
-version: 1.0.1
+version: 1.1.0
 api: 3.5.1
 load: STARTUP
 author: CortexPE
