@@ -25,8 +25,6 @@ namespace CortexPE\network\types;
 
 use CortexPE\inventory\AnvilInventory;
 use CortexPE\inventory\EnchantInventory;
-use CortexPE\inventory\transaction\action\CraftingTakeResultAction;
-use CortexPE\inventory\transaction\action\CraftingTransferMaterialAction;
 use CortexPE\Main;
 use CortexPE\network\InventoryTransactionPacket;
 use pocketmine\inventory\transaction\action\CreativeInventoryAction;
@@ -34,8 +32,9 @@ use pocketmine\inventory\transaction\action\DropItemAction;
 use pocketmine\inventory\transaction\action\InventoryAction;
 use pocketmine\inventory\transaction\action\SlotChangeAction;
 use pocketmine\item\Item;
-use pocketmine\network\mcpe\protocol\types\WindowTypes;
 use pocketmine\Player;
+use InvalidArgumentException;
+use UnexpectedValueException;
 
 class NetworkInventoryAction{
 	public const SOURCE_CONTAINER = 0;
@@ -127,7 +126,7 @@ class NetworkInventoryAction{
 				}
 				break;
 			default:
-				throw new \UnexpectedValueException("Unknown inventory action source type $this->sourceType");
+				throw new UnexpectedValueException("Unknown inventory action source type $this->sourceType");
 		}
 
 		$this->inventorySlot = $packet->getUnsignedVarInt();
@@ -157,7 +156,7 @@ class NetworkInventoryAction{
 				$packet->putVarInt($this->windowId);
 				break;
 			default:
-				throw new \InvalidArgumentException("Unknown inventory action source type $this->sourceType");
+				throw new InvalidArgumentException("Unknown inventory action source type $this->sourceType");
 		}
 
 		$packet->putUnsignedVarInt($this->inventorySlot);
@@ -170,7 +169,7 @@ class NetworkInventoryAction{
 	 *
 	 * @return InventoryAction|null
 	 *
-	 * @throws \UnexpectedValueException
+	 * @throws UnexpectedValueException
 	 */
 	public function createInventoryAction(Player $player){
 		switch($this->sourceType){
@@ -180,10 +179,10 @@ class NetworkInventoryAction{
 					return new SlotChangeAction($window, $this->inventorySlot, $this->oldItem, $this->newItem);
 				}
 
-				throw new \UnexpectedValueException("Player " . $player->getName() . " has no open container with window ID $this->windowId");
+				throw new UnexpectedValueException("Player " . $player->getName() . " has no open container with window ID $this->windowId");
 			case self::SOURCE_WORLD:
 				if($this->inventorySlot !== self::ACTION_MAGIC_SLOT_DROP_ITEM){
-					throw new \UnexpectedValueException("Only expecting drop-item world actions from the client!");
+					throw new UnexpectedValueException("Only expecting drop-item world actions from the client!");
 				}
 
 				return new DropItemAction($this->newItem);
@@ -196,7 +195,7 @@ class NetworkInventoryAction{
 						$type = CreativeInventoryAction::TYPE_CREATE_ITEM;
 						break;
 					default:
-						throw new \UnexpectedValueException("Unexpected creative action type $this->inventorySlot");
+						throw new UnexpectedValueException("Unexpected creative action type $this->inventorySlot");
 
 				}
 
@@ -210,9 +209,9 @@ class NetworkInventoryAction{
 					case self::SOURCE_TYPE_CONTAINER_DROP_CONTENTS: //TODO: this type applies to all fake windows, not just crafting
 						return new SlotChangeAction($player->getCraftingGrid(), $this->inventorySlot, $this->oldItem, $this->newItem);
 					case self::SOURCE_TYPE_CRAFTING_RESULT:
-						return new CraftingTakeResultAction($this->oldItem, $this->newItem);
+						return null;
 					case self::SOURCE_TYPE_CRAFTING_USE_INGREDIENT:
-						return new CraftingTransferMaterialAction($this->oldItem, $this->newItem, $this->inventorySlot);
+						return null;
 
 					// Creds: NukkitX
 					case self::SOURCE_TYPE_ENCHANT_INPUT:
@@ -294,9 +293,9 @@ class NetworkInventoryAction{
 				}
 
 				//TODO: more stuff
-				throw new \UnexpectedValueException("Player " . $player->getName() . " has no open container with window ID $this->windowId");
+				throw new UnexpectedValueException("Player " . $player->getName() . " has no open container with window ID $this->windowId");
 			default:
-				throw new \UnexpectedValueException("Unknown inventory source type $this->sourceType");
+				throw new UnexpectedValueException("Unknown inventory source type $this->sourceType");
 		}
 	}
 }
