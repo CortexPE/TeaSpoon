@@ -78,7 +78,17 @@ use CortexPE\entity\mob\{
 	WitherSkeleton,
 	Wolf,
 	ZombieHorse,
-	ZombieVillager
+	ZombieVillager,
+	Turtle,
+	Salmon,
+	Tropicalfish,
+	Panda,
+	Phantom,
+	Cat,
+	Drowned,
+	Cod,
+	Pillager,
+	Dolphin
 };
 use CortexPE\entity\object\{
 	AreaEffectCloud, ArmorStand, EndCrystal, Lightning
@@ -139,7 +149,19 @@ class EntityManager extends Entity {
 			self::registerEntity(WitherSkeleton::class, true, ['WitherSkeleton', 'minecraft:witherskeleton']);
 			self::registerEntity(Wolf::class, true, ['Wolf', 'minecraft:wolf']);
 			self::registerEntity(ZombieHorse::class, true, ['ZombieHorse', 'minecraft:zombiehorse']);
-			self::registerEntity(ZombieVillager::class, true, ['ZombieVillager', 'minecraft:zombievillager']);
+			self::registerEntity(ZombieVillager::class, true, ['ZombieVillager', 'minecraft:zombievillager']);		
+			
+			/* Aquatic Entitys */
+			self::registerEntity(Dolphin::class, true, ['Dolphin', 'minecraft:dolphin']);
+			self::registerEntity(Drowned::class, true, ['Drowned', 'minecraft:drowned']);
+			//self::registerEntity(Pillager::class, true, ['Pillager', 'minecraft:pillager']);
+			self::registerEntity(Turtle::class, true, ['Turtle', 'minecraft:turtle']);
+			self::registerEntity(Panda::class, true, ['Panda', 'minecraft:Panda']);
+			self::registerEntity(Cat::class, true, ['cat', 'minecraft:cat']);
+			self::registerEntity(Salmon::class, true, ['Salmon', 'minecraft:salmon']);
+			self::registerEntity(Tropicalfish::class, true, ['Tropicalfish', 'minecraft:tropicalfish']);
+			self::registerEntity(Cod::class, true, ['Cod', 'minecraft:cod']);
+			self::registerEntity(Phantom::class, true, ['Phantom', 'minecraft:phantom']);
 		}
 
 		// Projectiles ////
