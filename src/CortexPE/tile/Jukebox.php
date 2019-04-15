@@ -36,7 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\tile;
 
 use CortexPE\item\Record;
-use CortexPE\utils\TextFormat;
+use pocketmine\utils\TextFormat;
 use pocketmine\item\Item;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;

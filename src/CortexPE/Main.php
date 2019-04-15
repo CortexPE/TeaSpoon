@@ -49,9 +49,7 @@ use CortexPE\level\weather\Weather;
 use CortexPE\network\PacketManager;
 use CortexPE\task\TickLevelsTask;
 use CortexPE\tile\Tile;
-use CortexPE\utils\{
-	FishingLootTable, TextFormat
-};
+use CortexPE\utils\FishingLootTable;
 use pocketmine\command\CommandSender;
 use pocketmine\level\Level;
 use pocketmine\Player;
@@ -59,6 +57,7 @@ use pocketmine\Server;
 use pocketmine\plugin\PluginBase;
 use pocketmine\plugin\PluginLogger;
 use pocketmine\utils\Config;
+use pocketmine\utils\TextFormat;
 
 class Main extends PluginBase {
 

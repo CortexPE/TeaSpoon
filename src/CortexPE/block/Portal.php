@@ -97,41 +97,40 @@ class Portal extends Transparent {
 	 * @return bool
 	 */
 	public function onBreak(Item $item, Player $player = null): bool{
-		$block = $this;
-		if($this->getSide(Vector3::SIDE_WEST) instanceof Vector3 or
-		   $this->getSide(Vector3::SIDE_EAST) instanceof Vector3
+		if($this->getSide(Vector3::SIDE_WEST) instanceof Portal or
+		   $this->getSide(Vector3::SIDE_EAST) instanceof Portal
 		){//x方向
-			for($x = $block->x; $this->getLevel()->getBlockIdAt($x, $block->y, $block->z) == Block::PORTAL; $x++){
-				for($y = $block->y; $this->getLevel()->getBlockIdAt($x, $y, $block->z) == Block::PORTAL; $y++){
-					$this->getLevel()->setBlock(new Vector3($x, $y, $block->z), new Air());
+			for($x = $this->x; $this->getLevel()->getBlockIdAt($x, $this->y, $this->z) == Block::PORTAL; $x++){
+				for($y = $this->y; $this->getLevel()->getBlockIdAt($x, $y, $this->z) == Block::PORTAL; $y++){
+					$this->getLevel()->setBlock(new Vector3($x, $y, $this->z), new Air());
 				}
-				for($y = $block->y - 1; $this->getLevel()->getBlockIdAt($x, $y, $block->z) == Block::PORTAL; $y--){
-					$this->getLevel()->setBlock(new Vector3($x, $y, $block->z), new Air());
+				for($y = $this->y - 1; $this->getLevel()->getBlockIdAt($x, $y, $this->z) == Block::PORTAL; $y--){
+					$this->getLevel()->setBlock(new Vector3($x, $y, $this->z), new Air());
 				}
 			}
-			for($x = $block->x - 1; $this->getLevel()->getBlockIdAt($x, $block->y, $block->z) == Block::PORTAL; $x--){
-				for($y = $block->y; $this->getLevel()->getBlockIdAt($x, $y, $block->z) == Block::PORTAL; $y++){
-					$this->getLevel()->setBlock(new Vector3($x, $y, $block->z), new Air());
+			for($x = $this->x - 1; $this->getLevel()->getBlockIdAt($x, $this->y, $this->z) == Block::PORTAL; $x--){
+				for($y = $this->y; $this->getLevel()->getBlockIdAt($x, $y, $this->z) == Block::PORTAL; $y++){
+					$this->getLevel()->setBlock(new Vector3($x, $y, $this->z), new Air());
 				}
-				for($y = $block->y - 1; $this->getLevel()->getBlockIdAt($x, $y, $block->z) == Block::PORTAL; $y--){
-					$this->getLevel()->setBlock(new Vector3($x, $y, $block->z), new Air());
+				for($y = $this->y - 1; $this->getLevel()->getBlockIdAt($x, $y, $this->z) == Block::PORTAL; $y--){
+					$this->getLevel()->setBlock(new Vector3($x, $y, $this->z), new Air());
 				}
 			}
 		}else{//z方向
-			for($z = $block->z; $this->getLevel()->getBlockIdAt($block->x, $block->y, $z) == Block::PORTAL; $z++){
-				for($y = $block->y; $this->getLevel()->getBlockIdAt($block->x, $y, $z) == Block::PORTAL; $y++){
-					$this->getLevel()->setBlock(new Vector3($block->x, $y, $z), new Air());
+			for($z = $this->z; $this->getLevel()->getBlockIdAt($this->x, $this->y, $z) == Block::PORTAL; $z++){
+				for($y = $this->y; $this->getLevel()->getBlockIdAt($this->x, $y, $z) == Block::PORTAL; $y++){
+					$this->getLevel()->setBlock(new Vector3($this->x, $y, $z), new Air());
 				}
-				for($y = $block->y - 1; $this->getLevel()->getBlockIdAt($block->x, $y, $z) == Block::PORTAL; $y--){
-					$this->getLevel()->setBlock(new Vector3($block->x, $y, $z), new Air());
+				for($y = $this->y - 1; $this->getLevel()->getBlockIdAt($this->x, $y, $z) == Block::PORTAL; $y--){
+					$this->getLevel()->setBlock(new Vector3($this->x, $y, $z), new Air());
 				}
 			}
-			for($z = $block->z - 1; $this->getLevel()->getBlockIdAt($block->x, $block->y, $z) == Block::PORTAL; $z--){
-				for($y = $block->y; $this->getLevel()->getBlockIdAt($block->x, $y, $z) == Block::PORTAL; $y++){
-					$this->getLevel()->setBlock(new Vector3($block->x, $y, $z), new Air());
+			for($z = $this->z - 1; $this->getLevel()->getBlockIdAt($this->x, $this->y, $z) == Block::PORTAL; $z--){
+				for($y = $this->y; $this->getLevel()->getBlockIdAt($this->x, $y, $z) == Block::PORTAL; $y++){
+					$this->getLevel()->setBlock(new Vector3($this->x, $y, $z), new Air());
 				}
-				for($y = $block->y - 1; $this->getLevel()->getBlockIdAt($block->x, $y, $z) == Block::PORTAL; $y--){
-					$this->getLevel()->setBlock(new Vector3($block->x, $y, $z), new Air());
+				for($y = $this->y - 1; $this->getLevel()->getBlockIdAt($this->x, $y, $z) == Block::PORTAL; $y--){
+					$this->getLevel()->setBlock(new Vector3($this->x, $y, $z), new Air());
 				}
 			}
 		}
