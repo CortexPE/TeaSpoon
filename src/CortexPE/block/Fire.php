@@ -55,22 +55,24 @@ class Fire extends PMFire {
 	}
 
 	public function onRandomTick(): void{
-		$weather = Main::$weatherData[$this->getLevel()->getId()];
-		$forever = ($this->getSide(Vector3::SIDE_DOWN)->getId() == Block::NETHERRACK);
-		if(!$forever){
-			if($weather->canCalculate()){
-				$rainy = ($weather->isRainy() || $weather->isRainyThunder());
+		if(isset(Main::$weatherData[($k = $this->getLevel()->getId())])){
+			$weather = Main::$weatherData[$k];
+			$forever = ($this->getSide(Vector3::SIDE_DOWN)->getId() == Block::NETHERRACK);
+			if(!$forever){
+				if($weather->canCalculate()){
+					$rainy = ($weather->isRainy() || $weather->isRainyThunder());
 
-				if($rainy &&
-					(
-						Utils::canSeeSky($this->getLevel(), $this->asVector3()) ||
-						Utils::canSeeSky($this->getLevel(), $this->getSide(Vector3::SIDE_NORTH)) ||
-						Utils::canSeeSky($this->getLevel(), $this->getSide(Vector3::SIDE_SOUTH)) ||
-						Utils::canSeeSky($this->getLevel(), $this->getSide(Vector3::SIDE_EAST)) ||
-						Utils::canSeeSky($this->getLevel(), $this->getSide(Vector3::SIDE_WEST))
-					)
-				){
-					$this->level->setBlock($this, BlockFactory::get(Block::AIR));
+					if($rainy &&
+						(
+							Utils::canSeeSky($this->getLevel(), $this->asVector3()) ||
+							Utils::canSeeSky($this->getLevel(), $this->getSide(Vector3::SIDE_NORTH)) ||
+							Utils::canSeeSky($this->getLevel(), $this->getSide(Vector3::SIDE_SOUTH)) ||
+							Utils::canSeeSky($this->getLevel(), $this->getSide(Vector3::SIDE_EAST)) ||
+							Utils::canSeeSky($this->getLevel(), $this->getSide(Vector3::SIDE_WEST))
+						)
+					){
+						$this->level->setBlock($this, BlockFactory::get(Block::AIR));
+					}
 				}
 			}
 		}
