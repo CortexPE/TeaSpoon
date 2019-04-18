@@ -58,7 +58,7 @@ class Mooshroom extends Animal {
 		if($cause instanceof EntityDamageByEntityEvent){
 			$dmg = $cause->getDamager();
 			if($dmg instanceof Player){
-				$lootingL = $dmg->getInventory()->getItemInHand()->getEnchantment(Enchantment::LOOTING)->getLevel();
+				$lootingL = $dmg->getInventory()->getItemInHand()->getEnchantmentLevel(Enchantment::LOOTING);
 			}
 		}
 
