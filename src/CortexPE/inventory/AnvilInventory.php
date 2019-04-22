@@ -41,4 +41,12 @@ class AnvilInventory extends PMAnvilInventory {
 	public function getDefaultSize(): int{
 		return 3;
 	}
+	
+	public function onClose(Player $who): void{
+		foreach($this->getContents() as $item){
+			foreach($who->getInventory()->addItem($item) as $doesntFit){
+				$who->getLevel()->dropItem($this->holder, $doesntFit);
+			}
+		}
+	}
 }
