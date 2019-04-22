@@ -284,7 +284,7 @@ class NetworkInventoryAction{
 									$material->count -= 1;
 									$inv->setItem(1, $material);
 								}
-								$inv->setItem(2, $this->oldItem);
+								$inv->setItem(2, $this->oldItem, false);
 								if($player->isSurvival()){
 									$player->subtractXpLevels($cost);
 								}
