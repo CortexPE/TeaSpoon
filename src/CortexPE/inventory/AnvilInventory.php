@@ -44,8 +44,8 @@ class AnvilInventory extends PMAnvilInventory {
 	
 	public function onClose(Player $who): void{
 		foreach($this->getContents() as $item){
-			foreach($who->getInventory()->addItem($item) as $drop){
-				$who->getLevel()->dropItem($this->holder, $drop);
+			foreach($who->getInventory()->addItem($item) as $doesntFit){
+				$who->getLevel()->dropItem($this->holder, $doesntFit);
 			}
 		}
 	}
