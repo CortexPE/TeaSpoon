@@ -36,6 +36,7 @@ declare(strict_types = 1);
 namespace CortexPE\inventory;
 
 use pocketmine\inventory\AnvilInventory as PMAnvilInventory;
+use pocketmin\Player;
 
 class AnvilInventory extends PMAnvilInventory {
 	public function getDefaultSize(): int{
