@@ -115,6 +115,7 @@ class Lightning extends Animal {
 		if($this->age > 6 * 20){
 			$this->flagForDespawn();
 		}
+		$this->age++;
 
 		return parent::onUpdate($currentTick);
 	}
