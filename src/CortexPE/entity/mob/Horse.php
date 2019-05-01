@@ -40,6 +40,8 @@ use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\MobArmorEquipmentPacket;
 
 class Horse extends Living {
+	public $width = 2;
+	public $height = 3;
 
 	public const NETWORK_ID = self::HORSE;
 

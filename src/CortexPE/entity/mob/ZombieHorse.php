@@ -35,16 +35,11 @@ declare(strict_types = 1);
 
 namespace CortexPE\entity\mob;
 
-use pocketmine\entity\Animal;
 use pocketmine\item\Item;
 
-class ZombieHorse extends Animal {
+class ZombieHorse extends Horse {
 
 	public const NETWORK_ID = self::ZOMBIE_HORSE;
-
-	public $width = 0.3;
-	public $length = 0.9;
-	public $height = 0;
 
 	public function getName(): string{
 		return "Zombie Horse";
