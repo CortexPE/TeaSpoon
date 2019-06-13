@@ -35,6 +35,15 @@ declare(strict_types = 1);
 
 namespace CortexPE\entity;
 
+use CortexPE\entity\animal\{
+    Panda,
+    Turtle,
+    PufferFish,
+    TropicalFish,
+    CodFish,
+    SalmonFish,
+    Dolphin
+};
 use CortexPE\entity\mob\{
 	Bat,
 	Blaze,
@@ -103,6 +112,13 @@ class EntityManager extends Entity {
 			self::registerEntity(Chicken::class, true, ['Chicken', 'minecraft:chicken']);
 			self::registerEntity(Cow::class, true, ['Cow', 'minecraft:cow']);
 			self::registerEntity(Creeper::class, true, ['Creeper', 'minecraft:creeper']);
+			self::registerEntity(Panda::class, true, ['Panda', 'minecraft:panda']);
+			self::registerEntity(Turtle::class, true, ['Turtle', 'minecraft:turtle']);
+			self::registerEntity(PufferFish::class, true, ['PufferFish', 'minecraft:pufferfish']);
+			self::registerEntity(TropicalFish::class, true, ['TropicalFish', 'minecraft:tropicalfish']);
+			self::registerEntity(SalmonFish::class, true, ['SalmonFish', 'minecraft:salmonfish']);
+			self::registerEntity(Dolphin::class, true, ['Dolphin', 'minecraft:dolphin']);
+			self::registerEntity(CodFish::class, true, ['CodFish', 'minecraft:cod']);
 			self::registerEntity(Donkey::class, true, ['Donkey', 'minecraft:donkey']);
 			self::registerEntity(ElderGuardian::class, true, ['ElderGuardian', 'minecraft:elderguardian']);
 			self::registerEntity(EnderDragon::class, true, ['EnderDragon', 'minecraft:enderdragon']);
