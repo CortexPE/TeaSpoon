@@ -299,7 +299,10 @@ class ArmorStand extends Entity {
 	public function sendArmorItems(Player $player){
 		$pk = new MobArmorEquipmentPacket();
 		$pk->entityRuntimeId = $this->getId();
-		$pk->slots = [$this->getHelmet(), $this->getChestplate(), $this->getLeggings(), $this->getBoots()];
+		$pk->head = $this->getHelmet();
+        	$pk->chest = $this->getChestplate();
+        	$pk->legs = $this->getLeggings();
+        	$pk->feet = $this->getBoots();
 		$player->dataPacket($pk);
 	}
 
