@@ -42,6 +42,7 @@ use CortexPE\utils\ArmorTypes;
 use CortexPE\utils\Xp;
 use pocketmine\block\Block;
 use pocketmine\entity\Entity;
+use pocketmine\entity\Villager;
 use pocketmine\event\{
 	level\LevelLoadEvent, Listener, server\CommandEvent
 };
@@ -55,8 +56,17 @@ use pocketmine\item\Armor;
 use pocketmine\item\BlazeRod;
 use pocketmine\item\Item;
 use pocketmine\level\Level;
+use pocketmine\math\Vector3;
+use pocketmine\nbt\LittleEndianNBTStream;
+use pocketmine\nbt\tag\ByteTag;
+use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\nbt\tag\IntTag;
+use pocketmine\nbt\tag\ListTag;
+use pocketmine\nbt\tag\NamedTag;
+use pocketmine\network\mcpe\protocol\AddEntityPacket;
 use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
 use pocketmine\network\mcpe\protocol\PlayStatusPacket;
+use pocketmine\network\mcpe\protocol\UpdateTradePacket;
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
 use pocketmine\Server as PMServer;
@@ -65,6 +75,12 @@ class EventListener implements Listener {
 
 	/** @var Plugin */
 	public $plugin;
+
+	/** @var array */
+	public $villagerId = [];
+
+	/** @var array */
+	public $recipes = [];
 
 	public function __construct(Plugin $plugin){
 		$this->plugin = $plugin;
@@ -165,8 +181,13 @@ class EventListener implements Listener {
 	 * @priority LOWEST
 	 */
 	public function onLeave(PlayerQuitEvent $ev){
+        $p = $ev->getPlayer();
 		Main::getInstance()->destroySession($ev->getPlayer());
 		unset(Main::$onPortal[$ev->getPlayer()->getId()]);
+        if(isset($this->villagerId[$p->getName()])){
+            unset($this->villagerId[$p->getName()]);
+            unset($this->recipes[$p->getName()]);
+        }
 	}
 
 	/**
@@ -355,4 +376,74 @@ class EventListener implements Listener {
 			}
 		}
 	}
+
+    /**
+     * @param PlayerInteractEvent $e
+     * @param NamedTag $tag
+     */
+    public function onClick(PlayerInteractEvent $e)
+    {
+        $player = $e->getPlayer();
+        if ($e->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
+            $this->villagerId[$player->getName()] = $eid = mt_rand(0xfffff, 0x7fffffff);
+            $pk = new AddEntityPacket();
+            $pk->entityRuntimeId = $eid;
+            $pk->type = Villager::NETWORK_ID;
+            $pk->position = $player->subtract(0, 4, 0);
+            $pk->motion = new Vector3();
+            $pk->yaw = $pk->pitch = 0;
+            $pk->metadata = [
+                Entity::DATA_FLAGS => [Entity::DATA_TYPE_LONG, 1 << Entity::DATA_FLAG_IMMOBILE],
+                Entity::DATA_SCALE => [Entity::DATA_TYPE_FLOAT, 0]
+            ];
+            $player->dataPacket($pk);
+            $tag = new CompoundTag("", []);
+            $recipes = [[Item::get(Item::BRICK, 0, 1), Item::get(Item::SANDSTONE, 2, 2)], [Item::get(Item::BRICK, 0, 7), Item::get(Item::END_STONE, 0, 1)]];
+            $this->recipes[$player->getName()] = $recipes;
+            $result = [];
+            foreach ($recipes as $recipe) {
+                $result[] = $this->makeRecipe($recipe[0], $recipe[1], $recipe[2] ?? null);
+            }
+            $wow = $tag->setTag(new ListTag("Recipes", $result));
+            $nbt = new LittleEndianNBTStream();
+            $tr = new UpdateTradePacket();
+            $tr->windowId = 2;
+            $tr->varint1 = 0;
+            $tr->varint2 = 0;
+            $tr->varint3 = 0;
+            $tr->isWilling = false;
+            $tr->traderEid = $eid;
+            $tr->playerEid = -1;
+            $tr->displayName = "Shop";
+            $tr->offers = $nbt->write((int)$wow);
+            $player->dataPacket($tr);
+        }
+    }
+
+    /**
+     * @param Item $buyA
+     * @param Item $sell
+     * @param Item|null $buyB
+     * @return CompoundTag
+     */
+    public function makeRecipe(Item $buyA, Item $sell, Item $buyB = null){
+        if($buyB === null){
+            return new CompoundTag("", [
+                $buyA->nbtSerialize(-1, "buyA"),
+                new IntTag("maxUses", 32767),
+                new ByteTag("rewardExp", 0),
+                $sell->nbtSerialize(-1, "sell"),
+                new IntTag("uses", 0),
+            ]);
+        }else{
+            return new CompoundTag("", [
+                $buyA->nbtSerialize(-1, "buyA"),
+                $buyB->nbtSerialize(-1, "buyB"),
+                new IntTag("maxUses", 32767),
+                new ByteTag("rewardExp", 0),
+                $sell->nbtSerialize(-1, "sell"),
+                new IntTag("uses", 0),
+            ]);
+        }
+    }
 }
