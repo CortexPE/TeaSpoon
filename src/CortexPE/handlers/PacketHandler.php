@@ -35,16 +35,21 @@ declare(strict_types = 1);
 
 namespace CortexPE\handlers;
 
+use CortexPE\EventListener;
 use CortexPE\Main;
 use CortexPE\network\InventoryTransactionPacket;
 use CortexPE\Session;
 use CortexPE\Utils;
+use pocketmine\entity\Villager;
 use pocketmine\event\{
 	Listener, server\DataPacketReceiveEvent, server\DataPacketSendEvent
 };
+use pocketmine\network\mcpe\protocol\ContainerClosePacket;
+use pocketmine\network\mcpe\protocol\EntityEventPacket;
 use pocketmine\network\mcpe\protocol\{
 	PlayerActionPacket, StartGamePacket
 };
+use pocketmine\network\mcpe\protocol\RemoveEntityPacket;
 use pocketmine\Player as PMPlayer;
 use pocketmine\plugin\Plugin;
 
@@ -53,8 +58,14 @@ class PacketHandler implements Listener {
 	/** @var Plugin */
 	public $plugin;
 
-	public function __construct(Plugin $plugin){
+    /**
+     * @var EventListener
+     */
+	public $eventListener;
+
+	public function __construct(Plugin $plugin, EventListener $eventListener){
 		$this->plugin = $plugin;
+		$this->eventListener = $eventListener;
 	}
 
 	/**
@@ -108,22 +119,35 @@ class PacketHandler implements Listener {
 						$item = $p->getInventory()->getItemInHand();
 						$slot = $pk->trData->hotbarSlot;
 						$clickPos = $pk->trData->clickPos;
+                        if($pk->transactionType === InventoryTransactionPacket::TYPE_USE_ITEM_ON_ENTITY && isset($pk->trData->entityRuntimeId)){
+                            $entity = $p->level->getEntity($pk->trData->entityRuntimeId);
+                            if($entity instanceof Villager){
+                                //Open menu
+                            }
+                        }
 						if(method_exists($entity, "onInteract")){
-							//                  Player Item  Int   Vector3
 							$entity->onInteract($p, $item, $slot, $clickPos);
 						}
-
-						/*if($item instanceof Lead){
-							if(Utils::leashEntityToPlayer($p, $entity)){
-								if($p->isSurvival()){
-									$item->count--;
-								}
-							} else {
-								$p->getLevel()->dropItem($entity, $item);
-							}
-						}*/
 					}
 				}
+				break;
+                case($pk instanceof ContainerClosePacket):
+                    if($pk->windowId === 0xff and isset($this->villagerId[$p->getName()])){
+                        $pk = new RemoveEntityPacket();
+                        $pk->entityUniqueId = $eid = $this->eventListener->villagerId[$p->getName()];
+                        $p->dataPacket($pk);
+                        unset($this->eventListener->villagerId[$p->getName()]);
+                        unset($this->eventListener->recipes[$p->getName()]);
+                    }
+                    break;
+                case ($pk instanceof EntityEventPacket):
+                    if($pk->event === 62) { //TRADING_TRANSACTION
+                        if (isset($this->villagerId[$p->getName()]) and $pk->entityRuntimeId === $this->eventListener->villagerId[$p->getName()] and isset($this->recipes[$p->getName()][$pk->data])) {
+                            $recipe = $this->eventListener->recipes[$p->getName()][$pk->data];
+                            //TODO: make trading inventory
+                            $ev->setCancelled();
+                        }
+                    }
 				break;
 			/*case ($pk instanceof PlayerInputPacket):
 				if(isset($p->riding) && $p->riding instanceof Minecart){
