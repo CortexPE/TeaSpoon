@@ -63,11 +63,8 @@ class CommandManager {
 	}
 
 	public static function overwrite(Command $cmd){
-		// Thank you very much iksaku for leaving this method on the *good o'l* PocketMine Forums. :)
 		$cmdMap = PMServer::getInstance()->getCommandMap();
-		$cmdOverwrite = $cmdMap->getCommand($cmd->getName());
-		$cmdOverwrite->setLabel($cmdOverwrite->getLabel() . "__disabled");
-		$cmdMap->unregister($cmdOverwrite);
+		$cmdMap->unregister($cmdMap->getCommand($cmd->getName()));
 
 		$cmdMap->register("pocketmine", $cmd);
 	}
