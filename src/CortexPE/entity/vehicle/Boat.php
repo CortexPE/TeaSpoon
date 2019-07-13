@@ -27,7 +27,7 @@ use pocketmine\item\Item as ItemItem;
 use pocketmine\nbt\tag\{
 	ByteTag
 };
-use pocketmine\network\mcpe\protocol\EntityEventPacket;
+use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\Server as PMServer;
 
 class Boat extends Vehicle {
@@ -67,9 +67,9 @@ class Boat extends Vehicle {
 	public function attack(EntityDamageEvent $source): void{
 		parent::attack($source);
 		if(!$source->isCancelled()){
-			$pk = new EntityEventPacket();
+			$pk = new ActorEventPacket();
 			$pk->entityRuntimeId = $this->id;
-			$pk->event = EntityEventPacket::HURT_ANIMATION;
+			$pk->event = ActorEventPacket::HURT_ANIMATION;
 			PMServer::getInstance()->broadcastPacket($this->getViewers(), $pk);
 		}
 	}

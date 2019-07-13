@@ -38,7 +38,7 @@ namespace CortexPE;
 use CortexPE\entity\projectile\FishingHook;
 use CortexPE\item\Elytra;
 use pocketmine\entity\Vehicle;
-use pocketmine\network\mcpe\protocol\EntityEventPacket;
+use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\Player;
 use pocketmine\Server as PMServer;
 
@@ -72,7 +72,7 @@ class Session {
 		$this->fishing = false;
 
 		if($this->fishingHook instanceof FishingHook){
-			$this->fishingHook->broadcastEntityEvent(EntityEventPacket::FISH_HOOK_TEASE, null, $this->fishingHook->getViewers());
+			$this->fishingHook->broadcastEntityEvent(ActorEventPacket::FISH_HOOK_TEASE, null, $this->fishingHook->getViewers());
 
 			if(!$this->fishingHook->isFlaggedForDespawn()){
 				$this->fishingHook->flagForDespawn();
