@@ -42,7 +42,7 @@ use CortexPE\Utils;
 use pocketmine\block\Block;
 use pocketmine\entity\Entity;
 use pocketmine\math\Vector3;
-use pocketmine\network\mcpe\protocol\SetEntityLinkPacket;
+use pocketmine\network\mcpe\protocol\SetActorLinkPacket;
 use pocketmine\network\mcpe\protocol\types\EntityLink;
 use pocketmine\Player;
 use pocketmine\Server;
@@ -111,7 +111,7 @@ class EntityUtils extends Utils {
 				$entity->setDataFlag(Entity::DATA_FLAGS, Entity::DATA_FLAG_RIDING, true);
 				$entity->setDataFlag(Entity::DATA_FLAGS, Entity::DATA_FLAG_WASD_CONTROLLED, true);
 
-				$pk = new SetEntityLinkPacket();
+				$pk = new SetActorLinkPacket();
 				$pk->link = new EntityLink($entity->getId(), $vehicle->getId(), $type);
 				Server::getInstance()->broadcastPacket($entity->getViewers(), $pk);
 				if($entity instanceof Player){
@@ -147,7 +147,7 @@ class EntityUtils extends Utils {
 					$dpm->removeProperty(Entity::DATA_RIDER_MIN_ROTATION);
 				}
 
-				$pk = new SetEntityLinkPacket();
+				$pk = new SetActorLinkPacket();
 				$pk->link = new EntityLink($entity->getId(), $vehicle->getId(), EntityLink::TYPE_REMOVE);
 				Server::getInstance()->broadcastPacket($entity->getViewers(), $pk);
 				if($entity instanceof Player){
