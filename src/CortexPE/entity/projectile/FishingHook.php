@@ -45,7 +45,7 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\ProjectileHitEntityEvent;
 use pocketmine\math\RayTraceResult;
-use pocketmine\network\mcpe\protocol\EntityEventPacket;
+use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\Player;
 use pocketmine\Server as PMServer;
 
@@ -88,9 +88,9 @@ class FishingHook extends Projectile {
 				if($block instanceof Water || $block instanceof StillWater){
 					$this->touchedWater = true;
 
-					$pk = new EntityEventPacket();
+					$pk = new ActorEventPacket();
 					$pk->entityRuntimeId = $this->getId();
-					$pk->event = EntityEventPacket::FISH_HOOK_POSITION;
+					$pk->event = ActorEventPacket::FISH_HOOK_POSITION;
 					PMServer::getInstance()->broadcastPacket($this->getViewers(), $pk);
 
 					break;
@@ -122,9 +122,9 @@ class FishingHook extends Projectile {
 	public function attractFish(){
 		$oe = $this->getOwningEntity();
 		if($oe instanceof Player){
-			$pk = new EntityEventPacket();
+			$pk = new ActorEventPacket();
 			$pk->entityRuntimeId = $this->getId();
-			$pk->event = EntityEventPacket::FISH_HOOK_BUBBLE;
+			$pk->event = ActorEventPacket::FISH_HOOK_BUBBLE;
 			PMServer::getInstance()->broadcastPacket($this->getViewers(), $pk);
 		}
 	}
@@ -132,9 +132,9 @@ class FishingHook extends Projectile {
 	public function fishBites(){
 		$oe = $this->getOwningEntity();
 		if($oe instanceof Player){
-			$pk = new EntityEventPacket();
+			$pk = new ActorEventPacket();
 			$pk->entityRuntimeId = $this->getId();
-			$pk->event = EntityEventPacket::FISH_HOOK_HOOK;
+			$pk->event = ActorEventPacket::FISH_HOOK_HOOK;
 			PMServer::getInstance()->broadcastPacket($this->getViewers(), $pk);
 		}
 	}
