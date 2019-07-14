@@ -42,7 +42,7 @@ use pocketmine\entity\projectile\Projectile;
 use pocketmine\item\Item;
 use pocketmine\math\RayTraceResult;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
-use pocketmine\network\mcpe\protocol\TakeItemEntityPacket;
+use pocketmine\network\mcpe\protocol\TakeItemActorPacket;
 use pocketmine\Player;
 use pocketmine\Server;
 
@@ -84,7 +84,7 @@ class ThrownTrident extends Projectile {
 			return;
 		}
 
-		$pk = new TakeItemEntityPacket();
+		$pk = new TakeItemActorPacket();
 		$pk->eid = $player->getId();
 		$pk->target = $this->getId();
 		$this->server->broadcastPacket($this->getViewers(), $pk);
