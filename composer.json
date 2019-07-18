@@ -1,0 +1,5 @@
+{
+  "require": {
+    "yosymfony/toml": "1.0.4"
+  }
+}

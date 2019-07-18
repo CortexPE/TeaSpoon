@@ -1,0 +1,9 @@
+<component name="CopyrightManager">
+  <settings default="TeaSpoon">
+    <LanguageOptions name="PHP">
+      <option name="fileTypeOverride" value="3" />
+      <option name="separateBefore" value="true" />
+      <option name="lenBefore" value="1" />
+    </LanguageOptions>
+  </settings>
+</component>
