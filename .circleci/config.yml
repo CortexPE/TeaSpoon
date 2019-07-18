@@ -1,0 +1,34 @@
+---
+version: 2
+jobs:
+  build:
+    docker:
+      - image: ubuntu:latest
+    steps:
+      - run:
+          name: Update & Install Packages
+          command: |
+            apt-get -y update && apt-get -y install wget
+      - checkout
+      - run:
+          name: Download & install binary
+          command: |
+            wget https://jenkins.pmmp.io/job/PHP-7.3-Linux-x86_64/lastSuccessfulBuild/artifact/PHP_Linux-x86_64.tar.gz
+            tar -xvf PHP_Linux-x86_64.tar.gz
+      - run:
+          name: Lint sources
+          command: |
+            ./tests/lint.sh -p bin/php7/bin/php -d ./src/CortexPE/TeaSpoon
+      - run:
+          name: Download Composer & Install Dependencies
+          command: |
+              wget https://raw.githubusercontent.com/composer/getcomposer.org/d3e09029468023aa4e9dcd165e9b6f43df0a9999/web/installer -O - -q | bin/php7/bin/php -- --quiet
+              bin/php7/bin/php composer.phar install
+      - run:
+          name: Build plugin phar
+          command: |
+            mkdir artifacts
+            bin/php7/bin/php ./build.php
+      - store_artifacts:
+          path: artifacts
+...

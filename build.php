@@ -81,7 +81,7 @@ function main() : void{
 	$stub = sprintf(PLUGIN_STUB, PLUGIN_NAME, $metadata["version"], $metadata["author"], date("r"));
 	$fName = sprintf("%s_v%s.phar", PLUGIN_NAME, $metadata["version"]);
 
-	foreach(buildPhar(__DIR__ . DIRECTORY_SEPARATOR . $fName, $basePath, $includedPaths, $metadata, $stub) as $line){
+	foreach(buildPhar(__DIR__ . DIRECTORY_SEPARATOR . "artifacts" . DIRECTORY_SEPARATOR . $fName, $basePath, $includedPaths, $metadata, $stub) as $line){
 		echo $line . PHP_EOL;
 	}
 }

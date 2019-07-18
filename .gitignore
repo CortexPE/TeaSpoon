@@ -69,3 +69,6 @@ fabric.properties
 
 # Composer vendor folder
 /vendor
+
+# Build script artifacts
+/artifacts
