@@ -6,7 +6,7 @@ Rewritten, better, modular version
  - [iTXTech/Genisys](https://github.com/iTXTech/Genisys) - **Reference for a some features**
 
 ## Features:
-Please check [the `CortexPE/TeaSpoon/module/impl` directory](https://github.com/CortexPE/TeaSpoon/tree/master/src/CortexPE/TeaSpoon/module/impl)
+Please check [the `CortexPE/TeaSpoon/module/impl` directory](https://github.com/CortexPE/TeaSpoon/tree/v2/src/CortexPE/TeaSpoon/module/impl)
 
 ## Contributing:
 For consistent coding standards and structure, please use the provided `.idea` PHPStorm project data. User-specific data and models are ignored.
