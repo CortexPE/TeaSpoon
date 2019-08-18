@@ -46,8 +46,10 @@ use pocketmine\Player;
 class BlazeRod extends PMBlazeRod {
 	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector): bool{
 		$parent = parent::onActivate($player, $blockReplace, $blockClicked, $face, $clickVector);
-		new EffectInstance(Effect::getEffect(Effect::REGENERATION), 100, 1),
-		new EffectInstance(Effect::getEffect(Effect::ABSORPTION), 2400)
+			return [
+				new EffectInstance(Effect::getEffect(Effect::REGENERATION), 100, 1),
+				new EffectInstance(Effect::getEffect(Effect::ABSORPTION), 2400)
+				];
 		if(Main::$lightningRods){
 			$entity = Entity::createEntity(Entity::LIGHTNING_BOLT, $player->getLevel(), Entity::createBaseNBT($blockReplace));
 			if($entity instanceof Lightning){
