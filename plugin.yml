@@ -5,4 +5,3 @@ api: 3.9.0
 load: STARTUP
 author: CortexPE
 description: A PLUGIN to Extend PMMP's Functionality without completely changing it.
-website: https://CortexPE.xyz
