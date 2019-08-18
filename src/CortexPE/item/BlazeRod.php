@@ -48,6 +48,8 @@ class BlazeRod extends PMBlazeRod {
 		$parent = parent::onActivate($player, $blockReplace, $blockClicked, $face, $clickVector);
 		if(Main::$lightningRods){
 			$entity = Entity::createEntity(Entity::LIGHTNING_BOLT, $player->getLevel(), Entity::createBaseNBT($blockReplace));
+			new EffectInstance(Effect::getEffect(Effect::REGENERATION), 100, 1),
+			new EffectInstance(Effect::getEffect(Effect::ABSORPTION), 2400)
 			if($entity instanceof Lightning){
 				$entity->spawnToAll();
 				if($player->isSurvival()){
