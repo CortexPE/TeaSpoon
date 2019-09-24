@@ -114,9 +114,9 @@ class FireworkRocket extends Projectile {
 		$this->setGenericFlag(self::DATA_FLAG_HAS_COLLISION, true);
 		$this->setGenericFlag(self::DATA_FLAG_AFFECTED_BY_GRAVITY, true);
 		if($this->fireworks instanceof Item){
-			$this->getDataPropertyManager()->setItem(16, Item::get($this->fireworks->getId(), $this->fireworks->getDamage(), $this->fireworks->getCount(), $this->fireworks->getCompoundTag()));
+			$this->getDataPropertyManager()->setCompoundTag(16, Item::get($this->fireworks->getId(), $this->fireworks->getDamage(), $this->fireworks->getCount(), $this->fireworks->getCompoundTag())->getCompoundTag());
 		}else{
-			$this->getDataPropertyManager()->setItem(16, Item::get(Item::FIREWORKS));
+			$this->getDataPropertyManager()->setCompoundTag(16, Item::get(Item::FIREWORKS)->getCompoundTag());
 		}
 		//id [1][0], meta $d[1][2], count $d[1][1], data $d[1][3]
 		$flyTime = 1;
