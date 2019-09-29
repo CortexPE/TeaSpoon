@@ -161,6 +161,8 @@ class Utils {
 				return DimensionIds::NETHER;
 			}elseif($level->getName() == Main::$endLevel->getName()){
 				return DimensionIds::THE_END;
+			}else{
+				return DimensionIds::OVERWORLD;
 			}
 		}
 
