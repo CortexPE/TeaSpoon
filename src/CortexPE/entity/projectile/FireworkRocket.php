@@ -121,6 +121,7 @@ class FireworkRocket extends Projectile {
 			$this->getDataPropertyManager()->setItem(16, Item::get(Item::FIREWORKS));
 		}
 		*/
+
 		//id [1][0], meta $d[1][2], count $d[1][1], data $d[1][3]
 		$flyTime = 1;
 		try{
