@@ -22,7 +22,7 @@ enchantments:
 
 dimensions:
  # Enable / Disable Dimensions
- enable: true
+ enable: false
  nether:
   levelName: "end"
   # Vanilla-Like Nether Tranfer is not perfect and would take more time (possibly lag)...
