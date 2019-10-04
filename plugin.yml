@@ -1,8 +1,8 @@
-name: TeaSpoon
+name: TeaSpoon-Altay
 main: CortexPE\Main
-version: 1.2.0
+version: 1.2.0-A
 api: 3.9.0
 load: STARTUP
 author: CortexPE
-description: A PLUGIN to Extend PMMP's Functionality without completely changing it.
+description: Teaspoon for Altay! Edit by TheNote
 website: https://CortexPE.xyz

@@ -35,9 +35,6 @@ declare(strict_types = 1);
 
 namespace CortexPE;
 
-use CortexPE\entity\projectile\FishingHook;
-use CortexPE\item\Elytra;
-use pocketmine\entity\Vehicle;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\Player;
 use pocketmine\Server as PMServer;

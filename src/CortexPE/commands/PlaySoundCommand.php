@@ -47,7 +47,7 @@ class PlaySoundCommand extends VanillaCommand {
 	public function __construct($name){
 		parent::__construct(
 			$name,
-			"Plays a sound",
+			"Spielt ein Sound",
 			"/playsound <sound> <player> [x] [y] [z] [volume] [pitch]"
 		);
 		$this->setPermission("pocketmine.command.playsound");
@@ -75,7 +75,7 @@ class PlaySoundCommand extends VanillaCommand {
 		$player = $server->getPlayer($args[1]);
 
 		if($player instanceof Player === false){
-			$sender->sendMessage("Cannot find Player.");
+			$sender->sendMessage("Spieler wurde nicht gefunden.");
 
 			return false;
 		}
@@ -96,7 +96,7 @@ class PlaySoundCommand extends VanillaCommand {
 		$pk->pitch = $pitch;
 
 		$server->broadcastPacket($player->getLevel()->getPlayers(), $pk);
-		$sender->sendMessage("Playing " . $sound . " to " . $player->getName());
+		$sender->sendMessage("Spielt: " . $sound . " zu " . $player->getName());
 
 		return true;
 	}

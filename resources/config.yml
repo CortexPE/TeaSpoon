@@ -10,31 +10,9 @@
 # TeaSpoon Configuration File
 
 # Config Version Number [DO-NOT-MODIFY]
-version: 32
 
-entities:
- # Weather to register Vanilla Entities (Set to false if you're going to use a MobAI Plugin such as, PureEntitiesX etc...) or not
- register: true
- # Enable Lightning Fire & Damage
- lightningFire: true
- # Enable EndCrystal Explosion
- endCrystalExplosion: true
- # EndCrystal Explosion Power
- endCrystalPower: 6
- creeper:
-  # Enable creepers' ability to explode
-  enableExplosions: false  # disabled by default. Nobody wants griefed servers ¯\_(ツ)_/¯
-  # Enable Charged Creepers when hit by lightning
-  enableChargedCreepers: true
-  # Enable Ignited Creepers when clicked by Flint and Steel (if Explosions are disabled, it will only despawn)
-  enableIgnitedCreepers: true
- snowGolem:
-  # Enable the ability to shear Snow Golems (Currently Doesn't work. idk why. maybe PC Docs isn't consistent with PE?)
-  shearable: true
-  # Enable to let snow golems leave out traces of snow (If disabled, The client will still show snow trails)
-  generatesSnow: false # Disabled by default (might be used to griefed servers :/)
-  # Enable to let snow golems melt when in hot biomes, in contact with raining / water (RIP Snowman#1337 2018-2018 ;-;)
-  melting: true
+# This Version of Teaspoon is for Altay 3.9.x
+version: 32
 
 enchantments:
  # Weather to enable & register Vanilla Enchantments (Set to false if you're going to use VanillaEnchantments plugin etc...) or not
@@ -46,24 +24,13 @@ dimensions:
  # Enable / Disable Dimensions
  enable: true
  nether:
-  levelName: "teanether"
+  levelName: "end"
   # Vanilla-Like Nether Tranfer is not perfect and would take more time (possibly lag)...
-  vanillaNetherTranfer: false
+  vanillaNetherTranfer: true
  end:
-  levelName: "ender"
+  levelName: "nether"
  # SET TO BLANK ("") TO DISABLE
  overrideOverworldLevel: ""
-
-misc:
- # Enable to generate new Fishing LootTables everyday
- randomFishingLootTables: false
- # Minecart! We have 2 minecart,
- # Broken ones = false      More fun, trust me ;)
- # Vanilla ones = true      Classic minecart behaviour
- # Set it to 'none' if you don't want to use them
- vanilla-minecarts: 'false'
- # Toggle Lightning Rods (BlazeRods)
- lightningRods: false
 
 weather: 
  enable: true
@@ -72,7 +39,7 @@ weather:
  # Maximum Weather Duration (IN TICKS)
  maxDuration: 12000
  # If lightning should be spawned in stormy weather
- lightning: true
+ lightning: false
 
 player:
  # Enable to dis-allow container interactions & item dropping when in creative
@@ -83,45 +50,9 @@ player:
   enable: true
  # Toggle to replace current armor or not (Vanilla-Way: false) [might cause glitches/bugs on server lag]
   replace: false
- # Elytra configuration
- elytra:
-  enable: true
-  enableElytraBoost: true
-  elytraBoostParticles: true
- fishing: true
-
-mobSpawner:
- enable: true
- # Drop spawners on silk touch (damageAsEID needs to be enabled)
- silkTouchSpawners: false
-
-fireworks:
- enable: true
-
-Xp:
- dropMobExperience: true
 
 blocks:
- dragonEggTeleport: true
  brewingStands: true
  enableIronGolem: true
  enableSnowGolem: true
  snowLayerMelts: true
-
-hopper:
- enable: true
-
-beacon:
- # You can only disable effects (if it has any effect at all) because beacons are rendered client-side
- enable: true
- effectsEnabled: true
-
-shulkerBox:
- enable: true
-
-anvil:
- # WARNING: This is handled client-side... and has no verification yet, meaning this can be used to exploit items.
- enable: true
-
-cauldron:
- enable: true

@@ -49,7 +49,6 @@ use CortexPE\level\weather\Weather;
 use CortexPE\network\PacketManager;
 use CortexPE\task\TickLevelsTask;
 use CortexPE\tile\Tile;
-use CortexPE\utils\FishingLootTable;
 use pocketmine\command\CommandSender;
 use pocketmine\level\Level;
 use pocketmine\Player;
@@ -227,11 +226,6 @@ class Main extends PluginBase {
 	}
 
 	public function onLoad(){
-		if(Utils::checkSpoon()){
-			$this->getLogger()->error("This plugin is for PMMP only. It is meant to extend PMMP's functionality.");
-			$this->getLogger()->error("The plugin will disable itself after being later enabled by the server to prevent any interference with the existing Spoon features.");
-			$this->disable = true;
-		}
 		$this->getLogger()->info("Loading Resources...");
 
 		// Load Resources //
@@ -258,28 +252,13 @@ class Main extends PluginBase {
 		self::$vanillaNetherTransfer = self::$config->getNested("dimensions.nether.vanillaNetherTranfer", self::$vanillaNetherTransfer);
 		self::$overworldLevelName = self::$config->getNested("dimensions.overrideOverworldLevel", self::$overworldLevelName);
 		self::$instantArmorReplace = self::$config->getNested("player.instantArmor.replace", self::$instantArmorReplace);
-		self::$elytraEnabled = self::$config->getNested("player.elytra.enable", self::$elytraEnabled);
-		self::$elytraBoostEnabled = self::$config->getNested("player.elytra.enableElytraBoost", self::$elytraBoostEnabled);
 		self::$silkSpawners = self::$config->getNested("mobSpawner.silkTouchSpawners", self::$silkSpawners);
-		self::$fireworksEnabled = self::$config->getNested("fireworks.enable", self::$fireworksEnabled);
 		self::$ePearlEnabled = self::$config->getNested("enderPearl.enable", self::$ePearlEnabled);
 		self::$chorusFruitEnabled = self::$config->getNested("chorusFruit.enable", self::$chorusFruitEnabled);
 		self::$instantArmorEnabled = self::$config->getNested("player.instantArmor.enable", self::$instantArmorEnabled);
-		self::$dropMobExperience = self::$config->getNested("Xp.dropMobExperience", self::$dropMobExperience);
-		self::$fishingEnabled = self::$config->getNested("player.fishing", self::$fishingEnabled);
 		self::$clearInventoryOnGMChange = self::$config->getNested("player.clearInventoryOnGameModeChange", self::$clearInventoryOnGMChange);
-		self::$mobSpawnerEnable = self::$config->getNested("mobSpawner.enable", self::$mobSpawnerEnable);
-		self::$hoppersEnabled = self::$config->getNested("hopper.enable", self::$hoppersEnabled);
-		self::$beaconEnabled = self::$config->getNested("beacon.enable", self::$beaconEnabled);
-		self::$beaconEffectsEnabled = self::$config->getNested("beacon.effectsEnabled", self::$beaconEffectsEnabled);
-		self::$shulkerBoxEnabled = self::$config->getNested("shulkerBox.enable", self::$shulkerBoxEnabled);
 		self::$elytraBoostParticles = self::$config->getNested("player.elytra.elytraBoostParticles", self::$elytraBoostParticles);
-		self::$endCrystalExplode = self::$config->getNested("entities.endCrystalExplosion", self::$endCrystalExplode);
 		self::$EnchantingTableEnabled = self::$config->getNested("enchantments.enchantingTableEnabled", self::$EnchantingTableEnabled);
-		self::$AnvilEnabled = self::$config->getNested("anvil.enable", self::$AnvilEnabled);
-		self::$dragonEggTeleport = self::$config->getNested("blocks.dragonEggTeleport", self::$dragonEggTeleport);
-		self::$endCrystalPower = self::$config->getNested("entities.endCrystalPower", self::$endCrystalPower);
-		self::$cars = self::$config->getNested("misc.vanilla-minecarts", self::$cars);
 		self::$creepersExplodes = self::$config->getNested("entities.creeper.enableExplosions", self::$creepersExplodes);
 		self::$ignitableCreepers = self::$config->getNested("entities.creeper.enableIgnitedCreepers", self::$ignitableCreepers);
 		self::$chargedCreepers = self::$config->getNested("entities.creeper.enableChargedCreepers", self::$chargedCreepers);
@@ -291,7 +270,6 @@ class Main extends PluginBase {
 		self::$snowGolemMelts = self::$config->getNested("entities.snowGolem.melting", self::$snowGolemMelts);
 		self::$snowLayerMelts = self::$config->getNested("blocks.snowLayerMelts", self::$snowLayerMelts);
 		self::$brewingStandsEnabled = self::$config->getNested("blocks.brewingStands", self::$brewingStandsEnabled);
-		self::$cauldronsEnabled = self::$config->getNested("cauldron.enable", self::$brewingStandsEnabled);
 
 		// Pre-Enable Checks //
 		if(Utils::isPhared()){ // unphared = dev
@@ -344,14 +322,12 @@ class Main extends PluginBase {
 		EntityManager::init();
 		// LevelManager::init(); EXECUTED VIA EventListener
 		Tile::init();
-		FishingLootTable::init();
 		PacketManager::init();
 		$this->brewingManager = new BrewingManager();
 		$this->brewingManager->init();
 
 		// Register Listeners
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
-		$this->getServer()->getPluginManager()->registerEvents(new PacketHandler($this), $this);
 		if(self::$registerVanillaEnchantments){
 			$this->getServer()->getPluginManager()->registerEvents(new EnchantHandler($this), $this);
 		}
