@@ -34,11 +34,11 @@ Help keep me motivated into making this massive thing... Maintaining it is somet
 # Finished & Planned Features
  - Worlds
   - [X] Dimensions
-    - [X] Nether Dimension
-    - [X] End Dimension
+    - [X] Nether Dimension -> removing...
+    - [X] End Dimension -> Removing...
     - [X] Fully Functional Nether Portal Frame and Block
     - [X] Funtional END_PORTAL Block (Portal Soon)
-  - [X] Weather System
+  - [X] Weather System -> yay weather in Altay
   - [X] Temperature System
  - Blocks
    - [X] EndPortal
