@@ -87,15 +87,6 @@ class Utils {
 		return ($lvl->getHighestBlockAt($pos->getFloorX(), $pos->getFloorZ()) <= $pos->getY());
 	}
 
-	public static function checkSpoon(){
-		return (
-			Server::getInstance()->getName() !== "PocketMine-MP" ||
-			!class_exists(BlockFactory::class) ||
-			!class_exists(ItemFactory::class) ||
-			class_exists("pocketmine\\network\\protocol\\Info")
-		);
-	}
-
 	public static function vector3XZDistance(Vector3 $pos1, Vector3 $pos2){
 		return (($pos1->x - $pos2->x) + ($pos1->z - $pos2->z));
 	}
