@@ -33,7 +33,7 @@ class WorldCommand extends VanillaCommand {
 	public function __construct($name){
 		parent::__construct(
 			$name,
-			"Teleportiert dich zu einer Welt",
+			"Teleport to a world",
 			"/world [target player] <world name>"
 		);
 		$this->setPermission("pocketmine.command.world");
@@ -49,11 +49,11 @@ class WorldCommand extends VanillaCommand {
 				$sender->getServer()->loadLevel($args[0]);
 				if(($level = $sender->getServer()->getLevelByName($args[0])) !== null){
 					$sender->teleport($level->getSafeSpawn());
-					$sender->sendMessage("Du wurdest teleportiert zu: " . $level->getName());
+					$sender->sendMessage("Teleported to Level: " . $level->getName());
 
 					return true;
 				}else{
-					$sender->sendMessage(TextFormat::RED . "Die Welt: \"" . $args[0] . "\" ist nicht vorhanden");
+					$sender->sendMessage(TextFormat::RED . "World: \"" . $args[0] . "\" Does not exist");
 
 					return false;
 				}
@@ -62,26 +62,26 @@ class WorldCommand extends VanillaCommand {
 				if(($level = $sender->getServer()->getLevelByName($args[1])) !== null){
 					$player = $sender->getServer()->getPlayer($args[0]);
 					if($player === null){
-						$sender->sendMessage("Spieler nicht gefunden.");
+						$sender->sendMessage("Player not found.");
 
 						return false;
 					}
 					$player->teleport($level->getSafeSpawn());
-					$player->sendMessage("Du wurdest teleportiert zu: " . $level->getName());
+					$player->sendMessage("Teleported to Level: " . $level->getName());
 
 					return true;
 				}else{
-					$sender->sendMessage(TextFormat::RED . "Die Welt: \"" . $args[1] . "\" ist nicht vorhanden");
+					$sender->sendMessage(TextFormat::RED . "World: \"" . $args[1] . "\" Does not exist");
 
 					return false;
 				}
 			}else{
-				$sender->sendMessage("Benutze: /world [Spielername] <world name>");
+				$sender->sendMessage("Usage: /world [target player] <world name>");
 
 				return false;
 			}
 		}else{
-			$sender->sendMessage(TextFormat::RED . "Dieser Command kann nur an einem Spieler ausgeführt werden!");
+			$sender->sendMessage(TextFormat::RED . "This command must be executed as a player");
 
 			return false;
 		}

@@ -52,7 +52,7 @@ class ClearCommand extends VanillaCommand {
 	public function __construct($name){
 		parent::__construct(
 			$name,
-			"Löcht das Inventar von dir oder einer anderen Person",
+			"Clears your / another player's inventory",
 			"/clear [player]"
 		);
 		$this->setPermission("pocketmine.command.clear.self;pocketmine.command.clear.other");

@@ -47,6 +47,7 @@ class CommandManager {
 			new WorldCommand("world"),
 			new ClearCommand("clear"),
 			new PlaySoundCommand("playsound"),
+			new BugReportCommand("bugreport"),
 		];
 
 		if(!Utils::isPhared()){

@@ -40,7 +40,7 @@ class WeatherCommand extends VanillaCommand {
 	public function __construct($name){
 		parent::__construct(
 			$name,
-			"Ändert das Wetter",
+			"Changes the Weather",
 			"/weather [level] < get | clear | sunny | rain | rainy_thunder | thunder >"
 		);
 		$this->setPermission("pocketmine.command.weather");
@@ -68,19 +68,19 @@ class WeatherCommand extends VanillaCommand {
 			if($args[0] == "get"){
 				switch(Main::$weatherData[$sender->getLevel()->getId()]->getWeather()){
 					case 0:
-						$sender->sendMessage("Wetter: Klar");
+						$sender->sendMessage("Weather: Clear");
 
 						return true;
 					case 1:
-						$sender->sendMessage("Wetter: Regen");
+						$sender->sendMessage("Weather: Rainy");
 
 						return true;
 					case 2:
-						$sender->sendMessage("Wetter: Starkes Gewitter");
+						$sender->sendMessage("Weather: Rainy Thunder");
 
 						return true;
 					case 3:
-						$sender->sendMessage("Wetter: Gewitter");
+						$sender->sendMessage("Weather: Thunder");
 
 						return true;
 				}
@@ -92,11 +92,11 @@ class WeatherCommand extends VanillaCommand {
 			else $duration = (int)$args[1];
 			if($wea >= 0 and $wea <= 3){
 				Main::$weatherData[$sender->getLevel()->getId()]->setWeather($wea, $duration);
-				$sender->sendMessage("Das Wetter wurde erfolgreich gecleart in " . $sender->getLevel()->getName());
+				$sender->sendMessage("Weather Successfully changed on " . $sender->getLevel()->getName());
 
 				return true;
 			}else{
-				$sender->sendMessage(TextFormat::RED . "Unbekannter Wettertyp");
+				$sender->sendMessage(TextFormat::RED . "Invalid Weather");
 
 				return false;
 			}
