@@ -52,7 +52,7 @@ Help keep me motivated into making this massive thing... Maintaining it is somet
    - [X] FireCharge
    - [X] Chorus Fruit (with customizable Delay)
    - [X] Vanilla-Like "Instant-Armor-Equipment"
-   - [X] Trident
+   - [X] Trident (Working)
  - Entities & Mobs
    - [X] XP Drops
    - [X] Projectiles
