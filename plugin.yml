@@ -1,8 +1,8 @@
 name: TeaSpoon-Altay
 main: CortexPE\Main
-version: 1.2.0-A
+version: 1.2.0-Altay
 api: 3.9.0
 load: STARTUP
-author: CortexPE
-description: Teaspoon for Altay! Edit by TheNote
+author: CortexPE [Edit to Altay by TheNote]
+description: A PLUGIN to Extend Altay Functionality without completely changing it.
 website: https://CortexPE.xyz
