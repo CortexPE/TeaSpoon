@@ -51,7 +51,12 @@ abstract class Tile extends PMTile {
 	public static function init(){
 		Main::getPluginLogger()->debug("Registering Tiles...");
 		try {
+			self::registerTile(Beacon::class);
+			self::registerTile(MobSpawner::class);
+			self::registerTile(ShulkerBox::class);
+			self::registerTile(Hopper::class);
 			self::registerTile(BrewingStand::class);
+			self::registerTile(Cauldron::class);
 
 			//self::registerTile(Jukebox::class);
 		} catch(\ReflectionException $e){
