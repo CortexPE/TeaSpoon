@@ -51,7 +51,6 @@ class BlockManager {
 		BlockFactory::registerBlock(new Bed(), true);
 		BlockFactory::registerBlock(new SlimeBlock(), true);
 		BlockFactory::registerBlock(new EndPortalFrame(), true);
-		BlockFactory::registerBlock(new Lava(), true);
 		BlockFactory::registerBlock(new StillLava(), true);
 		BlockFactory::registerBlock(new MonsterSpawner(), true);
 		BlockFactory::registerBlock(new FrostedIce(), true);
