@@ -3,3 +3,4 @@ cache.json
 .idea/*
 packetlog.txt
 dumps/*
+*.phar
