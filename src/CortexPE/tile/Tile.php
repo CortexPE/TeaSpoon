@@ -46,7 +46,8 @@ abstract class Tile extends PMTile {
 		SHULKER_BOX = "ShulkerBox",
 		HOPPER = "Hopper",
 		JUKEBOX = "Jukebox",
-		CAULDRON = "Cauldron";
+		CAULDRON = "Cauldron",
+	    SPONGE = "Sponge";
 
 	public static function init(){
 		Main::getPluginLogger()->debug("Registering Tiles...");
@@ -57,6 +58,7 @@ abstract class Tile extends PMTile {
 			self::registerTile(Hopper::class);
 			self::registerTile(BrewingStand::class);
 			self::registerTile(Cauldron::class);
+            //self::registerTile(Sponge::class);
 
 			//self::registerTile(Jukebox::class);
 		} catch(\ReflectionException $e){
