@@ -94,7 +94,7 @@ class CraftingDataPacket extends PMCraftingDataPacket {
 			}
 			$this->decodedEntries[] = $entry;
 		}
-		$this->getBool(); //cleanRecipes
+		$this->cleanRecipes = $this->getBool();
 	}
 
 	protected function encodePayload(): void{
