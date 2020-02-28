@@ -41,7 +41,7 @@ class FireworksExplosion {
 	/** @var int */
 	public const
 		TYPE_SMALL_BALL = 0,
-		YPE_LARGE_BALL = 1,
+		TYPE_LARGE_BALL = 1,
 		TYPE_STAR_SHAPED = 2,
 		TYPE_CREEPER_SHAPED = 3,
 		TYPE_BURST = 4;
