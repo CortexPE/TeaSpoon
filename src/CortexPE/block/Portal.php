@@ -179,7 +179,7 @@ class Portal extends Transparent {
 						if($entity->getLevel()->getName() != Main::$netherName){ // OVERWORLD -> NETHER
 							$gm = $entity->getGamemode();
 
-							$posNether = Main::$netherLevel->getSafeSpawn();
+							$posNether = Main::$netherLevel->getSpawnLocation();
 							if(Main::$vanillaNetherTransfer){ //imperfect
 								$x = (int)ceil($entity->getX() / 8);
 								$y = (int)ceil($entity->getY() / 8);
